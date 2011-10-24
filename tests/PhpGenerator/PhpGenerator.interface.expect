@@ -1,0 +1,9 @@
+/**
+ * Description of interface
+ */
+interface IExample extends IOne, ITwo
+{
+
+	function getForm();
+
+}
