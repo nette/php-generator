@@ -118,7 +118,7 @@ class Helpers
 			}
 			return get_class($var) === 'stdClass'
 				? "(object) array($s)"
-				: get_class($var) . "::__set_state(array($s))";
+				: __CLASS__ . "::createObject('" . get_class($var) . "', array($s))";
 
 		} else {
 			return var_export($var, TRUE);
@@ -178,6 +178,13 @@ class Helpers
 		return $name instanceof PhpLiteral || !preg_match('#^' . self::PHP_IDENT . '$#', $name)
 			? '{' . self::_dump($name) . '}'
 			: $name ;
+	}
+
+
+
+	public static function createObject($class, array $props)
+	{
+		return unserialize('O' . substr(serialize((string) $class), 1, -1) . substr(serialize($props), 1));
 	}
 
 }
