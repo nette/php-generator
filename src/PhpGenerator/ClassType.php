@@ -136,8 +136,8 @@ class ClassType extends Nette\Object
 			. "\n{\n\n"
 			. Nette\Utils\Strings::indent(
 				($this->traits ? "use " . implode(', ', (array) $this->traits) . ";\n\n" : '')
-				. ($this->consts ? implode('', $consts) . "\n" : '')
-				. ($this->properties ? implode("\n", $properties) . "\n" : '')
+				. ($this->consts ? implode('', $consts) . "\n\n" : '')
+				. ($this->properties ? implode("\n", $properties) . "\n\n" : '')
 				. implode("\n\n\n", $this->methods), 1)
 			. "\n\n}") . "\n";
 	}
