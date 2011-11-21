@@ -45,6 +45,3 @@ Assert::same( "array(\n\t'a' => 1,\n\tarray(\n\t\t\"\\r\" => \"\\r\",\n\t\t2,\n\
 Assert::same( "(object) array(\n\t'a' => 1,\n\t'b' => 2,\n)", Helpers::dump((object) array('a' => 1, 'b' => 2)) );
 Assert::same( "(object) array(\n\t'a' => (object) array(\n\t\t'b' => 2,\n\t),\n)" , Helpers::dump((object) array('a' => (object) array('b' => 2))) );
 Assert::same( "Test::__set_state(array(\n\t'a' => 1,\n\t'b' => 2,\n\t'c' => 3,\n))", Helpers::dump(new Test) );
-
-Assert::same( "Item", Helpers::dumpMember('Item') );
-Assert::same( "{'0Item'}", Helpers::dumpMember('0Item') );

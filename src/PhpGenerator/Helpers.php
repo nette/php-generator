@@ -36,17 +36,6 @@ class Helpers
 
 
 
-	/**
-	 * Returns a PHP representation of a object member.
-	 * @return string
-	 */
-	public static function dumpMember($var)
-	{
-		return preg_match('#^' . self::PHP_IDENT . '$#', $var) ? $var : '{' . self::_dump($var) . '}';
-	}
-
-
-
 	private static function _dump(&$var, $level = 0)
 	{
 		if ($var instanceof PhpLiteral) {
@@ -138,26 +127,57 @@ class Helpers
 
 
 
-	/** @return string */
-	public static function generate($statement)
+	/**
+	 * Generates PHP statement.
+	 * @return string
+	 */
+	public static function format($statement)
 	{
 		$args = func_get_args();
-		unset($args[0]);
-		foreach ($args as $key => $arg) {
-			$args[$key] = self::_dump($arg);
-		}
-		if (strpos($statement, '?') === FALSE) {
-			return $statement .= '(' . implode(', ', $args) . ');';
-		}
+		return self::formatArgs(array_shift($args), $args);
+	}
 
+
+
+	/**
+	 * Generates PHP statement.
+	 * @return string
+	 */
+	public static function formatArgs($statement, array $args)
+	{
 		$a = strpos($statement, '?');
-		$i = 1;
 		while ($a !== FALSE) {
-			$statement = substr_replace($statement, $args[$i], $a, 1);
-			$a = strpos($statement, '?', $a + strlen($args[$i]));
-			$i++;
+			if (!$args) {
+				throw new Nette\InvalidArgumentException('Insufficient number of arguments.');
+			}
+			$arg = array_shift($args);
+			if (substr($statement, $a + 1, 1) === '*') { // ?*
+				if (!is_array($arg)) {
+					throw new Nette\InvalidArgumentException('Argument must be an array.');
+				}
+				$arg = implode(', ', array_map(array(__CLASS__, 'dump'), $arg));
+				$statement = substr_replace($statement, $arg, $a, 2);
+
+			} else {
+				$arg = substr($statement, $a - 1, 1) === '$' || substr($statement, $a - 2, 2) === '->' ? self::formatMember($arg) : self::_dump($arg);
+				$statement = substr_replace($statement, $arg, $a, 1);
+			}
+			$a = strpos($statement, '?', $a + strlen($arg));
 		}
-		return $statement . ';';
+		return $statement;
+	}
+
+
+
+	/**
+	 * Returns a PHP representation of a object member.
+	 * @return string
+	 */
+	public static function formatMember($name)
+	{
+		return $name instanceof PhpLiteral || !preg_match('#^' . self::PHP_IDENT . '$#', $name)
+			? '{' . self::_dump($name) . '}'
+			: $name ;
 	}
 
 }
