@@ -52,7 +52,8 @@ $class->addMethod('getSections')
 	->setStatic(TRUE)
 	->setVisibility('protected')
 	->setReturnReference(TRUE)
-	->setBody('return self::$sections;')
+	->addBody('$mode = ?;', array(123))
+	->addBody('return self::$sections;')
 	->addParameter('mode', new PhpLiteral('self::ORDER'));
 
 $method = $class->addMethod('show')

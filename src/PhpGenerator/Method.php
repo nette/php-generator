@@ -83,6 +83,15 @@ class Method extends Nette\Object
 
 
 
+	/** @return Method */
+	public function addBody($statement, array $args = NULL)
+	{
+		$this->body .= (func_num_args() > 1 ? Helpers::formatArgs($statement, $args) : $statement) . "\n";
+		return $this;
+	}
+
+
+
 	public function __call($name, $args)
 	{
 		return Nette\ObjectMixin::callProperty($this, $name, $args);
