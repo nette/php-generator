@@ -38,3 +38,6 @@ Assert::same( '$obj->{\' \'} = 2', Helpers::formatArgs('$obj->? = ?', array(' ',
 
 Assert::same( "Item", Helpers::formatMember('Item') );
 Assert::same( "{'0Item'}", Helpers::formatMember('0Item') );
+
+Assert::true( Helpers::isIdentifier('Item') );
+Assert::false( Helpers::isIdentifier('0Item') );

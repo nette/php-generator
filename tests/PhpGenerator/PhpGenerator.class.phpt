@@ -46,7 +46,7 @@ $class->addMethod('getHandle')
 	->addDocument('Returns file handle.')
 	->addDocument('@return resource')
 	->setFinal(TRUE)
-	->setBody('return $this->handle;');
+	->setBody('return $this->?;', array('handle'));
 
 $class->addMethod('getSections')
 	->setStatic(TRUE)

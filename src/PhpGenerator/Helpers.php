@@ -175,9 +175,19 @@ class Helpers
 	 */
 	public static function formatMember($name)
 	{
-		return $name instanceof PhpLiteral || !preg_match('#^' . self::PHP_IDENT . '$#', $name)
+		return $name instanceof PhpLiteral || !self::isIdentifier($name)
 			? '{' . self::_dump($name) . '}'
 			: $name ;
+	}
+
+
+
+	/**
+	 * @return bool
+	 */
+	public static function isIdentifier($value)
+	{
+		return is_string($value) && preg_match('#^' . self::PHP_IDENT . '$#', $value);
 	}
 
 

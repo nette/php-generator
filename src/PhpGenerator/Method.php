@@ -84,6 +84,15 @@ class Method extends Nette\Object
 
 
 	/** @return Method */
+	public function setBody($statement, array $args = NULL)
+	{
+		$this->body = func_num_args() > 1 ? Helpers::formatArgs($statement, $args) : $statement;
+		return $this;
+	}
+
+
+
+	/** @return Method */
 	public function addBody($statement, array $args = NULL)
 	{
 		$this->body .= (func_num_args() > 1 ? Helpers::formatArgs($statement, $args) : $statement) . "\n";
