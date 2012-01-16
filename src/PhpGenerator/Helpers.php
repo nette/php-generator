@@ -159,7 +159,8 @@ class Helpers
 				$statement = substr_replace($statement, $arg, $a, 2);
 
 			} else {
-				$arg = substr($statement, $a - 1, 1) === '$' || substr($statement, $a - 2, 2) === '->' ? self::formatMember($arg) : self::_dump($arg);
+				$arg = substr($statement, $a - 1, 1) === '$' || in_array(substr($statement, $a - 2, 2), array('->', '::'))
+					? self::formatMember($arg) : self::_dump($arg);
 				$statement = substr_replace($statement, $arg, $a, 1);
 			}
 			$a = strpos($statement, '?', $a + strlen($arg));
