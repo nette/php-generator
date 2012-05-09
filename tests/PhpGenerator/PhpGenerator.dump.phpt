@@ -39,7 +39,7 @@ Assert::same( 'array()', Helpers::dump(array()) );
 Assert::same( "array(\n\t\$s,\n)", Helpers::dump(array(new PhpLiteral('$s'))) );
 
 Assert::same( "array(\n\t1,\n\t2,\n\t3,\n)", Helpers::dump(array(1,2,3)) );
-Assert::same( "array(\n\t'a',\n\t7 => 'b',\n\t'c',\n\t'9a' => 'd',\n\t'e',\n)", Helpers::dump(array('a', 7 => 'b', 'c', '9a' => 'd', 'e')) );
+Assert::same( "array(\n\t'a',\n\t7 => 'b',\n\t'c',\n\t'9a' => 'd',\n\t'e',\n)", Helpers::dump(array('a', 7 => 'b', 'c', '9a' => 'd', 9 => 'e')) );
 Assert::same( "array(\n\t'a' => 1,\n\tarray(\n\t\t\"\\r\" => \"\\r\",\n\t\t2,\n\t),\n\t3,\n)", Helpers::dump(array('a' => 1, array("\r" => "\r", 2), 3)) );
 
 Assert::same( "(object) array(\n\t'a' => 1,\n\t'b' => 2,\n)", Helpers::dump((object) array('a' => 1, 'b' => 2)) );

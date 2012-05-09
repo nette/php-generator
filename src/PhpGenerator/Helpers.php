@@ -85,7 +85,7 @@ class Helpers
 				foreach ($var as $k => &$v) {
 					if ($k !== $marker) {
 						$s .= "$space\t" . ($k === $counter ? '' : self::_dump($k) . " => ") . self::_dump($v, $level + 1) . ",\n";
-						$counter = is_int($k) ? $k + 1 : $counter;
+						$counter = is_int($k) ? max($k + 1, $counter) : $counter;
 					}
 				}
 				unset($var[$marker]);
