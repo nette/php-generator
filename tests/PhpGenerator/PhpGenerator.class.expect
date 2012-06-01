@@ -20,7 +20,7 @@ abstract final class Example extends ParentClass implements IExample, IOne
 
 	public $order = RecursiveIteratorIterator::SELF_FIRST;
 
-	public $sections = array(
+	public static $sections = array(
 		'first' => TRUE,
 	);
 

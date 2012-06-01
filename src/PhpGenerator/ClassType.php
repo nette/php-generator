@@ -121,7 +121,7 @@ class ClassType extends Nette\Object
 		$properties = array();
 		foreach ($this->properties as $property) {
 			$properties[] = ($property->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", (array) $property->documents)) . "\n */\n" : '')
-				. $property->visibility . ' $' . $property->name
+				. $property->visibility . ($property->static ? ' static' : '') . ' $' . $property->name
 				. ($property->value === NULL ? '' : ' = ' . Helpers::dump($property->value))
 				. ";\n";
 		}
