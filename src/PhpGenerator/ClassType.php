@@ -43,25 +43,25 @@ class ClassType extends Nette\Object
 	/** @var bool */
 	public $abstract;
 
-	/** @var array of string */
+	/** @var string[] */
 	public $extends = array();
 
-	/** @var array of string */
+	/** @var string[] */
 	public $implements = array();
 
-	/** @var array of string */
+	/** @var string[] */
 	public $traits = array();
 
-	/** @var array of string */
+	/** @var string[] */
 	public $documents = array();
 
-	/** @var array of name => value */
+	/** @var mixed[] name => value */
 	public $consts = array();
 
-	/** @var array of name => Property */
+	/** @var Property[] name => Property */
 	public $properties = array();
 
-	/** @var array of name => Method */
+	/** @var Method[] name => Method */
 	public $methods = array();
 
 
