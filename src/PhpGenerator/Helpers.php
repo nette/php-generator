@@ -66,7 +66,6 @@ class Helpers
 			return '"' . strtr($var, $table) . '"';
 
 		} elseif (is_array($var)) {
-			$s = '';
 			$space = str_repeat("\t", $level);
 
 			static $marker;
@@ -74,51 +73,52 @@ class Helpers
 				$marker = uniqid("\x00", TRUE);
 			}
 			if (empty($var)) {
+				$out = '';
 
 			} elseif ($level > 50 || isset($var[$marker])) {
 				throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
 
 			} else {
-				$s .= "\n";
+				$out = "\n";
 				$var[$marker] = TRUE;
 				$counter = 0;
 				foreach ($var as $k => &$v) {
 					if ($k !== $marker) {
-						$s .= "$space\t" . ($k === $counter ? '' : self::_dump($k) . " => ") . self::_dump($v, $level + 1) . ",\n";
+						$out .= "$space\t" . ($k === $counter ? '' : self::_dump($k) . " => ") . self::_dump($v, $level + 1) . ",\n";
 						$counter = is_int($k) ? max($k + 1, $counter) : $counter;
 					}
 				}
 				unset($var[$marker]);
-				$s .= $space;
+				$out .= $space;
 			}
-			return "array($s)";
+			return "array($out)";
 
 		} elseif (is_object($var)) {
 			$arr = (array) $var;
-			$s = '';
 			$space = str_repeat("\t", $level);
 
 			static $list = array();
 			if (empty($arr)) {
+				$out = '';
 
 			} elseif ($level > 50 || in_array($var, $list, TRUE)) {
 				throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
 
 			} else {
-				$s .= "\n";
+				$out = "\n";
 				$list[] = $var;
 				foreach ($arr as $k => &$v) {
 					if ($k[0] === "\x00") {
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$s .= "$space\t" . self::_dump($k) . " => " . self::_dump($v, $level + 1) . ",\n";
+					$out .= "$space\t" . self::_dump($k) . " => " . self::_dump($v, $level + 1) . ",\n";
 				}
 				array_pop($list);
-				$s .= $space;
+				$out .= $space;
 			}
 			return get_class($var) === 'stdClass'
-				? "(object) array($s)"
-				: __CLASS__ . "::createObject('" . get_class($var) . "', array($s))";
+				? "(object) array($out)"
+				: __CLASS__ . "::createObject('" . get_class($var) . "', array($out))";
 
 		} else {
 			return var_export($var, TRUE);
