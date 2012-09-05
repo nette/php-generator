@@ -9,7 +9,7 @@
  * the file license.txt that was distributed with this source code.
  */
 
-namespace Nette\Utils\PhpGenerator;
+namespace Nette\PhpGenerator;
 
 use Nette;
 

@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Test: Nette\Utils\PhpGenerator for interfaces.
+ * Test: Nette\PhpGenerator for interfaces.
  *
  * @author     David Grudl
  * @package    Nette\Utils
  */
 
-use Nette\Utils\PhpGenerator\ClassType;
+use Nette\PhpGenerator\ClassType;
 
 
 
@@ -24,4 +24,4 @@ $interface
 
 $interface->addMethod('getForm');
 
-Assert::match(file_get_contents(__DIR__ . '/PhpGenerator.interface.expect'), (string) $interface);
+Assert::match(file_get_contents(__DIR__ . '/interface.expect'), (string) $interface);

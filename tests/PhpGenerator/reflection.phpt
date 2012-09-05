@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Test: Nette\Utils\PhpGenerator generator.
+ * Test: Nette\PhpGenerator generator.
  *
  * @author     David Grudl
  * @package    Nette\Utils
@@ -10,7 +10,7 @@
 
 namespace Abc;
 
-use Nette\Utils\PhpGenerator\ClassType,
+use Nette\PhpGenerator\ClassType,
 	Assert,
 	ReflectionClass;
 
@@ -73,4 +73,4 @@ $res[] = ClassType::from('Abc\Interface2');
 $res[] = ClassType::from('Abc\Class1');
 $res[] = ClassType::from(new ReflectionClass('Abc\Class2'));
 
-Assert::match(file_get_contents(__DIR__ . '/PhpGenerator.reflection.expect'), implode("\n", $res));
+Assert::match(file_get_contents(__DIR__ . '/reflection.expect'), implode("\n", $res));

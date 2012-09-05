@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Utils\PhpGenerator for classes.
+ * Test: Nette\PhpGenerator for classes.
  *
  * @author     David Grudl
  * @package    Nette\Utils
  */
 
-use Nette\Utils\PhpGenerator\ClassType,
-	Nette\Utils\PhpGenerator\PhpLiteral;
+use Nette\PhpGenerator\ClassType,
+	Nette\PhpGenerator\PhpLiteral;
 
 
 
@@ -64,4 +64,4 @@ $method->addParameter('res', NULL)
 		->setReference(TRUE)
 		->setTypeHint('array');
 
-Assert::match(file_get_contents(__DIR__ . '/PhpGenerator.class.expect'), (string) $class);
+Assert::match(file_get_contents(__DIR__ . '/class.expect'), (string) $class);

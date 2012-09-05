@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Test: Nette\Utils\PhpGenerator generator.
+ * Test: Nette\PhpGenerator generator.
  *
  * @author     David Grudl
  * @package    Nette\Utils
  * @phpversion 5.4
  */
 
-use Nette\Utils\PhpGenerator\ClassType;
+use Nette\PhpGenerator\ClassType;
 
 
 
@@ -45,4 +45,4 @@ $res[] = ClassType::from(new ReflectionClass('Trait2'));
 $res[] = ClassType::from(new ReflectionClass('Class1'));
 $res[] = ClassType::from(new ReflectionClass('Class2'));
 
-Assert::match(file_get_contents(__DIR__ . '/PhpGenerator.reflection.trait.expect'), implode("\n", $res));
+Assert::match(file_get_contents(__DIR__ . '/reflection.trait.expect'), implode("\n", $res));

@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Test: Nette\Utils\PhpGenerator & closure.
+ * Test: Nette\PhpGenerator & closure.
  *
  * @author     David Grudl
  * @package    Nette\Utils
  */
 
-use Nette\Utils\PhpGenerator\Method;
+use Nette\PhpGenerator\Method;
 
 
 
@@ -26,4 +26,4 @@ $function->addUse('this');
 $function->addUse('vars')
 	->setReference(TRUE);
 
-Assert::match(file_get_contents(__DIR__ . '/PhpGenerator.closure.expect'), (string) $function);
+Assert::match(file_get_contents(__DIR__ . '/closure.expect'), (string) $function);
