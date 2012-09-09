@@ -61,7 +61,7 @@ class Class2 extends Class1 implements Interface2
 	 * Func3
 	 * @return Class1
 	 */
-	private function & func3(array $a = array(), Class2 $b = NULL, \Abc\Unknown $c, \Xyz\Unknown $d)
+	private function & func3(array $a = array(), Class2 $b = NULL, \Abc\Unknown $c, \Xyz\Unknown $d, $e)
 	{}
 
 	final function func2()

@@ -50,8 +50,6 @@ class Parameter extends Nette\Object
 		$param = new static;
 		$param->name = $from->getName();
 		$param->reference = $from->isPassedByReference();
-		$param->optional = $from->isOptional() || $from->allowsNull();
-		$param->defaultValue = $from->isOptional() ? $from->getDefaultValue() : NULL; // PHP bug #62988
 		try {
 			$param->typeHint = $from->isArray() ? 'array' : ($from->getClass() ? '\\' . $from->getClass()->getName() : '');
 		} catch (\ReflectionException $e) {
@@ -61,6 +59,9 @@ class Parameter extends Nette\Object
 				throw $e;
 			}
 		}
+		$param->optional = PHP_VERSION_ID < 50407 ? $from->isOptional() || ($param->typeHint && $from->allowsNull()) : $from->isDefaultValueAvailable();
+		$param->defaultValue = (PHP_VERSION_ID === 50316 ? $from->isOptional() : $from->isDefaultValueAvailable()) ? $from->getDefaultValue() : NULL;
+
 		$namespace = /*5.2*PHP_VERSION_ID < 50300 ? '' : */$from->getDeclaringClass()->getNamespaceName();
 		$namespace = $namespace ? "\\$namespace\\" : "\\";
 		if (Nette\Utils\Strings::startsWith($param->typeHint, $namespace)) {
