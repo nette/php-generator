@@ -44,6 +44,33 @@ class Parameter extends Nette\Object
 	public $defaultValue;
 
 
+	/** @return Parameter */
+	public static function from(\ReflectionParameter $from)
+	{
+		$param = new static;
+		$param->name = $from->getName();
+		$param->reference = $from->isPassedByReference();
+		$param->optional = $from->isOptional() || $from->allowsNull();
+		$param->defaultValue = $from->isOptional() ? $from->getDefaultValue() : NULL; // PHP bug #62988
+		try {
+			$param->typeHint = $from->isArray() ? 'array' : ($from->getClass() ? '\\' . $from->getClass()->getName() : '');
+		} catch (\ReflectionException $e) {
+			if (preg_match('#Class (.+) does not exist#', $e->getMessage(), $m)) {
+				$param->typeHint = '\\' . $m[1];
+			} else {
+				throw $e;
+			}
+		}
+		$namespace = /*5.2*PHP_VERSION_ID < 50300 ? '' : */$from->getDeclaringClass()->getNamespaceName();
+		$namespace = $namespace ? "\\$namespace\\" : "\\";
+		if (Nette\Utils\Strings::startsWith($param->typeHint, $namespace)) {
+			$param->typeHint = substr($param->typeHint, strlen($namespace));
+		}
+		return $param;
+	}
+
+
+
 	public function __call($name, $args)
 	{
 		return Nette\ObjectMixin::callProperty($this, $name, $args);

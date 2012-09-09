@@ -11,7 +11,8 @@
 
 namespace Nette\Utils\PhpGenerator;
 
-use Nette;
+use Nette,
+	Nette\Utils\Strings;
 
 
 
@@ -63,6 +64,42 @@ class ClassType extends Nette\Object
 
 	/** @var Method[] name => Method */
 	public $methods = array();
+
+
+	/** @return Class */
+	public static function from($from)
+	{
+		$from = $from instanceof \ReflectionClass ? $from : new \ReflectionClass($from);
+		$class = new static(/*5.2*PHP_VERSION_ID < 50300 ? $from->getName() : */$from->getShortName());
+		$class->type = $from->isInterface() ? 'interface' : (PHP_VERSION_ID >= 50400 && $from->isTrait() ? 'trait' : 'class');
+		$class->final = $from->isFinal();
+		$class->abstract = $from->isAbstract() && $class->type === 'class';
+		$class->implements = $from->getInterfaceNames();
+		$class->documents = preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n"));
+		$namespace = /*5.2*PHP_VERSION_ID < 50300 ? NULL : */$from->getNamespaceName();
+		if ($from->getParentClass()) {
+			$class->extends = $from->getParentClass()->getName();
+			if ($namespace) {
+				$class->extends = Strings::startsWith($class->extends, "$namespace\\") ? substr($class->extends, strlen($namespace) + 1) : '\\' . $class->extends;
+			}
+			$class->implements = array_diff($class->implements, $from->getParentClass()->getInterfaceNames());
+		}
+		if ($namespace) {
+			foreach ($class->implements as & $interface) {
+				$interface = Strings::startsWith($interface, "$namespace\\") ? substr($interface, strlen($namespace) + 1) : '\\' . $interface;
+			}
+		}
+		foreach ($from->getProperties() as $prop) {
+			$class->properties[] = Property::from($prop);
+		}
+		foreach ($from->getMethods() as $method) {
+			if ($method->getDeclaringClass() == $from) { // intentionally ==
+				$class->methods[] = Method::from($method);
+			}
+		}
+		return $class;
+	}
+
 
 
 	public function __construct($name)
@@ -125,7 +162,7 @@ class ClassType extends Nette\Object
 				. ($property->value === NULL ? '' : ' = ' . Helpers::dump($property->value))
 				. ";\n";
 		}
-		return Nette\Utils\Strings::normalize(
+		return Strings::normalize(
 			($this->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", (array) $this->documents)) . "\n */\n" : '')
 			. ($this->abstract ? 'abstract ' : '')
 			. ($this->final ? 'final ' : '')
@@ -134,7 +171,7 @@ class ClassType extends Nette\Object
 			. ($this->extends ? 'extends ' . implode(', ', (array) $this->extends) . ' ' : '')
 			. ($this->implements ? 'implements ' . implode(', ', (array) $this->implements) . ' ' : '')
 			. "\n{\n\n"
-			. Nette\Utils\Strings::indent(
+			. Strings::indent(
 				($this->traits ? "use " . implode(', ', (array) $this->traits) . ";\n\n" : '')
 				. ($this->consts ? implode('', $consts) . "\n\n" : '')
 				. ($this->properties ? implode("\n", $properties) . "\n\n" : '')

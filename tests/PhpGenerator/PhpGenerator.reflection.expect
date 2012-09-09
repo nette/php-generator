@@ -1,0 +1,71 @@
+/**
+ * Interface
+ * @author John Doe
+ */
+interface Interface1
+{
+
+	function func1();
+
+}
+
+interface Interface2
+{
+
+
+
+}
+
+abstract class Class1 implements Interface1
+{
+
+	/**
+	 * @return Class1
+	 */
+	function func1()
+	{
+
+	}
+
+
+	abstract protected function func2();
+
+}
+
+class Class2 extends Class1 implements Interface2
+{
+
+	/**
+	 * Public
+	 * @var int
+	 *
+	 */
+	public $public;
+
+	/**
+	 * @var int
+	 */
+	protected $protected = 10;
+
+	private $private = array();
+
+	public static $static;
+
+
+	/**
+	 * Func3
+	 * @return Class1
+	 *
+	 */
+	private function & func3(array $a, Class2 $b = NULL, Unknown $c, \Xyz\Unknown $d)
+	{
+
+	}
+
+
+	final function func2()
+	{
+
+	}
+
+}

@@ -62,6 +62,27 @@ class Method extends Nette\Object
 	public $documents = array();
 
 
+	/** @return Method */
+	public static function from($from)
+	{
+		$from = $from instanceof \ReflectionMethod ? $from : new \ReflectionMethod($from);
+		$method = new static;
+		$method->name = $from->getName();
+		foreach ($from->getParameters() as $param) {
+			$method->parameters[] = Parameter::from($param);
+		}
+		$method->static = $from->isStatic();
+		$method->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : '');
+		$method->final = $from->isFinal();
+		$method->abstract = $from->isAbstract() && !$from->getDeclaringClass()->isInterface();
+		$method->body = $from->isAbstract() ? FALSE : '';
+		$method->returnReference = $from->returnsReference();
+		$method->documents = preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n"));
+		return $method;
+	}
+
+
+
 	/** @return Parameter */
 	public function addParameter($name, $defaultValue = NULL)
 	{
