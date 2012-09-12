@@ -5,7 +5,6 @@
  *
  * @author     David Grudl
  * @package    Nette\Utils
- * @subpackage UnitTests
  */
 
 use Nette\Utils\PhpGenerator\Method;
