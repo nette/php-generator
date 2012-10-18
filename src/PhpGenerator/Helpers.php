@@ -188,7 +188,7 @@ class Helpers
 	 */
 	public static function isIdentifier($value)
 	{
-		return is_string($value) && preg_match('#^' . self::PHP_IDENT . '$#', $value);
+		return is_string($value) && preg_match('#^' . self::PHP_IDENT . '\z#', $value);
 	}
 
 
