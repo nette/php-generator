@@ -69,7 +69,7 @@ class Method extends Nette\Object
 		$method = new static;
 		$method->name = $from->getName();
 		foreach ($from->getParameters() as $param) {
-			$method->parameters[] = Parameter::from($param);
+			$method->parameters[$param->getName()] = Parameter::from($param);
 		}
 		$method->static = $from->isStatic();
 		$method->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : '');
@@ -90,7 +90,7 @@ class Method extends Nette\Object
 		if (func_num_args() > 1) {
 			$param->setOptional(TRUE)->setDefaultValue($defaultValue);
 		}
-		return $this->parameters[] = $param->setName($name);
+		return $this->parameters[$name] = $param->setName($name);
 	}
 
 

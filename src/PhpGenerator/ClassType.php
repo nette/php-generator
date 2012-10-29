@@ -66,7 +66,7 @@ class ClassType extends Nette\Object
 	public $methods = array();
 
 
-	/** @return Class */
+	/** @return ClassType */
 	public static function from($from)
 	{
 		$from = $from instanceof \ReflectionClass ? $from : new \ReflectionClass($from);
@@ -90,11 +90,11 @@ class ClassType extends Nette\Object
 			}
 		}
 		foreach ($from->getProperties() as $prop) {
-			$class->properties[] = Property::from($prop);
+			$class->properties[$prop->getName()] = Property::from($prop);
 		}
 		foreach ($from->getMethods() as $method) {
 			if ($method->getDeclaringClass() == $from) { // intentionally ==
-				$class->methods[] = Method::from($method);
+				$class->methods[$method->getName()] = Method::from($method);
 			}
 		}
 		return $class;
