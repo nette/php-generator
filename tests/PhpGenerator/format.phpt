@@ -22,11 +22,11 @@ Assert::same( 'func(1)', Helpers::formatArgs('func(?)', array(1, 2)) );
 Assert::same( "func(array(\n\t1,\n\t2,\n))", Helpers::formatArgs('func(?)', array(array(1, 2))) );
 Assert::same( 'func(1, 2)', Helpers::formatArgs('func(?*)', array(array(1, 2))) );
 
-Assert::throws(function() {
+Assert::exception(function() {
 	Helpers::formatArgs('func(?*)', array(1, 2));
 }, 'Nette\InvalidArgumentException', 'Argument must be an array.');
 
-Assert::throws(function() {
+Assert::exception(function() {
 	Helpers::formatArgs('func(?, ?, ?)', array(1, 2));
 }, 'Nette\InvalidArgumentException', 'Insufficient number of arguments.');
 
