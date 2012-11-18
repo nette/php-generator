@@ -84,7 +84,7 @@ class Helpers
 				$counter = 0;
 				foreach ($var as $k => &$v) {
 					if ($k !== $marker) {
-						$out .= "$space\t" . ($k === $counter ? '' : self::_dump($k) . " => ") . self::_dump($v, $level + 1) . ",\n";
+						$out .= "$space\t" . ($k === $counter ? '' : self::_dump($k, $level + 1) . " => ") . self::_dump($v, $level + 1) . ",\n";
 						$counter = is_int($k) ? max($k + 1, $counter) : $counter;
 					}
 				}
@@ -111,7 +111,7 @@ class Helpers
 					if ($k[0] === "\x00") {
 						$k = substr($k, strrpos($k, "\x00") + 1);
 					}
-					$out .= "$space\t" . self::_dump($k) . " => " . self::_dump($v, $level + 1) . ",\n";
+					$out .= "$space\t" . self::_dump($k, $level + 1) . " => " . self::_dump($v, $level + 1) . ",\n";
 				}
 				array_pop($list);
 				$out .= $space;
@@ -119,6 +119,9 @@ class Helpers
 			return get_class($var) === 'stdClass'
 				? "(object) array($out)"
 				: __CLASS__ . "::createObject('" . get_class($var) . "', array($out))";
+
+		} elseif (is_resource($var)) {
+			throw new Nette\InvalidArgumentException('Cannot dump resource.');
 
 		} else {
 			return var_export($var, TRUE);
