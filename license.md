@@ -22,7 +22,7 @@ If your stuff is good, it will not take long to establish a reputation for yours
 New BSD License
 ---------------
 
-Copyright (c) 2004, 2012 David Grudl (http://davidgrudl.com)
+Copyright (c) 2004, 2013 David Grudl (http://davidgrudl.com)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
