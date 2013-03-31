@@ -51,17 +51,15 @@ class Helpers
 		} elseif (is_string($var) && (preg_match('#[^\x09\x20-\x7E\xA0-\x{10FFFF}]#u', $var) || preg_last_error())) {
 			static $table;
 			if ($table === NULL) {
-				foreach (range("\x00", "\xFF") as $ch) {
-					$table[$ch] = ord($ch) < 32 || ord($ch) >= 127
-						? '\\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT)
-						: $ch;
+				foreach (array_merge(range("\x00", "\x1F"), range("\x7F", "\xFF")) as $ch) {
+					$table[$ch] = '\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
 				}
+				$table['\\'] = '\\\\';
 				$table["\r"] = '\r';
 				$table["\n"] = '\n';
 				$table["\t"] = '\t';
-				$table['$'] = '\\$';
-				$table['\\'] = '\\\\';
-				$table['"'] = '\\"';
+				$table['$'] = '\$';
+				$table['"'] = '\"';
 			}
 			return '"' . strtr($var, $table) . '"';
 
