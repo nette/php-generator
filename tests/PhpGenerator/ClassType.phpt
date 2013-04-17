@@ -64,4 +64,4 @@ $method->addParameter('res', NULL)
 		->setReference(TRUE)
 		->setTypeHint('array');
 
-Assert::match(file_get_contents(__DIR__ . '/class.expect'), (string) $class);
+Assert::match(file_get_contents(__DIR__ . '/ClassType.expect'), (string) $class);

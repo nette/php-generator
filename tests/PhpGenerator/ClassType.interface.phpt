@@ -24,4 +24,4 @@ $interface
 
 $interface->addMethod('getForm');
 
-Assert::match(file_get_contents(__DIR__ . '/interface.expect'), (string) $interface);
+Assert::match(file_get_contents(__DIR__ . '/ClassType.interface.expect'), (string) $interface);
