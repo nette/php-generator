@@ -19,7 +19,7 @@ Assert::same( 'func(1)', Helpers::format('func(?)', 1, 2) );
 
 Assert::same( 'func', Helpers::formatArgs('func', array(1, 2)) );
 Assert::same( 'func(1)', Helpers::formatArgs('func(?)', array(1, 2)) );
-Assert::same( "func(array(\n\t1,\n\t2,\n))", Helpers::formatArgs('func(?)', array(array(1, 2))) );
+Assert::same( "func(array(1, 2))", Helpers::formatArgs('func(?)', array(array(1, 2))) );
 Assert::same( 'func(1, 2)', Helpers::formatArgs('func(?*)', array(array(1, 2))) );
 
 Assert::exception(function() {
