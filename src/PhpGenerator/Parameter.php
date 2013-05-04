@@ -20,25 +20,30 @@ use Nette;
  *
  * @author     David Grudl
  *
- * @method Parameter setName(string $name)
- * @method Parameter setReference(bool $on)
- * @method Parameter setTypeHint(string $class)
- * @method Parameter setOptional(bool $on)
- * @method Parameter setDefaultValue(mixed $value)
+ * @method Parameter setName(string)
+ * @method string getName()
+ * @method Parameter setReference(bool)
+ * @method bool isReference()
+ * @method Parameter setTypeHint(string)
+ * @method string getTypeHint()
+ * @method Parameter setOptional(bool)
+ * @method bool isOptional()
+ * @method Parameter setDefaultValue(mixed)
+ * @method mixed getDefaultValue()
  */
 class Parameter extends Nette\Object
 {
 	/** @var string */
-	public $name;
+	private $name;
 
 	/** @var bool */
-	public $reference;
+	private $reference;
 
 	/** @var string */
-	public $typeHint;
+	private $typeHint;
 
 	/** @var bool */
-	public $optional;
+	private $optional;
 
 	/** @var mixed */
 	public $defaultValue;
@@ -68,13 +73,6 @@ class Parameter extends Nette\Object
 			$param->typeHint = substr($param->typeHint, strlen($namespace));
 		}
 		return $param;
-	}
-
-
-
-	public function __call($name, $args)
-	{
-		return Nette\ObjectMixin::callProperty($this, $name, $args);
 	}
 
 }

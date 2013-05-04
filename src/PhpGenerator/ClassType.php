@@ -21,49 +21,67 @@ use Nette,
  *
  * @author     David Grudl
  *
- * @method ClassType setName(string $name)
- * @method ClassType setType(string $type)
- * @method ClassType setFinal(bool $on)
- * @method ClassType setAbstract(bool $on)
- * @method ClassType addExtend(string $class)
- * @method ClassType addImplement(string $interface)
- * @method ClassType addTrait(string $trait)
- * @method ClassType addDocument(string $doc)
+ * @method ClassType setName(string)
+ * @method string getName()
+ * @method ClassType setType(string)
+ * @method string getType()
+ * @method ClassType setFinal(bool)
+ * @method bool isFinal()
+ * @method ClassType setAbstract(bool)
+ * @method bool isAbstract()
+ * @method ClassType setExtends(string[]|string)
+ * @method string[]|string getExtends()
+ * @method ClassType addExtend(string)
+ * @method ClassType setImplements(string[])
+ * @method string[] getImplements()
+ * @method ClassType addImplement(string)
+ * @method ClassType setTraits(string[])
+ * @method string[] getTraits()
+ * @method ClassType addTrait(string)
+ * @method ClassType setDocuments(string[])
+ * @method string[] getDocuments()
+ * @method ClassType addDocument(string)
+ * @method ClassType setConsts(scalar[])
+ * @method scalar[] getConsts()
+ * @method ClassType setProperties(Property[])
+ * @method Property[] getProperties()
+ * @method ClassType setMethods(Method[])
+ * @method Method[] getMethods()
  */
 class ClassType extends Nette\Object
 {
 	/** @var string */
-	public $name;
+	private $name;
 
 	/** @var string  class|interface|trait */
-	public $type = 'class';
+	private $type = 'class';
 
 	/** @var bool */
-	public $final;
+	private $final;
 
 	/** @var bool */
-	public $abstract;
+	private $abstract;
+
+	/** @var string[]|string */
+	private $extends = array();
 
 	/** @var string[] */
-	public $extends = array();
+	private $implements = array();
 
 	/** @var string[] */
-	public $implements = array();
+	private $traits = array();
 
 	/** @var string[] */
-	public $traits = array();
-
-	/** @var string[] */
-	public $documents = array();
+	private $documents = array();
 
 	/** @var mixed[] name => value */
-	public $consts = array();
+	private $consts = array();
 
 	/** @var Property[] name => Property */
-	public $properties = array();
+	private $properties = array();
 
 	/** @var Method[] name => Method */
-	public $methods = array();
+	private $methods = array();
 
 
 	/** @return ClassType */
@@ -137,13 +155,6 @@ class ClassType extends Nette\Object
 			$method->setVisibility('public');
 		}
 		return $this->methods[$name] = $method->setName($name);
-	}
-
-
-
-	public function __call($name, $args)
-	{
-		return Nette\ObjectMixin::callProperty($this, $name, $args);
 	}
 
 
