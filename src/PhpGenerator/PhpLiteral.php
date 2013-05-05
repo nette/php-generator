@@ -23,12 +23,22 @@ use Nette;
 class PhpLiteral
 {
 	/** @var string */
-	public $value = '';
+	private $value;
 
 
 	public function __construct($value)
 	{
 		$this->value = (string) $value;
+	}
+
+
+
+	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->value;
 	}
 
 }

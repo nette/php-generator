@@ -39,7 +39,7 @@ class Helpers
 	private static function _dump(&$var, $level = 0)
 	{
 		if ($var instanceof PhpLiteral) {
-			return $var->value;
+			return (string) $var;
 
 		} elseif (is_float($var)) {
 			$var = var_export($var, TRUE);
