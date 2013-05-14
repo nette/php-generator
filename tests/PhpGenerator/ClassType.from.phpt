@@ -5,7 +5,6 @@
  *
  * @author     David Grudl
  * @package    Nette\Utils
- * @phpversion 5.3
  */
 
 namespace Abc;

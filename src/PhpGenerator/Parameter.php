@@ -67,7 +67,7 @@ class Parameter extends Nette\Object
 		$param->optional = PHP_VERSION_ID < 50407 ? $from->isOptional() || ($param->typeHint && $from->allowsNull()) : $from->isDefaultValueAvailable();
 		$param->defaultValue = (PHP_VERSION_ID === 50316 ? $from->isOptional() : $from->isDefaultValueAvailable()) ? $from->getDefaultValue() : NULL;
 
-		$namespace = /*5.2*PHP_VERSION_ID < 50300 ? '' : */$from->getDeclaringClass()->getNamespaceName();
+		$namespace = $from->getDeclaringClass()->getNamespaceName();
 		$namespace = $namespace ? "\\$namespace\\" : "\\";
 		if (Nette\Utils\Strings::startsWith($param->typeHint, $namespace)) {
 			$param->typeHint = substr($param->typeHint, strlen($namespace));

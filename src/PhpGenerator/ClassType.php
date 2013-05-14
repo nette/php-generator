@@ -88,13 +88,13 @@ class ClassType extends Nette\Object
 	public static function from($from)
 	{
 		$from = $from instanceof \ReflectionClass ? $from : new \ReflectionClass($from);
-		$class = new static(/*5.2*PHP_VERSION_ID < 50300 ? $from->getName() : */$from->getShortName());
+		$class = new static($from->getShortName());
 		$class->type = $from->isInterface() ? 'interface' : (PHP_VERSION_ID >= 50400 && $from->isTrait() ? 'trait' : 'class');
 		$class->final = $from->isFinal();
 		$class->abstract = $from->isAbstract() && $class->type === 'class';
 		$class->implements = $from->getInterfaceNames();
 		$class->documents = preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n"));
-		$namespace = /*5.2*PHP_VERSION_ID < 50300 ? NULL : */$from->getNamespaceName();
+		$namespace = $from->getNamespaceName();
 		if ($from->getParentClass()) {
 			$class->extends = $from->getParentClass()->getName();
 			if ($namespace) {
