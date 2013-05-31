@@ -14,7 +14,6 @@ namespace Nette\PhpGenerator;
 use Nette;
 
 
-
 /**
  * PHP literal value.
  *
@@ -30,7 +29,6 @@ class PhpLiteral
 	{
 		$this->value = (string) $value;
 	}
-
 
 
 	/**

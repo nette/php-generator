@@ -10,7 +10,6 @@
 use Nette\PhpGenerator\Helpers;
 
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

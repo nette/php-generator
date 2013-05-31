@@ -11,7 +11,6 @@ use Nette\PhpGenerator\Helpers,
 	Nette\PhpGenerator\PhpLiteral;
 
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

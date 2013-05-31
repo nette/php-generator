@@ -15,7 +15,6 @@ use Nette,
 	Nette\Utils\Strings;
 
 
-
 /**
  * Class/Interface/Trait description.
  *
@@ -119,12 +118,10 @@ class ClassType extends Nette\Object
 	}
 
 
-
 	public function __construct($name = NULL)
 	{
 		$this->name = $name;
 	}
-
 
 
 	/** @return ClassType */
@@ -135,14 +132,12 @@ class ClassType extends Nette\Object
 	}
 
 
-
 	/** @return Property */
 	public function addProperty($name, $value = NULL)
 	{
 		$property = new Property;
 		return $this->properties[$name] = $property->setName($name)->setValue($value);
 	}
-
 
 
 	/** @return Method */
@@ -156,7 +151,6 @@ class ClassType extends Nette\Object
 		}
 		return $this->methods[$name] = $method->setName($name);
 	}
-
 
 
 	/** @return string  PHP code */

@@ -18,7 +18,6 @@ project or top-level domain, and choose a name that stands on its own merits.
 If your stuff is good, it will not take long to establish a reputation for yourselves.
 
 
-
 New BSD License
 ---------------
 
@@ -49,7 +48,6 @@ loss of use, data, or profits; or business interruption) however caused and on
 any theory of liability, whether in contract, strict liability, or tort
 (including negligence or otherwise) arising in any way out of the use of this
 software, even if advised of the possibility of such damage.
-
 
 
 GNU General Public License

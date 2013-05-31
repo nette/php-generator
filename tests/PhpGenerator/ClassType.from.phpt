@@ -14,7 +14,6 @@ use Nette\PhpGenerator\ClassType,
 	ReflectionClass;
 
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

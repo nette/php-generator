@@ -10,9 +10,7 @@
 use Nette\PhpGenerator\Method;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 $function = new Method;

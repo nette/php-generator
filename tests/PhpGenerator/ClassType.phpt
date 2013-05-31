@@ -11,9 +11,7 @@ use Nette\PhpGenerator\ClassType,
 	Nette\PhpGenerator\PhpLiteral;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 $class = new ClassType('Example');

@@ -10,9 +10,7 @@
 use Nette\PhpGenerator\ClassType;
 
 
-
 require __DIR__ . '/../bootstrap.php';
-
 
 
 $interface = new ClassType('IExample');
