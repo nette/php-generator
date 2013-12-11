@@ -8,7 +8,8 @@
  */
 
 use Nette\PhpGenerator\ClassType,
-	Nette\PhpGenerator\PhpLiteral;
+	Nette\PhpGenerator\PhpLiteral,
+	Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
