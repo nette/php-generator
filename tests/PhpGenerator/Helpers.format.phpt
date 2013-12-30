@@ -4,7 +4,6 @@
  * Test: Nette\PhpGenerator\Helpers::format() & formatArgs()
  *
  * @author     David Grudl
- * @package    Nette\Utils
  */
 
 use Nette\PhpGenerator\Helpers,

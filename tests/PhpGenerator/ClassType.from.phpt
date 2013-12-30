@@ -4,7 +4,6 @@
  * Test: Nette\PhpGenerator generator.
  *
  * @author     David Grudl
- * @package    Nette\Utils
  */
 
 namespace Abc;
