@@ -32,6 +32,8 @@ use Nette;
  * @method bool isAbstract()
  * @method Method setReturnReference(bool)
  * @method bool getReturnReference()
+ * @method Method setVariadic(bool)
+ * @method bool isVariadic()
  * @method Method setDocuments(string[])
  * @method string[] getDocuments()
  * @method Method addDocument(string)
@@ -65,6 +67,9 @@ class Method extends Nette\Object
 	/** @var bool */
 	private $returnReference;
 
+	/** @var bool */
+	private $variadic;
+
 	/** @var array of string */
 	private $documents = array();
 
@@ -84,6 +89,7 @@ class Method extends Nette\Object
 		$method->abstract = $from->isAbstract() && !$from->getDeclaringClass()->isInterface();
 		$method->body = $from->isAbstract() ? FALSE : '';
 		$method->returnReference = $from->returnsReference();
+		$method->variadic = PHP_VERSION_ID >= 50600 && $from->isVariadic();
 		$method->documents = preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n"));
 		return $method;
 	}
@@ -129,10 +135,12 @@ class Method extends Nette\Object
 	{
 		$parameters = array();
 		foreach ($this->parameters as $param) {
+			$variadic = $this->variadic && $param === end($this->parameters);
 			$parameters[] = ($param->typeHint ? $param->typeHint . ' ' : '')
 				. ($param->reference ? '&' : '')
+				. ($variadic ? '...' : '')
 				. '$' . $param->name
-				. ($param->optional ? ' = ' . Helpers::dump($param->defaultValue) : '');
+				. ($param->optional && !$variadic ? ' = ' . Helpers::dump($param->defaultValue) : '');
 		}
 		$uses = array();
 		foreach ($this->uses as $param) {
