@@ -2,8 +2,6 @@
 
 /**
  * Test: Nette\PhpGenerator for interfaces.
- *
- * @author     David Grudl
  */
 
 use Nette\PhpGenerator\ClassType,

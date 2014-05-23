@@ -2,8 +2,6 @@
 
 /**
  * Test: Nette\PhpGenerator & closure.
- *
- * @author     David Grudl
  */
 
 use Nette\PhpGenerator\Method,

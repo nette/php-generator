@@ -2,8 +2,6 @@
 
 /**
  * Test: Nette\PhpGenerator for classes.
- *
- * @author     David Grudl
  */
 
 use Nette\PhpGenerator\ClassType,

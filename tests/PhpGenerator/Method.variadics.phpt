@@ -2,8 +2,6 @@
 
 /**
  * Test: Nette\PhpGenerator & variadics.
- *
- * @author     Michael Moravec
  * @phpversion 5.6
  */
 

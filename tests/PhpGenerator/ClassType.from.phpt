@@ -2,8 +2,6 @@
 
 /**
  * Test: Nette\PhpGenerator generator.
- *
- * @author     David Grudl
  */
 
 namespace Abc;

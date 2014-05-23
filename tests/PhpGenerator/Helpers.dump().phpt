@@ -2,8 +2,6 @@
 
 /**
  * Test: Nette\PhpGenerator\Helpers::dump()
- *
- * @author     David Grudl
  */
 
 use Nette\PhpGenerator\Helpers,
