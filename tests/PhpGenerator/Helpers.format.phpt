@@ -2,8 +2,6 @@
 
 /**
  * Test: Nette\PhpGenerator\Helpers::format() & formatArgs()
- *
- * @author     David Grudl
  */
 
 use Nette\PhpGenerator\Helpers,

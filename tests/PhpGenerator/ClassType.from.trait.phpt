@@ -2,8 +2,6 @@
 
 /**
  * Test: Nette\PhpGenerator generator.
- *
- * @author     David Grudl
  * @phpversion 5.4
  */
 
