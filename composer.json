@@ -20,6 +20,9 @@
 	"require-dev": {
 		"nette/tester": "~1.0"
 	},
+	"conflict": {
+		"nette/nette": "<2.2"
+	},
 	"autoload": {
 		"classmap": ["src/"]
 	},
