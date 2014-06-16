@@ -154,7 +154,7 @@ class Helpers
 				$statement = substr_replace($statement, $arg, $a, 2);
 
 			} else {
-				$arg = substr($statement, $a - 1, 1) === '$' || in_array(substr($statement, $a - 2, 2), array('->', '::'))
+				$arg = substr($statement, $a - 1, 1) === '$' || in_array(substr($statement, $a - 2, 2), array('->', '::'), TRUE)
 					? self::formatMember($arg) : self::_dump($arg);
 				$statement = substr_replace($statement, $arg, $a, 1);
 			}
