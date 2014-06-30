@@ -87,29 +87,38 @@ class Helpers
 			}
 			return 'array(' . (strpos($out, "\n") === FALSE && strlen($out) < 40 ? $out : $outAlt) . ')';
 
+		} elseif ($var instanceof \Serializable) {
+			$var = serialize($var);
+			return 'unserialize(' . self::_dump($var, $level) . ')';
+
 		} elseif (is_object($var)) {
 			$arr = (array) $var;
 			$space = str_repeat("\t", $level);
+			$class = get_class($var);
 
 			static $list = array();
-			if (empty($arr)) {
-				$out = '';
-
-			} elseif ($level > 50 || in_array($var, $list, TRUE)) {
+			if ($level > 50 || in_array($var, $list, TRUE)) {
 				throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
 
 			} else {
 				$out = "\n";
 				$list[] = $var;
+				if (method_exists($var, '__sleep')) {
+					foreach ($var->__sleep() as $v) {
+						$props[$v] = $props["\x00*\x00$v"] = $props["\x00$class\x00$v"] = TRUE;
+					}
+				}
 				foreach ($arr as $k => & $v) {
-					$out .= "$space\t" . self::_dump($k, $level + 1) . " => " . self::_dump($v, $level + 1) . ",\n";
+					if (!isset($props) || isset($props[$k])) {
+						$out .= "$space\t" . self::_dump($k, $level + 1) . " => " . self::_dump($v, $level + 1) . ",\n";
+					}
 				}
 				array_pop($list);
 				$out .= $space;
 			}
-			return get_class($var) === 'stdClass'
+			return $class === 'stdClass'
 				? "(object) array($out)"
-				: __CLASS__ . "::createObject('" . get_class($var) . "', array($out))";
+				: __CLASS__ . "::createObject('$class', array($out))";
 
 		} elseif (is_resource($var)) {
 			throw new Nette\InvalidArgumentException('Cannot dump resource.');
