@@ -102,9 +102,6 @@ class Helpers
 				$out = "\n";
 				$list[] = $var;
 				foreach ($arr as $k => & $v) {
-					if ($k[0] === "\x00") {
-						$k = substr($k, strrpos($k, "\x00") + 1);
-					}
 					$out .= "$space\t" . self::_dump($k, $level + 1) . " => " . self::_dump($v, $level + 1) . ",\n";
 				}
 				array_pop($list);
