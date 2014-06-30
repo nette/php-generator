@@ -12,14 +12,6 @@ use Nette\PhpGenerator\Helpers,
 require __DIR__ . '/../bootstrap.php';
 
 
-class Test
-{
-	public $a = 1;
-	protected $b = 2;
-	private $c = 3;
-}
-
-
 Assert::same( '1', Helpers::dump(1) );
 Assert::same( '1.0', Helpers::dump(1.0) );
 Assert::same( 'NULL', Helpers::dump(NULL) );
@@ -41,5 +33,51 @@ Assert::same( "array('a' => 1, array(\"\\r\" => \"\\r\", 2), 3)", Helpers::dump(
 
 Assert::same( "(object) array(\n\t'a' => 1,\n\t'b' => 2,\n)", Helpers::dump((object) array('a' => 1, 'b' => 2)) );
 Assert::same( "(object) array(\n\t'a' => (object) array(\n\t\t'b' => 2,\n\t),\n)" , Helpers::dump((object) array('a' => (object) array('b' => 2))) );
+
+
+class Test
+{
+	public $a = 1;
+	protected $b = 2;
+	private $c = 3;
+}
+
 Assert::same( "Nette\\PhpGenerator\\Helpers::createObject('Test', array(\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n\t\"\\x00Test\\x00c\" => 3,\n))", Helpers::dump(new Test) );
 Assert::equal( new Test, eval('return ' . Helpers::dump(new Test) . ';') );
+
+
+class Test2 extends Test
+{
+	private $c = 4;
+	public $d = 5;
+
+	function __sleep()
+	{
+		return array('c', 'b', 'a');
+	}
+
+	function __wakeup()
+	{
+	}
+}
+
+Assert::same( "Nette\\PhpGenerator\\Helpers::createObject('Test2', array(\n\t\"\\x00Test2\\x00c\" => 4,\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n))", Helpers::dump(new Test2) );
+Assert::equal( new Test2, eval('return ' . Helpers::dump(new Test2) . ';') );
+
+
+class Test3 implements Serializable
+{
+	private $a;
+
+	function serialize()
+	{
+		return '';
+	}
+
+	function unserialize($s)
+	{
+	}
+}
+
+Assert::same( 'unserialize(\'C:5:"Test3":0:{}\')', Helpers::dump(new Test3) );
+Assert::equal( new Test3, eval('return ' . Helpers::dump(new Test3) . ';') );
