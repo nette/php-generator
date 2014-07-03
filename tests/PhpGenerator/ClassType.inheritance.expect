@@ -1,0 +1,16 @@
+class B extends A
+{
+
+	public $d;
+
+	protected $e;
+
+	private $f;
+
+
+	function bar()
+	{
+
+	}
+
+}
