@@ -90,7 +90,7 @@ class Method extends Nette\Object
 		$method->body = $from->isAbstract() ? FALSE : '';
 		$method->returnReference = $from->returnsReference();
 		$method->variadic = PHP_VERSION_ID >= 50600 && $from->isVariadic();
-		$method->documents = preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n"));
+		$method->documents = preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t"));
 		return $method;
 	}
 
@@ -146,7 +146,9 @@ class Method extends Nette\Object
 		foreach ($this->uses as $param) {
 			$uses[] = ($param->reference ? '&' : '') . '$' . $param->name;
 		}
-		return ($this->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", (array) $this->documents)) . "\n */\n" : '')
+		$docs = implode("\n", (array) $this->documents);
+		$multidocs = strpos($docs, "\n") !== FALSE;
+		return ($this->documents ? str_replace("\n", "\n * ", "/**" . ($multidocs ? "\n" : ' ') . $docs) . ($multidocs ? "\n" : '') . " */\n" : '')
 			. ($this->abstract ? 'abstract ' : '')
 			. ($this->final ? 'final ' : '')
 			. ($this->visibility ? $this->visibility . ' ' : '')

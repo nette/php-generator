@@ -88,7 +88,7 @@ class ClassType extends Nette\Object
 		$class->final = $from->isFinal();
 		$class->abstract = $from->isAbstract() && $class->type === 'class';
 		$class->implements = $from->getInterfaceNames();
-		$class->documents = preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n"));
+		$class->documents = preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t"));
 		$namespace = $from->getNamespaceName();
 		if ($from->getParentClass()) {
 			$class->extends = $from->getParentClass()->getName();
@@ -158,13 +158,17 @@ class ClassType extends Nette\Object
 		}
 		$properties = array();
 		foreach ($this->properties as $property) {
-			$properties[] = ($property->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", (array) $property->documents)) . "\n */\n" : '')
+			$propdocs = implode("\n", (array) $property->documents);
+			$multipropdocs = strpos($propdocs, "\n") !== FALSE;
+			$properties[] = ($property->documents ? str_replace("\n", "\n * ", "/**" . ($multipropdocs ? "\n" : ' ') . $propdocs) . ($multipropdocs ? "\n" : '') . " */\n" : '')
 				. $property->visibility . ($property->static ? ' static' : '') . ' $' . $property->name
 				. ($property->value === NULL ? '' : ' = ' . Helpers::dump($property->value))
 				. ";\n";
 		}
+		$docs = implode("\n", (array) $this->documents);
+		$multidocs = strpos($docs, "\n") !== FALSE;
 		return Strings::normalize(
-			($this->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", (array) $this->documents)) . "\n */\n" : '')
+			($this->documents ? str_replace("\n", "\n * ", "/**" . ($multidocs ? "\n" : ' ') . $docs) . ($multidocs ? "\n" : '') . " */\n" : '')
 			. ($this->abstract ? 'abstract ' : '')
 			. ($this->final ? 'final ' : '')
 			. $this->type . ' '
