@@ -12,17 +12,15 @@ abstract final class Example extends ParentClass implements IExample, IOne
 	const ROLE = 'admin';
 	const FORCE_ARRAY = Nette\Utils\Json::FORCE_ARRAY;
 
-	
-	/**
-	 * @var resource  orignal file handle
-	 */
+
+	/** @var resource  orignal file handle */
 	private $handle;
 
 	public $order = RecursiveIteratorIterator::SELF_FIRST;
 
 	public static $sections = array('first' => TRUE);
 
-	
+
 	/**
 	 * Returns file handle.
 	 * @return resource

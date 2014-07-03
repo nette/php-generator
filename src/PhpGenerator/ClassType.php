@@ -188,7 +188,8 @@ class ClassType extends Nette\Object
 
 		$properties = array();
 		foreach ($this->properties as $property) {
-			$properties[] = ($property->getDocuments() ? str_replace("\n", "\n * ", "/**\n" . implode("\n", (array) $property->getDocuments())) . "\n */\n" : '')
+			$doc = str_replace("\n", "\n * ", implode("\n", (array) $property->getDocuments()));
+			$properties[] = ($property->getDocuments() ? (strpos($doc, "\n") === FALSE ? "/** $doc */\n" : "/**\n * $doc\n */\n") : '')
 				. $property->getVisibility() . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName()
 				. ($property->value === NULL ? '' : ' = ' . Helpers::dump($property->value))
 				. ";\n";

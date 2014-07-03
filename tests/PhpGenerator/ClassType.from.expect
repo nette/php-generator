@@ -41,9 +41,7 @@ class Class2 extends Class1 implements Interface2
 	 */
 	public $public;
 
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	protected $protected = 10;
 
 	private $private = array();
