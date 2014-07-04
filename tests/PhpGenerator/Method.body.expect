@@ -1,0 +1,21 @@
+class A
+{
+
+	function foo()
+	{
+		echo 'foo';
+
+		foreach (range(1, 2) as $no) {
+			if (TRUE === FALSE) {
+				echo $class->{'get' . \Nette\Utils\Random::generate(244, "foo{$rand}bar")}();
+			}
+
+			echo $no;
+		}
+
+		return function () use ($no) {
+			return 3 * 5;
+		};
+	}
+
+}
