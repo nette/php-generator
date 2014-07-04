@@ -10,7 +10,7 @@ class B extends A
 
 	function bar()
 	{
-
+		return 3;
 	}
 
 }

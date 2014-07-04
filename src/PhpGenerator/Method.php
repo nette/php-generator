@@ -87,7 +87,12 @@ class Method extends Nette\Object
 		$method->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : '');
 		$method->final = $from->isFinal();
 		$method->abstract = $from->isAbstract() && !$from->getDeclaringClass()->isInterface();
-		$method->body = $from->isAbstract() ? FALSE : '';
+		if ($method->abstract || ($m = Nette\Utils\Strings::match(implode('', array_slice(file($from->getFileName()), $startline = $from->getStartLine() - 1, $from->getEndLine() - $startline)), '#[^{]*\{(.*)\}[^\}]*\z#s')) === NULL) {
+			$method->body = FALSE;
+		} else {
+			list (, $whitespace) = Nette\Utils\Strings::match($m[1], '#\n([\t ]*)#');
+			$method->body = Nette\Utils\Strings::replace($m[1], '#(\n)' . preg_quote($whitespace) . '#', '$1');
+		}
 		$method->returnReference = $from->returnsReference();
 		$method->variadic = PHP_VERSION_ID >= 50600 && $from->isVariadic();
 		$method->documents = preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n"));
