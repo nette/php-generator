@@ -191,6 +191,7 @@ class Helpers
 	}
 
 
+	/** @internal */
 	public static function createObject($class, array $props)
 	{
 		return unserialize('O' . substr(serialize((string) $class), 1, -1) . substr(serialize($props), 1));
