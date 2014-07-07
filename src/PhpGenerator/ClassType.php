@@ -107,8 +107,15 @@ class ClassType extends Nette\Object
 				$class->properties[$prop->getName()] = Property::from($prop);
 			}
 		}
+		$traitmethods = array();
+		foreach ($from->getTraits() as $trait) {
+			$class->addTrait('\\' . $trait->getName());
+			foreach ($trait->getMethods() as $method) {
+				$traitmethods[$method->getName()] = TRUE;
+			}
+		}
 		foreach ($from->getMethods() as $method) {
-			if ($method->getDeclaringClass() == $from) { // intentionally ==
+			if (!isset($traitmethods[$method->getName()]) && $method->getDeclaringClass() == $from) { // intentionally ==
 				$class->methods[$method->getName()] = Method::from($method);
 			}
 		}
