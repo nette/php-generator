@@ -1,0 +1,11 @@
+class A
+{
+
+	use \MyTraits\TTrait;
+
+	function bar()
+	{
+
+	}
+
+}

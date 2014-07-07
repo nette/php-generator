@@ -24,16 +24,9 @@ trait Trait2
 abstract class Class1
 {
 
-	function func1()
-	{
-
-	}
+	use \Trait1, \Trait2;
 
 
-	protected function func2()
-	{
-
-	}
 
 }
 
