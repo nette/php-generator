@@ -19,9 +19,7 @@ interface Interface2
 abstract class Class1 implements Interface1
 {
 
-	/**
-	 * @return Class1
-	 */
+	/** @return Class1 */
 	function func1()
 	{
 
@@ -38,13 +36,10 @@ class Class2 extends Class1 implements Interface2
 	/**
 	 * Public
 	 * @var int
-	 *
 	 */
 	public $public;
 
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	protected $protected = 10;
 
 	private $private = array();
@@ -55,7 +50,6 @@ class Class2 extends Class1 implements Interface2
 	/**
 	 * Func3
 	 * @return Class1
-	 *
 	 */
 	private function & func3(array $a%a?%, Class2 $b = NULL, Unknown $c, \Xyz\Unknown $d, $e)
 	{
