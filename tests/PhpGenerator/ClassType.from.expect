@@ -1,3 +1,5 @@
+namespace Abc;
+
 /**
  * Interface
  * @author John Doe
@@ -9,12 +11,16 @@ interface Interface1
 
 }
 
+namespace Abc;
+
 interface Interface2
 {
 
 
 
 }
+
+namespace Abc;
 
 abstract class Class1 implements Interface1
 {
@@ -31,6 +37,8 @@ abstract class Class1 implements Interface1
 	abstract protected function func2();
 
 }
+
+namespace Abc;
 
 class Class2 extends Class1 implements Interface2
 {

@@ -1,0 +1,33 @@
+namespace Namespaced;
+
+use Elasticsearch\Client;
+use Guzzle\Http\Client as HttpClient;
+use Jakubkulhan\Autowiring\Autowired;
+use Predis\Client as PredisClient;
+
+class ClassName
+{
+
+	/**
+	 * @var Client
+	 * @Autowired
+	 */
+	public $firstClient;
+
+	/**
+	 * @var HttpClient
+	 * @Autowired
+	 */
+	public $secondClient;
+
+	/**
+	 * @var PredisClient
+	 * @Autowired
+	 */
+	public $thirdClient;
+
+
+
+
+}
+
