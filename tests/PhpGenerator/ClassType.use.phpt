@@ -28,4 +28,10 @@ $class->addProperty("thirdClient")
 	->addDocument("@var {$thirdAlias}")
 	->addDocument("@{$autowiredAlias}");
 
+$class->addUse("Elasticsearch\\Client");
+
+Assert::throws(function () use ($class, $firstAlias) {
+	$class->addUse("Elasticsearch\\Client", $firstAlias . "FooBar");
+}, "Nette\\InvalidStateException");
+
 Assert::matchFile(__DIR__ . "/ClassType.use.expect", (string)$class);

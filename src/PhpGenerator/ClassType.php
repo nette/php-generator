@@ -174,28 +174,42 @@ class ClassType extends Nette\Object
 	 */
 	public function addUse($fqn, $alias = NULL, &$aliasOut = NULL)
 	{
-		if ($alias === NULL) {
-			$path = explode("\\", $fqn);
+		$fqn = trim($fqn, "\\");
+		$existingAlias = array_search($fqn, $this->uses);
 
-			do {
-				$alias = array_pop($path) . $alias;
-			} while (!empty($path) && isset($this->uses[$alias]));
-
-			if (empty($path) && isset($this->uses[$alias])) {
+		if ($existingAlias !== FALSE) {
+			if ($alias !== NULL && $existingAlias !== $alias) {
 				throw new Nette\InvalidStateException(
-					"Could not determine alias for '{$fqn}'."
+					"'{$fqn}' already aliased to '{$existingAlias}', cannot alias to '{$alias}'."
 				);
 			}
-		}
 
-		if (isset($this->uses[$alias]) && $this->uses[$alias] !== $fqn) {
-			throw new Nette\InvalidStateException(
-				"Alias '$alias' used already for '{$this->uses[$alias]}', cannot use for '{$fqn}'."
-			);
-		}
+			$aliasOut = $existingAlias;
 
-		$aliasOut = $alias;
-		$this->uses[$alias] = $fqn;
+		} else {
+			if ($alias === NULL) {
+				$path = explode("\\", $fqn);
+
+				do {
+					$alias = array_pop($path) . $alias;
+				} while (!empty($path) && isset($this->uses[$alias]));
+
+				if (empty($path) && isset($this->uses[$alias])) {
+					throw new Nette\InvalidStateException(
+						"Could not determine alias for '{$fqn}'."
+					);
+				}
+			}
+
+			if (isset($this->uses[$alias]) && $this->uses[$alias] !== $fqn) {
+				throw new Nette\InvalidStateException(
+					"Alias '$alias' used already for '{$this->uses[$alias]}', cannot use for '{$fqn}'."
+				);
+			}
+
+			$aliasOut = $alias;
+			$this->uses[$alias] = $fqn;
+		}
 
 		return $this;
 	}
