@@ -16,6 +16,7 @@ use Nette,
  *
  * @author     David Grudl
  *
+ * @method PhpNamespace getNamespace()
  * @method ClassType setName(string)
  * @method string getName()
  * @method ClassType setType(string)
@@ -45,6 +46,15 @@ use Nette,
  */
 class ClassType extends Nette\Object
 {
+	const TYPE_CLASS = 'class';
+
+	const TYPE_INTERFACE = 'interface';
+
+	const TYPE_TRAIT = 'trait';
+
+	/** @var PhpNamespace */
+	private $namespace;
+
 	/** @var string */
 	private $name;
 
@@ -79,7 +89,10 @@ class ClassType extends Nette\Object
 	private $methods = array();
 
 
-	/** @return ClassType */
+	/**
+	 * @param  \ReflectionClass|string
+	 * @return ClassType
+	 */
 	public static function from($from)
 	{
 		$from = $from instanceof \ReflectionClass ? $from : new \ReflectionClass($from);
@@ -116,13 +129,18 @@ class ClassType extends Nette\Object
 	}
 
 
-	public function __construct($name = NULL)
+	public function __construct($name = NULL, PhpNamespace $namespace = NULL)
 	{
 		$this->name = $name;
+		$this->namespace = $namespace;
 	}
 
 
-	/** @return ClassType */
+	/**
+	 * @param  string
+	 * @param  mixed
+	 * @return ClassType
+	 */
 	public function addConst($name, $value)
 	{
 		$this->consts[$name] = $value;
@@ -130,7 +148,11 @@ class ClassType extends Nette\Object
 	}
 
 
-	/** @return Property */
+	/**
+	 * @param  string
+	 * @param  mixed
+	 * @return Property
+	 */
 	public function addProperty($name, $value = NULL)
 	{
 		$property = new Property;
@@ -138,7 +160,10 @@ class ClassType extends Nette\Object
 	}
 
 
-	/** @return Method */
+	/**
+	 * @param  string
+	 * @return Method
+	 */
 	public function addMethod($name)
 	{
 		$method = new Method;
@@ -151,35 +176,63 @@ class ClassType extends Nette\Object
 	}
 
 
-	/** @return string  PHP code */
+	/**
+	 * @return string  PHP code
+	 */
 	public function __toString()
 	{
 		$consts = array();
 		foreach ($this->consts as $name => $value) {
 			$consts[] = "const $name = " . Helpers::dump($value) . ";\n";
 		}
+
 		$properties = array();
 		foreach ($this->properties as $property) {
-			$properties[] = ($property->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", (array) $property->documents)) . "\n */\n" : '')
-				. $property->visibility . ($property->static ? ' static' : '') . ' $' . $property->name
+			$properties[] = ($property->getDocuments() ? str_replace("\n", "\n * ", "/**\n" . implode("\n", (array) $property->getDocuments())) . "\n */\n" : '')
+				. $property->getVisibility() . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName()
 				. ($property->value === NULL ? '' : ' = ' . Helpers::dump($property->value))
 				. ";\n";
 		}
+
+		$extends = $implements = $traits = array();
+
+		if ($this->namespace) {
+			$fqnToAlias = array_flip($this->namespace->getUses());
+
+			foreach ((array) $this->extends as $fqn) {
+				$extends[] = isset($fqnToAlias[$fqn]) ? $fqnToAlias[$fqn] : '\\' . $fqn;
+			}
+
+			foreach ((array) $this->implements as $fqn) {
+				$implements[] = isset($fqnToAlias[$fqn]) ? $fqnToAlias[$fqn] : '\\' . $fqn;
+			}
+
+			foreach ((array) $this->traits as $fqn) {
+				$traits[] = isset($fqnToAlias[$fqn]) ? $fqnToAlias[$fqn] : '\\' . $fqn;
+			}
+
+		} else {
+			$extends = (array) $this->extends;
+			$implements = (array) $this->implements;
+			$traits = (array) $this->traits;
+		}
+
 		return Strings::normalize(
 			($this->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", (array) $this->documents)) . "\n */\n" : '')
 			. ($this->abstract ? 'abstract ' : '')
 			. ($this->final ? 'final ' : '')
 			. $this->type . ' '
 			. $this->name . ' '
-			. ($this->extends ? 'extends ' . implode(', ', (array) $this->extends) . ' ' : '')
-			. ($this->implements ? 'implements ' . implode(', ', (array) $this->implements) . ' ' : '')
+			. ($this->extends ? 'extends ' . implode(', ', $extends) . ' ' : '')
+			. ($this->implements ? 'implements ' . implode(', ', $implements) . ' ' : '')
 			. "\n{\n\n"
 			. Strings::indent(
-				($this->traits ? "use " . implode(', ', (array) $this->traits) . ";\n\n" : '')
+				($this->traits ? 'use ' . implode(', ', $traits) . ";\n\n" : '')
 				. ($this->consts ? implode('', $consts) . "\n\n" : '')
 				. ($this->properties ? implode("\n", $properties) . "\n\n" : '')
 				. implode("\n\n\n", $this->methods), 1)
-			. "\n\n}") . "\n";
+			. "\n\n}"
+		) . "\n";
 	}
 
 }

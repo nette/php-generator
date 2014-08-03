@@ -197,4 +197,24 @@ class Helpers
 		return unserialize('O' . substr(serialize((string) $class), 1, -1) . substr(serialize($props), 1));
 	}
 
+
+	/**
+	 * @param  string
+	 * @return string
+	 */
+	public static function extractNamespace($fqn)
+	{
+		return ($pos = strrpos($fqn, '\\')) ? substr($fqn, 0, $pos) : NULL;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return string
+	 */
+	public static function extractShortName($fqn)
+	{
+		return ($pos = strrpos($fqn, '\\')) ? substr($fqn, $pos + 1) : $fqn;
+	}
+
 }
