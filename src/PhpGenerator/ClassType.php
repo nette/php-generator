@@ -301,6 +301,27 @@ class ClassType extends Nette\Object
 
 
 	/**
+	 * @param string $fqn
+	 * @param string $alias
+	 * @param string $aliasOut
+	 * @return $this
+	 * @throws \Nette\InvalidStateException
+	 */
+	public function addUse($fqn, $alias = NULL, &$aliasOut = NULL)
+	{
+		if (!$this->fragment) {
+			throw new Nette\InvalidStateException(
+				"ClassType is not inside PhpFileFragment, you have to manage use statements yourself."
+			);
+		}
+
+		$this->fragment->addUse($fqn, $alias, $aliasOut);
+
+		return $this;
+	}
+
+
+	/**
 	 * @return string  PHP code
 	 */
 	public function __toString()
