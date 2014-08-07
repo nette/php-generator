@@ -16,6 +16,7 @@ use Nette\Utils\Strings;
  *
  * @author     David Grudl
  *
+ * @method PhpFileFragment getFragment()
  * @method ClassType setName(string)
  * @method string getName()
  * @method ClassType setType(string)
@@ -305,7 +306,7 @@ class ClassType extends Nette\Object
 	 * @param string $alias
 	 * @param string $aliasOut
 	 * @return $this
-	 * @throws \Nette\InvalidStateException
+	 * @throws Nette\InvalidStateException
 	 */
 	public function addUse($fqn, $alias = NULL, &$aliasOut = NULL)
 	{
