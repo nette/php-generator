@@ -1,0 +1,117 @@
+<?php
+
+/**
+ * This file is auto-generated. DO NOT EDIT!
+ * Hey there, I'm here to document things.
+ */
+
+namespace Foo {
+
+	use Bar\C as BarC;
+	use Bar\D;
+
+	class A implements A, BarC
+	{
+
+		use C, D;
+
+
+
+	}
+
+	interface B
+	{
+
+
+
+	}
+
+	trait C
+	{
+
+
+
+	}
+
+}
+
+namespace Bar {
+
+	use Foo\A;
+	use Foo\B as FooB;
+	use Foo\C as FooC;
+
+	class B extends A implements FooB
+	{
+
+		use FooC;
+
+
+
+	}
+
+	interface C
+	{
+
+
+
+	}
+
+	trait D
+	{
+
+
+
+	}
+
+}
+
+namespace Baz {
+
+	use Bar\C;
+	use Foo\B;
+
+	class E
+	{
+
+
+
+	}
+
+	interface F extends B, C
+	{
+
+
+
+	}
+
+	trait G
+	{
+
+
+
+	}
+
+}
+
+namespace {
+
+	class H
+	{
+
+
+
+	}
+
+}
+
+namespace FooBar {
+
+	class I
+	{
+
+
+
+	}
+
+}
