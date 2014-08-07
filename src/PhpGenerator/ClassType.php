@@ -16,7 +16,7 @@ use Nette\Utils\Strings;
  *
  * @author     David Grudl
  *
- * @method PhpFileFragment getFragment()
+ * @method PhpNamespace getNamespace()
  * @method ClassType setName(string)
  * @method string getName()
  * @method ClassType setType(string)
@@ -44,8 +44,8 @@ class ClassType extends Nette\Object
 
 	const TYPE_TRAIT = "trait";
 
-	/** @var PhpFileFragment */
-	private $fragment;
+	/** @var PhpNamespace */
+	private $namespace;
 
 	/** @var string */
 	private $name;
@@ -122,10 +122,10 @@ class ClassType extends Nette\Object
 	}
 
 
-	public function __construct($name = NULL, PhpFileFragment $fragment = NULL)
+	public function __construct($name = NULL, PhpNamespace $namespaces = NULL)
 	{
 		$this->name = $name;
-		$this->fragment = $fragment;
+		$this->namespace = $namespaces;
 	}
 
 
@@ -186,9 +186,9 @@ class ClassType extends Nette\Object
 	{
 		$this->extends = (array)$fqns;
 
-		if ($this->fragment) {
+		if ($this->namespace) {
 			foreach ($this->extends as $fqn) {
-				$this->fragment->addUse($fqn);
+				$this->namespace->addUse($fqn);
 			}
 		}
 
@@ -205,8 +205,8 @@ class ClassType extends Nette\Object
 		$this->extends = (array)$this->extends;
 		$this->extends[] = $fqn;
 
-		if ($this->fragment) {
-			$this->fragment->addUse($fqn);
+		if ($this->namespace) {
+			$this->namespace->addUse($fqn);
 		}
 
 		return $this;
@@ -230,9 +230,9 @@ class ClassType extends Nette\Object
 	{
 		$this->implements = (array)$fqns;
 
-		if ($this->fragment) {
+		if ($this->namespace) {
 			foreach ($this->implements as $fqn) {
-				$this->fragment->addUse($fqn);
+				$this->namespace->addUse($fqn);
 			}
 		}
 
@@ -249,8 +249,8 @@ class ClassType extends Nette\Object
 		$this->implements = (array)$this->implements;
 		$this->implements[] = $fqn;
 
-		if ($this->fragment) {
-			$this->fragment->addUse($fqn);
+		if ($this->namespace) {
+			$this->namespace->addUse($fqn);
 		}
 
 		return $this;
@@ -274,9 +274,9 @@ class ClassType extends Nette\Object
 	{
 		$this->traits = (array)$fqns;
 
-		if ($this->fragment) {
+		if ($this->namespace) {
 			foreach ($this->traits as $fqn) {
-				$this->fragment->addUse($fqn);
+				$this->namespace->addUse($fqn);
 			}
 		}
 
@@ -293,8 +293,8 @@ class ClassType extends Nette\Object
 		$this->traits = (array)$this->traits;
 		$this->traits[] = $fqn;
 
-		if ($this->fragment) {
-			$this->fragment->addUse($fqn);
+		if ($this->namespace) {
+			$this->namespace->addUse($fqn);
 		}
 
 		return $this;
@@ -310,13 +310,13 @@ class ClassType extends Nette\Object
 	 */
 	public function addUse($fqn, $alias = NULL, &$aliasOut = NULL)
 	{
-		if (!$this->fragment) {
+		if (!$this->namespace) {
 			throw new Nette\InvalidStateException(
-				"ClassType is not inside PhpFileFragment, you have to manage use statements yourself."
+				"ClassType is not inside PhpNamespace, you have to manage use statements yourself."
 			);
 		}
 
-		$this->fragment->addUse($fqn, $alias, $aliasOut);
+		$this->namespace->addUse($fqn, $alias, $aliasOut);
 
 		return $this;
 	}
@@ -344,9 +344,9 @@ class ClassType extends Nette\Object
 		$implements = array();
 		$traits = array();
 
-		if ($this->fragment) {
-			// relative class names are managed by fragment
-			$fqnToAlias = array_flip($this->fragment->getUses());
+		if ($this->namespace) {
+			// relative class names are managed by namespace
+			$fqnToAlias = array_flip($this->namespace->getUses());
 
 			foreach ((array)$this->extends as $fqn) {
 				$extends[] = $fqnToAlias[$fqn];

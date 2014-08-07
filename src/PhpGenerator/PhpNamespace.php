@@ -12,7 +12,7 @@ use Nette\Object;
 use Nette\Utils\Strings;
 
 /**
- * Namespaced fragment of a PHP file
+ * Namespaced namespace of a PHP file
  *
  * Generates:
  *
@@ -22,7 +22,7 @@ use Nette\Utils\Strings;
  *
  * @author Jakub Kulhan <jakub.kulhan@gmail.com>
  */
-class PhpFileFragment extends Object
+class PhpNamespace extends Object
 {
 
 	/** @var string */
@@ -238,7 +238,7 @@ class PhpFileFragment extends Object
 			}
 		}
 
-		$fragmentBody =
+		$namespaceBody =
 			(empty($uses) ? "" : implode("\n", $uses) . "\n\n") .
 			(empty($this->classTypes) ? "" : implode("\n", array_map(function (ClassType $classType) {
 				return (string)$classType;
@@ -247,14 +247,14 @@ class PhpFileFragment extends Object
 		if ($this->bracketedNamespaceSyntax) {
 			return Strings::normalize(
 				"namespace" . (empty($this->namespace) ? "" : " " . $this->namespace) . " {\n\n" .
-				Strings::indent($fragmentBody) .
+				Strings::indent($namespaceBody) .
 				"\n}\n"
 			);
 
 		} else {
 			return Strings::normalize(
 				(empty($this->namespace) ? "" : "namespace {$this->namespace};\n\n") .
-				$fragmentBody
+				$namespaceBody
 			);
 		}
 	}

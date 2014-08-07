@@ -16,16 +16,16 @@ $file->addDocument("This file is auto-generated. DO NOT EDIT!");
 $file->addDocument("Hey there, I'm here to document things.");
 
 
-$fragmentFoo = $file->addFragment("Foo");
+$namespaceFoo = $file->addNamespace("Foo");
 
-$classA = $fragmentFoo->addClass("A");
-Assert::same($fragmentFoo, $classA->getFragment());
+$classA = $namespaceFoo->addClass("A");
+Assert::same($namespaceFoo, $classA->getNamespace());
 
-$interfaceB = $fragmentFoo->addInterface("B");
-Assert::same($fragmentFoo, $interfaceB->getFragment());
+$interfaceB = $namespaceFoo->addInterface("B");
+Assert::same($namespaceFoo, $interfaceB->getNamespace());
 
-$traitC = $fragmentFoo->addTrait("C");
-Assert::same($fragmentFoo, $traitC->getFragment());
+$traitC = $namespaceFoo->addTrait("C");
+Assert::same($namespaceFoo, $traitC->getNamespace());
 
 $classA
 	->addImplement("Foo\\A")
@@ -34,16 +34,16 @@ $classA
 	->addTrait("Bar\\D");
 
 
-$fragmentBar = $file->addFragment("Bar");
+$namespaceBar = $file->addNamespace("Bar");
 
-$classB = $fragmentBar->addClass("B");
-Assert::same($classB->getFragment(), $fragmentBar);
+$classB = $namespaceBar->addClass("B");
+Assert::same($classB->getNamespace(), $namespaceBar);
 
-$interfaceC = $fragmentBar->addInterface("C");
-Assert::same($interfaceC->getFragment(), $fragmentBar);
+$interfaceC = $namespaceBar->addInterface("C");
+Assert::same($interfaceC->getNamespace(), $namespaceBar);
 
-$traitD = $fragmentBar->addTrait("D");
-Assert::same($traitD->getFragment(), $fragmentBar);
+$traitD = $namespaceBar->addTrait("D");
+Assert::same($traitD->getNamespace(), $namespaceBar);
 
 $classB
 	->addExtend("Foo\\A")
@@ -52,17 +52,17 @@ $classB
 
 
 $classE = $file->addClass("Baz\\E");
-Assert::same($file->addFragment("Baz"), $classE->getFragment());
+Assert::same($file->addNamespace("Baz"), $classE->getNamespace());
 
 $interfaceF = $file->addInterface("Baz\\F");
-Assert::same($file->addFragment("Baz"), $interfaceF->getFragment());
+Assert::same($file->addNamespace("Baz"), $interfaceF->getNamespace());
 
 $interfaceF
 	->addExtend("Foo\\B")
 	->addExtend("Bar\\C");
 
 $traitG = $file->addTrait("Baz\\G");
-Assert::same($file->addFragment("Baz"), $traitG->getFragment());
+Assert::same($file->addNamespace("Baz"), $traitG->getNamespace());
 
 
 Assert::matchFile(__DIR__ . "/PhpFile.regular.expect", (string)$file);

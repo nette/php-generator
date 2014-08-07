@@ -17,7 +17,7 @@ use Nette\Utils\Strings;
  *
  * - opening tag (<?php)
  * - doc comments (if present)
- * - one or more fragments {@link PhpFileFragment}
+ * - one or more fragments {@link PhpNamespace}
  *
  * @author Jakub Kulhan <jakub.kulhan@gmail.com>
  */
@@ -30,8 +30,8 @@ class PhpFile extends Object
 	/** @var boolean */
 	private $bracketedNamespaceSyntax = FALSE;
 
-	/** @var PhpFileFragment[] */
-	private $fragments = array();
+	/** @var PhpNamespace[] */
+	private $namespaces = array();
 
 	/**
 	 * @return string[]
@@ -72,7 +72,7 @@ class PhpFile extends Object
 	public function addClass($fqn)
 	{
 		return $this
-			->addFragment(Helpers::extractNamespace($fqn))
+			->addNamespace(Helpers::extractNamespace($fqn))
 			->addClass(Helpers::extractShortName($fqn));
 	}
 
@@ -84,7 +84,7 @@ class PhpFile extends Object
 	public function addInterface($fqn)
 	{
 		return $this
-			->addFragment(Helpers::extractNamespace($fqn))
+			->addNamespace(Helpers::extractNamespace($fqn))
 			->addInterface(Helpers::extractShortName($fqn));
 	}
 
@@ -96,33 +96,33 @@ class PhpFile extends Object
 	public function addTrait($fqn)
 	{
 		return $this
-			->addFragment(Helpers::extractNamespace($fqn))
+			->addNamespace(Helpers::extractNamespace($fqn))
 			->addTrait(Helpers::extractShortName($fqn));
 	}
 
 
 	/**
-	 * @param string $namespace NULL means global namespace
-	 * @return PhpFileFragment
+	 * @param string $name NULL means global namespace
+	 * @return PhpNamespace
 	 */
-	public function addFragment($namespace)
+	public function addNamespace($name)
 	{
-		if (!isset($this->fragments[$namespace])) {
-			if (empty($namespace) && !$this->bracketedNamespaceSyntax) {
+		if (!isset($this->namespaces[$name])) {
+			if (empty($name) && !$this->bracketedNamespaceSyntax) {
 				$this->bracketedNamespaceSyntax = TRUE;
-				foreach ($this->fragments as $fragment) {
-					$fragment->setBracketedNamespaceSyntax(true);
+				foreach ($this->namespaces as $namespace) {
+					$namespace->setBracketedNamespaceSyntax(true);
 				}
 			}
 
-			$this->fragments[$namespace] = new PhpFileFragment($namespace);
+			$this->namespaces[$name] = new PhpNamespace($name);
 
 			if ($this->bracketedNamespaceSyntax) {
-				$this->fragments[$namespace]->setBracketedNamespaceSyntax(TRUE);
+				$this->namespaces[$name]->setBracketedNamespaceSyntax(TRUE);
 			}
 		}
 
-		return $this->fragments[$namespace];
+		return $this->namespaces[$name];
 	}
 
 
@@ -134,9 +134,9 @@ class PhpFile extends Object
 		return Strings::normalize(
 			"<?php\n" .
 			($this->documents ? "\n" . str_replace("\n", "\n * ", "/**\n" . implode("\n", (array)$this->documents)) . "\n */\n\n" : '') .
-			implode("\n\n", array_map(function (PhpFileFragment $fragment) {
+			implode("\n\n", array_map(function (PhpNamespace $fragment) {
 				return (string)$fragment;
-			}, $this->fragments))
+			}, $this->namespaces))
 		) . "\n";
 	}
 
