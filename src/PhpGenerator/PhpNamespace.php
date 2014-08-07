@@ -12,7 +12,7 @@ use Nette\Object;
 use Nette\Utils\Strings;
 
 /**
- * Namespaced namespace of a PHP file
+ * Namespaced part of a PHP file
  *
  * Generates:
  *

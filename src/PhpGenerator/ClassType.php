@@ -122,10 +122,10 @@ class ClassType extends Nette\Object
 	}
 
 
-	public function __construct($name = NULL, PhpNamespace $namespaces = NULL)
+	public function __construct($name = NULL, PhpNamespace $namespace = NULL)
 	{
 		$this->name = $name;
-		$this->namespace = $namespaces;
+		$this->namespace = $namespace;
 	}
 
 
@@ -223,7 +223,7 @@ class ClassType extends Nette\Object
 
 
 	/**
-	 * @param string[] $fqns
+	 * @param string|string[] $fqns
 	 * @return $this
 	 */
 	public function setImplements($fqns)
@@ -267,7 +267,7 @@ class ClassType extends Nette\Object
 
 
 	/**
-	 * @param string[] $fqns
+	 * @param string|string[] $fqns
 	 * @return $this
 	 */
 	public function setTraits($fqns)
