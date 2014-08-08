@@ -17,7 +17,7 @@ use Nette\Utils\Strings;
  *
  * - opening tag (<?php)
  * - doc comments (if present)
- * - one or more fragments {@link PhpNamespace}
+ * - one or more namespaces {@link PhpNamespace}
  *
  * @author Jakub Kulhan <jakub.kulhan@gmail.com>
  */
@@ -134,8 +134,8 @@ class PhpFile extends Object
 		return Strings::normalize(
 			"<?php\n" .
 			($this->documents ? "\n" . str_replace("\n", "\n * ", "/**\n" . implode("\n", (array)$this->documents)) . "\n */\n\n" : '') .
-			implode("\n\n", array_map(function (PhpNamespace $fragment) {
-				return (string)$fragment;
+			implode("\n\n", array_map(function (PhpNamespace $namespace) {
+				return (string)$namespace;
 			}, $this->namespaces))
 		) . "\n";
 	}

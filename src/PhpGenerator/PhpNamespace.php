@@ -29,7 +29,7 @@ class PhpNamespace extends Object
 	private $file;
 
 	/** @var string */
-	private $namespace;
+	private $name;
 
 	/** @var boolean */
 	private $bracketedNamespaceSyntax = FALSE;
@@ -42,7 +42,7 @@ class PhpNamespace extends Object
 
 	public function __construct($namespace, PhpFile $file = null)
 	{
-		$this->namespace = $namespace;
+		$this->name = $namespace;
 		$this->file = $file;
 	}
 
@@ -59,9 +59,9 @@ class PhpNamespace extends Object
 	/**
 	 * @return string
 	 */
-	public function getNamespace()
+	public function getName()
 	{
-		return $this->namespace;
+		return $this->name;
 	}
 
 
@@ -69,9 +69,9 @@ class PhpNamespace extends Object
 	 * @param string $namespace
 	 * @return $this
 	 */
-	public function setNamespace($namespace)
+	public function setName($namespace)
 	{
-		$this->namespace = $namespace;
+		$this->name = $namespace;
 		return $this;
 	}
 
@@ -194,7 +194,7 @@ class PhpNamespace extends Object
 	public function addClassType($name)
 	{
 		if (!isset($this->classTypes[$name])) {
-			$this->addUse($this->namespace . "\\" . $name);
+			$this->addUse($this->name . "\\" . $name);
 			$this->classTypes[$name] = new ClassType($name, $this);
 		}
 
@@ -242,7 +242,7 @@ class PhpNamespace extends Object
 		foreach ($this->uses as $alias => $fqn) {
 			$useNamespace = Helpers::extractNamespace($fqn);
 
-			if ($this->namespace !== $useNamespace) {
+			if ($this->name !== $useNamespace) {
 				if ($alias === $fqn || substr($fqn, -(strlen($alias) + 1)) === "\\" . $alias) {
 					$uses[] = "use {$fqn};";
 				} else {
@@ -259,14 +259,14 @@ class PhpNamespace extends Object
 
 		if ($this->bracketedNamespaceSyntax) {
 			return Strings::normalize(
-				"namespace" . (empty($this->namespace) ? "" : " " . $this->namespace) . " {\n\n" .
+				"namespace" . (empty($this->name) ? "" : " " . $this->name) . " {\n\n" .
 				Strings::indent($namespaceBody) .
 				"\n}\n"
 			);
 
 		} else {
 			return Strings::normalize(
-				(empty($this->namespace) ? "" : "namespace {$this->namespace};\n\n") .
+				(empty($this->name) ? "" : "namespace {$this->name};\n\n") .
 				$namespaceBody
 			);
 		}
