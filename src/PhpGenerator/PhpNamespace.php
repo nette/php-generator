@@ -100,14 +100,14 @@ class PhpNamespace extends Object
 	 * @throws InvalidStateException
 	 * @return self
 	 */
-	public function addUse($fqn, $alias = NULL, &$aliasOut = NULL)
+	public function addUse($name, $alias = NULL, &$aliasOut = NULL)
 	{
-		$fqn = ltrim($fqn, '\\');
-		if ($alias === NULL && $this->name === Helpers::extractNamespace($fqn)) {
-			$alias = Helpers::extractShortName($fqn);
+		$name = ltrim($name, '\\');
+		if ($alias === NULL && $this->name === Helpers::extractNamespace($name)) {
+			$alias = Helpers::extractShortName($name);
 		}
 		if ($alias === NULL) {
-			$path = explode('\\', $fqn);
+			$path = explode('\\', $name);
 			$counter = NULL;
 			do {
 				if (empty($path)) {
@@ -115,17 +115,17 @@ class PhpNamespace extends Object
 				} else {
 					$alias = array_pop($path) . $alias;
 				}
-			} while (isset($this->uses[$alias . $counter]) && $this->uses[$alias . $counter] !== $fqn);
+			} while (isset($this->uses[$alias . $counter]) && $this->uses[$alias . $counter] !== $name);
 			$alias .= $counter;
 
-		} elseif (isset($this->uses[$alias]) && $this->uses[$alias] !== $fqn) {
+		} elseif (isset($this->uses[$alias]) && $this->uses[$alias] !== $name) {
 			throw new InvalidStateException(
-				"Alias '$alias' used already for '{$this->uses[$alias]}', cannot use for '{$fqn}'."
+				"Alias '$alias' used already for '{$this->uses[$alias]}', cannot use for '{$name}'."
 			);
 		}
 
 		$aliasOut = $alias;
-		$this->uses[$alias] = $fqn;
+		$this->uses[$alias] = $name;
 		return $this;
 	}
 
@@ -206,14 +206,14 @@ class PhpNamespace extends Object
 	{
 		$uses = array();
 		asort($this->uses);
-		foreach ($this->uses as $alias => $fqn) {
-			$useNamespace = Helpers::extractNamespace($fqn);
+		foreach ($this->uses as $alias => $name) {
+			$useNamespace = Helpers::extractNamespace($name);
 
 			if ($this->name !== $useNamespace) {
-				if ($alias === $fqn || substr($fqn, -(strlen($alias) + 1)) === '\\' . $alias) {
-					$uses[] = "use {$fqn};";
+				if ($alias === $name || substr($name, -(strlen($alias) + 1)) === '\\' . $alias) {
+					$uses[] = "use {$name};";
 				} else {
-					$uses[] = "use {$fqn} as {$alias};";
+					$uses[] = "use {$name} as {$alias};";
 				}
 			}
 		}

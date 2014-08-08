@@ -202,9 +202,9 @@ class Helpers
 	 * @param  string
 	 * @return string
 	 */
-	public static function extractNamespace($fqn)
+	public static function extractNamespace($name)
 	{
-		return ($pos = strrpos($fqn, '\\')) ? substr($fqn, 0, $pos) : NULL;
+		return ($pos = strrpos($name, '\\')) ? substr($name, 0, $pos) : NULL;
 	}
 
 
@@ -212,9 +212,9 @@ class Helpers
 	 * @param  string
 	 * @return string
 	 */
-	public static function extractShortName($fqn)
+	public static function extractShortName($name)
 	{
-		return ($pos = strrpos($fqn, '\\')) === FALSE ? $fqn : substr($fqn, $pos + 1);
+		return ($pos = strrpos($name, '\\')) === FALSE ? $name : substr($name, $pos + 1);
 	}
 
 }

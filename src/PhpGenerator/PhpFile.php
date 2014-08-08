@@ -65,11 +65,11 @@ class PhpFile extends Object
 	 * @param  string
 	 * @return ClassType
 	 */
-	public function addClass($fqn)
+	public function addClass($name)
 	{
 		return $this
-			->addNamespace(Helpers::extractNamespace($fqn))
-			->addClass(Helpers::extractShortName($fqn));
+			->addNamespace(Helpers::extractNamespace($name))
+			->addClass(Helpers::extractShortName($name));
 	}
 
 
@@ -77,11 +77,11 @@ class PhpFile extends Object
 	 * @param  string
 	 * @return ClassType
 	 */
-	public function addInterface($fqn)
+	public function addInterface($name)
 	{
 		return $this
-			->addNamespace(Helpers::extractNamespace($fqn))
-			->addInterface(Helpers::extractShortName($fqn));
+			->addNamespace(Helpers::extractNamespace($name))
+			->addInterface(Helpers::extractShortName($name));
 	}
 
 
@@ -89,11 +89,11 @@ class PhpFile extends Object
 	 * @param  string
 	 * @return ClassType
 	 */
-	public function addTrait($fqn)
+	public function addTrait($name)
 	{
 		return $this
-			->addNamespace(Helpers::extractNamespace($fqn))
-			->addTrait(Helpers::extractShortName($fqn));
+			->addNamespace(Helpers::extractNamespace($name))
+			->addTrait(Helpers::extractShortName($name));
 	}
 
 
