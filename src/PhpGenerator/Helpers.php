@@ -214,7 +214,7 @@ class Helpers
 	 */
 	public static function extractShortName($fqn)
 	{
-		return ($pos = strrpos($fqn, '\\')) ? substr($fqn, $pos + 1) : $fqn;
+		return ($pos = strrpos($fqn, '\\')) === FALSE ? $fqn : substr($fqn, $pos + 1);
 	}
 
 }

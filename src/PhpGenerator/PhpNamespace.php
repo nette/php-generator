@@ -103,6 +103,9 @@ class PhpNamespace extends Object
 	public function addUse($fqn, $alias = NULL, &$aliasOut = NULL)
 	{
 		$fqn = ltrim($fqn, '\\');
+		if ($alias === NULL && $this->name === Helpers::extractNamespace($fqn)) {
+			$alias = Helpers::extractShortName($fqn);
+		}
 		if ($alias === NULL) {
 			$path = explode('\\', $fqn);
 			$counter = NULL;
