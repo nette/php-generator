@@ -7,8 +7,8 @@
 
 namespace Nette\PhpGenerator;
 
-use Nette,
-	Nette\Utils\Strings;
+use Nette;
+use Nette\Utils\Strings;
 
 
 /**
@@ -16,6 +16,7 @@ use Nette,
  *
  * @author     David Grudl
  *
+ * @method PhpNamespace getNamespace()
  * @method ClassType setName(string)
  * @method string getName()
  * @method ClassType setType(string)
@@ -24,15 +25,6 @@ use Nette,
  * @method bool isFinal()
  * @method ClassType setAbstract(bool)
  * @method bool isAbstract()
- * @method ClassType setExtends(string[]|string)
- * @method string[]|string getExtends()
- * @method ClassType addExtend(string)
- * @method ClassType setImplements(string[])
- * @method string[] getImplements()
- * @method ClassType addImplement(string)
- * @method ClassType setTraits(string[])
- * @method string[] getTraits()
- * @method ClassType addTrait(string)
  * @method ClassType setDocuments(string[])
  * @method string[] getDocuments()
  * @method ClassType addDocument(string)
@@ -45,6 +37,16 @@ use Nette,
  */
 class ClassType extends Nette\Object
 {
+
+	const TYPE_CLASS = "class";
+
+	const TYPE_INTERFACE = "interface";
+
+	const TYPE_TRAIT = "trait";
+
+	/** @var PhpNamespace */
+	private $namespace;
+
 	/** @var string */
 	private $name;
 
@@ -79,10 +81,14 @@ class ClassType extends Nette\Object
 	private $methods = array();
 
 
-	/** @return ClassType */
+	/**
+	 * @param \ReflectionClass|string $from
+	 * @return ClassType
+	 */
 	public static function from($from)
 	{
 		$from = $from instanceof \ReflectionClass ? $from : new \ReflectionClass($from);
+		/** @var ClassType $class */
 		$class = new static($from->getShortName());
 		$class->type = $from->isInterface() ? 'interface' : (PHP_VERSION_ID >= 50400 && $from->isTrait() ? 'trait' : 'class');
 		$class->final = $from->isFinal();
@@ -116,13 +122,18 @@ class ClassType extends Nette\Object
 	}
 
 
-	public function __construct($name = NULL)
+	public function __construct($name = NULL, PhpNamespace $namespace = NULL)
 	{
 		$this->name = $name;
+		$this->namespace = $namespace;
 	}
 
 
-	/** @return ClassType */
+	/**
+	 * @param string $name
+	 * @param mixed $value
+	 * @return ClassType
+	 */
 	public function addConst($name, $value)
 	{
 		$this->consts[$name] = $value;
@@ -130,7 +141,11 @@ class ClassType extends Nette\Object
 	}
 
 
-	/** @return Property */
+	/**
+	 * @param string $name
+	 * @param mixed $value
+	 * @return Property
+	 */
 	public function addProperty($name, $value = NULL)
 	{
 		$property = new Property;
@@ -138,7 +153,10 @@ class ClassType extends Nette\Object
 	}
 
 
-	/** @return Method */
+	/**
+	 * @param string $name
+	 * @return Method
+	 */
 	public function addMethod($name)
 	{
 		$method = new Method;
@@ -151,35 +169,220 @@ class ClassType extends Nette\Object
 	}
 
 
-	/** @return string  PHP code */
+	/**
+	 * @return string|string[] FQN(s)
+	 */
+	public function getExtends()
+	{
+		return $this->extends;
+	}
+
+
+	/**
+	 * @param string|string[] $fqns
+	 * @return $this
+	 */
+	public function setExtends($fqns)
+	{
+		$this->extends = (array)$fqns;
+
+		if ($this->namespace) {
+			foreach ($this->extends as $fqn) {
+				$this->namespace->addUse($fqn);
+			}
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * @param string $fqn FQN
+	 * @return $this
+	 */
+	public function addExtend($fqn)
+	{
+		$this->extends = (array)$this->extends;
+		$this->extends[] = $fqn;
+
+		if ($this->namespace) {
+			$this->namespace->addUse($fqn);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * @return string[]
+	 */
+	public function getImplements()
+	{
+		return $this->implements;
+	}
+
+
+	/**
+	 * @param string|string[] $fqns
+	 * @return $this
+	 */
+	public function setImplements($fqns)
+	{
+		$this->implements = (array)$fqns;
+
+		if ($this->namespace) {
+			foreach ($this->implements as $fqn) {
+				$this->namespace->addUse($fqn);
+			}
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * @param string $fqn
+	 * @return $this
+	 */
+	public function addImplement($fqn)
+	{
+		$this->implements = (array)$this->implements;
+		$this->implements[] = $fqn;
+
+		if ($this->namespace) {
+			$this->namespace->addUse($fqn);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * @return string[]
+	 */
+	public function getTraits()
+	{
+		return $this->traits;
+	}
+
+
+	/**
+	 * @param string|string[] $fqns
+	 * @return $this
+	 */
+	public function setTraits($fqns)
+	{
+		$this->traits = (array)$fqns;
+
+		if ($this->namespace) {
+			foreach ($this->traits as $fqn) {
+				$this->namespace->addUse($fqn);
+			}
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * @param string $fqn
+	 * @return $this
+	 */
+	public function addTrait($fqn)
+	{
+		$this->traits = (array)$this->traits;
+		$this->traits[] = $fqn;
+
+		if ($this->namespace) {
+			$this->namespace->addUse($fqn);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * @param string $fqn
+	 * @param string $alias
+	 * @param string $aliasOut
+	 * @return $this
+	 * @throws Nette\InvalidStateException
+	 */
+	public function addUse($fqn, $alias = NULL, &$aliasOut = NULL)
+	{
+		if (!$this->namespace) {
+			throw new Nette\InvalidStateException(
+				"ClassType is not inside PhpNamespace, you have to manage use statements yourself."
+			);
+		}
+
+		$this->namespace->addUse($fqn, $alias, $aliasOut);
+
+		return $this;
+	}
+
+
+	/**
+	 * @return string  PHP code
+	 */
 	public function __toString()
 	{
 		$consts = array();
 		foreach ($this->consts as $name => $value) {
 			$consts[] = "const $name = " . Helpers::dump($value) . ";\n";
 		}
+
 		$properties = array();
 		foreach ($this->properties as $property) {
-			$properties[] = ($property->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", (array) $property->documents)) . "\n */\n" : '')
-				. $property->visibility . ($property->static ? ' static' : '') . ' $' . $property->name
+			$properties[] = ($property->getDocuments() ? str_replace("\n", "\n * ", "/**\n" . implode("\n", (array)$property->getDocuments())) . "\n */\n" : '')
+				. $property->getVisibility() . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName()
 				. ($property->value === NULL ? '' : ' = ' . Helpers::dump($property->value))
 				. ";\n";
 		}
+
+		$extends = array();
+		$implements = array();
+		$traits = array();
+
+		if ($this->namespace) {
+			// relative class names are managed by namespace
+			$fqnToAlias = array_flip($this->namespace->getUses());
+
+			foreach ((array)$this->extends as $fqn) {
+				$extends[] = $fqnToAlias[$fqn];
+			}
+
+			foreach ((array)$this->implements as $fqn) {
+				$implements[] = $fqnToAlias[$fqn];
+			}
+
+			foreach ((array)$this->traits as $fqn) {
+				$traits[] = $fqnToAlias[$fqn];
+			}
+
+		} else {
+			// relative class names are managed by developer
+			$extends = (array)$this->extends;
+			$implements = (array)$this->implements;
+			$traits = (array)$this->traits;
+		}
+
 		return Strings::normalize(
-			($this->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", (array) $this->documents)) . "\n */\n" : '')
+			($this->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", (array)$this->documents)) . "\n */\n" : '')
 			. ($this->abstract ? 'abstract ' : '')
 			. ($this->final ? 'final ' : '')
 			. $this->type . ' '
 			. $this->name . ' '
-			. ($this->extends ? 'extends ' . implode(', ', (array) $this->extends) . ' ' : '')
-			. ($this->implements ? 'implements ' . implode(', ', (array) $this->implements) . ' ' : '')
+			. ($this->extends ? 'extends ' . implode(', ', $extends) . ' ' : '')
+			. ($this->implements ? 'implements ' . implode(', ', $implements) . ' ' : '')
 			. "\n{\n\n"
 			. Strings::indent(
-				($this->traits ? "use " . implode(', ', (array) $this->traits) . ";\n\n" : '')
+				($this->traits ? "use " . implode(', ', $traits) . ";\n\n" : '')
 				. ($this->consts ? implode('', $consts) . "\n\n" : '')
 				. ($this->properties ? implode("\n", $properties) . "\n\n" : '')
 				. implode("\n\n\n", $this->methods), 1)
-			. "\n\n}") . "\n";
+			. "\n\n}"
+		) . "\n";
 	}
 
 }
