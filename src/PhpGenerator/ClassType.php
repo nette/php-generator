@@ -195,20 +195,17 @@ class ClassType extends Nette\Object
 		}
 
 		$extends = $implements = $traits = array();
-
 		if ($this->namespace) {
-			$fqnToAlias = array_flip($this->namespace->getUses());
-
-			foreach ((array) $this->extends as $fqn) {
-				$extends[] = isset($fqnToAlias[$fqn]) ? $fqnToAlias[$fqn] : '\\' . $fqn;
+			foreach ((array) $this->extends as $name) {
+				$extends[] = $this->namespace->unresolveName($name);
 			}
 
-			foreach ((array) $this->implements as $fqn) {
-				$implements[] = isset($fqnToAlias[$fqn]) ? $fqnToAlias[$fqn] : '\\' . $fqn;
+			foreach ((array) $this->implements as $name) {
+				$implements[] = $this->namespace->unresolveName($name);
 			}
 
-			foreach ((array) $this->traits as $fqn) {
-				$traits[] = isset($fqnToAlias[$fqn]) ? $fqnToAlias[$fqn] : '\\' . $fqn;
+			foreach ((array) $this->traits as $name) {
+				$traits[] = $this->namespace->unresolveName($name);
 			}
 
 		} else {

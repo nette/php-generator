@@ -1,0 +1,19 @@
+namespace Foo;
+
+use Bar\C;
+
+class A implements A, C
+{
+
+	use \Bar\D;
+
+
+
+}
+
+interface B
+{
+
+
+
+}

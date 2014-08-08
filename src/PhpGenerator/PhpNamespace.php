@@ -37,7 +37,7 @@ class PhpNamespace extends Object
 	private $classes = array();
 
 
-	public function __construct($name)
+	public function __construct($name = NULL)
 	{
 		$this->name = $name;
 	}
@@ -102,7 +102,7 @@ class PhpNamespace extends Object
 	 */
 	public function addUse($fqn, $alias = NULL, &$aliasOut = NULL)
 	{
-		$fqn = trim($fqn, '\\');
+		$fqn = ltrim($fqn, '\\');
 		if ($alias === NULL) {
 			$path = explode('\\', $fqn);
 			$counter = NULL;
@@ -124,6 +124,32 @@ class PhpNamespace extends Object
 		$aliasOut = $alias;
 		$this->uses[$alias] = $fqn;
 		return $this;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return string
+	 */
+	public function unresolveName($name)
+	{
+		$name = ltrim($name, '\\');
+		$res = NULL;
+		$lower = strtolower($name);
+		foreach ($this->uses as $alias => $for) {
+			if (Strings::startsWith($lower . '\\', strtolower($for) . '\\')) {
+				$short = $alias . substr($name, strlen($for));
+				if (!isset($res) || strlen($res) > strlen($short)) {
+					$res = $short;
+				}
+			}
+		}
+
+		if (!$res && Strings::startsWith($lower, strtolower($this->name) . '\\')) {
+			return substr($name, strlen($this->name) + 1);
+		} else {
+			return $res ?: '\\' . $name;
+		}
 	}
 
 
