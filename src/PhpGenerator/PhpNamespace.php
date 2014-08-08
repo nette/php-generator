@@ -25,6 +25,9 @@ use Nette\Utils\Strings;
 class PhpNamespace extends Object
 {
 
+	/** @var PhpFile */
+	private $file;
+
 	/** @var string */
 	private $namespace;
 
@@ -37,9 +40,19 @@ class PhpNamespace extends Object
 	/** @var ClassType[] */
 	private $classTypes = array();
 
-	public function __construct($namespace)
+	public function __construct($namespace, PhpFile $file = null)
 	{
 		$this->namespace = $namespace;
+		$this->file = $file;
+	}
+
+
+	/**
+	 * @return PhpFile
+	 */
+	public function getFile()
+	{
+		return $this->file;
 	}
 
 

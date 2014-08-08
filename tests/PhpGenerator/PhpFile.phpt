@@ -17,15 +17,19 @@ $file->addDocument("Hey there, I'm here to document things.");
 
 
 $namespaceFoo = $file->addNamespace("Foo");
+Assert::same($file, $namespaceFoo->getFile());
 
 $classA = $namespaceFoo->addClass("A");
 Assert::same($namespaceFoo, $classA->getNamespace());
+Assert::same($file, $classA->getNamespace()->getFile());
 
 $interfaceB = $namespaceFoo->addInterface("B");
 Assert::same($namespaceFoo, $interfaceB->getNamespace());
+Assert::same($file, $interfaceB->getNamespace()->getFile());
 
 $traitC = $namespaceFoo->addTrait("C");
 Assert::same($namespaceFoo, $traitC->getNamespace());
+Assert::same($file, $traitC->getNamespace()->getFile());
 
 $classA
 	->addImplement("Foo\\A")
@@ -35,15 +39,19 @@ $classA
 
 
 $namespaceBar = $file->addNamespace("Bar");
+Assert::same($file, $namespaceBar->getFile());
 
 $classB = $namespaceBar->addClass("B");
-Assert::same($classB->getNamespace(), $namespaceBar);
+Assert::same($namespaceBar, $classB->getNamespace());
+Assert::same($file, $classB->getNamespace()->getFile());
 
 $interfaceC = $namespaceBar->addInterface("C");
-Assert::same($interfaceC->getNamespace(), $namespaceBar);
+Assert::same($namespaceBar, $interfaceC->getNamespace());
+Assert::same($file, $interfaceC->getNamespace()->getFile());
 
 $traitD = $namespaceBar->addTrait("D");
-Assert::same($traitD->getNamespace(), $namespaceBar);
+Assert::same($namespaceBar, $traitD->getNamespace());
+Assert::same($file, $traitD->getNamespace()->getFile());
 
 $classB
 	->addExtend("Foo\\A")
@@ -53,9 +61,11 @@ $classB
 
 $classE = $file->addClass("Baz\\E");
 Assert::same($file->addNamespace("Baz"), $classE->getNamespace());
+Assert::same($file, $classE->getNamespace()->getFile());
 
 $interfaceF = $file->addInterface("Baz\\F");
 Assert::same($file->addNamespace("Baz"), $interfaceF->getNamespace());
+Assert::same($file, $interfaceF->getNamespace()->getFile());
 
 $interfaceF
 	->addExtend("Foo\\B")
@@ -63,6 +73,7 @@ $interfaceF
 
 $traitG = $file->addTrait("Baz\\G");
 Assert::same($file->addNamespace("Baz"), $traitG->getNamespace());
+Assert::same($file, $traitG->getNamespace()->getFile());
 
 
 Assert::matchFile(__DIR__ . "/PhpFile.regular.expect", (string)$file);

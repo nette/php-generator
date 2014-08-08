@@ -115,7 +115,7 @@ class PhpFile extends Object
 				}
 			}
 
-			$this->namespaces[$name] = new PhpNamespace($name);
+			$this->namespaces[$name] = new PhpNamespace($name, $this);
 
 			if ($this->bracketedNamespaceSyntax) {
 				$this->namespaces[$name]->setBracketedNamespaceSyntax(TRUE);
