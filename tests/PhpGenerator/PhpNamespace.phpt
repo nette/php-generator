@@ -36,7 +36,10 @@ Assert::exception(function() use ($namespace) {
 $classA
 	->addImplement('Foo\\A')
 	->addImplement('Bar\\C')
-	->addTrait('Bar\\D');
+	->addTrait('Bar\\D')
+	->addMethod('test')
+		->addParameter('test')
+			->setTypeHint('Bar\C');
 
 
 Assert::matchFile(__DIR__ . '/PhpNamespace.expect', (string) $namespace);

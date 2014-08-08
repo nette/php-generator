@@ -214,6 +214,10 @@ class ClassType extends Nette\Object
 			$traits = (array) $this->traits;
 		}
 
+		foreach ($this->methods as $method) {
+			$method->setNamespace($this->namespace);
+		}
+
 		return Strings::normalize(
 			($this->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", (array) $this->documents)) . "\n */\n" : '')
 			. ($this->abstract ? 'abstract ' : '')
