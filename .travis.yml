@@ -11,7 +11,7 @@ matrix:
         - php: hhvm
 
 script:
-    - vendor/bin/tester tests -s -c tests/php-unix.ini
+    - vendor/bin/tester tests -s
     - php code-checker/src/code-checker.php -d src
 
 after_failure:
