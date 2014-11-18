@@ -31,7 +31,7 @@ Assert::same($namespace, $interfaceB->getNamespace());
 Assert::exception(function() use ($namespace) {
 	$traitC = $namespace->addTrait('C');
 	Assert::same($namespace, $traitC->getNamespace());
-}, 'Nette\InvalidStateException', "Alias 'C' used already for 'Bar\C', cannot use for 'Foo\C'.");
+}, 'Nette\InvalidStateException', "Alias 'C' used already for 'Bar\\C', cannot use for 'Foo\\C'.");
 
 $classA
 	->addImplement('Foo\\A')
