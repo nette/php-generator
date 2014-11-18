@@ -12,7 +12,7 @@ matrix:
 
 script:
     - vendor/bin/tester tests -s
-    - php code-checker/src/code-checker.php -d src
+    - php code-checker/src/code-checker.php
 
 after_failure:
     # Print *.actual content
