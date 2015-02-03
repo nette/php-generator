@@ -14,17 +14,6 @@ use Nette;
  * Method parameter description.
  *
  * @author     David Grudl
- *
- * @method Parameter setName(string)
- * @method string getName()
- * @method Parameter setReference(bool)
- * @method bool isReference()
- * @method Parameter setTypeHint(string)
- * @method string getTypeHint()
- * @method Parameter setOptional(bool)
- * @method bool isOptional()
- * @method Parameter setDefaultValue(mixed)
- * @method mixed getDefaultValue()
  */
 class Parameter extends Nette\Object
 {
@@ -32,19 +21,21 @@ class Parameter extends Nette\Object
 	private $name;
 
 	/** @var bool */
-	private $reference;
+	private $reference = FALSE;
 
 	/** @var string */
 	private $typeHint;
 
 	/** @var bool */
-	private $optional;
+	private $optional = FALSE;
 
 	/** @var mixed */
 	public $defaultValue;
 
 
-	/** @return Parameter */
+	/**
+	 * @return self
+	 */
 	public static function from(\ReflectionParameter $from)
 	{
 		$param = new static;
@@ -68,6 +59,105 @@ class Parameter extends Nette\Object
 			$param->typeHint = substr($param->typeHint, strlen($namespace));
 		}
 		return $param;
+	}
+
+
+	/**
+	 * @param  string  without $
+	 * @return self
+	 */
+	public function setName($name)
+	{
+		$this->name = (string) $name;
+		return $this;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+
+	/**
+	 * @param  bool
+	 * @return self
+	 */
+	public function setReference($state = TRUE)
+	{
+		$this->reference = (bool) $state;
+		return $this;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isReference()
+	{
+		return $this->reference;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return self
+	 */
+	public function setTypeHint($hint)
+	{
+		$this->typeHint = (string) $hint;
+		return $this;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getTypeHint()
+	{
+		return $this->typeHint;
+	}
+
+
+	/**
+	 * @param  bool
+	 * @return self
+	 */
+	public function setOptional($state = TRUE)
+	{
+		$this->optional = (bool) $state;
+		return $this;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isOptional()
+	{
+		return $this->optional;
+	}
+
+
+	/**
+	 * @return self
+	 */
+	public function setDefaultValue($val)
+	{
+		$this->defaultValue = $val;
+		return $this;
+	}
+
+
+	/**
+	 * @return mixed
+	 */
+	public function getDefaultValue()
+	{
+		return $this->defaultValue;
 	}
 
 }
