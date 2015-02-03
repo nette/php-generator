@@ -140,19 +140,19 @@ class Method extends Nette\Object
 		$parameters = array();
 		foreach ($this->parameters as $param) {
 			$variadic = $this->variadic && $param === end($this->parameters);
-			$hint = in_array($param->typeHint, array('array', ''))
-				? $param->typeHint
-				: ($this->namespace ? $this->namespace->unresolveName($param->typeHint) : $param->typeHint);
+			$hint = in_array($param->getTypeHint(), array('array', ''))
+				? $param->getTypeHint()
+				: ($this->namespace ? $this->namespace->unresolveName($param->getTypeHint()) : $param->getTypeHint());
 
 			$parameters[] = ($hint ? $hint . ' ' : '')
-				. ($param->reference ? '&' : '')
+				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')
-				. '$' . $param->name
-				. ($param->optional && !$variadic ? ' = ' . Helpers::dump($param->defaultValue) : '');
+				. '$' . $param->getName()
+				. ($param->isOptional() && !$variadic ? ' = ' . Helpers::dump($param->defaultValue) : '');
 		}
 		$uses = array();
 		foreach ($this->uses as $param) {
-			$uses[] = ($param->reference ? '&' : '') . '$' . $param->name;
+			$uses[] = ($param->isReference() ? '&' : '') . '$' . $param->getName();
 		}
 		return ($this->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", (array) $this->documents)) . "\n */\n" : '')
 			. ($this->abstract ? 'abstract ' : '')
