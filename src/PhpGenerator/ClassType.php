@@ -70,7 +70,7 @@ class ClassType extends Nette\Object
 		$from = $from instanceof \ReflectionClass ? $from : new \ReflectionClass($from);
 		$class = new static($from->getShortName());
 		$class->type = $from->isInterface() ? 'interface' : (PHP_VERSION_ID >= 50400 && $from->isTrait() ? 'trait' : 'class');
-		$class->final = $from->isFinal();
+		$class->final = $from->isFinal() && $class->type === 'class';
 		$class->abstract = $from->isAbstract() && $class->type === 'class';
 		$class->implements = $from->getInterfaceNames();
 		$class->documents = preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t"));
