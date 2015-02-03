@@ -15,34 +15,6 @@ use Nette,
  * Class/Interface/Trait description.
  *
  * @author     David Grudl
- *
- * @method PhpNamespace getNamespace()
- * @method ClassType setName(string)
- * @method string getName()
- * @method ClassType setType(string)
- * @method string getType()
- * @method ClassType setFinal(bool)
- * @method bool isFinal()
- * @method ClassType setAbstract(bool)
- * @method bool isAbstract()
- * @method ClassType setExtends(string[]|string)
- * @method string[]|string getExtends()
- * @method ClassType addExtend(string)
- * @method ClassType setImplements(string[])
- * @method string[] getImplements()
- * @method ClassType addImplement(string)
- * @method ClassType setTraits(string[])
- * @method string[] getTraits()
- * @method ClassType addTrait(string)
- * @method ClassType setDocuments(string[])
- * @method string[] getDocuments()
- * @method ClassType addDocument(string)
- * @method ClassType setConsts(scalar[])
- * @method scalar[] getConsts()
- * @method ClassType setProperties(Property[])
- * @method Property[] getProperties()
- * @method ClassType setMethods(Method[])
- * @method Method[] getMethods()
  */
 class ClassType extends Nette\Object
 {
@@ -62,12 +34,12 @@ class ClassType extends Nette\Object
 	private $type = 'class';
 
 	/** @var bool */
-	private $final;
+	private $final = FALSE;
 
 	/** @var bool */
-	private $abstract;
+	private $abstract = FALSE;
 
-	/** @var string[]|string */
+	/** @var strings|string[] */
 	private $extends = array();
 
 	/** @var string[] */
@@ -79,7 +51,7 @@ class ClassType extends Nette\Object
 	/** @var string[] */
 	private $documents = array();
 
-	/** @var mixed[] name => value */
+	/** @var array name => value */
 	private $consts = array();
 
 	/** @var Property[] name => Property */
@@ -91,7 +63,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  \ReflectionClass|string
-	 * @return ClassType
+	 * @return self
 	 */
 	public static function from($from)
 	{
@@ -133,46 +105,6 @@ class ClassType extends Nette\Object
 	{
 		$this->name = $name;
 		$this->namespace = $namespace;
-	}
-
-
-	/**
-	 * @param  string
-	 * @param  mixed
-	 * @return ClassType
-	 */
-	public function addConst($name, $value)
-	{
-		$this->consts[$name] = $value;
-		return $this;
-	}
-
-
-	/**
-	 * @param  string
-	 * @param  mixed
-	 * @return Property
-	 */
-	public function addProperty($name, $value = NULL)
-	{
-		$property = new Property;
-		return $this->properties[$name] = $property->setName($name)->setValue($value);
-	}
-
-
-	/**
-	 * @param  string
-	 * @return Method
-	 */
-	public function addMethod($name)
-	{
-		$method = new Method;
-		if ($this->type === 'interface') {
-			$method->setVisibility('')->setBody(FALSE);
-		} else {
-			$method->setVisibility('public');
-		}
-		return $this->methods[$name] = $method->setName($name);
 	}
 
 
@@ -235,6 +167,334 @@ class ClassType extends Nette\Object
 				. implode("\n\n\n", $this->methods), 1)
 			. "\n\n}"
 		) . "\n";
+	}
+
+
+	/**
+	 * @return PhpNamespace
+	 */
+	public function getNamespace()
+	{
+		return $this->namespace;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return self
+	 */
+	public function setName($name)
+	{
+		$this->name = (string) $name;
+		return $this;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return self
+	 */
+	public function setType($type)
+	{
+		if (!in_array($type, array('class', 'interface', 'trait'), TRUE)) {
+			throw new Nette\InvalidArgumentException('Argument must be class|interface|trait.');
+		}
+		$this->type = $type;
+		return $this;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getType()
+	{
+		return $this->type;
+	}
+
+
+	/**
+	 * @param  bool
+	 * @return self
+	 */
+	public function setFinal($state = TRUE)
+	{
+		$this->final = (bool) $state;
+		return $this;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isFinal()
+	{
+		return $this->final;
+	}
+
+
+	/**
+	 * @param  bool
+	 * @return self
+	 */
+	public function setAbstract($state = TRUE)
+	{
+		$this->abstract = (bool) $state;
+		return $this;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isAbstract()
+	{
+		return $this->abstract;
+	}
+
+
+	/**
+	 * @param  strings|string[]
+	 * @return self
+	 */
+	public function setExtends($types)
+	{
+		if (!is_string($types) && !(is_array($types) && array_filter($types, 'is_string') === $types)) {
+			throw new Nette\InvalidArgumentException('Argument must be string or string[].');
+		}
+		$this->extends = $types;
+		return $this;
+	}
+
+
+	/**
+	 * @return strings|string[]
+	 */
+	public function getExtends()
+	{
+		return $this->extends;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return self
+	 */
+	public function addExtend($type)
+	{
+		$this->extends[] = (string) $type;
+		return $this;
+	}
+
+
+	/**
+	 * @param  string[]
+	 * @return self
+	 */
+	public function setImplements(array $types)
+	{
+		$this->implements = $types;
+		return $this;
+	}
+
+
+	/**
+	 * @return string[]
+	 */
+	public function getImplements()
+	{
+		return $this->implements;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return self
+	 */
+	public function addImplement($type)
+	{
+		$this->implements[] = (string) $type;
+		return $this;
+	}
+
+
+	/**
+	 * @param  string[]
+	 * @return self
+	 */
+	public function setTraits(array $traits)
+	{
+		$this->traits = $traits;
+		return $this;
+	}
+
+
+	/**
+	 * @return string[]
+	 */
+	public function getTraits()
+	{
+		return $this->traits;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return self
+	 */
+	public function addTrait($trait)
+	{
+		$this->traits[] = (string) $trait;
+		return $this;
+	}
+
+
+	/**
+	 * @param  string[]
+	 * @return self
+	 */
+	public function setDocuments(array $s)
+	{
+		$this->documents = $s;
+		return $this;
+	}
+
+
+	/**
+	 * @return string[]
+	 */
+	public function getDocuments()
+	{
+		return $this->documents;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return self
+	 */
+	public function addDocument($s)
+	{
+		$this->documents[] = (string) $s;
+		return $this;
+	}
+
+
+	/**
+	 * @return self
+	 */
+	public function setConsts(array $consts)
+	{
+		$this->consts = $consts;
+		return $this;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getConsts()
+	{
+		return $this->consts;
+	}
+
+
+	/**
+	 * @param  string
+	 * @param  mixed
+	 * @return self
+	 */
+	public function addConst($name, $value)
+	{
+		$this->consts[$name] = $value;
+		return $this;
+	}
+
+
+	/**
+	 * @param  Property[]
+	 * @return self
+	 */
+	public function setProperties(array $props)
+	{
+		foreach ($props as $v) {
+			if (!$v instanceof Property) {
+				throw new Exception('Argument must be Nette\PhpGenerator\Property[].');
+			}
+		}
+		$this->properties = $props;
+		return $this;
+	}
+
+
+	/**
+	 * @return Property[]
+	 */
+	public function getProperties()
+	{
+		return $this->properties;
+	}
+
+
+	/**
+	 * @param  string  without $
+	 * @param  mixed
+	 * @return Property
+	 */
+	public function addProperty($name, $value = NULL)
+	{
+		$property = new Property;
+		return $this->properties[$name] = $property->setName($name)->setValue($value);
+	}
+
+
+	/**
+	 * @param  Method[]
+	 * @return self
+	 */
+	public function setMethods(array $methods)
+	{
+		foreach ($methods as $v) {
+			if (!$v instanceof Method) {
+				throw new Exception('Argument must be Nette\PhpGenerator\Method[].');
+			}
+		}
+		$this->methods = $methods;
+		return $this;
+	}
+
+
+	/**
+	 * @return Method[]
+	 */
+	public function getMethods()
+	{
+		return $this->methods;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return Method
+	 */
+	public function addMethod($name)
+	{
+		$method = new Method;
+		if ($this->type === 'interface') {
+			$method->setVisibility('')->setBody(FALSE);
+		} else {
+			$method->setVisibility('public');
+		}
+		return $this->methods[$name] = $method->setName($name);
 	}
 
 }

@@ -14,18 +14,6 @@ use Nette;
  * Class property description.
  *
  * @author     David Grudl
- *
- * @method Property setName(string)
- * @method string getName()
- * @method Property setValue(mixed)
- * @method mixed getValue()
- * @method Property setStatic(bool)
- * @method bool isStatic()
- * @method Property setVisibility(string)
- * @method string getVisibility()
- * @method Property setDocuments(string[])
- * @method string[] getDocuments()
- * @method Property addDocument(string)
  */
 class Property extends Nette\Object
 {
@@ -36,7 +24,7 @@ class Property extends Nette\Object
 	public $value;
 
 	/** @var bool */
-	private $static;
+	private $static = FALSE;
 
 	/** @var string  public|protected|private */
 	private $visibility = 'public';
@@ -45,7 +33,9 @@ class Property extends Nette\Object
 	private $documents = array();
 
 
-	/** @return Property */
+	/**
+	 * @return self
+	 */
 	public static function from(\ReflectionProperty $from)
 	{
 		$prop = new static;
@@ -56,6 +46,116 @@ class Property extends Nette\Object
 		$prop->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : 'public');
 		$prop->documents = preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t"));
 		return $prop;
+	}
+
+
+	/**
+	 * @param  string  without $
+	 * @return self
+	 */
+	public function setName($name)
+	{
+		$this->name = (string) $name;
+		return $this;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+
+	/**
+	 * @return self
+	 */
+	public function setValue($val)
+	{
+		$this->value = $val;
+		return $this;
+	}
+
+
+	/**
+	 * @return mixed
+	 */
+	public function getValue()
+	{
+		return $this->value;
+	}
+
+
+	/**
+	 * @param  bool
+	 * @return self
+	 */
+	public function setStatic($state = TRUE)
+	{
+		$this->static = (bool) $state;
+		return $this;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isStatic()
+	{
+		return $this->static;
+	}
+
+
+	/**
+	 * @param  string  public|protected|private
+	 * @return self
+	 */
+	public function setVisibility($val)
+	{
+		$this->visibility = (string) $val;
+		return $this;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getVisibility()
+	{
+		return $this->visibility;
+	}
+
+
+	/**
+	 * @param  string[]
+	 * @return self
+	 */
+	public function setDocuments(array $s)
+	{
+		$this->documents = $s;
+		return $this;
+	}
+
+
+	/**
+	 * @return string[]
+	 */
+	public function getDocuments()
+	{
+		return $this->documents;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return self
+	 */
+	public function addDocument($s)
+	{
+		$this->documents[] = (string) $s;
+		return $this;
 	}
 
 }

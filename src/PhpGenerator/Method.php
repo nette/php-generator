@@ -14,30 +14,6 @@ use Nette;
  * Class method description.
  *
  * @author     David Grudl
- *
- * @method Method setName(string)
- * @method string getName()
- * @method Method setParameters(Parameter[])
- * @method Parameter[] getParameters()
- * @method Method setUses(array)
- * @method array getUses()
- * @method string getBody()
- * @method Method setStatic(bool)
- * @method bool isStatic()
- * @method Method setVisibility(string)
- * @method string getVisibility()
- * @method Method setFinal(bool)
- * @method bool isFinal()
- * @method Method setAbstract(bool)
- * @method bool isAbstract()
- * @method Method setReturnReference(bool)
- * @method bool getReturnReference()
- * @method Method setVariadic(bool)
- * @method bool isVariadic()
- * @method Method setDocuments(string[])
- * @method string[] getDocuments()
- * @method Method addDocument(string)
- * @method Method setNamespace(PhpNamespace|NULL)
  */
 class Method extends Nette\Object
 {
@@ -54,22 +30,22 @@ class Method extends Nette\Object
 	private $body;
 
 	/** @var bool */
-	private $static;
+	private $static = FALSE;
 
 	/** @var string  public|protected|private or none */
 	private $visibility;
 
 	/** @var bool */
-	private $final;
+	private $final = FALSE;
 
 	/** @var bool */
-	private $abstract;
+	private $abstract = FALSE;
 
 	/** @var bool */
-	private $returnReference;
+	private $returnReference = FALSE;
 
 	/** @var bool */
-	private $variadic;
+	private $variadic = FALSE;
 
 	/** @var array of string */
 	private $documents = array();
@@ -78,7 +54,9 @@ class Method extends Nette\Object
 	private $namespace;
 
 
-	/** @return Method */
+	/**
+	 * @return self
+	 */
 	public static function from($from)
 	{
 		$from = $from instanceof \ReflectionMethod ? $from : new \ReflectionMethod($from);
@@ -99,42 +77,9 @@ class Method extends Nette\Object
 	}
 
 
-	/** @return Parameter */
-	public function addParameter($name, $defaultValue = NULL)
-	{
-		$param = new Parameter;
-		if (func_num_args() > 1) {
-			$param->setOptional(TRUE)->setDefaultValue($defaultValue);
-		}
-		return $this->parameters[$name] = $param->setName($name);
-	}
-
-
-	/** @return Parameter */
-	public function addUse($name)
-	{
-		$param = new Parameter;
-		return $this->uses[] = $param->setName($name);
-	}
-
-
-	/** @return Method */
-	public function setBody($statement, array $args = NULL)
-	{
-		$this->body = func_num_args() > 1 ? Helpers::formatArgs($statement, $args) : $statement;
-		return $this;
-	}
-
-
-	/** @return Method */
-	public function addBody($statement, array $args = NULL)
-	{
-		$this->body .= (func_num_args() > 1 ? Helpers::formatArgs($statement, $args) : $statement) . "\n";
-		return $this;
-	}
-
-
-	/** @return string  PHP code */
+	/**
+	 * @return string  PHP code
+	 */
 	public function __toString()
 	{
 		$parameters = array();
@@ -166,6 +111,284 @@ class Method extends Nette\Object
 			. ($this->uses ? ' use (' . implode(', ', $uses) . ')' : '')
 			. ($this->abstract || $this->body === FALSE ? ';'
 				: ($this->name ? "\n" : ' ') . "{\n" . Nette\Utils\Strings::indent(trim($this->body), 1) . "\n}");
+	}
+
+
+	/**
+	 * @param  string
+	 * @return self
+	 */
+	public function setName($name)
+	{
+		$this->name = (string) $name;
+		return $this;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+
+	/**
+	 * @param  Parameter[]
+	 * @return self
+	 */
+	public function setParameters(array $val)
+	{
+		foreach ($val as $v) {
+			if (!$v instanceof Parameter) {
+				throw new Exception('Argument must be Nette\PhpGenerator\Parameter[].');
+			}
+		}
+		$this->parameters = $val;
+		return $this;
+	}
+
+
+	/**
+	 * @return Parameter[]
+	 */
+	public function getParameters()
+	{
+		return $this->parameters;
+	}
+
+
+	/**
+	 * @param  string  without $
+	 * @return Parameter
+	 */
+	public function addParameter($name, $defaultValue = NULL)
+	{
+		$param = new Parameter;
+		if (func_num_args() > 1) {
+			$param->setOptional(TRUE)->setDefaultValue($defaultValue);
+		}
+		return $this->parameters[$name] = $param->setName($name);
+	}
+
+
+	/**
+	 * @return self
+	 */
+	public function setUses(array $val)
+	{
+		$this->uses = $val;
+		return $this;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getUses()
+	{
+		return $this->uses;
+	}
+
+
+	/**
+	 * @return Parameter
+	 */
+	public function addUse($name)
+	{
+		$param = new Parameter;
+		return $this->uses[] = $param->setName($name);
+	}
+
+
+	/**
+	 * @return self
+	 */
+	public function setBody($statement, array $args = NULL)
+	{
+		$this->body = func_num_args() > 1 ? Helpers::formatArgs($statement, $args) : $statement;
+		return $this;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getBody()
+	{
+		return $this->body;
+	}
+
+
+	/**
+	 * @return self
+	 */
+	public function addBody($statement, array $args = NULL)
+	{
+		$this->body .= (func_num_args() > 1 ? Helpers::formatArgs($statement, $args) : $statement) . "\n";
+		return $this;
+	}
+
+
+	/**
+	 * @param  bool
+	 * @return self
+	 */
+	public function setStatic($val)
+	{
+		$this->static = (bool) $val;
+		return $this;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isStatic()
+	{
+		return $this->static;
+	}
+
+
+	/**
+	 * @param  string  public|protected|private
+	 * @return self
+	 */
+	public function setVisibility($val)
+	{
+		$this->visibility = (string) $val;
+		return $this;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getVisibility()
+	{
+		return $this->visibility;
+	}
+
+
+	/**
+	 * @param  bool
+	 * @return self
+	 */
+	public function setFinal($val)
+	{
+		$this->final = (bool) $val;
+		return $this;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isFinal()
+	{
+		return $this->final;
+	}
+
+
+	/**
+	 * @param  bool
+	 * @return self
+	 */
+	public function setAbstract($val)
+	{
+		$this->abstract = (bool) $val;
+		return $this;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isAbstract()
+	{
+		return $this->abstract;
+	}
+
+
+	/**
+	 * @param  bool
+	 * @return self
+	 */
+	public function setReturnReference($val)
+	{
+		$this->returnReference = (bool) $val;
+		return $this;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function getReturnReference()
+	{
+		return $this->returnReference;
+	}
+
+
+	/**
+	 * @param  bool
+	 * @return self
+	 */
+	public function setVariadic($val)
+	{
+		$this->variadic = (bool) $val;
+		return $this;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isVariadic()
+	{
+		return $this->variadic;
+	}
+
+
+	/**
+	 * @param  string[]
+	 * @return self
+	 */
+	public function setDocuments(array $val)
+	{
+		$this->documents = $val;
+		return $this;
+	}
+
+
+	/**
+	 * @return string[]
+	 */
+	public function getDocuments()
+	{
+		return $this->documents;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return self
+	 */
+	public function addDocument($val)
+	{
+		$this->documents[] = (string) $val;
+		return $this;
+	}
+
+
+	/**
+	 * @return self
+	 */
+	public function setNamespace(PhpNamespace $val = NULL)
+	{
+		$this->namespace = $val;
+		return $this;
 	}
 
 }
