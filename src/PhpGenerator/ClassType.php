@@ -291,6 +291,7 @@ class ClassType extends Nette\Object
 	 */
 	public function addExtend($type)
 	{
+		$this->extends = (array) $this->extends;
 		$this->extends[] = (string) $type;
 		return $this;
 	}
@@ -428,7 +429,7 @@ class ClassType extends Nette\Object
 	{
 		foreach ($props as $v) {
 			if (!$v instanceof Property) {
-				throw new Exception('Argument must be Nette\PhpGenerator\Property[].');
+				throw new Nette\InvalidArgumentException('Argument must be Nette\PhpGenerator\Property[].');
 			}
 		}
 		$this->properties = $props;
@@ -465,7 +466,7 @@ class ClassType extends Nette\Object
 	{
 		foreach ($methods as $v) {
 			if (!$v instanceof Method) {
-				throw new Exception('Argument must be Nette\PhpGenerator\Method[].');
+				throw new Nette\InvalidArgumentException('Argument must be Nette\PhpGenerator\Method[].');
 			}
 		}
 		$this->methods = $methods;

@@ -142,7 +142,7 @@ class Method extends Nette\Object
 	{
 		foreach ($val as $v) {
 			if (!$v instanceof Parameter) {
-				throw new Exception('Argument must be Nette\PhpGenerator\Parameter[].');
+				throw new Nette\InvalidArgumentException('Argument must be Nette\PhpGenerator\Parameter[].');
 			}
 		}
 		$this->parameters = $val;
