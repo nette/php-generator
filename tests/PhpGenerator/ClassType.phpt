@@ -34,14 +34,18 @@ $class->addProperty('handle')
 $class->addProperty('order')
 	->setValue(new PhpLiteral('RecursiveIteratorIterator::SELF_FIRST'));
 
-$class->addProperty('sections', array('first' => TRUE))
+$p = $class->addProperty('sections', array('first' => TRUE))
 	->setStatic(TRUE);
 
-$class->addMethod('getHandle')
+Assert::same($p, $class->getProperty('sections'));
+
+$m = $class->addMethod('getHandle')
 	->addDocument('Returns file handle.')
 	->addDocument('@return resource')
 	->setFinal(TRUE)
 	->setBody('return $this->?;', array('handle'));
+
+Assert::same($m, $class->getMethod('getHandle'));
 
 $class->addMethod('getSections')
 	->setStatic(TRUE)

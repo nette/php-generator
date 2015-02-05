@@ -447,6 +447,18 @@ class ClassType extends Nette\Object
 
 
 	/**
+	 * @return Property
+	 */
+	public function getProperty($name)
+	{
+		if (!isset($this->properties[$name])) {
+			throw new Nette\InvalidArgumentException("Property '$name' not found.");
+		}
+		return $this->properties[$name];
+	}
+
+
+	/**
 	 * @param  string  without $
 	 * @param  mixed
 	 * @return Property
@@ -480,6 +492,18 @@ class ClassType extends Nette\Object
 	public function getMethods()
 	{
 		return $this->methods;
+	}
+
+
+	/**
+	 * @return Method
+	 */
+	public function getMethod($name)
+	{
+		if (!isset($this->methods[$name])) {
+			throw new Nette\InvalidArgumentException("Method '$name' not found.");
+		}
+		return $this->methods[$name];
 	}
 
 
