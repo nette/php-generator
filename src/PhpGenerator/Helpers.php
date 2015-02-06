@@ -58,6 +58,9 @@ class Helpers
 			}
 			return '"' . strtr($var, $table) . '"';
 
+		} elseif (is_string($var)) {
+			return "'" . preg_replace('#\'|\\\\(?=[\'\\\\]|\z)#', '\\\\$0', $var) . "'";
+
 		} elseif (is_array($var)) {
 			$space = str_repeat("\t", $level);
 
