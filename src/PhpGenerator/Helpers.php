@@ -160,15 +160,22 @@ class Helpers
 				if (!is_array($arg)) {
 					throw new Nette\InvalidArgumentException('Argument must be an array.');
 				}
-				$arg = implode(', ', array_map(array(__CLASS__, 'dump'), $arg));
-				$statement = substr_replace($statement, $arg, $a, 2);
+				$s = substr($statement, 0, $a);
+				$sep = '';
+				foreach ($arg as $tmp) {
+					$s .= $sep . self::dump($tmp);
+					$sep = strlen($s) - strrpos($s, "\n") > 100 ? ",\n\t" : ', ';
+				}
+				$statement = $s . substr($statement, $a + 2);
+				$a = strlen($s);
 
 			} else {
 				$arg = substr($statement, $a - 1, 1) === '$' || in_array(substr($statement, $a - 2, 2), array('->', '::'), TRUE)
 					? self::formatMember($arg) : self::_dump($arg);
 				$statement = substr_replace($statement, $arg, $a, 1);
+				$a += strlen($arg);
 			}
-			$a = strpos($statement, '?', $a + strlen($arg));
+			$a = strpos($statement, '?', $a);
 		}
 		return $statement;
 	}
