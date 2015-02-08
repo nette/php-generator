@@ -32,7 +32,7 @@ class Method extends Nette\Object
 	/** @var bool */
 	private $static = FALSE;
 
-	/** @var string  public|protected|private or none */
+	/** @var string|NULL  public|protected|private */
 	private $visibility;
 
 	/** @var bool */
@@ -252,11 +252,14 @@ class Method extends Nette\Object
 
 
 	/**
-	 * @param  string  public|protected|private
+	 * @param  string|NULL  public|protected|private
 	 * @return self
 	 */
 	public function setVisibility($val)
 	{
+		if (!in_array($val, array('public', 'protected', 'private', NULL), TRUE)) {
+			throw new Nette\InvalidArgumentException('Argument must be public|protected|private|NULL.');
+		}
 		$this->visibility = (string) $val;
 		return $this;
 	}

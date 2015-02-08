@@ -515,7 +515,7 @@ class ClassType extends Nette\Object
 	{
 		$method = new Method;
 		if ($this->type === 'interface') {
-			$method->setVisibility('')->setBody(FALSE);
+			$method->setVisibility(NULL)->setBody(FALSE);
 		} else {
 			$method->setVisibility('public');
 		}
