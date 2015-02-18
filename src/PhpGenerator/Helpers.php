@@ -215,7 +215,7 @@ class Helpers
 	 */
 	public static function extractNamespace($name)
 	{
-		return ($pos = strrpos($name, '\\')) ? substr($name, 0, $pos) : NULL;
+		return ($pos = strrpos($name, '\\')) ? substr($name, 0, $pos) : '';
 	}
 
 

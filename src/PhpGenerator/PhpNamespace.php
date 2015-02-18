@@ -39,7 +39,7 @@ class PhpNamespace extends Object
 
 	public function __construct($name = NULL)
 	{
-		$this->name = $name;
+		$this->setName($name);
 	}
 
 
@@ -58,7 +58,7 @@ class PhpNamespace extends Object
 	 */
 	public function setName($name)
 	{
-		$this->name = $name;
+		$this->name = (string) $name;
 		return $this;
 	}
 
