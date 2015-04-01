@@ -22,5 +22,5 @@ after_failure:
 
 before_script:
     # Install Nette Tester & Code Checker
-    - composer install --no-interaction --dev --prefer-source
+    - composer install --no-interaction --prefer-source
     - composer create-project nette/code-checker code-checker ~2.3 --no-interaction --prefer-source
