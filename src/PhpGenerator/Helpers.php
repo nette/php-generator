@@ -89,7 +89,7 @@ class Helpers
 				}
 				unset($var[$marker]);
 			}
-			return 'array(' . (strpos($out, "\n") === FALSE && strlen($out) < 40 ? $out : $outAlt) . ')';
+			return '[' . (strpos($out, "\n") === FALSE && strlen($out) < 40 ? $out : $outAlt) . ']';
 
 		} elseif ($var instanceof \Serializable) {
 			$var = serialize($var);
@@ -121,8 +121,8 @@ class Helpers
 				$out .= $space;
 			}
 			return $class === 'stdClass'
-				? "(object) array($out)"
-				: __CLASS__ . "::createObject('$class', array($out))";
+				? "(object) [$out]"
+				: __CLASS__ . "::createObject('$class', [$out])";
 
 		} elseif (is_resource($var)) {
 			throw new Nette\InvalidArgumentException('Cannot dump resource.');

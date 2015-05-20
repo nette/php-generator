@@ -16,7 +16,7 @@ Assert::same( 'func(1)', Helpers::format('func(?)', 1, 2) );
 
 Assert::same( 'func', Helpers::formatArgs('func', [1, 2]) );
 Assert::same( 'func(1)', Helpers::formatArgs('func(?)', [1, 2]) );
-Assert::same( "func(array(1, 2))", Helpers::formatArgs('func(?)', [[1, 2]]) );
+Assert::same( "func([1, 2])", Helpers::formatArgs('func(?)', [[1, 2]]) );
 Assert::same( 'func(1, 2)', Helpers::formatArgs('func(?*)', [[1, 2]]) );
 Assert::same(
 	"func(10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34,\n\t35, 36, 37, 38, 39, 40)",
