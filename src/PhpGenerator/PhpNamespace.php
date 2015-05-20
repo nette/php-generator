@@ -31,10 +31,10 @@ class PhpNamespace extends Object
 	private $bracketedSyntax = FALSE;
 
 	/** @var string[] */
-	private $uses = array();
+	private $uses = [];
 
 	/** @var ClassType[] */
-	private $classes = array();
+	private $classes = [];
 
 
 	public function __construct($name = NULL)
@@ -204,7 +204,7 @@ class PhpNamespace extends Object
 	 */
 	public function __toString()
 	{
-		$uses = array();
+		$uses = [];
 		asort($this->uses);
 		foreach ($this->uses as $alias => $name) {
 			$useNamespace = Helpers::extractNamespace($name);

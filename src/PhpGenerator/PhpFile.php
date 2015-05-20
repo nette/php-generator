@@ -27,7 +27,7 @@ class PhpFile extends Object
 	private $documents;
 
 	/** @var PhpNamespace[] */
-	private $namespaces = array();
+	private $namespaces = [];
 
 
 	/**

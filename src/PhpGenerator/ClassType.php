@@ -40,25 +40,25 @@ class ClassType extends Nette\Object
 	private $abstract = FALSE;
 
 	/** @var strings|string[] */
-	private $extends = array();
+	private $extends = [];
 
 	/** @var string[] */
-	private $implements = array();
+	private $implements = [];
 
 	/** @var string[] */
-	private $traits = array();
+	private $traits = [];
 
 	/** @var string[] */
-	private $documents = array();
+	private $documents = [];
 
 	/** @var array name => value */
-	private $consts = array();
+	private $consts = [];
 
 	/** @var Property[] name => Property */
-	private $properties = array();
+	private $properties = [];
 
 	/** @var Method[] name => Method */
-	private $methods = array();
+	private $methods = [];
 
 
 	/**
@@ -113,12 +113,12 @@ class ClassType extends Nette\Object
 	 */
 	public function __toString()
 	{
-		$consts = array();
+		$consts = [];
 		foreach ($this->consts as $name => $value) {
 			$consts[] = "const $name = " . Helpers::dump($value) . ";\n";
 		}
 
-		$properties = array();
+		$properties = [];
 		foreach ($this->properties as $property) {
 			$doc = str_replace("\n", "\n * ", implode("\n", (array) $property->getDocuments()));
 			$properties[] = ($property->getDocuments() ? (strpos($doc, "\n") === FALSE ? "/** $doc */\n" : "/**\n * $doc\n */\n") : '')
@@ -127,7 +127,7 @@ class ClassType extends Nette\Object
 				. ";\n";
 		}
 
-		$extends = $implements = $traits = array();
+		$extends = $implements = $traits = [];
 		if ($this->namespace) {
 			foreach ((array) $this->extends as $name) {
 				$extends[] = $this->namespace->unresolveName($name);
@@ -205,7 +205,7 @@ class ClassType extends Nette\Object
 	 */
 	public function setType($type)
 	{
-		if (!in_array($type, array('class', 'interface', 'trait'), TRUE)) {
+		if (!in_array($type, ['class', 'interface', 'trait'], TRUE)) {
 			throw new Nette\InvalidArgumentException('Argument must be class|interface|trait.');
 		}
 		$this->type = $type;

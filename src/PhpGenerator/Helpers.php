@@ -100,7 +100,7 @@ class Helpers
 			$space = str_repeat("\t", $level);
 			$class = get_class($var);
 
-			static $list = array();
+			static $list = [];
 			if ($level > self::MAX_DEPTH || in_array($var, $list, TRUE)) {
 				throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
 
@@ -170,7 +170,7 @@ class Helpers
 				$a = strlen($s);
 
 			} else {
-				$arg = substr($statement, $a - 1, 1) === '$' || in_array(substr($statement, $a - 2, 2), array('->', '::'), TRUE)
+				$arg = substr($statement, $a - 1, 1) === '$' || in_array(substr($statement, $a - 2, 2), ['->', '::'], TRUE)
 					? self::formatMember($arg) : self::_dump($arg);
 				$statement = substr_replace($statement, $arg, $a, 1);
 				$a += strlen($arg);

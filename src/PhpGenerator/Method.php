@@ -21,10 +21,10 @@ class Method extends Nette\Object
 	private $name;
 
 	/** @var array of name => Parameter */
-	private $parameters = array();
+	private $parameters = [];
 
 	/** @var array of name => bool */
-	private $uses = array();
+	private $uses = [];
 
 	/** @var string|FALSE */
 	private $body;
@@ -48,7 +48,7 @@ class Method extends Nette\Object
 	private $variadic = FALSE;
 
 	/** @var array of string */
-	private $documents = array();
+	private $documents = [];
 
 	/** @var PhpNamespace */
 	private $namespace;
@@ -82,10 +82,10 @@ class Method extends Nette\Object
 	 */
 	public function __toString()
 	{
-		$parameters = array();
+		$parameters = [];
 		foreach ($this->parameters as $param) {
 			$variadic = $this->variadic && $param === end($this->parameters);
-			$hint = in_array($param->getTypeHint(), array('array', ''))
+			$hint = in_array($param->getTypeHint(), ['array', ''])
 				? $param->getTypeHint()
 				: ($this->namespace ? $this->namespace->unresolveName($param->getTypeHint()) : $param->getTypeHint());
 
@@ -95,7 +95,7 @@ class Method extends Nette\Object
 				. '$' . $param->getName()
 				. ($param->isOptional() && !$variadic ? ' = ' . Helpers::dump($param->defaultValue) : '');
 		}
-		$uses = array();
+		$uses = [];
 		foreach ($this->uses as $param) {
 			$uses[] = ($param->isReference() ? '&' : '') . '$' . $param->getName();
 		}
@@ -257,7 +257,7 @@ class Method extends Nette\Object
 	 */
 	public function setVisibility($val)
 	{
-		if (!in_array($val, array('public', 'protected', 'private', NULL), TRUE)) {
+		if (!in_array($val, ['public', 'protected', 'private', NULL], TRUE)) {
 			throw new Nette\InvalidArgumentException('Argument must be public|protected|private|NULL.');
 		}
 		$this->visibility = (string) $val;

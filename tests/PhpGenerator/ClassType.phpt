@@ -34,7 +34,7 @@ $class->addProperty('handle')
 $class->addProperty('order')
 	->setValue(new PhpLiteral('RecursiveIteratorIterator::SELF_FIRST'));
 
-$p = $class->addProperty('sections', array('first' => TRUE))
+$p = $class->addProperty('sections', ['first' => TRUE])
 	->setStatic(TRUE);
 
 Assert::same($p, $class->getProperty('sections'));
@@ -43,7 +43,7 @@ $m = $class->addMethod('getHandle')
 	->addDocument('Returns file handle.')
 	->addDocument('@return resource')
 	->setFinal(TRUE)
-	->setBody('return $this->?;', array('handle'));
+	->setBody('return $this->?;', ['handle']);
 
 Assert::same($m, $class->getMethod('getHandle'));
 
@@ -51,7 +51,7 @@ $class->addMethod('getSections')
 	->setStatic(TRUE)
 	->setVisibility('protected')
 	->setReturnReference(TRUE)
-	->addBody('$mode = ?;', array(123))
+	->addBody('$mode = ?;', [123])
 	->addBody('return self::$sections;')
 	->addParameter('mode', new PhpLiteral('self::ORDER'));
 

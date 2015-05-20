@@ -30,7 +30,7 @@ class Property extends Nette\Object
 	private $visibility = 'public';
 
 	/** @var array of string */
-	private $documents = array();
+	private $documents = [];
 
 
 	/**
@@ -114,7 +114,7 @@ class Property extends Nette\Object
 	 */
 	public function setVisibility($val)
 	{
-		if (!in_array($val, array('public', 'protected', 'private'), TRUE)) {
+		if (!in_array($val, ['public', 'protected', 'private'], TRUE)) {
 			throw new Nette\InvalidArgumentException('Argument must be public|protected|private.');
 		}
 		$this->visibility = (string) $val;

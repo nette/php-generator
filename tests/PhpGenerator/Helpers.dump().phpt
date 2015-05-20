@@ -24,17 +24,17 @@ Assert::same( "'I\xc3\xb1t\xc3\xabrn\xc3\xa2ti\xc3\xb4n\xc3\xa0liz\xc3\xa6ti\xc3
 Assert::same( '"\rHello \$"', Helpers::dump("\rHello $") );
 Assert::same( "'He\\llo'", Helpers::dump('He\llo') );
 Assert::same( '\'He\ll\\\\\o \\\'wor\\\\\\\'ld\\\\\'', Helpers::dump('He\ll\\\o \'wor\\\'ld\\') );
-Assert::same( 'array()', Helpers::dump(array()) );
+Assert::same( 'array()', Helpers::dump([]) );
 
-Assert::same( "array(\$s)", Helpers::dump(array(new PhpLiteral('$s'))) );
+Assert::same( "array(\$s)", Helpers::dump([new PhpLiteral('$s')]) );
 
-Assert::same( "array(1, 2, 3)", Helpers::dump(array(1,2,3)) );
-Assert::same( "array('a', 7 => 'b', 'c', '9a' => 'd', 'e')", Helpers::dump(array('a', 7 => 'b', 'c', '9a' => 'd', 9 => 'e')) );
-Assert::same( "array(\n\tarray(\n\t\t'a',\n\t\t'loooooooooooooooooooooooooooooooooong',\n\t),\n)", Helpers::dump(array(array('a', 'loooooooooooooooooooooooooooooooooong'))) );
-Assert::same( "array('a' => 1, array(\"\\r\" => \"\\r\", 2), 3)", Helpers::dump(array('a' => 1, array("\r" => "\r", 2), 3)) );
+Assert::same( "array(1, 2, 3)", Helpers::dump([1,2,3]) );
+Assert::same( "array('a', 7 => 'b', 'c', '9a' => 'd', 'e')", Helpers::dump(['a', 7 => 'b', 'c', '9a' => 'd', 9 => 'e']) );
+Assert::same( "array(\n\tarray(\n\t\t'a',\n\t\t'loooooooooooooooooooooooooooooooooong',\n\t),\n)", Helpers::dump([['a', 'loooooooooooooooooooooooooooooooooong']]) );
+Assert::same( "array('a' => 1, array(\"\\r\" => \"\\r\", 2), 3)", Helpers::dump(['a' => 1, ["\r" => "\r", 2], 3]) );
 
-Assert::same( "(object) array(\n\t'a' => 1,\n\t'b' => 2,\n)", Helpers::dump((object) array('a' => 1, 'b' => 2)) );
-Assert::same( "(object) array(\n\t'a' => (object) array(\n\t\t'b' => 2,\n\t),\n)" , Helpers::dump((object) array('a' => (object) array('b' => 2))) );
+Assert::same( "(object) array(\n\t'a' => 1,\n\t'b' => 2,\n)", Helpers::dump((object) ['a' => 1, 'b' => 2]) );
+Assert::same( "(object) array(\n\t'a' => (object) array(\n\t\t'b' => 2,\n\t),\n)" , Helpers::dump((object) ['a' => (object) ['b' => 2]]) );
 
 
 class Test
@@ -55,7 +55,7 @@ class Test2 extends Test
 
 	function __sleep()
 	{
-		return array('c', 'b', 'a');
+		return ['c', 'b', 'a'];
 	}
 
 	function __wakeup()
