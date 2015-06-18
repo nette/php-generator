@@ -1,8 +1,8 @@
 <?php
 
-use Nette\PhpGenerator\ClassType,
-	ReflectionClass,
-	Tester\Assert;
+use Nette\PhpGenerator\ClassType;
+use ReflectionClass;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -14,7 +14,9 @@ class A
 	protected $b;
 	private $c;
 
-	function foo() {}
+	function foo()
+	{
+	}
 }
 
 
@@ -24,7 +26,10 @@ class B extends A
 	protected $e;
 	private $f;
 
-	function bar() { return 3; }
+	function bar()
+	{
+		return 3;
+	}
 }
 
 

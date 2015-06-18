@@ -5,9 +5,9 @@
  * @phpversion 5.6
  */
 
-use Nette\PhpGenerator\Method,
-	Nette\PhpGenerator\Parameter,
-	Tester\Assert;
+use Nette\PhpGenerator\Method;
+use Nette\PhpGenerator\Parameter;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';

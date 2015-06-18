@@ -5,8 +5,8 @@
  * @phpversion 5.4
  */
 
-use Nette\PhpGenerator\ClassType,
-	Tester\Assert;
+use Nette\PhpGenerator\ClassType;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
