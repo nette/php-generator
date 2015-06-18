@@ -6,9 +6,9 @@
 
 namespace Abc;
 
-use Nette\PhpGenerator\ClassType,
-	ReflectionClass,
-	Tester\Assert;
+use Nette\PhpGenerator\ClassType;
+use ReflectionClass;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';

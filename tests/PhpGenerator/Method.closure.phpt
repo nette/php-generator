@@ -4,8 +4,8 @@
  * Test: Nette\PhpGenerator & closure.
  */
 
-use Nette\PhpGenerator\Method,
-	Tester\Assert;
+use Nette\PhpGenerator\Method;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
