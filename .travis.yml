@@ -12,6 +12,10 @@ matrix:
         - php: 7.0
         - php: hhvm
 
+    include:
+        - php: 5.6
+          env: dependencies="--prefer-lowest --prefer-stable"
+
 script:
     - vendor/bin/tester tests -s -p php
     - php code-checker/src/code-checker.php
@@ -22,5 +26,5 @@ after_failure:
 
 before_script:
     # Install Nette Tester & Code Checker
-    - composer install --no-interaction --prefer-source
+    - composer update --no-interaction --prefer-source $dependencies
     - composer create-project nette/code-checker code-checker ~2.3 --no-interaction --prefer-source
