@@ -7,8 +7,6 @@
 
 namespace Nette\PhpGenerator;
 
-use Nette;
-
 
 /**
  * PHP literal value.
