@@ -19,8 +19,6 @@ use Nette\Utils\Strings;
  * - namespace statement
  * - variable amount of use statements
  * - one or more class declarations
- *
- * @author Jakub Kulhan <jakub.kulhan@gmail.com>
  */
 class PhpNamespace extends Object
 {

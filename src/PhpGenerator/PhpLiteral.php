@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * PHP literal value.
- *
- * @author     David Grudl
  */
 class PhpLiteral
 {

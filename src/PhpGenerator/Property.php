@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * Class property description.
- *
- * @author     David Grudl
  */
 class Property extends Nette\Object
 {
