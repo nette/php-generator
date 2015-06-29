@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * Class method description.
- *
- * @author     David Grudl
  */
 class Method extends Nette\Object
 {

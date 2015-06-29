@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * Method parameter description.
- *
- * @author     David Grudl
  */
 class Parameter extends Nette\Object
 {

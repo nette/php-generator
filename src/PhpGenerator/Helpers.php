@@ -12,8 +12,6 @@ use Nette;
 
 /**
  * PHP code generator utils.
- *
- * @author     David Grudl
  */
 class Helpers
 {

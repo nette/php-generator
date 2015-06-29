@@ -18,8 +18,6 @@ use Nette\Utils\Strings;
  * - opening tag (<?php)
  * - doc comments
  * - one or more namespaces
- *
- * @author Jakub Kulhan <jakub.kulhan@gmail.com>
  */
 class PhpFile extends Object
 {
