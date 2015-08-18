@@ -51,6 +51,9 @@ class Method extends Nette\Object
 	/** @var PhpNamespace|NULL */
 	private $namespace;
 
+	/** @var string|NULL */
+	private $returnType;
+
 
 	/**
 	 * @return self
@@ -79,6 +82,9 @@ class Method extends Nette\Object
 		$method->returnReference = $from->returnsReference();
 		$method->variadic = PHP_VERSION_ID >= 50600 && $from->isVariadic();
 		$method->documents = $from->getDocComment() ? array(preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t"))) : array();
+		if (PHP_VERSION_ID >= 70000 && $from->hasReturnType()) {
+			$method->returnType = (string) $from->getReturnType();
+		}
 		return $method;
 	}
 
@@ -123,6 +129,7 @@ class Method extends Nette\Object
 			. ' ' . $this->name
 			. '(' . implode(', ', $parameters) . ')'
 			. ($this->uses ? ' use (' . implode(', ', $uses) . ')' : '')
+			. ($this->returnType ? ': ' . $namespace->unresolveName($this->returnType) : '')
 			. ($this->abstract || $this->body === FALSE ? ';'
 				: ($this->name ? "\n" : ' ') . "{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}');
 	}
@@ -406,6 +413,26 @@ class Method extends Nette\Object
 	{
 		$this->namespace = $val;
 		return $this;
+	}
+
+
+	/**
+	 * @param  string|NULL
+	 * @return self
+	 */
+	public function setReturnType($val)
+	{
+		$this->returnType = $val ? (string) $val : NULL;
+		return $this;
+	}
+
+
+	/**
+	 * @return string|NULL
+	 */
+	public function getReturnType()
+	{
+		return $this->returnType;
 	}
 
 }

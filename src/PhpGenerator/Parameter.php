@@ -38,7 +38,9 @@ class Parameter extends Nette\Object
 	{
 		$param = new static($from->getName());
 		$param->reference = $from->isPassedByReference();
-		if ($from->isArray()) {
+		if (PHP_VERSION_ID >= 70000) {
+			$param->typeHint = $from->hasType() ? (string) $from->getType() : NULL;
+		} elseif ($from->isArray()) {
 			$param->typeHint = 'array';
 		} elseif (PHP_VERSION_ID >= 50400 && $from->isCallable()) {
 			$param->typeHint = 'callable';
