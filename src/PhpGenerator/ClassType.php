@@ -125,24 +125,13 @@ class ClassType extends Nette\Object
 				. ";\n";
 		}
 
-		$extends = $implements = $traits = [];
+		$extends = (array) $this->extends;
+		$implements = $this->implements;
+		$traits = $this->traits;
 		if ($this->namespace) {
-			foreach ((array) $this->extends as $name) {
-				$extends[] = $this->namespace->unresolveName($name);
-			}
-
-			foreach ((array) $this->implements as $name) {
-				$implements[] = $this->namespace->unresolveName($name);
-			}
-
-			foreach ((array) $this->traits as $name) {
-				$traits[] = $this->namespace->unresolveName($name);
-			}
-
-		} else {
-			$extends = (array) $this->extends;
-			$implements = (array) $this->implements;
-			$traits = (array) $this->traits;
+			$extends = array_map([$this->namespace, 'unresolveName'], $extends);
+			$implements = array_map([$this->namespace, 'unresolveName'], $implements);
+			$traits = array_map([$this->namespace, 'unresolveName'], $traits);
 		}
 
 		foreach ($this->methods as $method) {
@@ -155,11 +144,11 @@ class ClassType extends Nette\Object
 			. ($this->final ? 'final ' : '')
 			. $this->type . ' '
 			. $this->name . ' '
-			. ($this->extends ? 'extends ' . implode(', ', $extends) . ' ' : '')
-			. ($this->implements ? 'implements ' . implode(', ', $implements) . ' ' : '')
+			. ($extends ? 'extends ' . implode(', ', $extends) . ' ' : '')
+			. ($implements ? 'implements ' . implode(', ', $implements) . ' ' : '')
 			. "\n{\n"
 			. Strings::indent(
-				($this->traits ? 'use ' . implode(', ', $traits) . ";\n\n" : '')
+				($traits ? 'use ' . implode(', ', $traits) . ";\n\n" : '')
 				. ($this->consts ? implode('', $consts) . "\n" : '')
 				. ($this->properties ? implode("\n", $properties) . "\n" : '')
 				. ($this->methods ? "\n" . implode("\n\n\n", $this->methods) . "\n\n" : ''), 1)
