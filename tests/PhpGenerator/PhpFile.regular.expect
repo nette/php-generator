@@ -9,25 +9,16 @@ namespace Foo;
 
 class A implements A, \Bar\C
 {
-
 	use C, \Bar\D;
-
-
 
 }
 
 interface B
 {
-
-
-
 }
 
 trait C
 {
-
-
-
 }
 
 
@@ -35,25 +26,16 @@ namespace Bar;
 
 class B extends \Foo\A implements \Foo\B
 {
-
 	use \Foo\C;
-
-
 
 }
 
 interface C
 {
-
-
-
 }
 
 trait D
 {
-
-
-
 }
 
 
@@ -61,21 +43,12 @@ namespace Baz;
 
 class E
 {
-
-
-
 }
 
 interface F extends \Foo\B, \Bar\C
 {
-
-
-
 }
 
 trait G
 {
-
-
-
 }
