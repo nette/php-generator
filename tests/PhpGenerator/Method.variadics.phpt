@@ -69,7 +69,7 @@ $method = (new Method)
 	->setBody('return 42;');
 $method->addParameter('foo');
 $method->addParameter('bar');
-$method->addParameter('baz', []);
+$method->addParameter('baz', array());
 
 Assert::match(
 'function variadic($foo, $bar, ...$baz)

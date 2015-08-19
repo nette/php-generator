@@ -39,13 +39,19 @@ class Parameter extends Nette\Object
 		$param = new static;
 		$param->name = $from->getName();
 		$param->reference = $from->isPassedByReference();
-		try {
-			$param->typeHint = $from->isArray() ? 'array' : ($from->getClass() ? '\\' . $from->getClass()->getName() : '');
-		} catch (\ReflectionException $e) {
-			if (preg_match('#Class (.+) does not exist#', $e->getMessage(), $m)) {
-				$param->typeHint = '\\' . $m[1];
-			} else {
-				throw $e;
+		if ($from->isArray()) {
+			$param->typeHint = 'array';
+		} elseif (PHP_VERSION_ID >= 50400 && $from->isCallable()) {
+			$param->typeHint = 'callable';
+		} else {
+			try {
+				$param->typeHint = $from->getClass() ? '\\' . $from->getClass()->getName() : '';
+			} catch (\ReflectionException $e) {
+				if (preg_match('#Class (.+) does not exist#', $e->getMessage(), $m)) {
+					$param->typeHint = '\\' . $m[1];
+				} else {
+					throw $e;
+				}
 			}
 		}
 		$param->optional = PHP_VERSION_ID < 50407 ? $from->isOptional() || ($param->typeHint && $from->allowsNull()) : $from->isDefaultValueAvailable();
