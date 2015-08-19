@@ -36,10 +36,13 @@ Assert::exception(function () use ($namespace) {
 $classA
 	->addImplement('Foo\\A')
 	->addImplement('Bar\\C')
-	->addTrait('Bar\\D')
-	->addMethod('test')
-		->addParameter('test')
-			->setTypeHint('Bar\C');
+	->addTrait('Bar\\D');
 
+$method = $classA->addMethod('test');
+$method->addParameter('a')->setTypeHint('Bar\C');
+$method->addParameter('b')->setTypeHint('self');
+$method->addParameter('c')->setTypeHint('parent');
+$method->addParameter('d')->setTypeHint('array');
+$method->addParameter('e')->setTypeHint('callable');
 
 Assert::matchFile(__DIR__ . '/PhpNamespace.expect', (string) $namespace);
