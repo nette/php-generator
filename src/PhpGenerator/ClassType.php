@@ -334,6 +334,36 @@ class ClassType extends Nette\Object
 
 
 	/**
+	 * @param  string|NULL
+	 * @return self
+	 */
+	public function setComment($val)
+	{
+		$this->documents = $val ? array((string) $val) : array();
+		return $this;
+	}
+
+
+	/**
+	 * @return string|NULL
+	 */
+	public function getComment()
+	{
+		return implode($this->documents) ?: NULL;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return self
+	 */
+	public function addComment($val)
+	{
+		return $this->addDocument($val);
+	}
+
+
+	/**
 	 * @param  string[]
 	 * @return self
 	 */

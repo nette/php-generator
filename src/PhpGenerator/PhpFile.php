@@ -29,11 +29,32 @@ class PhpFile extends Object
 
 
 	/**
-	 * @return string[]
+	 * @param  string|NULL
+	 * @return self
 	 */
-	public function getDocuments()
+	public function setComment($val)
 	{
-		return $this->documents;
+		$this->documents = $val ? array((string) $val) : array();
+		return $this;
+	}
+
+
+	/**
+	 * @return string|NULL
+	 */
+	public function getComment()
+	{
+		return implode($this->documents) ?: NULL;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return self
+	 */
+	public function addComment($val)
+	{
+		return $this->addDocument($val);
 	}
 
 
@@ -45,6 +66,15 @@ class PhpFile extends Object
 	{
 		$this->documents = $documents;
 		return $this;
+	}
+
+
+	/**
+	 * @return string[]
+	 */
+	public function getDocuments()
+	{
+		return $this->documents;
 	}
 
 
