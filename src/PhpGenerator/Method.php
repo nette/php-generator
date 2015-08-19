@@ -15,7 +15,7 @@ use Nette;
  */
 class Method extends Nette\Object
 {
-	/** @var string */
+	/** @var string|NULL */
 	private $name;
 
 	/** @var array of name => Parameter */
@@ -25,7 +25,7 @@ class Method extends Nette\Object
 	private $uses = [];
 
 	/** @var string|FALSE */
-	private $body;
+	private $body = '';
 
 	/** @var bool */
 	private $static = FALSE;
@@ -45,13 +45,13 @@ class Method extends Nette\Object
 	/** @var bool */
 	private $variadic = FALSE;
 
-	/** @var array of string */
+	/** @var string[] */
 	private $documents = [];
 
 	/** @var PhpNamespace|NULL */
 	private $namespace;
 
-	/** @var string */
+	/** @var string|NULL */
 	private $returnType;
 
 
@@ -67,7 +67,7 @@ class Method extends Nette\Object
 			$method->parameters[$param->getName()] = Parameter::from($param);
 		}
 		$method->static = $from->isStatic();
-		$method->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : '');
+		$method->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : NULL);
 		$method->final = $from->isFinal();
 		$method->abstract = $from->isAbstract() && !$from->getDeclaringClass()->isInterface();
 		$method->body = $from->isAbstract() ? FALSE : '';
@@ -87,7 +87,7 @@ class Method extends Nette\Object
 	 */
 	public function __toString()
 	{
-		static $builtinTypes = ['array', 'self', 'parent', 'callable', 'string', 'bool', 'float', 'int', ''];
+		static $builtinTypes = ['array', 'self', 'parent', 'callable', 'string', 'bool', 'float', 'int', NULL];
 		$parameters = [];
 		foreach ($this->parameters as $param) {
 			$variadic = $this->variadic && $param === end($this->parameters);
@@ -105,7 +105,7 @@ class Method extends Nette\Object
 		foreach ($this->uses as $param) {
 			$uses[] = ($param->isReference() ? '&' : '') . '$' . $param->getName();
 		}
-		$returnType = !$this->namespace || in_array($this->returnType, $builtinTypes)
+		$returnType = !$this->namespace || in_array($this->returnType, $builtinTypes, TRUE)
 			? $this->returnType
 			: $this->namespace->unresolveName($this->returnType);
 		return ($this->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", $this->documents)) . "\n */\n" : '')
@@ -125,18 +125,18 @@ class Method extends Nette\Object
 
 
 	/**
-	 * @param  string
+	 * @param  string|NULL
 	 * @return self
 	 */
 	public function setName($name)
 	{
-		$this->name = (string) $name;
+		$this->name = $name ? (string) $name : NULL;
 		return $this;
 	}
 
 
 	/**
-	 * @return string
+	 * @return string|NULL
 	 */
 	public function getName()
 	{
@@ -270,7 +270,7 @@ class Method extends Nette\Object
 		if (!in_array($val, ['public', 'protected', 'private', NULL], TRUE)) {
 			throw new Nette\InvalidArgumentException('Argument must be public|protected|private|NULL.');
 		}
-		$this->visibility = (string) $val;
+		$this->visibility = $val ? (string) $val : NULL;
 		return $this;
 	}
 
@@ -405,18 +405,18 @@ class Method extends Nette\Object
 	}
 
 	/**
-	 * @param  string
+	 * @param  string|NULL
 	 * @return self
 	 */
 	public function setReturnType($val)
 	{
-		$this->returnType = (string) $val;
+		$this->returnType = $val ? (string) $val : NULL;
 		return $this;
 	}
 
 
 	/**
-	 * @return string
+	 * @return string|NULL
 	 */
 	public function getReturnType()
 	{
