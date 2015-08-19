@@ -20,8 +20,8 @@ $class
 	->addImplement('IExample')
 	->addImplement('IOne')
 	->addTrait('ObjectTrait')
-	->addDocument("Description of class.\nThis is example\n")
-	->addDocument('@property-read Nette\Forms\Form $form');
+	->addComment("Description of class.\nThis is example\n")
+	->addComment('@property-read Nette\Forms\Form $form');
 
 $class
 	->addConst('ROLE', 'admin')
@@ -29,7 +29,7 @@ $class
 
 $class->addProperty('handle')
 	->setVisibility('private')
-	->addDocument('@var resource  orignal file handle');
+	->addComment('@var resource  orignal file handle');
 
 $class->addProperty('order')
 	->setValue(new PhpLiteral('RecursiveIteratorIterator::SELF_FIRST'));
@@ -40,8 +40,8 @@ $p = $class->addProperty('sections', ['first' => TRUE])
 Assert::same($p, $class->getProperty('sections'));
 
 $m = $class->addMethod('getHandle')
-	->addDocument('Returns file handle.')
-	->addDocument('@return resource')
+	->addComment('Returns file handle.')
+	->addComment('@return resource')
 	->setFinal(TRUE)
 	->setBody('return $this->?;', ['handle']);
 

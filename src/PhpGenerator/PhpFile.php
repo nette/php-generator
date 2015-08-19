@@ -21,30 +21,32 @@ use Nette\Utils\Strings;
  */
 class PhpFile extends Object
 {
-	/** @var string[] */
-	private $documents = [];
+	/** @var string|NULL */
+	private $comment;
 
 	/** @var PhpNamespace[] */
 	private $namespaces = [];
 
 
+
+
 	/**
-	 * @return string[]
+	 * @param  string|NULL
+	 * @return self
 	 */
-	public function getDocuments()
+	public function setComment($val)
 	{
-		return $this->documents;
+		$this->comment = $val ? (string) $val : NULL;
+		return $this;
 	}
 
 
 	/**
-	 * @param  string[]
-	 * @return self
+	 * @return string|NULL
 	 */
-	public function setDocuments(array $documents)
+	public function getComment()
 	{
-		$this->documents = $documents;
-		return $this;
+		return $this->comment;
 	}
 
 
@@ -52,10 +54,31 @@ class PhpFile extends Object
 	 * @param  string
 	 * @return self
 	 */
-	public function addDocument($document)
+	public function addComment($val)
 	{
-		$this->documents[] = $document;
+		$this->comment .= $this->comment ? "\n$val" : $val;
 		return $this;
+	}
+
+
+	/** @deprecated */
+	public function setDocuments(array $s)
+	{
+		return $this->setComment(implode("\n", $s));
+	}
+
+
+	/** @deprecated */
+	public function getDocuments()
+	{
+		return $this->comment ? [$this->comment] : [];
+	}
+
+
+	/** @deprecated */
+	public function addDocument($s)
+	{
+		return $this->addComment($s);
 	}
 
 
@@ -119,7 +142,7 @@ class PhpFile extends Object
 
 		return Strings::normalize(
 			"<?php\n"
-			. ($this->documents ? "\n" . str_replace("\n", "\n * ", "/**\n" . implode("\n", $this->documents)) . "\n */\n\n" : '')
+			. ($this->comment ? "\n" . str_replace("\n", "\n * ", "/**\n" . $this->comment) . "\n */\n\n" : '')
 			. implode("\n\n", $this->namespaces)
 		) . "\n";
 	}

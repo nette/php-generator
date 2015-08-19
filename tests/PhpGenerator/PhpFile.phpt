@@ -13,8 +13,8 @@ require __DIR__ . '/../bootstrap.php';
 $file = new PhpFile;
 
 
-$file->addDocument('This file is auto-generated. DO NOT EDIT!');
-$file->addDocument('Hey there, I\'m here to document things.');
+$file->addComment('This file is auto-generated. DO NOT EDIT!');
+$file->addComment('Hey there, I\'m here to document things.');
 
 
 $namespaceFoo = $file->addNamespace('Foo');

@@ -46,8 +46,8 @@ class ClassType extends Nette\Object
 	/** @var string[] */
 	private $traits = [];
 
-	/** @var string[] */
-	private $documents = [];
+	/** @var string|NULL */
+	private $comment;
 
 	/** @var array name => value */
 	private $consts = [];
@@ -71,7 +71,7 @@ class ClassType extends Nette\Object
 		$class->final = $from->isFinal() && $class->type === 'class';
 		$class->abstract = $from->isAbstract() && $class->type === 'class';
 		$class->implements = $from->getInterfaceNames();
-		$class->documents = $from->getDocComment() ? [preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t"))] : [];
+		$class->comment = $from->getDocComment() ? preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t")) : NULL;
 		$namespace = $from->getNamespaceName();
 		if ($from->getParentClass()) {
 			$class->extends = $from->getParentClass()->getName();
@@ -118,8 +118,8 @@ class ClassType extends Nette\Object
 
 		$properties = [];
 		foreach ($this->properties as $property) {
-			$doc = str_replace("\n", "\n * ", implode("\n", $property->getDocuments()));
-			$properties[] = ($property->getDocuments() ? (strpos($doc, "\n") === FALSE ? "/** $doc */\n" : "/**\n * $doc\n */\n") : '')
+			$doc = str_replace("\n", "\n * ", $property->getComment());
+			$properties[] = ($doc ? (strpos($doc, "\n") === FALSE ? "/** $doc */\n" : "/**\n * $doc\n */\n") : '')
 				. $property->getVisibility() . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName()
 				. ($property->value === NULL ? '' : ' = ' . Helpers::dump($property->value))
 				. ";\n";
@@ -139,7 +139,7 @@ class ClassType extends Nette\Object
 		}
 
 		return Strings::normalize(
-			($this->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", $this->documents)) . "\n */\n" : '')
+			($this->comment ? str_replace("\n", "\n * ", "/**\n" . $this->comment) . "\n */\n" : '')
 			. ($this->abstract ? 'abstract ' : '')
 			. ($this->final ? 'final ' : '')
 			. $this->type . ' '
@@ -347,22 +347,22 @@ class ClassType extends Nette\Object
 
 
 	/**
-	 * @param  string[]
+	 * @param  string|NULL
 	 * @return self
 	 */
-	public function setDocuments(array $s)
+	public function setComment($val)
 	{
-		$this->documents = $s;
+		$this->comment = $val ? (string) $val : NULL;
 		return $this;
 	}
 
 
 	/**
-	 * @return string[]
+	 * @return string|NULL
 	 */
-	public function getDocuments()
+	public function getComment()
 	{
-		return $this->documents;
+		return $this->comment;
 	}
 
 
@@ -370,10 +370,31 @@ class ClassType extends Nette\Object
 	 * @param  string
 	 * @return self
 	 */
+	public function addComment($val)
+	{
+		$this->comment .= $this->comment ? "\n$val" : $val;
+		return $this;
+	}
+
+
+	/** @deprecated */
+	public function setDocuments(array $s)
+	{
+		return $this->setComment(implode("\n", $s));
+	}
+
+
+	/** @deprecated */
+	public function getDocuments()
+	{
+		return $this->comment ? [$this->comment] : [];
+	}
+
+
+	/** @deprecated */
 	public function addDocument($s)
 	{
-		$this->documents[] = (string) $s;
-		return $this;
+		return $this->addComment($s);
 	}
 
 
