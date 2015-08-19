@@ -11,9 +11,6 @@ interface Interface1
 
 interface Interface2
 {
-
-
-
 }
 
 abstract class Class1 implements Interface1
@@ -24,7 +21,6 @@ abstract class Class1 implements Interface1
 	 */
 	function func1()
 	{
-
 	}
 
 
@@ -34,7 +30,6 @@ abstract class Class1 implements Interface1
 
 class Class2 extends Class1 implements Interface2
 {
-
 	/**
 	 * Public
 	 * @var int
@@ -55,13 +50,11 @@ class Class2 extends Class1 implements Interface2
 	 */
 	private function & func3(array $a%a?%, Class2 $b = NULL, Unknown $c, \Xyz\Unknown $d, $e)
 	{
-
 	}
 
 
 	final function func2()
 	{
-
 	}
 
 }

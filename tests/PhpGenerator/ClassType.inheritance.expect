@@ -1,6 +1,5 @@
 class B extends A
 {
-
 	public $d;
 
 	protected $e;
@@ -10,7 +9,6 @@ class B extends A
 
 	function bar()
 	{
-
 	}
 
 }

@@ -6,7 +6,6 @@ trait Trait1
 
 	function func1()
 	{
-
 	}
 
 }
@@ -16,7 +15,6 @@ trait Trait2
 
 	protected function func2()
 	{
-
 	}
 
 }
@@ -26,20 +24,15 @@ abstract class Class1
 
 	function func1()
 	{
-
 	}
 
 
 	protected function func2()
 	{
-
 	}
 
 }
 
 class Class2 extends Class1
 {
-
-
-
 }

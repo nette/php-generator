@@ -4,19 +4,15 @@ use Bar\C;
 
 class A implements A, C
 {
-
 	use \Bar\D;
+
 
 	public function test(C $test)
 	{
-
 	}
 
 }
 
 interface B
 {
-
-
-
 }
