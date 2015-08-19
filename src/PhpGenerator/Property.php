@@ -42,7 +42,7 @@ class Property extends Nette\Object
 		$prop->value = isset($defaults[$prop->name]) ? $defaults[$prop->name] : NULL;
 		$prop->static = $from->isStatic();
 		$prop->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : 'public');
-		$prop->documents = preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t"));
+		$prop->documents = $from->getDocComment() ? [preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t"))] : [];
 		return $prop;
 	}
 

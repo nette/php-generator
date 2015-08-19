@@ -22,7 +22,7 @@ use Nette\Utils\Strings;
 class PhpFile extends Object
 {
 	/** @var string[] */
-	private $documents;
+	private $documents = [];
 
 	/** @var PhpNamespace[] */
 	private $namespaces = [];
@@ -119,7 +119,7 @@ class PhpFile extends Object
 
 		return Strings::normalize(
 			"<?php\n"
-			. ($this->documents ? "\n" . str_replace("\n", "\n * ", "/**\n" . implode("\n", (array) $this->documents)) . "\n */\n\n" : '')
+			. ($this->documents ? "\n" . str_replace("\n", "\n * ", "/**\n" . implode("\n", $this->documents)) . "\n */\n\n" : '')
 			. implode("\n\n", $this->namespaces)
 		) . "\n";
 	}
