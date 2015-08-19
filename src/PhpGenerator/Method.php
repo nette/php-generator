@@ -48,7 +48,7 @@ class Method extends Nette\Object
 	/** @var array of string */
 	private $documents = [];
 
-	/** @var PhpNamespace */
+	/** @var PhpNamespace|NULL */
 	private $namespace;
 
 

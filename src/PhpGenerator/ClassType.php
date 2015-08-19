@@ -22,7 +22,7 @@ class ClassType extends Nette\Object
 
 	const TYPE_TRAIT = 'trait';
 
-	/** @var PhpNamespace */
+	/** @var PhpNamespace|NULL */
 	private $namespace;
 
 	/** @var string */
@@ -37,7 +37,7 @@ class ClassType extends Nette\Object
 	/** @var bool */
 	private $abstract = FALSE;
 
-	/** @var strings|string[] */
+	/** @var string|string[] */
 	private $extends = [];
 
 	/** @var string[] */
@@ -250,7 +250,7 @@ class ClassType extends Nette\Object
 
 
 	/**
-	 * @param  strings|string[]
+	 * @param  string|string[]
 	 * @return self
 	 */
 	public function setExtends($types)
@@ -264,7 +264,7 @@ class ClassType extends Nette\Object
 
 
 	/**
-	 * @return strings|string[]
+	 * @return string|string[]
 	 */
 	public function getExtends()
 	{
