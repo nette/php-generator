@@ -45,10 +45,10 @@ class Method extends Nette\Object
 	/** @var bool */
 	private $variadic = FALSE;
 
-	/** @var array of string */
+	/** @var string[] */
 	private $documents = array();
 
-	/** @var PhpNamespace */
+	/** @var PhpNamespace|NULL */
 	private $namespace;
 
 

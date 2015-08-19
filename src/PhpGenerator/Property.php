@@ -27,7 +27,7 @@ class Property extends Nette\Object
 	/** @var string  public|protected|private */
 	private $visibility = 'public';
 
-	/** @var array of string */
+	/** @var string[] */
 	private $documents = array();
 
 
