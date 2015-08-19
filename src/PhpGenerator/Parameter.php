@@ -21,7 +21,7 @@ class Parameter extends Nette\Object
 	/** @var bool */
 	private $reference = FALSE;
 
-	/** @var string */
+	/** @var string|NULL */
 	private $typeHint;
 
 	/** @var bool */
@@ -45,7 +45,7 @@ class Parameter extends Nette\Object
 			$param->typeHint = 'callable';
 		} else {
 			try {
-				$param->typeHint = $from->getClass() ? '\\' . $from->getClass()->getName() : '';
+				$param->typeHint = $from->getClass() ? '\\' . $from->getClass()->getName() : NULL;
 			} catch (\ReflectionException $e) {
 				if (preg_match('#Class (.+) does not exist#', $e->getMessage(), $m)) {
 					$param->typeHint = '\\' . $m[1];
@@ -107,18 +107,18 @@ class Parameter extends Nette\Object
 
 
 	/**
-	 * @param  string
+	 * @param  string|NULL
 	 * @return self
 	 */
 	public function setTypeHint($hint)
 	{
-		$this->typeHint = (string) $hint;
+		$this->typeHint = $hint ? (string) $hint : NULL;
 		return $this;
 	}
 
 
 	/**
-	 * @return string
+	 * @return string|NULL
 	 */
 	public function getTypeHint()
 	{

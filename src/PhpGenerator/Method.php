@@ -15,7 +15,7 @@ use Nette;
  */
 class Method extends Nette\Object
 {
-	/** @var string */
+	/** @var string|NULL */
 	private $name;
 
 	/** @var array of name => Parameter */
@@ -25,7 +25,7 @@ class Method extends Nette\Object
 	private $uses = array();
 
 	/** @var string|FALSE */
-	private $body;
+	private $body = '';
 
 	/** @var bool */
 	private $static = FALSE;
@@ -64,7 +64,7 @@ class Method extends Nette\Object
 			$method->parameters[$param->getName()] = Parameter::from($param);
 		}
 		$method->static = $from->isStatic();
-		$method->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : '');
+		$method->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : NULL);
 		$method->final = $from->isFinal();
 		$method->abstract = $from->isAbstract() && !$from->getDeclaringClass()->isInterface();
 		$method->body = $from->isAbstract() ? FALSE : '';
@@ -80,7 +80,7 @@ class Method extends Nette\Object
 	 */
 	public function __toString()
 	{
-		static $builtinTypes = array('array', 'self', 'parent', 'callable', '');
+		static $builtinTypes = array('array', 'self', 'parent', 'callable', NULL);
 		$parameters = array();
 		foreach ($this->parameters as $param) {
 			$variadic = $this->variadic && $param === end($this->parameters);
@@ -114,18 +114,18 @@ class Method extends Nette\Object
 
 
 	/**
-	 * @param  string
+	 * @param  string|NULL
 	 * @return self
 	 */
 	public function setName($name)
 	{
-		$this->name = (string) $name;
+		$this->name = $name ? (string) $name : NULL;
 		return $this;
 	}
 
 
 	/**
-	 * @return string
+	 * @return string|NULL
 	 */
 	public function getName()
 	{
@@ -259,7 +259,7 @@ class Method extends Nette\Object
 		if (!in_array($val, array('public', 'protected', 'private', NULL), TRUE)) {
 			throw new Nette\InvalidArgumentException('Argument must be public|protected|private|NULL.');
 		}
-		$this->visibility = (string) $val;
+		$this->visibility = $val ? (string) $val : NULL;
 		return $this;
 	}
 
