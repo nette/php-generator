@@ -11,7 +11,7 @@ use Nette;
 
 
 /**
- * Class method description.
+ * Method or function description.
  */
 class Method extends Nette\Object
 {
@@ -60,17 +60,26 @@ class Method extends Nette\Object
 	 */
 	public static function from($from)
 	{
-		$from = $from instanceof \ReflectionMethod ? $from : new \ReflectionMethod($from);
+		if (is_string($from) && strpos($from, '::')) {
+			$from = new \ReflectionMethod($from);
+		} elseif (is_array($from)) {
+			$from = new \ReflectionMethod($from[0], $from[1]);
+		} elseif (!$from instanceof \ReflectionFunctionAbstract) {
+			$from = new \ReflectionFunction($from);
+		}
+
 		$method = new static;
-		$method->name = $from->getName();
+		$method->name = $from->isClosure() ? NULL : $from->getName();
 		foreach ($from->getParameters() as $param) {
 			$method->parameters[$param->getName()] = Parameter::from($param);
 		}
-		$method->static = $from->isStatic();
-		$method->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : NULL);
-		$method->final = $from->isFinal();
-		$method->abstract = $from->isAbstract() && !$from->getDeclaringClass()->isInterface();
-		$method->body = $from->isAbstract() ? FALSE : '';
+		if ($from instanceof \ReflectionMethod) {
+			$method->static = $from->isStatic();
+			$method->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : NULL);
+			$method->final = $from->isFinal();
+			$method->abstract = $from->isAbstract() && !$from->getDeclaringClass()->isInterface();
+			$method->body = $from->isAbstract() ? FALSE : '';
+		}
 		$method->returnReference = $from->returnsReference();
 		$method->variadic = PHP_VERSION_ID >= 50600 && $from->isVariadic();
 		$method->documents = $from->getDocComment() ? [preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t"))] : [];
@@ -108,6 +117,7 @@ class Method extends Nette\Object
 		$returnType = !$this->namespace || in_array($this->returnType, $builtinTypes, TRUE)
 			? $this->returnType
 			: $this->namespace->unresolveName($this->returnType);
+
 		return ($this->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", $this->documents)) . "\n */\n" : '')
 			. ($this->abstract ? 'abstract ' : '')
 			. ($this->final ? 'final ' : '')
@@ -115,7 +125,7 @@ class Method extends Nette\Object
 			. ($this->static ? 'static ' : '')
 			. 'function'
 			. ($this->returnReference ? ' &' : '')
-			. ($this->name ? ' ' . $this->name : '')
+			. ' ' . $this->name
 			. '(' . implode(', ', $parameters) . ')'
 			. ($this->uses ? ' use (' . implode(', ', $uses) . ')' : '')
 			. ($returnType ? ': ' . $returnType : '')

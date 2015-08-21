@@ -1,3 +1,0 @@
-function &($a, $b) use ($this, &$vars) {
-	return $a + $b;
-}
