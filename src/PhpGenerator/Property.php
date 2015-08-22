@@ -27,8 +27,8 @@ class Property extends Nette\Object
 	/** @var string  public|protected|private */
 	private $visibility = 'public';
 
-	/** @var string[] */
-	private $documents = [];
+	/** @var string|NULL */
+	private $comment;
 
 
 	/**
@@ -42,7 +42,7 @@ class Property extends Nette\Object
 		$prop->value = isset($defaults[$prop->name]) ? $defaults[$prop->name] : NULL;
 		$prop->static = $from->isStatic();
 		$prop->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : 'public');
-		$prop->documents = $from->getDocComment() ? [preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t"))] : [];
+		$prop->comment = $from->getDocComment() ? preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t")) : NULL;
 		return $prop;
 	}
 
@@ -129,23 +129,25 @@ class Property extends Nette\Object
 	}
 
 
+
+
 	/**
-	 * @param  string[]
+	 * @param  string|NULL
 	 * @return self
 	 */
-	public function setDocuments(array $s)
+	public function setComment($val)
 	{
-		$this->documents = $s;
+		$this->comment = $val ? (string) $val : NULL;
 		return $this;
 	}
 
 
 	/**
-	 * @return string[]
+	 * @return string|NULL
 	 */
-	public function getDocuments()
+	public function getComment()
 	{
-		return $this->documents;
+		return $this->comment;
 	}
 
 
@@ -153,10 +155,31 @@ class Property extends Nette\Object
 	 * @param  string
 	 * @return self
 	 */
+	public function addComment($val)
+	{
+		$this->comment .= $this->comment ? "\n$val" : $val;
+		return $this;
+	}
+
+
+	/** @deprecated */
+	public function setDocuments(array $s)
+	{
+		return $this->setComment(implode("\n", $s));
+}
+
+
+	/** @deprecated */
+	public function getDocuments()
+	{
+		return $this->comment ? [$this->comment] : [];
+	}
+
+
+	/** @deprecated */
 	public function addDocument($s)
 	{
-		$this->documents[] = (string) $s;
-		return $this;
+		return $this->addComment($s);
 	}
 
 }

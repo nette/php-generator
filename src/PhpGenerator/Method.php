@@ -45,8 +45,8 @@ class Method extends Nette\Object
 	/** @var bool */
 	private $variadic = FALSE;
 
-	/** @var string[] */
-	private $documents = [];
+	/** @var string|NULL */
+	private $comment;
 
 	/** @var PhpNamespace|NULL */
 	private $namespace;
@@ -82,7 +82,7 @@ class Method extends Nette\Object
 		}
 		$method->returnReference = $from->returnsReference();
 		$method->variadic = PHP_VERSION_ID >= 50600 && $from->isVariadic();
-		$method->documents = $from->getDocComment() ? [preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t"))] : [];
+		$method->comment = $from->getDocComment() ? preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t")) : NULL;
 		if (PHP_VERSION_ID >= 70000 && $from->hasReturnType()) {
 			$returnType = $from->getReturnType();
 			$method->returnType = $returnType->isBuiltin() ? (string) $returnType : '\\' . $returnType;
@@ -118,7 +118,7 @@ class Method extends Nette\Object
 			? $this->returnType
 			: $this->namespace->unresolveName($this->returnType);
 
-		return ($this->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", $this->documents)) . "\n */\n" : '')
+		return ($this->comment ? str_replace("\n", "\n * ", "/**\n" . $this->comment) . "\n */\n" : '')
 			. ($this->abstract ? 'abstract ' : '')
 			. ($this->final ? 'final ' : '')
 			. ($this->visibility ? $this->visibility . ' ' : '')
@@ -374,23 +374,25 @@ class Method extends Nette\Object
 	}
 
 
+
+
 	/**
-	 * @param  string[]
+	 * @param  string|NULL
 	 * @return self
 	 */
-	public function setDocuments(array $val)
+	public function setComment($val)
 	{
-		$this->documents = $val;
+		$this->comment = $val ? (string) $val : NULL;
 		return $this;
 	}
 
 
 	/**
-	 * @return string[]
+	 * @return string|NULL
 	 */
-	public function getDocuments()
+	public function getComment()
 	{
-		return $this->documents;
+		return $this->comment;
 	}
 
 
@@ -398,10 +400,31 @@ class Method extends Nette\Object
 	 * @param  string
 	 * @return self
 	 */
-	public function addDocument($val)
+	public function addComment($val)
 	{
-		$this->documents[] = (string) $val;
+		$this->comment .= $this->comment ? "\n$val" : $val;
 		return $this;
+	}
+
+
+	/** @deprecated */
+	public function setDocuments(array $s)
+	{
+		return $this->setComment(implode("\n", $s));
+	}
+
+
+	/** @deprecated */
+	public function getDocuments()
+	{
+		return $this->comment ? [$this->comment] : [];
+	}
+
+
+	/** @deprecated */
+	public function addDocument($s)
+	{
+		return $this->addComment($s);
 	}
 
 

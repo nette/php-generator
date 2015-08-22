@@ -16,7 +16,7 @@ $interface
 	->setType('interface')
 	->addExtend('IOne')
 	->addExtend('ITwo')
-	->addDocument('Description of interface');
+	->addComment('Description of interface');
 
 $interface->addMethod('getForm');
 
