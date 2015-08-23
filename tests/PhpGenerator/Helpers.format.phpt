@@ -25,11 +25,11 @@ Assert::same(
 
 Assert::exception(function () {
 	Helpers::formatArgs('func(?*)', [1, 2]);
-}, 'Nette\InvalidArgumentException', 'Argument must be an array.');
+}, Nette\InvalidArgumentException::class, 'Argument must be an array.');
 
 Assert::exception(function () {
 	Helpers::formatArgs('func(?, ?, ?)', [1, 2]);
-}, 'Nette\InvalidArgumentException', 'Insufficient number of arguments.');
+}, Nette\InvalidArgumentException::class, 'Insufficient number of arguments.');
 
 Assert::same('$a = 2', Helpers::formatArgs('$? = ?', ['a', 2]));
 Assert::same('$obj->a = 2', Helpers::formatArgs('$obj->? = ?', ['a', 2]));
