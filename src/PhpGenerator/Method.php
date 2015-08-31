@@ -164,12 +164,13 @@ class Method extends Nette\Object
 	 */
 	public function setParameters(array $val)
 	{
+		$this->parameters = [];
 		foreach ($val as $v) {
 			if (!$v instanceof Parameter) {
 				throw new Nette\InvalidArgumentException('Argument must be Nette\PhpGenerator\Parameter[].');
 			}
+			$this->parameters[$v->getName()] = $v;
 		}
-		$this->parameters = $val;
 		return $this;
 	}
 

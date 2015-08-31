@@ -432,12 +432,13 @@ class ClassType extends Nette\Object
 	 */
 	public function setProperties(array $props)
 	{
+		$this->properties = [];
 		foreach ($props as $v) {
 			if (!$v instanceof Property) {
 				throw new Nette\InvalidArgumentException('Argument must be Nette\PhpGenerator\Property[].');
 			}
+			$this->properties[$v->getName()] = $v;
 		}
-		$this->properties = $props;
 		return $this;
 	}
 
@@ -480,12 +481,13 @@ class ClassType extends Nette\Object
 	 */
 	public function setMethods(array $methods)
 	{
+		$this->methods = [];
 		foreach ($methods as $v) {
 			if (!$v instanceof Method) {
 				throw new Nette\InvalidArgumentException('Argument must be Nette\PhpGenerator\Method[].');
 			}
+			$this->methods[$v->getName()] = $v;
 		}
-		$this->methods = $methods;
 		return $this;
 	}
 
