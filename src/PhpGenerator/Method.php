@@ -68,8 +68,7 @@ class Method extends Nette\Object
 			$from = new \ReflectionFunction($from);
 		}
 
-		$method = new static;
-		$method->name = $from->isClosure() ? NULL : $from->getName();
+		$method = new static($from->isClosure() ? NULL : $from->getName());
 		foreach ($from->getParameters() as $param) {
 			$method->parameters[$param->getName()] = Parameter::from($param);
 		}
@@ -88,6 +87,15 @@ class Method extends Nette\Object
 			$method->returnType = $returnType->isBuiltin() ? (string) $returnType : '\\' . $returnType;
 		}
 		return $method;
+	}
+
+
+	/**
+	 * @param  string|NULL
+	 */
+	public function __construct($name = NULL)
+	{
+		$this->setName($name);
 	}
 
 
@@ -184,11 +192,11 @@ class Method extends Nette\Object
 	 */
 	public function addParameter($name, $defaultValue = NULL)
 	{
-		$param = new Parameter;
+		$param = new Parameter($name);
 		if (func_num_args() > 1) {
 			$param->setOptional(TRUE)->setDefaultValue($defaultValue);
 		}
-		return $this->parameters[$name] = $param->setName($name);
+		return $this->parameters[$name] = $param;
 	}
 
 
@@ -216,8 +224,7 @@ class Method extends Nette\Object
 	 */
 	public function addUse($name)
 	{
-		$param = new Parameter;
-		return $this->uses[] = $param->setName($name);
+		return $this->uses[] = new Parameter($name);
 	}
 
 

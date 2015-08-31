@@ -28,8 +28,6 @@ class PhpFile extends Object
 	private $namespaces = [];
 
 
-
-
 	/**
 	 * @param  string|NULL
 	 * @return self

@@ -473,8 +473,7 @@ class ClassType extends Nette\Object
 	 */
 	public function addProperty($name, $value = NULL)
 	{
-		$property = new Property;
-		return $this->properties[$name] = $property->setName($name)->setValue($value);
+		return $this->properties[$name] = (new Property($name))->setValue($value);
 	}
 
 
@@ -521,13 +520,13 @@ class ClassType extends Nette\Object
 	 */
 	public function addMethod($name)
 	{
-		$method = new Method;
+		$method = new Method($name);
 		if ($this->type === 'interface') {
 			$method->setVisibility(NULL)->setBody(FALSE);
 		} else {
 			$method->setVisibility('public');
 		}
-		return $this->methods[$name] = $method->setName($name);
+		return $this->methods[$name] = $method;
 	}
 
 }
