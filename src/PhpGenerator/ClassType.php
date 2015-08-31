@@ -83,7 +83,7 @@ class ClassType extends Nette\Object
 		}
 		foreach ($from->getMethods() as $method) {
 			if ($method->getDeclaringClass() == $from) { // intentionally ==
-				$class->methods[$method->getName()] = Method::from($method);
+				$class->methods[$method->getName()] = Method::from($method)->setNamespace($class->namespace);
 			}
 		}
 		return $class;
@@ -120,10 +120,6 @@ class ClassType extends Nette\Object
 		$mapper = function (array $arr) use ($namespace) {
 			return array_map(array($namespace, 'unresolveName'), $arr);
 		};
-
-		foreach ($this->methods as $method) {
-			$method->setNamespace($this->namespace);
-		}
 
 		return Strings::normalize(
 			($this->documents ? str_replace("\n", "\n * ", "/**\n" . implode("\n", $this->documents)) . "\n */\n" : '')
@@ -456,7 +452,7 @@ class ClassType extends Nette\Object
 			if (!$v instanceof Method) {
 				throw new Nette\InvalidArgumentException('Argument must be Nette\PhpGenerator\Method[].');
 			}
-			$this->methods[$v->getName()] = $v;
+			$this->methods[$v->getName()] = $v->setNamespace($this->namespace);
 		}
 		return $this;
 	}
@@ -495,7 +491,7 @@ class ClassType extends Nette\Object
 		} else {
 			$method->setVisibility('public');
 		}
-		return $this->methods[$name] = $method;
+		return $this->methods[$name] = $method->setNamespace($this->namespace);
 	}
 
 }
