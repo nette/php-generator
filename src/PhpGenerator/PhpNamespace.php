@@ -41,10 +41,7 @@ class PhpNamespace extends Object
 	}
 
 
-	/**
-	 * @param  string|NULL
-	 * @return self
-	 */
+	/** @deprecated */
 	public function setName($name)
 	{
 		$this->name = (string) $name;

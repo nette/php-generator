@@ -141,10 +141,7 @@ class Method extends Nette\Object
 	}
 
 
-	/**
-	 * @param  string|NULL
-	 * @return self
-	 */
+	/** @deprecated */
 	public function setName($name)
 	{
 		$this->name = $name ? (string) $name : NULL;

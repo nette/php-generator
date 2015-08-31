@@ -34,8 +34,7 @@ namespace
 
 	// generating methods with return type declarations
 
-	$method = (new Method)
-		->setName('create')
+	$method = (new Method('create'))
 		->setReturnType('Foo')
 		->setBody('return new Foo();');
 

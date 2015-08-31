@@ -55,10 +55,7 @@ class Property extends Nette\Object
 	}
 
 
-	/**
-	 * @param  string  without $
-	 * @return self
-	 */
+	/** @deprecated */
 	public function setName($name)
 	{
 		$this->name = (string) $name;

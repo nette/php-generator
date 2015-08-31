@@ -35,8 +35,7 @@ Assert::same('float', $method->getParameters()['d']->getTypeHint());
 
 // generating methods with scalar type hints
 
-$method = (new Method)
-	->setName('create')
+$method = (new Method('create'))
 	->setBody('return null;');
 $method->addParameter('a')->setTypeHint('string');
 $method->addParameter('b')->setTypeHint('bool');

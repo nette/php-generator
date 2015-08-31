@@ -34,8 +34,7 @@ Assert::same('array', $method->getParameters()['bar']->getTypeHint());
 // test generating
 
 // parameterless variadic method
-$method = (new Method)
-	->setName('variadic')
+$method = (new Method('variadic'))
 	->setVariadic(TRUE)
 	->setBody('return 42;');
 
@@ -48,8 +47,7 @@ Assert::match(
 
 
 // variadic method with one parameter
-$method = (new Method)
-	->setName('variadic')
+$method = (new Method('variadic'))
 	->setVariadic(TRUE)
 	->setBody('return 42;');
 $method->addParameter('foo');
@@ -63,8 +61,7 @@ Assert::match(
 
 
 // variadic method with multiple parameters
-$method = (new Method)
-	->setName('variadic')
+$method = (new Method('variadic'))
 	->setVariadic(TRUE)
 	->setBody('return 42;');
 $method->addParameter('foo');
@@ -80,8 +77,7 @@ Assert::match(
 
 
 // method with typehinted variadic param
-$method = (new Method)
-	->setName('variadic')
+$method = (new Method('variadic'))
 	->setVariadic(TRUE)
 	->setBody('return 42;');
 $method->addParameter('foo')->setTypeHint('array');
@@ -95,8 +91,7 @@ Assert::match(
 
 
 // method with typrhinted by-value variadic param
-$method = (new Method)
-	->setName('variadic')
+$method = (new Method('variadic'))
 	->setVariadic(TRUE)
 	->setBody('return 42;');
 $method->addParameter('foo')->setTypeHint('array')->setReference(TRUE);
