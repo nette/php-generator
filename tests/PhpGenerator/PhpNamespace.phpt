@@ -10,6 +10,22 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
+$namespace = new PhpNamespace;
+
+Assert::same('A', $namespace->unresolveName('A'));
+Assert::same('foo\A', $namespace->unresolveName('foo\A'));
+
+$namespace->addUse('Bar\C');
+
+Assert::same('Bar', $namespace->unresolveName('Bar'));
+Assert::same('C', $namespace->unresolveName('bar\C'));
+Assert::same('C\D', $namespace->unresolveName('Bar\C\D'));
+
+foreach (['String', 'string', 'int', 'float', 'bool', 'array', 'callable', 'self', 'parent', ''] as $type) {
+	Assert::same($type, $namespace->unresolveName($type));
+}
+
+
 $namespace = new PhpNamespace('Foo');
 
 Assert::same('\A', $namespace->unresolveName('A'));
