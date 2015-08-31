@@ -65,3 +65,20 @@ $method->addParameter('res', NULL)
 		->setTypeHint('array');
 
 Assert::matchFile(__DIR__ . '/ClassType.expect', (string) $class);
+
+
+// global setters & getters
+$methods = $class->getMethods();
+Assert::count(3, $methods);
+$class->setMethods(array_values($methods));
+Assert::same($methods, $class->getMethods());
+
+$properties = $class->getProperties();
+Assert::count(3, $properties);
+$class->setProperties(array_values($properties));
+Assert::same($properties, $class->getProperties());
+
+$parameters = $method->getParameters();
+Assert::count(2, $parameters);
+$method->setParameters(array_values($parameters));
+Assert::same($parameters, $method->getParameters());
