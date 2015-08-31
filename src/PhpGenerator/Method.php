@@ -65,8 +65,7 @@ class Method extends Nette\Object
 			$from = new \ReflectionFunction($from);
 		}
 
-		$method = new static;
-		$method->name = $from->isClosure() ? NULL : $from->getName();
+		$method = new static($from->isClosure() ? NULL : $from->getName());
 		foreach ($from->getParameters() as $param) {
 			$method->parameters[$param->getName()] = Parameter::from($param);
 		}
@@ -81,6 +80,15 @@ class Method extends Nette\Object
 		$method->variadic = PHP_VERSION_ID >= 50600 && $from->isVariadic();
 		$method->documents = $from->getDocComment() ? array(preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t"))) : array();
 		return $method;
+	}
+
+
+	/**
+	 * @param  string|NULL
+	 */
+	public function __construct($name = NULL)
+	{
+		$this->setName($name);
 	}
 
 
@@ -173,11 +181,11 @@ class Method extends Nette\Object
 	 */
 	public function addParameter($name, $defaultValue = NULL)
 	{
-		$param = new Parameter;
+		$param = new Parameter($name);
 		if (func_num_args() > 1) {
 			$param->setOptional(TRUE)->setDefaultValue($defaultValue);
 		}
-		return $this->parameters[$name] = $param->setName($name);
+		return $this->parameters[$name] = $param;
 	}
 
 
@@ -205,8 +213,7 @@ class Method extends Nette\Object
 	 */
 	public function addUse($name)
 	{
-		$param = new Parameter;
-		return $this->uses[] = $param->setName($name);
+		return $this->uses[] = new Parameter($name);
 	}
 
 

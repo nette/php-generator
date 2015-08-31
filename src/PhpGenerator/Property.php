@@ -36,14 +36,22 @@ class Property extends Nette\Object
 	 */
 	public static function from(\ReflectionProperty $from)
 	{
-		$prop = new static;
-		$prop->name = $from->getName();
+		$prop = new static($from->getName());
 		$defaults = $from->getDeclaringClass()->getDefaultProperties();
 		$prop->value = isset($defaults[$prop->name]) ? $defaults[$prop->name] : NULL;
 		$prop->static = $from->isStatic();
 		$prop->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : 'public');
 		$prop->documents = $from->getDocComment() ? array(preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t"))) : array();
 		return $prop;
+	}
+
+
+	/**
+	 * @param  string  without $
+	 */
+	public function __construct($name = '')
+	{
+		$this->setName($name);
 	}
 
 

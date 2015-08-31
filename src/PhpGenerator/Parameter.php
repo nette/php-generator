@@ -36,8 +36,7 @@ class Parameter extends Nette\Object
 	 */
 	public static function from(\ReflectionParameter $from)
 	{
-		$param = new static;
-		$param->name = $from->getName();
+		$param = new static($from->getName());
 		$param->reference = $from->isPassedByReference();
 		if ($from->isArray()) {
 			$param->typeHint = 'array';
@@ -63,6 +62,15 @@ class Parameter extends Nette\Object
 			$param->typeHint = substr($param->typeHint, strlen($namespace));
 		}
 		return $param;
+	}
+
+
+	/**
+	 * @param  string  without $
+	 */
+	public function __construct($name = '')
+	{
+		$this->setName($name);
 	}
 
 
