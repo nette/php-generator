@@ -96,13 +96,12 @@ class Method extends Nette\Object
 	 */
 	public function __toString()
 	{
-		static $builtinTypes = ['array', 'self', 'parent', 'callable', 'string', 'bool', 'float', 'int', NULL];
 		$parameters = [];
 		foreach ($this->parameters as $param) {
 			$variadic = $this->variadic && $param === end($this->parameters);
-			$hint = !$this->namespace || in_array($param->getTypeHint(), $builtinTypes, TRUE)
-				? $param->getTypeHint()
-				: $this->namespace->unresolveName($param->getTypeHint());
+			$hint = $this->namespace
+				? $this->namespace->unresolveName((string) $param->getTypeHint())
+				: $param->getTypeHint();
 
 			$parameters[] = ($hint ? $hint . ' ' : '')
 				. ($param->isReference() ? '&' : '')
@@ -114,9 +113,9 @@ class Method extends Nette\Object
 		foreach ($this->uses as $param) {
 			$uses[] = ($param->isReference() ? '&' : '') . '$' . $param->getName();
 		}
-		$returnType = !$this->namespace || in_array($this->returnType, $builtinTypes, TRUE)
-			? $this->returnType
-			: $this->namespace->unresolveName($this->returnType);
+		$returnType = $this->namespace
+			? $this->namespace->unresolveName((string) $this->returnType)
+			: $this->returnType;
 
 		return ($this->comment ? str_replace("\n", "\n * ", "/**\n" . $this->comment) . "\n */\n" : '')
 			. ($this->abstract ? 'abstract ' : '')

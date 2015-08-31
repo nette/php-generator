@@ -134,6 +134,9 @@ class PhpNamespace extends Object
 	 */
 	public function unresolveName($name)
 	{
+		if (in_array(strtolower($name), ['self', 'parent', 'array', 'callable', 'string', 'bool', 'float', 'int', ''], TRUE)) {
+			return $name;
+		}
 		$name = ltrim($name, '\\');
 		$res = NULL;
 		$lower = strtolower($name);
