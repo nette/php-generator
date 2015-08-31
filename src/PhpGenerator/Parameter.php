@@ -44,10 +44,10 @@ class Parameter extends Nette\Object
 			$param->typeHint = 'callable';
 		} else {
 			try {
-				$param->typeHint = $from->getClass() ? '\\' . $from->getClass()->getName() : NULL;
+				$param->typeHint = $from->getClass() ? $from->getClass()->getName() : NULL;
 			} catch (\ReflectionException $e) {
 				if (preg_match('#Class (.+) does not exist#', $e->getMessage(), $m)) {
-					$param->typeHint = '\\' . $m[1];
+					$param->typeHint = $m[1];
 				} else {
 					throw $e;
 				}
@@ -55,12 +55,6 @@ class Parameter extends Nette\Object
 		}
 		$param->optional = PHP_VERSION_ID < 50407 ? $from->isOptional() || ($param->typeHint && $from->allowsNull()) : $from->isDefaultValueAvailable();
 		$param->defaultValue = (PHP_VERSION_ID === 50316 ? $from->isOptional() : $from->isDefaultValueAvailable()) ? $from->getDefaultValue() : NULL;
-
-		$namespace = $from->getDeclaringClass() ? $from->getDeclaringClass()->getNamespaceName() : NULL;
-		$namespace = $namespace ? "\\$namespace\\" : '\\';
-		if (Nette\Utils\Strings::startsWith($param->typeHint, $namespace)) {
-			$param->typeHint = substr($param->typeHint, strlen($namespace));
-		}
 		return $param;
 	}
 
