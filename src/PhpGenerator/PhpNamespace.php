@@ -37,7 +37,7 @@ class PhpNamespace extends Object
 
 	public function __construct($name = NULL)
 	{
-		$this->setName($name);
+		$this->setName((string) $name);
 	}
 
 

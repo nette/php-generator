@@ -101,7 +101,7 @@ class ClassType extends Nette\Object
 
 	public function __construct($name = NULL, PhpNamespace $namespace = NULL)
 	{
-		$this->setName($name);
+		$this->setName((string) $name);
 		$this->namespace = $namespace;
 	}
 
