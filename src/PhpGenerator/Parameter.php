@@ -39,16 +39,15 @@ class Parameter extends Nette\Object
 		$param = new static($from->getName());
 		$param->reference = $from->isPassedByReference();
 		if (PHP_VERSION_ID >= 70000) {
-			$type = $from->getType();
-			$param->typeHint = $type ? ($type->isBuiltin() ? '' : '\\') . $type : NULL;
+			$param->typeHint = $from->hasType() ? (string) $from->getType() : NULL;
 		} elseif ($from->isArray() || $from->isCallable()) {
 			$param->typeHint = $from->isArray() ? 'array' : 'callable';
 		} else {
 			try {
-				$param->typeHint = $from->getClass() ? '\\' . $from->getClass()->getName() : NULL;
+				$param->typeHint = $from->getClass() ? $from->getClass()->getName() : NULL;
 			} catch (\ReflectionException $e) {
 				if (preg_match('#Class (.+) does not exist#', $e->getMessage(), $m)) {
-					$param->typeHint = '\\' . $m[1];
+					$param->typeHint = $m[1];
 				} else {
 					throw $e;
 				}
@@ -56,12 +55,6 @@ class Parameter extends Nette\Object
 		}
 		$param->optional = $from->isDefaultValueAvailable();
 		$param->defaultValue = $from->isDefaultValueAvailable() ? $from->getDefaultValue() : NULL;
-
-		$namespace = $from->getDeclaringClass() ? $from->getDeclaringClass()->getNamespaceName() : NULL;
-		$namespace = $namespace ? "\\$namespace\\" : '\\';
-		if ($param->typeHint !== NULL && Nette\Utils\Strings::startsWith($param->typeHint, $namespace)) {
-			$param->typeHint = substr($param->typeHint, strlen($namespace));
-		}
 		return $param;
 	}
 

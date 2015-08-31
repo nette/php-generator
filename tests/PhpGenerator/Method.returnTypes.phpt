@@ -22,12 +22,12 @@ namespace
 
 	interface A
 	{
-		function testClass() : \A\Foo;
-		function testScalar() : string;
+		function testClass(): \A\Foo;
+		function testScalar(): string;
 	}
 
 	$method = Method::from(A::class .'::testClass');
-	Assert::same('\A\Foo', $method->getReturnType());
+	Assert::same('A\Foo', $method->getReturnType());
 
 	$method = Method::from(A::class .'::testScalar');
 	Assert::same('string', $method->getReturnType());

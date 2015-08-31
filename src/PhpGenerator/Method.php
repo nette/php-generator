@@ -83,8 +83,7 @@ class Method extends Nette\Object
 		$method->variadic = PHP_VERSION_ID >= 50600 && $from->isVariadic();
 		$method->comment = $from->getDocComment() ? preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t")) : NULL;
 		if (PHP_VERSION_ID >= 70000 && $from->hasReturnType()) {
-			$returnType = $from->getReturnType();
-			$method->returnType = $returnType->isBuiltin() ? (string) $returnType : '\\' . $returnType;
+			$method->returnType = (string) $from->getReturnType();
 		}
 		return $method;
 	}

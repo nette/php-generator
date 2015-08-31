@@ -66,24 +66,15 @@ class ClassType extends Nette\Object
 	public static function from($from)
 	{
 		$from = $from instanceof \ReflectionClass ? $from : new \ReflectionClass($from);
-		$class = new static($from->getShortName());
+		$class = new static($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
 		$class->type = $from->isInterface() ? 'interface' : ($from->isTrait() ? 'trait' : 'class');
 		$class->final = $from->isFinal() && $class->type === 'class';
 		$class->abstract = $from->isAbstract() && $class->type === 'class';
 		$class->implements = $from->getInterfaceNames();
 		$class->comment = $from->getDocComment() ? preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t")) : NULL;
-		$namespace = $from->getNamespaceName();
 		if ($from->getParentClass()) {
 			$class->extends = $from->getParentClass()->getName();
-			if ($namespace) {
-				$class->extends = Strings::startsWith($class->extends, "$namespace\\") ? substr($class->extends, strlen($namespace) + 1) : '\\' . $class->extends;
-			}
 			$class->implements = array_diff($class->implements, $from->getParentClass()->getInterfaceNames());
-		}
-		if ($namespace) {
-			foreach ($class->implements as & $interface) {
-				$interface = Strings::startsWith($interface, "$namespace\\") ? substr($interface, strlen($namespace) + 1) : '\\' . $interface;
-			}
 		}
 		foreach ($from->getProperties() as $prop) {
 			if ($prop->getDeclaringClass() == $from) { // intentionally ==
