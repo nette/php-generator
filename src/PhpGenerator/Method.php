@@ -94,7 +94,7 @@ class Method extends Nette\Object
 	 */
 	public function __construct($name = NULL)
 	{
-		$this->setName($name);
+		$this->name = $name ? (string) $name : NULL;
 	}
 
 
@@ -138,6 +138,7 @@ class Method extends Nette\Object
 	/** @deprecated */
 	public function setName($name)
 	{
+		trigger_error(__METHOD__ . ' is deprecated, use constructor.', E_USER_DEPRECATED);
 		$this->name = $name ? (string) $name : NULL;
 		return $this;
 	}
