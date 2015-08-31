@@ -42,15 +42,6 @@ class PhpNamespace extends Object
 
 
 	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
-
-
-	/**
 	 * @param  string
 	 * @return self
 	 */
@@ -62,11 +53,11 @@ class PhpNamespace extends Object
 
 
 	/**
-	 * @return bool
+	 * @return string
 	 */
-	public function getBracketedSyntax()
+	public function getName()
 	{
-		return $this->bracketedSyntax;
+		return $this->name;
 	}
 
 
@@ -83,11 +74,11 @@ class PhpNamespace extends Object
 
 
 	/**
-	 * @return string[]
+	 * @return bool
 	 */
-	public function getUses()
+	public function getBracketedSyntax()
 	{
-		return $this->uses;
+		return $this->bracketedSyntax;
 	}
 
 
@@ -129,6 +120,15 @@ class PhpNamespace extends Object
 
 
 	/**
+	 * @return string[]
+	 */
+	public function getUses()
+	{
+		return $this->uses;
+	}
+
+
+	/**
 	 * @param  string
 	 * @return string
 	 */
@@ -154,15 +154,6 @@ class PhpNamespace extends Object
 		} else {
 			return $res ?: '\\' . $name;
 		}
-	}
-
-
-	/**
-	 * @return ClassType[]
-	 */
-	public function getClasses()
-	{
-		return $this->classes;
 	}
 
 
@@ -197,6 +188,15 @@ class PhpNamespace extends Object
 	public function addTrait($name)
 	{
 		return $this->addClass($name)->setType(ClassType::TYPE_TRAIT);
+	}
+
+
+	/**
+	 * @return ClassType[]
+	 */
+	public function getClasses()
+	{
+		return $this->classes;
 	}
 
 
