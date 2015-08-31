@@ -21,6 +21,10 @@ Assert::same('\Bar', $namespace->unresolveName('Bar'));
 Assert::same('C', $namespace->unresolveName('bar\C'));
 Assert::same('C\D', $namespace->unresolveName('Bar\C\D'));
 
+foreach (array('String', 'string', 'int', 'float', 'bool', 'array', 'callable', 'self', 'parent', '') as $type) {
+	Assert::same($type, $namespace->unresolveName($type));
+}
+
 
 $classA = $namespace->addClass('A');
 Assert::same($namespace, $classA->getNamespace());

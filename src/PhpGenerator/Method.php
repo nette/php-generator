@@ -89,13 +89,12 @@ class Method extends Nette\Object
 	 */
 	public function __toString()
 	{
-		static $builtinTypes = array('array', 'self', 'parent', 'callable', NULL);
 		$parameters = array();
 		foreach ($this->parameters as $param) {
 			$variadic = $this->variadic && $param === end($this->parameters);
-			$hint = !$this->namespace || in_array($param->getTypeHint(), $builtinTypes, TRUE)
-				? $param->getTypeHint()
-				: $this->namespace->unresolveName($param->getTypeHint());
+			$hint = $this->namespace
+				? $this->namespace->unresolveName((string) $param->getTypeHint())
+				: $param->getTypeHint();
 
 			$parameters[] = ($hint ? $hint . ' ' : '')
 				. ($param->isReference() ? '&' : '')
