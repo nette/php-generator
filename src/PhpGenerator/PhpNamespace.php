@@ -152,7 +152,7 @@ class PhpNamespace extends Object
 		if (!$res && Strings::startsWith($lower, strtolower($this->name) . '\\')) {
 			return substr($name, strlen($this->name) + 1);
 		} else {
-			return $res ?: '\\' . $name;
+			return $res ?: ($this->name ? '\\' : '') . $name;
 		}
 	}
 
