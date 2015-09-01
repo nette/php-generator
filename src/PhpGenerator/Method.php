@@ -103,14 +103,12 @@ class Method extends Nette\Object
 	 */
 	public function __toString()
 	{
+		$namespace = $this->namespace ?: new PhpNamespace;
 		$parameters = [];
 		foreach ($this->parameters as $param) {
 			$variadic = $this->variadic && $param === end($this->parameters);
-			$hint = $this->namespace
-				? $this->namespace->unresolveName((string) $param->getTypeHint())
-				: $param->getTypeHint();
 
-			$parameters[] = ($hint ? $hint . ' ' : '')
+			$parameters[] = ($param->getTypeHint() ? $namespace->unresolveName($param->getTypeHint()) . ' ' : '')
 				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')
 				. '$' . $param->getName()
@@ -120,9 +118,6 @@ class Method extends Nette\Object
 		foreach ($this->uses as $param) {
 			$uses[] = ($param->isReference() ? '&' : '') . '$' . $param->getName();
 		}
-		$returnType = $this->namespace
-			? $this->namespace->unresolveName((string) $this->returnType)
-			: $this->returnType;
 
 		return ($this->comment ? str_replace("\n", "\n * ", "/**\n" . $this->comment) . "\n */\n" : '')
 			. ($this->abstract ? 'abstract ' : '')
@@ -134,7 +129,7 @@ class Method extends Nette\Object
 			. ' ' . $this->name
 			. '(' . implode(', ', $parameters) . ')'
 			. ($this->uses ? ' use (' . implode(', ', $uses) . ')' : '')
-			. ($returnType ? ': ' . $returnType : '')
+			. ($this->returnType ? ': ' . $namespace->unresolveName($this->returnType) : '')
 			. ($this->abstract || $this->body === FALSE ? ';'
 				: ($this->name ? "\n" : ' ') . "{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}');
 	}
