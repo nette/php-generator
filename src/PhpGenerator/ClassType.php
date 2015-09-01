@@ -116,14 +116,10 @@ class ClassType extends Nette\Object
 				. ";\n";
 		}
 
-		$extends = (array) $this->extends;
-		$implements = $this->implements;
-		$traits = $this->traits;
-		if ($this->namespace) {
-			$extends = array_map(array($this->namespace, 'unresolveName'), $extends);
-			$implements = array_map(array($this->namespace, 'unresolveName'), $implements);
-			$traits = array_map(array($this->namespace, 'unresolveName'), $traits);
-			}
+		$namespace = $this->namespace ?: new PhpNamespace;
+		$mapper = function (array $arr) use ($namespace) {
+			return array_map(array($namespace, 'unresolveName'), $arr);
+		};
 
 		foreach ($this->methods as $method) {
 			$method->setNamespace($this->namespace);
@@ -135,11 +131,11 @@ class ClassType extends Nette\Object
 			. ($this->final ? 'final ' : '')
 			. $this->type . ' '
 			. $this->name . ' '
-			. ($extends ? 'extends ' . implode(', ', $extends) . ' ' : '')
-			. ($implements ? 'implements ' . implode(', ', $implements) . ' ' : '')
+			. ($this->extends ? 'extends ' . implode(', ', $mapper((array) $this->extends)) . ' ' : '')
+			. ($this->implements ? 'implements ' . implode(', ', $mapper($this->implements)) . ' ' : '')
 			. "\n{\n"
 			. Strings::indent(
-				($traits ? 'use ' . implode(";\nuse ", $traits) . ";\n\n" : '')
+				($this->traits ? 'use ' . implode(";\nuse ", $mapper($this->traits)) . ";\n\n" : '')
 				. ($this->consts ? implode('', $consts) . "\n" : '')
 				. ($this->properties ? implode("\n", $properties) . "\n" : '')
 				. ($this->methods ? "\n" . implode("\n\n\n", $this->methods) . "\n\n" : ''), 1)

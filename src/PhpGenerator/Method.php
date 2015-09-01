@@ -97,14 +97,12 @@ class Method extends Nette\Object
 	 */
 	public function __toString()
 	{
+		$namespace = $this->namespace ?: new PhpNamespace;
 		$parameters = array();
 		foreach ($this->parameters as $param) {
 			$variadic = $this->variadic && $param === end($this->parameters);
-			$hint = $this->namespace
-				? $this->namespace->unresolveName((string) $param->getTypeHint())
-				: $param->getTypeHint();
 
-			$parameters[] = ($hint ? $hint . ' ' : '')
+			$parameters[] = ($param->getTypeHint() ? $namespace->unresolveName($param->getTypeHint()) . ' ' : '')
 				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')
 				. '$' . $param->getName()
