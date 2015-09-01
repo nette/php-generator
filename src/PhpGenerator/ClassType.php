@@ -139,7 +139,7 @@ class ClassType extends Nette\Object
 			. ($implements ? 'implements ' . implode(', ', $implements) . ' ' : '')
 			. "\n{\n"
 			. Strings::indent(
-				($traits ? 'use ' . implode(', ', $traits) . ";\n\n" : '')
+				($traits ? 'use ' . implode(";\nuse ", $traits) . ";\n\n" : '')
 				. ($this->consts ? implode('', $consts) . "\n" : '')
 				. ($this->properties ? implode("\n", $properties) . "\n" : '')
 				. ($this->methods ? "\n" . implode("\n\n\n", $this->methods) . "\n\n" : ''), 1)

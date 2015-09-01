@@ -9,7 +9,8 @@ namespace Foo;
 
 class A implements A, \Bar\C
 {
-	use C, \Bar\D;
+	use C;
+	use \Bar\D;
 
 }
 
