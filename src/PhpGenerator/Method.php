@@ -372,8 +372,6 @@ class Method extends Nette\Object
 	}
 
 
-
-
 	/**
 	 * @param  string|NULL
 	 * @return self
@@ -434,6 +432,7 @@ class Method extends Nette\Object
 		$this->namespace = $val;
 		return $this;
 	}
+
 
 	/**
 	 * @param  string|NULL

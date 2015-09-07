@@ -134,8 +134,6 @@ class Property extends Nette\Object
 	}
 
 
-
-
 	/**
 	 * @param  string|NULL
 	 * @return self
