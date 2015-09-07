@@ -16,7 +16,7 @@ use Nette;
 class Parameter extends Nette\Object
 {
 	/** @var string */
-	private $name;
+	private $name = '';
 
 	/** @var bool */
 	private $reference = FALSE;

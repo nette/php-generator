@@ -287,7 +287,7 @@ class Method extends Nette\Object
 
 
 	/**
-	 * @return string
+	 * @return string|NULL
 	 */
 	public function getVisibility()
 	{

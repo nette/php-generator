@@ -16,7 +16,7 @@ use Nette;
 class Property extends Nette\Object
 {
 	/** @var string */
-	private $name;
+	private $name = '';
 
 	/** @var mixed */
 	public $value;
