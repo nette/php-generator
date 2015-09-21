@@ -135,10 +135,9 @@ class Helpers
 	 * Generates PHP statement.
 	 * @return string
 	 */
-	public static function format($statement)
+	public static function format($statement, ...$args)
 	{
-		$args = func_get_args();
-		return self::formatArgs(array_shift($args), $args);
+		return self::formatArgs($statement, $args);
 	}
 
 
