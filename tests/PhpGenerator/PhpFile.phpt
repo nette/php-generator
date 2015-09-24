@@ -73,3 +73,8 @@ $file->addClass('H');
 $file->addClass('FooBar\\I');
 
 Assert::matchFile(__DIR__ . '/PhpFile.bracketed.expect', (string) $file);
+
+$file = new PhpFile;
+$file->addClass('A');
+
+Assert::matchFile(__DIR__ . '/PhpFile.globalNamespace.expect', (string) $file);
