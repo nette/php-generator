@@ -135,7 +135,7 @@ class PhpFile extends Object
 	public function __toString()
 	{
 		foreach ($this->namespaces as $namespace) {
-			$namespace->setBracketedSyntax(isset($this->namespaces[NULL]));
+			$namespace->setBracketedSyntax(count($this->namespaces) > 1 && isset($this->namespaces[NULL]));
 		}
 
 		return Strings::normalize(
