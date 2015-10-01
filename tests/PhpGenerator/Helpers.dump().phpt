@@ -81,3 +81,7 @@ class Test3 implements Serializable
 
 Assert::same('unserialize(\'C:5:"Test3":0:{}\')', Helpers::dump(new Test3));
 Assert::equal(new Test3, eval('return ' . Helpers::dump(new Test3) . ';'));
+
+Assert::exception(function () {
+	Helpers::dump(function () {});
+}, 'Nette\InvalidArgumentException', 'Cannot dump closure.');
