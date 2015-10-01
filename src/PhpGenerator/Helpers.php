@@ -93,6 +93,9 @@ class Helpers
 			$var = serialize($var);
 			return 'unserialize(' . self::_dump($var, $level) . ')';
 
+		} elseif ($var instanceof \Closure) {
+			throw new Nette\InvalidArgumentException('Cannot dump closure.');
+
 		} elseif (is_object($var)) {
 			$arr = (array) $var;
 			$space = str_repeat("\t", $level);
