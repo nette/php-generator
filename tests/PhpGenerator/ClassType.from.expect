@@ -58,3 +58,9 @@ class Class2 extends Class1 implements Interface2
 	}
 
 }
+
+class Class3
+{
+	public $prop1;
+
+}
