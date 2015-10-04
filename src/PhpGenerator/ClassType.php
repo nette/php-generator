@@ -65,7 +65,7 @@ class ClassType extends Nette\Object
 	 */
 	public static function from($from)
 	{
-		$from = $from instanceof \ReflectionClass ? $from : new \ReflectionClass($from);
+		$from = new \ReflectionClass($from instanceof \ReflectionClass ? $from->getName() : $from);
 		if (PHP_VERSION_ID >= 70000 && $from->isAnonymous()) {
 			$class = new static('anonymous');
 		} else {
@@ -81,12 +81,12 @@ class ClassType extends Nette\Object
 			$class->implements = array_diff($class->implements, $from->getParentClass()->getInterfaceNames());
 		}
 		foreach ($from->getProperties() as $prop) {
-			if ($prop->getDeclaringClass() == $from) { // intentionally ==
+			if ($prop->getDeclaringClass()->getName() === $from->getName()) {
 				$class->properties[$prop->getName()] = Property::from($prop);
 			}
 		}
 		foreach ($from->getMethods() as $method) {
-			if ($method->getDeclaringClass() == $from) { // intentionally ==
+			if ($method->getDeclaringClass()->getName() === $from->getName()) {
 				$class->methods[$method->getName()] = Method::from($method)->setNamespace($class->namespace);
 			}
 		}

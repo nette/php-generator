@@ -7,7 +7,6 @@
 namespace Abc;
 
 use Nette\PhpGenerator\ClassType;
-use ReflectionClass;
 use Tester\Assert;
 
 
@@ -62,10 +61,17 @@ class Class2 extends Class1 implements Interface2
 	{}
 }
 
+class Class3
+{
+	public $prop1;
+}
 
 $res[] = ClassType::from('Abc\Interface1');
 $res[] = ClassType::from('Abc\Interface2');
 $res[] = ClassType::from('Abc\Class1');
-$res[] = ClassType::from(new ReflectionClass('Abc\Class2'));
+$res[] = ClassType::from(new \ReflectionClass('Abc\Class2'));
+$obj = new Class3;
+$obj->prop2 = 1;
+$res[] = ClassType::from(new \ReflectionObject($obj));
 
 Assert::matchFile(__DIR__ . '/ClassType.from.expect', implode("\n", $res));
