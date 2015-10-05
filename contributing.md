@@ -5,7 +5,7 @@ The issue tracker is the preferred channel for bug reports, features requests
 and submitting pull requests, but please respect the following restrictions:
 
 * Please **do not** use the issue tracker for personal support requests (use
-  [Nette forum](http://forum.nette.org) or [Stack Overflow](http://stackoverflow.com)).
+  [Nette forum](https://forum.nette.org) or [Stack Overflow](http://stackoverflow.com)).
 
 * Please **do not** derail or troll issues. Keep the discussion on topic and
   respect the opinions of others.
@@ -21,7 +21,7 @@ fits with the scope and aims of the project. It's up to *you* to make a strong
 case to convince the project's developers of the merits of this feature.
 
 Nette welcomes **pull requests**. If you'd like to contribute, please take a moment
-to [read the guidelines](http://nette.org/en/contributing) in order to make
+to [read the guidelines](https://nette.org/en/contributing) in order to make
 the contribution process easy and effective for everyone involved.
 
 Thanks!
