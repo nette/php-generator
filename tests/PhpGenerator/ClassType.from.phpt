@@ -66,10 +66,10 @@ class Class3
 	public $prop1;
 }
 
-$res[] = ClassType::from('Abc\Interface1');
-$res[] = ClassType::from('Abc\Interface2');
-$res[] = ClassType::from('Abc\Class1');
-$res[] = ClassType::from(new \ReflectionClass('Abc\Class2'));
+$res[] = ClassType::from(Interface1::class);
+$res[] = ClassType::from(Interface2::class);
+$res[] = ClassType::from(Class1::class);
+$res[] = ClassType::from(new \ReflectionClass(Class2::class));
 $obj = new Class3;
 $obj->prop2 = 1;
 $res[] = ClassType::from(new \ReflectionObject($obj));
