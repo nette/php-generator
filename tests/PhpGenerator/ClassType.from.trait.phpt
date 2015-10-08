@@ -28,7 +28,8 @@ trait Trait2
 
 abstract class Class1
 {
-	use Trait1, Trait2;
+	use Trait1;
+	use Trait2;
 }
 
 class Class2 extends Class1
