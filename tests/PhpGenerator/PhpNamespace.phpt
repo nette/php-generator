@@ -28,12 +28,14 @@ foreach (['String', 'string', 'int', 'float', 'bool', 'array', 'callable', 'self
 
 $namespace = new PhpNamespace('Foo');
 
+Assert::same('\A', $namespace->unresolveName('\A'));
 Assert::same('\A', $namespace->unresolveName('A'));
 Assert::same('A', $namespace->unresolveName('foo\A'));
 
 $namespace->addUse('Bar\C');
 
 Assert::same('\Bar', $namespace->unresolveName('Bar'));
+Assert::same('C', $namespace->unresolveName('\bar\C'));
 Assert::same('C', $namespace->unresolveName('bar\C'));
 Assert::same('C\D', $namespace->unresolveName('Bar\C\D'));
 
