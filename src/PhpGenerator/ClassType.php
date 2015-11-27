@@ -121,7 +121,7 @@ class ClassType extends Nette\Object
 		}
 
 		$mapper = function (array $arr) {
-			return array_map([$this->namespace ?: new PhpNamespace, 'unresolveName'], $arr);
+			return $this->namespace ? array_map([$this->namespace, 'unresolveName'], $arr) : $arr;
 		};
 
 		return Strings::normalize(

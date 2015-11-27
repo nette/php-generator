@@ -103,12 +103,11 @@ class Method extends Nette\Object
 	 */
 	public function __toString()
 	{
-		$namespace = $this->namespace ?: new PhpNamespace;
 		$parameters = [];
 		foreach ($this->parameters as $param) {
 			$variadic = $this->variadic && $param === end($this->parameters);
-
-			$parameters[] = ($param->getTypeHint() ? $namespace->unresolveName($param->getTypeHint()) . ' ' : '')
+			$hint = $param->getTypeHint();
+			$parameters[] = ($hint ? ($this->namespace ? $this->namespace->unresolveName($hint) : $hint) . ' ' : '')
 				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')
 				. '$' . $param->getName()
@@ -129,7 +128,7 @@ class Method extends Nette\Object
 			. ' ' . $this->name
 			. '(' . implode(', ', $parameters) . ')'
 			. ($this->uses ? ' use (' . implode(', ', $uses) . ')' : '')
-			. ($this->returnType ? ': ' . $namespace->unresolveName($this->returnType) : '')
+			. ($this->returnType ? ': ' . ($this->namespace ? $this->namespace->unresolveName($this->returnType) : $this->returnType) : '')
 			. ($this->abstract || $this->body === FALSE ? ';'
 				: ($this->name ? "\n" : ' ') . "{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}');
 	}
