@@ -35,8 +35,11 @@ class Helpers
 			return (string) $var;
 
 		} elseif (is_float($var)) {
-			$var = var_export($var, TRUE);
-			return strpos($var, '.') === FALSE ? $var . '.0' : $var;
+			if (is_finite($var)) {
+				$var = var_export($var, TRUE);
+				return strpos($var, '.') === FALSE ? $var . '.0' : $var; // workaround for PHP < 7.0.2
+			}
+			return str_replace('.0', '', var_export($var, TRUE)); // workaround for PHP 7.0.2
 
 		} elseif (is_bool($var)) {
 			return $var ? 'TRUE' : 'FALSE';
