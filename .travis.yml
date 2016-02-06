@@ -24,7 +24,7 @@ before_script:
     # Install Nette Tester & Code Checker
     - travis_retry composer update --no-interaction --prefer-dist $dependencies
     - travis_retry composer create-project nette/code-checker temp/code-checker ~2.5 --no-interaction
-  
+
 sudo: false
 
 cache:
