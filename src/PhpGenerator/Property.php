@@ -13,8 +13,10 @@ use Nette;
 /**
  * Class property description.
  */
-class Property extends Nette\Object
+class Property
 {
+	use Nette\SmartObject;
+
 	/** @var string */
 	private $name = '';
 

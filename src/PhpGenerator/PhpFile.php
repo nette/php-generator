@@ -7,7 +7,7 @@
 
 namespace Nette\PhpGenerator;
 
-use Nette\Object;
+use Nette;
 use Nette\Utils\Strings;
 
 
@@ -19,8 +19,10 @@ use Nette\Utils\Strings;
  * - doc comments
  * - one or more namespaces
  */
-class PhpFile extends Object
+class PhpFile
 {
+	use Nette\SmartObject;
+
 	/** @var string|NULL */
 	private $comment;
 

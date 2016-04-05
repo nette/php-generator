@@ -14,8 +14,10 @@ use Nette\Utils\Strings;
 /**
  * Class/Interface/Trait description.
  */
-class ClassType extends Nette\Object
+class ClassType
 {
+	use Nette\SmartObject;
+
 	const TYPE_CLASS = 'class';
 
 	const TYPE_INTERFACE = 'interface';

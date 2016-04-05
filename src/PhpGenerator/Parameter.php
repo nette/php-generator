@@ -13,8 +13,10 @@ use Nette;
 /**
  * Method parameter description.
  */
-class Parameter extends Nette\Object
+class Parameter
 {
+	use Nette\SmartObject;
+
 	/** @var string */
 	private $name = '';
 
