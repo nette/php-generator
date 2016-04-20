@@ -12,6 +12,8 @@ use Nette;
 
 /**
  * Method or function description.
+ *
+ * @property string $body
  */
 class Method
 {

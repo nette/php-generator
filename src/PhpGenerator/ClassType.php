@@ -13,6 +13,8 @@ use Nette\Utils\Strings;
 
 /**
  * Class/Interface/Trait description.
+ *
+ * @property Method[] $methods
  */
 class ClassType
 {
