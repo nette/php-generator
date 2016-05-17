@@ -9,7 +9,7 @@ matrix:
           env: dependencies="--prefer-lowest --prefer-stable"
 
 script:
-    - vendor/bin/tester tests -s -p php $coverage
+    - vendor/bin/tester tests -s $coverage
     - php temp/code-checker/src/code-checker.php --short-arrays
 
 after_failure:
