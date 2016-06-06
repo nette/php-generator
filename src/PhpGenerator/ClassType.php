@@ -367,6 +367,7 @@ class ClassType
 	/** @deprecated */
 	public function setDocuments(array $s)
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use similar setComment()', E_USER_DEPRECATED);
 		return $this->setComment(implode("\n", $s));
 	}
 
@@ -374,6 +375,7 @@ class ClassType
 	/** @deprecated */
 	public function getDocuments()
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use similar getComment()', E_USER_DEPRECATED);
 		return $this->comment ? [$this->comment] : [];
 	}
 
@@ -381,6 +383,7 @@ class ClassType
 	/** @deprecated */
 	public function addDocument($s)
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use addComment()', E_USER_DEPRECATED);
 		return $this->addComment($s);
 	}
 
