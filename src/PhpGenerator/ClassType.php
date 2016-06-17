@@ -156,7 +156,10 @@ class ClassType
 	}
 
 
-	/** @deprecated */
+	/**
+	 * @param  string
+	 * @return self
+	 */
 	public function setName($name)
 	{
 		$this->name = (string) $name;
