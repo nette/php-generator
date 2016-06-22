@@ -94,3 +94,21 @@ Assert::equal(new Test3, eval('return ' . Helpers::dump(new Test3) . ';'));
 Assert::exception(function () {
 	Helpers::dump(function () {});
 }, Nette\InvalidArgumentException::class, 'Cannot dump closure.');
+
+
+
+class TestDateTime extends DateTime
+{}
+
+Assert::same(
+	"new DateTime('2016-06-22 20:52:43.123400', new DateTimeZone('Europe/Prague'))",
+	Helpers::dump(new DateTime('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague')))
+);
+Assert::same(
+	"new DateTimeImmutable('2016-06-22 20:52:43.123400', new DateTimeZone('Europe/Prague'))",
+	Helpers::dump(new DateTimeImmutable('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague')))
+);
+Assert::match(
+	"Nette\\PhpGenerator\\Helpers::createObject('TestDateTime', %A%)",
+	Helpers::dump(new TestDateTime('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague')))
+);

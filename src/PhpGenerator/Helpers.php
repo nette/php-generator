@@ -102,12 +102,16 @@ class Helpers
 			throw new Nette\InvalidArgumentException('Cannot dump closure.');
 
 		} elseif (is_object($var)) {
+			$class = get_class($var);
 			if (PHP_VERSION_ID >= 70000 && (new \ReflectionObject($var))->isAnonymous()) {
 				throw new Nette\InvalidArgumentException('Cannot dump anonymous class.');
+
+			} elseif (in_array($class, ['DateTime', 'DateTimeImmutable'], TRUE)) {
+				return self::formatArgs("new $class(?, new DateTimeZone(?))", [$var->format('Y-m-d H:i:s.u'), $var->getTimeZone()->getName()]);
 			}
+
 			$arr = (array) $var;
 			$space = str_repeat("\t", $level);
-			$class = get_class($var);
 
 			static $list = [];
 			if ($level > self::MAX_DEPTH || in_array($var, $list, TRUE)) {
