@@ -15,6 +15,7 @@ use Nette\Utils\Strings;
  * Class/Interface/Trait description.
  *
  * @property Method[] $methods
+ * @property Property[] $properties
  */
 class ClassType
 {
