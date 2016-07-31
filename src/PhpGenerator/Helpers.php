@@ -19,6 +19,7 @@ class Helpers
 
 	const PHP_IDENT = '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*';
 	const MAX_DEPTH = 50;
+	const WRAP_LENGTH = 70;
 
 
 	/**
@@ -92,7 +93,7 @@ class Helpers
 				}
 				unset($var[$marker]);
 			}
-			return '[' . (strpos($out, "\n") === FALSE && strlen($out) < 40 ? $out : $outAlt) . ']';
+			return '[' . (strpos($out, "\n") === FALSE && strlen($out) < self::WRAP_LENGTH ? $out : $outAlt) . ']';
 
 		} elseif ($var instanceof \Serializable) {
 			$var = serialize($var);
@@ -176,7 +177,7 @@ class Helpers
 				$sep = '';
 				foreach ($arg as $tmp) {
 					$s .= $sep . self::dump($tmp);
-					$sep = strlen($s) - strrpos($s, "\n") > 100 ? ",\n\t" : ', ';
+					$sep = strlen($s) - strrpos($s, "\n") > self::WRAP_LENGTH ? ",\n\t" : ', ';
 				}
 				$statement = $s . substr($statement, $a + 2);
 				$a = strlen($s);
