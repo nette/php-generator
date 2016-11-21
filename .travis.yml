@@ -9,9 +9,6 @@ matrix:
         - php: 5.6
           env: dependencies="--prefer-lowest --prefer-stable"
 
-    allow_failures:
-        - php: 7.1
-
 script:
     - vendor/bin/tester tests -s $coverage
     - php temp/code-checker/src/code-checker.php --short-arrays
