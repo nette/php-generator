@@ -34,7 +34,7 @@ class Parameter
 
 
 	/**
-	 * @return self
+	 * @return static
 	 */
 	public static function from(\ReflectionParameter $from)
 	{
@@ -89,7 +89,7 @@ class Parameter
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setReference($state = TRUE)
 	{
@@ -109,7 +109,7 @@ class Parameter
 
 	/**
 	 * @param  string|NULL
-	 * @return self
+	 * @return static
 	 */
 	public function setTypeHint($hint)
 	{
@@ -129,7 +129,7 @@ class Parameter
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setOptional($state = TRUE)
 	{
@@ -148,7 +148,7 @@ class Parameter
 
 
 	/**
-	 * @return self
+	 * @return static
 	 */
 	public function setDefaultValue($val)
 	{

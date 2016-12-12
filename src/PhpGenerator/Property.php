@@ -34,7 +34,7 @@ class Property
 
 
 	/**
-	 * @return self
+	 * @return static
 	 */
 	public static function from(\ReflectionProperty $from)
 	{
@@ -75,7 +75,7 @@ class Property
 
 
 	/**
-	 * @return self
+	 * @return static
 	 */
 	public function setValue($val)
 	{
@@ -95,7 +95,7 @@ class Property
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setStatic($state = TRUE)
 	{
@@ -115,7 +115,7 @@ class Property
 
 	/**
 	 * @param  string  public|protected|private
-	 * @return self
+	 * @return static
 	 */
 	public function setVisibility($val)
 	{
@@ -138,7 +138,7 @@ class Property
 
 	/**
 	 * @param  string|NULL
-	 * @return self
+	 * @return static
 	 */
 	public function setComment($val)
 	{
@@ -158,7 +158,7 @@ class Property
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addComment($val)
 	{

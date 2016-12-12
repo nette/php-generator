@@ -62,7 +62,7 @@ class PhpNamespace
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 * @internal
 	 */
 	public function setBracketedSyntax($state = TRUE)
@@ -86,7 +86,7 @@ class PhpNamespace
 	 * @param  string
 	 * @param  string
 	 * @throws InvalidStateException
-	 * @return self
+	 * @return static
 	 */
 	public function addUse($name, $alias = NULL, &$aliasOut = NULL)
 	{

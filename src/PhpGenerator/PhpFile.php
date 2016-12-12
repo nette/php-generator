@@ -32,7 +32,7 @@ class PhpFile
 
 	/**
 	 * @param  string|NULL
-	 * @return self
+	 * @return static
 	 */
 	public function setComment($val)
 	{
@@ -52,7 +52,7 @@ class PhpFile
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addComment($val)
 	{

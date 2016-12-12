@@ -60,7 +60,7 @@ class Method
 
 
 	/**
-	 * @return self
+	 * @return static
 	 */
 	public static function from($from)
 	{
@@ -157,7 +157,7 @@ class Method
 
 	/**
 	 * @param  Parameter[]
-	 * @return self
+	 * @return static
 	 */
 	public function setParameters(array $val)
 	{
@@ -196,7 +196,7 @@ class Method
 
 
 	/**
-	 * @return self
+	 * @return static
 	 */
 	public function setUses(array $val)
 	{
@@ -224,7 +224,7 @@ class Method
 
 
 	/**
-	 * @return self
+	 * @return static
 	 */
 	public function setBody($statement, array $args = NULL)
 	{
@@ -243,7 +243,7 @@ class Method
 
 
 	/**
-	 * @return self
+	 * @return static
 	 */
 	public function addBody($statement, array $args = NULL)
 	{
@@ -254,7 +254,7 @@ class Method
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setStatic($val)
 	{
@@ -274,7 +274,7 @@ class Method
 
 	/**
 	 * @param  string|NULL  public|protected|private
-	 * @return self
+	 * @return static
 	 */
 	public function setVisibility($val)
 	{
@@ -297,7 +297,7 @@ class Method
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setFinal($val)
 	{
@@ -317,7 +317,7 @@ class Method
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setAbstract($val)
 	{
@@ -337,7 +337,7 @@ class Method
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setReturnReference($val)
 	{
@@ -357,7 +357,7 @@ class Method
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setVariadic($val)
 	{
@@ -377,7 +377,7 @@ class Method
 
 	/**
 	 * @param  string|NULL
-	 * @return self
+	 * @return static
 	 */
 	public function setComment($val)
 	{
@@ -397,7 +397,7 @@ class Method
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addComment($val)
 	{
@@ -431,7 +431,7 @@ class Method
 
 
 	/**
-	 * @return self
+	 * @return static
 	 */
 	public function setNamespace(PhpNamespace $val = NULL)
 	{
@@ -442,7 +442,7 @@ class Method
 
 	/**
 	 * @param  string|NULL
-	 * @return self
+	 * @return static
 	 */
 	public function setReturnType($val)
 	{

@@ -66,7 +66,7 @@ class ClassType
 
 	/**
 	 * @param  \ReflectionClass|string
-	 * @return self
+	 * @return static
 	 */
 	public static function from($from)
 	{
@@ -159,7 +159,7 @@ class ClassType
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function setName($name)
 	{
@@ -179,7 +179,7 @@ class ClassType
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function setType($type)
 	{
@@ -202,7 +202,7 @@ class ClassType
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setFinal($state = TRUE)
 	{
@@ -222,7 +222,7 @@ class ClassType
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setAbstract($state = TRUE)
 	{
@@ -242,7 +242,7 @@ class ClassType
 
 	/**
 	 * @param  string|string[]
-	 * @return self
+	 * @return static
 	 */
 	public function setExtends($types)
 	{
@@ -265,7 +265,7 @@ class ClassType
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addExtend($type)
 	{
@@ -277,7 +277,7 @@ class ClassType
 
 	/**
 	 * @param  string[]
-	 * @return self
+	 * @return static
 	 */
 	public function setImplements(array $types)
 	{
@@ -297,7 +297,7 @@ class ClassType
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addImplement($type)
 	{
@@ -308,7 +308,7 @@ class ClassType
 
 	/**
 	 * @param  string[]
-	 * @return self
+	 * @return static
 	 */
 	public function setTraits(array $traits)
 	{
@@ -328,7 +328,7 @@ class ClassType
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addTrait($trait)
 	{
@@ -339,7 +339,7 @@ class ClassType
 
 	/**
 	 * @param  string|NULL
-	 * @return self
+	 * @return static
 	 */
 	public function setComment($val)
 	{
@@ -359,7 +359,7 @@ class ClassType
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addComment($val)
 	{
@@ -393,7 +393,7 @@ class ClassType
 
 
 	/**
-	 * @return self
+	 * @return static
 	 */
 	public function setConsts(array $consts)
 	{
@@ -414,7 +414,7 @@ class ClassType
 	/**
 	 * @param  string
 	 * @param  mixed
-	 * @return self
+	 * @return static
 	 */
 	public function addConst($name, $value)
 	{
@@ -425,7 +425,7 @@ class ClassType
 
 	/**
 	 * @param  Property[]
-	 * @return self
+	 * @return static
 	 */
 	public function setProperties(array $props)
 	{
@@ -474,7 +474,7 @@ class ClassType
 
 	/**
 	 * @param  Method[]
-	 * @return self
+	 * @return static
 	 */
 	public function setMethods(array $methods)
 	{
