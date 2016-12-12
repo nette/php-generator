@@ -32,7 +32,7 @@ class Property extends Nette\Object
 
 
 	/**
-	 * @return self
+	 * @return static
 	 */
 	public static function from(\ReflectionProperty $from)
 	{
@@ -57,7 +57,7 @@ class Property extends Nette\Object
 
 	/**
 	 * @param  string  without $
-	 * @return self
+	 * @return static
 	 */
 	public function setName($name)
 	{
@@ -76,7 +76,7 @@ class Property extends Nette\Object
 
 
 	/**
-	 * @return self
+	 * @return static
 	 */
 	public function setValue($val)
 	{
@@ -96,7 +96,7 @@ class Property extends Nette\Object
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setStatic($state = TRUE)
 	{
@@ -116,7 +116,7 @@ class Property extends Nette\Object
 
 	/**
 	 * @param  string  public|protected|private
-	 * @return self
+	 * @return static
 	 */
 	public function setVisibility($val)
 	{
@@ -139,7 +139,7 @@ class Property extends Nette\Object
 
 	/**
 	 * @param  string|NULL
-	 * @return self
+	 * @return static
 	 */
 	public function setComment($val)
 	{
@@ -159,7 +159,7 @@ class Property extends Nette\Object
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addComment($val)
 	{
@@ -169,7 +169,7 @@ class Property extends Nette\Object
 
 	/**
 	 * @param  string[]
-	 * @return self
+	 * @return static
 	 */
 	public function setDocuments(array $s)
 	{
@@ -189,7 +189,7 @@ class Property extends Nette\Object
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addDocument($s)
 	{

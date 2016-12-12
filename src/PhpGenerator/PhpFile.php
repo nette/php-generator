@@ -30,7 +30,7 @@ class PhpFile extends Object
 
 	/**
 	 * @param  string|NULL
-	 * @return self
+	 * @return static
 	 */
 	public function setComment($val)
 	{
@@ -50,7 +50,7 @@ class PhpFile extends Object
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addComment($val)
 	{
@@ -60,7 +60,7 @@ class PhpFile extends Object
 
 	/**
 	 * @param  string[]
-	 * @return self
+	 * @return static
 	 */
 	public function setDocuments(array $documents)
 	{
@@ -80,7 +80,7 @@ class PhpFile extends Object
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addDocument($document)
 	{

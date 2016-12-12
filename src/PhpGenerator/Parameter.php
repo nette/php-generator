@@ -32,7 +32,7 @@ class Parameter extends Nette\Object
 
 
 	/**
-	 * @return self
+	 * @return static
 	 */
 	public static function from(\ReflectionParameter $from)
 	{
@@ -72,7 +72,7 @@ class Parameter extends Nette\Object
 
 	/**
 	 * @param  string  without $
-	 * @return self
+	 * @return static
 	 */
 	public function setName($name)
 	{
@@ -92,7 +92,7 @@ class Parameter extends Nette\Object
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setReference($state = TRUE)
 	{
@@ -112,7 +112,7 @@ class Parameter extends Nette\Object
 
 	/**
 	 * @param  string|NULL
-	 * @return self
+	 * @return static
 	 */
 	public function setTypeHint($hint)
 	{
@@ -132,7 +132,7 @@ class Parameter extends Nette\Object
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setOptional($state = TRUE)
 	{
@@ -151,7 +151,7 @@ class Parameter extends Nette\Object
 
 
 	/**
-	 * @return self
+	 * @return static
 	 */
 	public function setDefaultValue($val)
 	{

@@ -61,7 +61,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  \ReflectionClass|string
-	 * @return self
+	 * @return static
 	 */
 	public static function from($from)
 	{
@@ -155,7 +155,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function setName($name)
 	{
@@ -175,7 +175,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function setType($type)
 	{
@@ -198,7 +198,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setFinal($state = TRUE)
 	{
@@ -218,7 +218,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 */
 	public function setAbstract($state = TRUE)
 	{
@@ -238,7 +238,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  string|string[]
-	 * @return self
+	 * @return static
 	 */
 	public function setExtends($types)
 	{
@@ -261,7 +261,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addExtend($type)
 	{
@@ -273,7 +273,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  string[]
-	 * @return self
+	 * @return static
 	 */
 	public function setImplements(array $types)
 	{
@@ -293,7 +293,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addImplement($type)
 	{
@@ -304,7 +304,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  string[]
-	 * @return self
+	 * @return static
 	 */
 	public function setTraits(array $traits)
 	{
@@ -324,7 +324,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addTrait($trait)
 	{
@@ -335,7 +335,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  string|NULL
-	 * @return self
+	 * @return static
 	 */
 	public function setComment($val)
 	{
@@ -355,7 +355,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addComment($val)
 	{
@@ -365,7 +365,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  string[]
-	 * @return self
+	 * @return static
 	 */
 	public function setDocuments(array $s)
 	{
@@ -385,7 +385,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  string
-	 * @return self
+	 * @return static
 	 */
 	public function addDocument($s)
 	{
@@ -395,7 +395,7 @@ class ClassType extends Nette\Object
 
 
 	/**
-	 * @return self
+	 * @return static
 	 */
 	public function setConsts(array $consts)
 	{
@@ -416,7 +416,7 @@ class ClassType extends Nette\Object
 	/**
 	 * @param  string
 	 * @param  mixed
-	 * @return self
+	 * @return static
 	 */
 	public function addConst($name, $value)
 	{
@@ -427,7 +427,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  Property[]
-	 * @return self
+	 * @return static
 	 */
 	public function setProperties(array $props)
 	{
@@ -477,7 +477,7 @@ class ClassType extends Nette\Object
 
 	/**
 	 * @param  Method[]
-	 * @return self
+	 * @return static
 	 */
 	public function setMethods(array $methods)
 	{

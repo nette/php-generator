@@ -43,7 +43,7 @@ class PhpNamespace extends Object
 
 	/**
 	 * @param  string|NULL
-	 * @return self
+	 * @return static
 	 */
 	public function setName($name)
 	{
@@ -63,7 +63,7 @@ class PhpNamespace extends Object
 
 	/**
 	 * @param  bool
-	 * @return self
+	 * @return static
 	 * @internal
 	 */
 	public function setBracketedSyntax($state = TRUE)
@@ -87,7 +87,7 @@ class PhpNamespace extends Object
 	 * @param  string
 	 * @param  string
 	 * @throws InvalidStateException
-	 * @return self
+	 * @return static
 	 */
 	public function addUse($name, $alias = NULL, &$aliasOut = NULL)
 	{
