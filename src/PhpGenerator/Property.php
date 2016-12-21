@@ -33,6 +33,7 @@ class Property
 	 */
 	public static function from(\ReflectionProperty $from)
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use Nette\PhpGenerator\Factory.', E_USER_DEPRECATED);
 		return (new Factory)->fromPropertyReflection($from);
 	}
 

@@ -40,6 +40,7 @@ class Parameter
 	 */
 	public static function from(\ReflectionParameter $from)
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use Nette\PhpGenerator\Factory.', E_USER_DEPRECATED);
 		return (new Factory)->fromParameterReflection($from);
 	}
 
