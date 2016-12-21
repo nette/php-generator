@@ -27,7 +27,7 @@ class Parameter
 	private $typeHint;
 
 	/** @var bool */
-	private $optional = FALSE;
+	private $hasDefaultValue = FALSE;
 
 	/** @var mixed */
 	public $defaultValue;
@@ -55,7 +55,7 @@ class Parameter
 				}
 			}
 		}
-		$param->optional = $from->isDefaultValueAvailable();
+		$param->hasDefaultValue = $from->isDefaultValueAvailable();
 		$param->defaultValue = $from->isDefaultValueAvailable() ? $from->getDefaultValue() : NULL;
 		return $param;
 	}
@@ -133,17 +133,18 @@ class Parameter
 	 */
 	public function setOptional($state = TRUE)
 	{
-		$this->optional = (bool) $state;
+		$this->hasDefaultValue = (bool) $state;
 		return $this;
 	}
 
 
 	/**
+	 * @deprecated  use hasDefaultValue()
 	 * @return bool
 	 */
 	public function isOptional()
 	{
-		return $this->optional;
+		return $this->hasDefaultValue;
 	}
 
 
@@ -163,6 +164,15 @@ class Parameter
 	public function getDefaultValue()
 	{
 		return $this->defaultValue;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function hasDefaultValue()
+	{
+		return $this->hasDefaultValue;
 	}
 
 }
