@@ -107,7 +107,7 @@ trait FunctionLike
 	{
 		$param = new Parameter($name);
 		if (func_num_args() > 1) {
-			$param->setOptional(TRUE)->setDefaultValue($defaultValue);
+			$param->setDefaultValue($defaultValue);
 		}
 		return $this->parameters[$name] = $param;
 	}

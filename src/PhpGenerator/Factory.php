@@ -107,7 +107,6 @@ class Factory
 		$param->setTypeHint($from->hasType() ? (string) $from->getType() : NULL);
 		$param->setNullable($from->hasType() && $from->getType()->allowsNull());
 		if ($from->isDefaultValueAvailable()) {
-			$param->setOptional(TRUE);
 			$param->setDefaultValue($from->isDefaultValueConstant()
 				? new PhpLiteral($from->getDefaultValueConstantName())
 				: $from->getDefaultValue());
