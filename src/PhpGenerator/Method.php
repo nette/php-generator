@@ -58,6 +58,9 @@ class Method
 	/** @var string|NULL */
 	private $returnType;
 
+	/** @var bool */
+	private $returnNullable;
+
 
 	/**
 	 * @return static
@@ -88,6 +91,7 @@ class Method
 		$method->comment = $from->getDocComment() ? preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t")) : NULL;
 		if (PHP_VERSION_ID >= 70000 && $from->hasReturnType()) {
 			$method->returnType = (string) $from->getReturnType();
+			$method->returnNullable = $from->getReturnType()->allowsNull();
 		}
 		return $method;
 	}
@@ -111,7 +115,7 @@ class Method
 		foreach ($this->parameters as $param) {
 			$variadic = $this->variadic && $param === end($this->parameters);
 			$hint = $param->getTypeHint();
-			$parameters[] = ($hint ? ($this->namespace ? $this->namespace->unresolveName($hint) : $hint) . ' ' : '')
+			$parameters[] = ($hint ? ($param->isNullable() ? '?' : '') . ($this->namespace ? $this->namespace->unresolveName($hint) : $hint) . ' ' : '')
 				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')
 				. '$' . $param->getName()
@@ -132,7 +136,8 @@ class Method
 			. ' ' . $this->name
 			. '(' . implode(', ', $parameters) . ')'
 			. ($this->uses ? ' use (' . implode(', ', $uses) . ')' : '')
-			. ($this->returnType ? ': ' . ($this->namespace ? $this->namespace->unresolveName($this->returnType) : $this->returnType) : '')
+			. ($this->returnType ? ': ' . ($this->returnNullable ? '?' : '')
+				. ($this->namespace ? $this->namespace->unresolveName($this->returnType) : $this->returnType) : '')
 			. ($this->abstract || $this->body === FALSE ? ';'
 				: ($this->name ? "\n" : ' ') . "{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}');
 	}
@@ -352,6 +357,26 @@ class Method
 	public function getReturnReference()
 	{
 		return $this->returnReference;
+	}
+
+
+	/**
+	 * @param  bool
+	 * @return static
+	 */
+	public function setReturnNullable($val)
+	{
+		$this->returnNullable = (bool) $val;
+		return $this;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function getReturnNullable()
+	{
+		return $this->returnNullable;
 	}
 
 
