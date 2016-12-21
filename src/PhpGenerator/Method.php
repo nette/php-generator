@@ -41,11 +41,7 @@ class Method
 	 */
 	public static function from($method)
 	{
-		$method = $method instanceof \ReflectionFunctionAbstract ? $method : Nette\Utils\Callback::toReflection($method);
-		if ($method instanceof \ReflectionFunction) {
-			trigger_error('For global functions or closures use Nette\PhpGenerator\GlobalFunction or Nette\PhpGenerator\Closure.', E_USER_DEPRECATED);
-			return (new Factory)->fromFunctionReflection($method);
-		}
+		$method = $method instanceof \ReflectionMethod ? $method : Nette\Utils\Callback::toReflection($method);
 		return (new Factory)->fromMethodReflection($method);
 	}
 
@@ -55,9 +51,7 @@ class Method
 	 */
 	public function __construct($name)
 	{
-		if ($name === NULL) {
-			throw new Nette\DeprecatedException('For closures use Nette\PhpGenerator\Closure instead of Nette\PhpGenerator\Method.');
-		} elseif (!Helpers::isIdentifier($name)) {
+		if (!Helpers::isIdentifier($name)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid name.");
 		}
 		$this->name = $name;

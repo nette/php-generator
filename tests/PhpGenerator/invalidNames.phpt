@@ -108,7 +108,7 @@ Assert::exception(function () {
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\Method(NULL);
-}, Nette\DeprecatedException::class);
+}, Nette\InvalidArgumentException::class);
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\Method('*');
