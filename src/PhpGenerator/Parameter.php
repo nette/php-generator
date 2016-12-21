@@ -27,6 +27,9 @@ class Parameter
 	private $typeHint;
 
 	/** @var bool */
+	private $nullable = FALSE;
+
+	/** @var bool */
 	private $hasDefaultValue = FALSE;
 
 	/** @var mixed */
@@ -42,6 +45,7 @@ class Parameter
 		$param->reference = $from->isPassedByReference();
 		if (PHP_VERSION_ID >= 70000) {
 			$param->typeHint = $from->hasType() ? (string) $from->getType() : NULL;
+			$param->nullable = $from->hasType() && $from->getType()->allowsNull();
 		} elseif ($from->isArray() || $from->isCallable()) {
 			$param->typeHint = $from->isArray() ? 'array' : 'callable';
 		} else {
@@ -57,6 +61,7 @@ class Parameter
 		}
 		$param->hasDefaultValue = $from->isDefaultValueAvailable();
 		$param->defaultValue = $from->isDefaultValueAvailable() ? $from->getDefaultValue() : NULL;
+		$param->nullable = $param->nullable && (!$param->hasDefaultValue || $param->defaultValue !== NULL);
 		return $param;
 	}
 
@@ -145,6 +150,26 @@ class Parameter
 	public function isOptional()
 	{
 		return $this->hasDefaultValue;
+	}
+
+
+	/**
+	 * @param  bool
+	 * @return static
+	 */
+	public function setNullable($state = TRUE)
+	{
+		$this->nullable = (bool) $state;
+		return $this;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isNullable()
+	{
+		return $this->nullable;
 	}
 
 
