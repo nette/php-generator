@@ -59,6 +59,7 @@ class PhpNamespace
 	/** @deprecated */
 	public function setName($name)
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use constructor.', E_USER_DEPRECATED);
 		$this->__construct($name);
 		return $this;
 	}

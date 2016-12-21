@@ -41,7 +41,11 @@ class Method
 	 */
 	public static function from($method)
 	{
-		$method = $method instanceof \ReflectionMethod ? $method : Nette\Utils\Callback::toReflection($method);
+		if ($method instanceof \ReflectionMethod) {
+			trigger_error(__METHOD__ . '() accepts only method name.', E_USER_DEPRECATED);
+		} else {
+			$method = Nette\Utils\Callback::toReflection($method);
+		}
 		return (new Factory)->fromMethodReflection($method);
 	}
 

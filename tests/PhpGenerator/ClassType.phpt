@@ -25,10 +25,8 @@ $class
 	->addTrait('AnotherTrait', ['sayHello as protected'])
 	->addComment("Description of class.\nThis is example\n")
 	->addComment('@property-read Nette\Forms\Form $form')
-	->setConsts(['ROLE' => 'admin'])
-	->addConst('ACTIVE', FALSE);
-
-Assert::same(['ROLE' => 'admin', 'ACTIVE' => FALSE], $class->getConsts());
+	->setConstants(['ROLE' => 'admin'])
+	->addConstant('ACTIVE', FALSE);
 
 $class->addConstant('FORCE_ARRAY', new PhpLiteral('Nette\Utils\Json::FORCE_ARRAY'))
 	->setVisibility('private')

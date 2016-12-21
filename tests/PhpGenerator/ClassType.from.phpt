@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace Abc;
 
 use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\Factory;
 use Tester\Assert;
 
 
@@ -71,9 +72,9 @@ class Class3
 $res[] = ClassType::from(Interface1::class);
 $res[] = ClassType::from(Interface2::class);
 $res[] = ClassType::from(Class1::class);
-$res[] = ClassType::from(new \ReflectionClass(Class2::class));
+$res[] = ClassType::from(new Class2);
 $obj = new Class3;
 $obj->prop2 = 1;
-$res[] = ClassType::from(new \ReflectionObject($obj));
+$res[] = (new Factory)->fromClassReflection(new \ReflectionObject($obj));
 
 Assert::matchFile(__DIR__ . '/ClassType.from.expect', implode("\n", $res));

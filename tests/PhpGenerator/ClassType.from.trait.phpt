@@ -38,9 +38,9 @@ class Class2 extends Class1
 {
 }
 
-$res[] = ClassType::from(new ReflectionClass('Trait1'));
-$res[] = ClassType::from(new ReflectionClass('Trait2'));
-$res[] = ClassType::from(new ReflectionClass('Class1'));
-$res[] = ClassType::from(new ReflectionClass('Class2'));
+$res[] = ClassType::from('Trait1');
+$res[] = ClassType::from('Trait2');
+$res[] = ClassType::from('Class1');
+$res[] = ClassType::from('Class2');
 
 Assert::matchFile(__DIR__ . '/ClassType.from.trait.expect', implode("\n", $res));
