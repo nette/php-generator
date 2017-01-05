@@ -231,9 +231,9 @@ class Method
 	/**
 	 * @return static
 	 */
-	public function setBody($statement, array $args = NULL)
+	public function setBody($code, array $args = NULL)
 	{
-		$this->body = func_num_args() > 1 ? Helpers::formatArgs($statement, $args) : $statement;
+		$this->body = $args === NULL ? $code : Helpers::formatArgs($code, $args);
 		return $this;
 	}
 
@@ -250,9 +250,9 @@ class Method
 	/**
 	 * @return static
 	 */
-	public function addBody($statement, array $args = NULL)
+	public function addBody($code, array $args = NULL)
 	{
-		$this->body .= (func_num_args() > 1 ? Helpers::formatArgs($statement, $args) : $statement) . "\n";
+		$this->body .= ($args === NULL ? $code : Helpers::formatArgs($code, $args)) . "\n";
 		return $this;
 	}
 
