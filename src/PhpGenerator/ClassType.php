@@ -99,9 +99,9 @@ class ClassType
 	}
 
 
-	public function __construct($name = '', PhpNamespace $namespace = NULL)
+	public function __construct($name, PhpNamespace $namespace = NULL)
 	{
-		$this->setName($name);
+		$this->name = (string) $name;
 		$this->namespace = $namespace;
 	}
 
@@ -163,6 +163,7 @@ class ClassType
 	 */
 	public function setName($name)
 	{
+		trigger_error(__METHOD__ . ' is deprecated, use constructor.', E_USER_DEPRECATED);
 		$this->name = (string) $name;
 		return $this;
 	}
