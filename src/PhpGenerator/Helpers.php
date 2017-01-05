@@ -194,6 +194,9 @@ class Helpers
 			}
 			$a = strpos($statement, '?', $a);
 		}
+		if ($args) {
+			throw new Nette\InvalidArgumentException('Insufficient number of placeholders.');
+		}
 		return $statement;
 	}
 
