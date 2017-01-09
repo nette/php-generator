@@ -23,7 +23,7 @@ $function->addUse('vars')
 	->setReference(TRUE);
 
 Assert::match(
-'function & ($a, $b) use ($this, &$vars) {
+'function &($a, $b) use ($this, &$vars) {
 	return $a + $b;
 }', (string) $function);
 

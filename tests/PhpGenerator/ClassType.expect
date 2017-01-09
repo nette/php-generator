@@ -29,7 +29,7 @@ abstract final class Example extends ParentClass implements IExample, IOne
 	}
 
 
-	protected static function & getSections($mode = self::ORDER)
+	protected static function &getSections($mode = self::ORDER)
 	{
 		$mode = 123;
 		return self::$sections;

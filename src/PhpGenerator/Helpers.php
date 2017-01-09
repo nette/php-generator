@@ -32,7 +32,7 @@ class Helpers
 	}
 
 
-	private static function _dump(& $var, $level = 0)
+	private static function _dump(&$var, $level = 0)
 	{
 		if ($var instanceof PhpLiteral) {
 			return (string) $var;
@@ -83,7 +83,7 @@ class Helpers
 				$outAlt = "\n$space";
 				$var[$marker] = TRUE;
 				$counter = 0;
-				foreach ($var as $k => & $v) {
+				foreach ($var as $k => &$v) {
 					if ($k !== $marker) {
 						$item = ($k === $counter ? '' : self::_dump($k, $level + 1) . ' => ') . self::_dump($v, $level + 1);
 						$counter = is_int($k) ? max($k + 1, $counter) : $counter;
@@ -126,7 +126,7 @@ class Helpers
 						$props[$v] = $props["\x00*\x00$v"] = $props["\x00$class\x00$v"] = TRUE;
 					}
 				}
-				foreach ($arr as $k => & $v) {
+				foreach ($arr as $k => &$v) {
 					if (!isset($props) || isset($props[$k])) {
 						$out .= "$space\t" . self::_dump($k, $level + 1) . ' => ' . self::_dump($v, $level + 1) . ",\n";
 					}

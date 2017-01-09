@@ -131,9 +131,9 @@ class Method
 			. ($this->final ? 'final ' : '')
 			. ($this->visibility ? $this->visibility . ' ' : '')
 			. ($this->static ? 'static ' : '')
-			. 'function'
-			. ($this->returnReference ? ' &' : '')
-			. ' ' . $this->name
+			. 'function '
+			. ($this->returnReference ? '&' : '')
+			. $this->name
 			. '(' . implode(', ', $parameters) . ')'
 			. ($this->uses ? ' use (' . implode(', ', $uses) . ')' : '')
 			. ($this->returnType ? ': ' . ($this->returnNullable ? '?' : '')
