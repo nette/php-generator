@@ -30,7 +30,7 @@ class ClassType
 	/** @var PhpNamespace|NULL */
 	private $namespace;
 
-	/** @var string */
+	/** @var string|NULL */
 	private $name;
 
 	/** @var string  class|interface|trait */
@@ -72,7 +72,7 @@ class ClassType
 	{
 		$from = $from instanceof \ReflectionClass ? $from : new \ReflectionClass($from);
 		if (PHP_VERSION_ID >= 70000 && $from->isAnonymous()) {
-			$class = new static('anonymous');
+			$class = new static;
 		} else {
 			$class = new static($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
 		}
@@ -99,7 +99,7 @@ class ClassType
 	}
 
 
-	public function __construct($name = '', PhpNamespace $namespace = NULL)
+	public function __construct($name = NULL, PhpNamespace $namespace = NULL)
 	{
 		$this->setName($name);
 		$this->namespace = $namespace;
@@ -134,18 +134,17 @@ class ClassType
 			Helpers::formatDocComment($this->comment . "\n")
 			. ($this->abstract ? 'abstract ' : '')
 			. ($this->final ? 'final ' : '')
-			. $this->type . ' '
-			. $this->name . ' '
+			. ($this->name ? "$this->type $this->name " : '')
 			. ($this->extends ? 'extends ' . implode(', ', $mapper((array) $this->extends)) . ' ' : '')
 			. ($this->implements ? 'implements ' . implode(', ', $mapper($this->implements)) . ' ' : '')
-			. "\n{\n"
+			. ($this->name ? "\n" : '') . "{\n"
 			. Strings::indent(
 				($this->traits ? 'use ' . implode(";\nuse ", $mapper($this->traits)) . ";\n\n" : '')
 				. ($this->consts ? implode('', $consts) . "\n" : '')
 				. ($this->properties ? implode("\n", $properties) . "\n" : '')
 				. ($this->methods ? "\n" . implode("\n\n\n", $this->methods) . "\n\n" : ''), 1)
 			. '}'
-		) . "\n";
+		) . ($this->name ? "\n" : '');
 	}
 
 
@@ -159,18 +158,18 @@ class ClassType
 
 
 	/**
-	 * @param  string
+	 * @param  string|NULL
 	 * @return static
 	 */
 	public function setName($name)
 	{
-		$this->name = (string) $name;
+		$this->name = $name;
 		return $this;
 	}
 
 
 	/**
-	 * @return string
+	 * @return string|NULL
 	 */
 	public function getName()
 	{

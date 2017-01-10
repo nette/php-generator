@@ -1,4 +1,3 @@
-class anonymous
 {
 	public $a;
 
@@ -15,9 +14,7 @@ class anonymous
 	}
 
 }
-
-class anonymous extends Class1
-{
+extends Class1 {
 
 	public function a()
 	{
