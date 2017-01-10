@@ -21,11 +21,15 @@ $class
 	->addImplement('IOne')
 	->addTrait('ObjectTrait')
 	->addComment("Description of class.\nThis is example\n")
-	->addComment('@property-read Nette\Forms\Form $form');
+	->addComment('@property-read Nette\Forms\Form $form')
+	->setConsts(['ROLE' => 'admin'])
+	->addConst('ACTIVE', FALSE);
 
-$class
-	->addConst('ROLE', 'admin')
-	->addConst('FORCE_ARRAY', new PhpLiteral('Nette\Utils\Json::FORCE_ARRAY'));
+Assert::same(['ROLE' => 'admin', 'ACTIVE' => FALSE], $class->getConsts());
+
+$class->addConstant('FORCE_ARRAY', new PhpLiteral('Nette\Utils\Json::FORCE_ARRAY'))
+	->setVisibility('private')
+	->addComment('Commented');
 
 $class->addProperty('handle')
 	->setVisibility('private')

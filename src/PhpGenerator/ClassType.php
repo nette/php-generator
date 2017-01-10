@@ -54,7 +54,7 @@ class ClassType
 	/** @var string|NULL */
 	private $comment;
 
-	/** @var array name => value */
+	/** @var Constant[] name => Constant */
 	private $consts = [];
 
 	/** @var Property[] name => Property */
@@ -112,8 +112,10 @@ class ClassType
 	public function __toString()
 	{
 		$consts = [];
-		foreach ($this->consts as $name => $value) {
-			$consts[] = "const $name = " . Helpers::dump($value) . ";\n";
+		foreach ($this->consts as $const) {
+			$consts[] = Helpers::formatDocComment($const->getComment())
+				. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
+				. 'const ' . $const->getName() . ' = ' . Helpers::dump($const->getValue()) . ";\n";
 		}
 
 		$properties = [];
@@ -392,19 +394,56 @@ class ClassType
 
 
 	/**
+	 * @deprecated  use setConstants()
 	 * @return static
 	 */
 	public function setConsts(array $consts)
 	{
-		$this->consts = $consts;
+		return $this->setConstants($consts);
+	}
+
+
+	/**
+	 * @deprecated  use getConstants()
+	 * @return array
+	 */
+	public function getConsts()
+	{
+		return array_map(function ($const) { return $const->getValue(); }, $this->consts);
+	}
+
+
+	/**
+	 * @deprecated  use addConstant()
+	 * @param  string
+	 * @param  mixed
+	 * @return static
+	 */
+	public function addConst($name, $value)
+	{
+		$this->addConstant($name, $value);
 		return $this;
 	}
 
 
 	/**
-	 * @return array
+	 * @return static
 	 */
-	public function getConsts()
+	public function setConstants(array $consts)
+	{
+		$this->consts = [];
+		foreach ($consts as $k => $v) {
+			$const = $v instanceof Constant ? $v : (new Constant($k))->setValue($v);
+			$this->consts[$const->getName()] = $const;
+		}
+		return $this;
+	}
+
+
+	/**
+	 * @return Constant[]
+	 */
+	public function getConstants()
 	{
 		return $this->consts;
 	}
@@ -413,12 +452,11 @@ class ClassType
 	/**
 	 * @param  string
 	 * @param  mixed
-	 * @return static
+	 * @return Constant
 	 */
-	public function addConst($name, $value)
+	public function addConstant($name, $value)
 	{
-		$this->consts[$name] = $value;
-		return $this;
+		return $this->consts[$name] = (new Constant($name))->setValue($value);
 	}
 
 
