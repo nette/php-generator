@@ -80,10 +80,11 @@ class Method
 			$method->parameters[$param->getName()] = Parameter::from($param);
 		}
 		if ($from instanceof \ReflectionMethod) {
+			$isInterface = $from->getDeclaringClass()->isInterface();
 			$method->static = $from->isStatic();
-			$method->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : NULL);
+			$method->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : ($isInterface ? NULL : 'public'));
 			$method->final = $from->isFinal();
-			$method->abstract = $from->isAbstract() && !$from->getDeclaringClass()->isInterface();
+			$method->abstract = $from->isAbstract() && !$isInterface;
 			$method->body = $from->isAbstract() ? FALSE : '';
 		}
 		$method->returnReference = $from->returnsReference();

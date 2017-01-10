@@ -4,7 +4,7 @@
 trait Trait1
 {
 
-	function func1()
+	public function func1()
 	{
 	}
 
@@ -22,7 +22,7 @@ trait Trait2
 abstract class Class1
 {
 
-	function func1()
+	public function func1()
 	{
 	}
 

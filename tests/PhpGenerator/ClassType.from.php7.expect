@@ -5,7 +5,7 @@ class anonymous
 	private $b;
 
 
-	function a()
+	public function a()
 	{
 	}
 
@@ -19,7 +19,7 @@ class anonymous
 class anonymous extends Class1
 {
 
-	function a()
+	public function a()
 	{
 	}
 
