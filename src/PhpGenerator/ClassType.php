@@ -80,7 +80,7 @@ class ClassType
 		$class->final = $from->isFinal() && $class->type === 'class';
 		$class->abstract = $from->isAbstract() && $class->type === 'class';
 		$class->implements = $from->getInterfaceNames();
-		$class->comment = $from->getDocComment() ? preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t")) : NULL;
+		$class->comment = Helpers::unformatDocComment($from->getDocComment());
 		if ($from->getParentClass()) {
 			$class->extends = $from->getParentClass()->getName();
 			$class->implements = array_diff($class->implements, $from->getParentClass()->getInterfaceNames());
@@ -118,8 +118,7 @@ class ClassType
 
 		$properties = [];
 		foreach ($this->properties as $property) {
-			$doc = str_replace("\n", "\n * ", $property->getComment());
-			$properties[] = ($doc ? (strpos($doc, "\n") === FALSE ? "/** $doc */\n" : "/**\n * $doc\n */\n") : '')
+			$properties[] = Helpers::formatDocComment($property->getComment())
 				. $property->getVisibility() . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName()
 				. ($property->value === NULL ? '' : ' = ' . Helpers::dump($property->value))
 				. ";\n";
@@ -130,7 +129,7 @@ class ClassType
 		};
 
 		return Strings::normalize(
-			($this->comment ? str_replace("\n", "\n * ", "/**\n" . $this->comment) . "\n */\n" : '')
+			Helpers::formatDocComment($this->comment . "\n")
 			. ($this->abstract ? 'abstract ' : '')
 			. ($this->final ? 'final ' : '')
 			. $this->type . ' '

@@ -145,7 +145,7 @@ class PhpFile
 
 		return Strings::normalize(
 			"<?php\n"
-			. ($this->comment ? "\n" . str_replace("\n", "\n * ", "/**\n" . $this->comment) . "\n */\n\n" : '')
+			. ($this->comment ? "\n" . Helpers::formatDocComment($this->comment . "\n") . "\n" : '')
 			. implode("\n\n", $this->namespaces)
 		) . "\n";
 	}

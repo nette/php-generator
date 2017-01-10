@@ -207,6 +207,30 @@ class Helpers
 
 
 	/**
+	 * @return string
+	 */
+	public static function formatDocComment($content)
+	{
+		if (($s = trim($content)) === '') {
+			return '';
+		} elseif (strpos($content, "\n") === FALSE) {
+			return "/** $s */\n";
+		} else {
+			return str_replace("\n", "\n * ", "/**\n$s") . "\n */\n";
+		}
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public static function unformatDocComment($comment)
+	{
+		return preg_replace('#^\s*\* ?#m', '', trim(trim(trim($comment), '/*')));
+	}
+
+
+	/**
 	 * @return bool
 	 */
 	public static function isIdentifier($value)

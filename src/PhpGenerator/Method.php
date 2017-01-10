@@ -89,7 +89,7 @@ class Method
 		}
 		$method->returnReference = $from->returnsReference();
 		$method->variadic = $from->isVariadic();
-		$method->comment = $from->getDocComment() ? preg_replace('#^\s*\* ?#m', '', trim($from->getDocComment(), "/* \r\n\t")) : NULL;
+		$method->comment = Helpers::unformatDocComment($from->getDocComment());
 		if (PHP_VERSION_ID >= 70000 && $from->hasReturnType()) {
 			$method->returnType = (string) $from->getReturnType();
 			$method->returnNullable = $from->getReturnType()->allowsNull();
@@ -127,7 +127,7 @@ class Method
 			$uses[] = ($param->isReference() ? '&' : '') . '$' . $param->getName();
 		}
 
-		return ($this->comment ? str_replace("\n", "\n * ", "/**\n" . $this->comment) . "\n */\n" : '')
+		return Helpers::formatDocComment($this->comment . "\n")
 			. ($this->abstract ? 'abstract ' : '')
 			. ($this->final ? 'final ' : '')
 			. ($this->visibility ? $this->visibility . ' ' : '')
