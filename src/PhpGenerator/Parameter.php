@@ -37,6 +37,7 @@ class Parameter
 
 
 	/**
+	 * @deprecated
 	 * @return static
 	 */
 	public static function from(\ReflectionParameter $from)

@@ -23,6 +23,7 @@ class Property extends Member
 
 
 	/**
+	 * @deprecated
 	 * @return static
 	 */
 	public static function from(\ReflectionProperty $from)
