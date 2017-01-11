@@ -14,6 +14,8 @@ use Nette;
 
 /**
  * Class property description.
+ *
+ * @property mixed $value
  */
 class Property
 {
@@ -23,7 +25,7 @@ class Property
 	use Traits\CommentAware;
 
 	/** @var mixed */
-	public $value;
+	private $value;
 
 	/** @var bool */
 	private $static = FALSE;
@@ -42,7 +44,7 @@ class Property
 	/**
 	 * @return mixed
 	 */
-	public function getValue()
+	public function &getValue()
 	{
 		return $this->value;
 	}

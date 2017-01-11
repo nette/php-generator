@@ -14,6 +14,8 @@ use Nette;
 
 /**
  * Method parameter description.
+ *
+ * @property mixed $defaultValue
  */
 class Parameter
 {
@@ -33,7 +35,7 @@ class Parameter
 	private $hasDefaultValue = FALSE;
 
 	/** @var mixed */
-	public $defaultValue;
+	private $defaultValue;
 
 
 	/**
