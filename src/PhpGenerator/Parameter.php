@@ -59,9 +59,13 @@ class Parameter
 				}
 			}
 		}
-		$param->hasDefaultValue = $from->isDefaultValueAvailable();
-		$param->defaultValue = $from->isDefaultValueAvailable() ? $from->getDefaultValue() : NULL;
-		$param->nullable = $param->nullable && (!$param->hasDefaultValue || $param->defaultValue !== NULL);
+		if ($from->isDefaultValueAvailable()) {
+			$param->hasDefaultValue = TRUE;
+			$param->defaultValue = $from->isDefaultValueConstant()
+				? new PhpLiteral($from->getDefaultValueConstantName())
+				: $from->getDefaultValue();
+			$param->nullable = $param->nullable && $param->defaultValue !== NULL;
+		}
 		return $param;
 	}
 
