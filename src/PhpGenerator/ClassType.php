@@ -119,7 +119,7 @@ class ClassType
 		$properties = [];
 		foreach ($this->properties as $property) {
 			$properties[] = Helpers::formatDocComment($property->getComment())
-				. $property->getVisibility() . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName()
+				. ($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName()
 				. ($property->value === NULL ? '' : ' = ' . Helpers::dump($property->value))
 				. ";\n";
 		}

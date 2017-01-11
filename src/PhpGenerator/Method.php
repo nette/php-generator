@@ -15,13 +15,8 @@ use Nette;
  *
  * @property string $body
  */
-class Method
+class Method extends Member
 {
-	use Nette\SmartObject;
-
-	/** @var string|NULL */
-	private $name;
-
 	/** @var array of name => Parameter */
 	private $parameters = [];
 
@@ -34,9 +29,6 @@ class Method
 	/** @var bool */
 	private $static = FALSE;
 
-	/** @var string|NULL  public|protected|private */
-	private $visibility;
-
 	/** @var bool */
 	private $final = FALSE;
 
@@ -48,9 +40,6 @@ class Method
 
 	/** @var bool */
 	private $variadic = FALSE;
-
-	/** @var string|NULL */
-	private $comment;
 
 	/** @var PhpNamespace|NULL */
 	private $namespace;
@@ -82,14 +71,14 @@ class Method
 		if ($from instanceof \ReflectionMethod) {
 			$isInterface = $from->getDeclaringClass()->isInterface();
 			$method->static = $from->isStatic();
-			$method->visibility = $from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : ($isInterface ? NULL : 'public'));
+			$method->setVisibility($from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : ($isInterface ? NULL : 'public')));
 			$method->final = $from->isFinal();
 			$method->abstract = $from->isAbstract() && !$isInterface;
 			$method->body = $from->isAbstract() ? FALSE : '';
 		}
 		$method->returnReference = $from->returnsReference();
 		$method->variadic = $from->isVariadic();
-		$method->comment = Helpers::unformatDocComment($from->getDocComment());
+		$method->setComment(Helpers::unformatDocComment($from->getDocComment()));
 		if (PHP_VERSION_ID >= 70000 && $from->hasReturnType()) {
 			$method->returnType = (string) $from->getReturnType();
 			$method->returnNullable = $from->getReturnType()->allowsNull();
@@ -127,37 +116,20 @@ class Method
 			$uses[] = ($param->isReference() ? '&' : '') . '$' . $param->getName();
 		}
 
-		return Helpers::formatDocComment($this->comment . "\n")
+		return Helpers::formatDocComment($this->getComment() . "\n")
 			. ($this->abstract ? 'abstract ' : '')
 			. ($this->final ? 'final ' : '')
-			. ($this->visibility ? $this->visibility . ' ' : '')
+			. ($this->getVisibility() ? $this->getVisibility() . ' ' : '')
 			. ($this->static ? 'static ' : '')
 			. 'function '
 			. ($this->returnReference ? '&' : '')
-			. $this->name
+			. $this->getName()
 			. '(' . implode(', ', $parameters) . ')'
 			. ($this->uses ? ' use (' . implode(', ', $uses) . ')' : '')
 			. ($this->returnType ? ': ' . ($this->returnNullable ? '?' : '')
 				. ($this->namespace ? $this->namespace->unresolveName($this->returnType) : $this->returnType) : '')
 			. ($this->abstract || $this->body === FALSE ? ';'
-				: ($this->name ? "\n" : ' ') . "{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}');
-	}
-
-
-	/** @deprecated */
-	public function setName($name)
-	{
-		$this->name = $name ? (string) $name : NULL;
-		return $this;
-	}
-
-
-	/**
-	 * @return string|NULL
-	 */
-	public function getName()
-	{
-		return $this->name;
+				: ($this->getName() ? "\n" : ' ') . "{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}');
 	}
 
 
@@ -279,29 +251,6 @@ class Method
 
 
 	/**
-	 * @param  string|NULL  public|protected|private
-	 * @return static
-	 */
-	public function setVisibility($val)
-	{
-		if (!in_array($val, ['public', 'protected', 'private', NULL], TRUE)) {
-			throw new Nette\InvalidArgumentException('Argument must be public|protected|private|NULL.');
-		}
-		$this->visibility = $val ? (string) $val : NULL;
-		return $this;
-	}
-
-
-	/**
-	 * @return string|NULL
-	 */
-	public function getVisibility()
-	{
-		return $this->visibility;
-	}
-
-
-	/**
 	 * @param  bool
 	 * @return static
 	 */
@@ -398,61 +347,6 @@ class Method
 	public function isVariadic()
 	{
 		return $this->variadic;
-	}
-
-
-	/**
-	 * @param  string|NULL
-	 * @return static
-	 */
-	public function setComment($val)
-	{
-		$this->comment = $val ? (string) $val : NULL;
-		return $this;
-	}
-
-
-	/**
-	 * @return string|NULL
-	 */
-	public function getComment()
-	{
-		return $this->comment;
-	}
-
-
-	/**
-	 * @param  string
-	 * @return static
-	 */
-	public function addComment($val)
-	{
-		$this->comment .= $this->comment ? "\n$val" : $val;
-		return $this;
-	}
-
-
-	/** @deprecated */
-	public function setDocuments(array $s)
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use similar setComment()', E_USER_DEPRECATED);
-		return $this->setComment(implode("\n", $s));
-	}
-
-
-	/** @deprecated */
-	public function getDocuments()
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use similar getComment()', E_USER_DEPRECATED);
-		return $this->comment ? [$this->comment] : [];
-	}
-
-
-	/** @deprecated */
-	public function addDocument($s)
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use addComment()', E_USER_DEPRECATED);
-		return $this->addComment($s);
 	}
 
 
