@@ -95,14 +95,14 @@ class ClassType
 
 		$consts = [];
 		foreach ($this->consts as $const) {
-			$consts[] = Helpers::formatDocComment($const->getComment())
+			$consts[] = Helpers::formatDocComment((string) $const->getComment())
 				. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
 				. 'const ' . $const->getName() . ' = ' . Helpers::dump($const->getValue()) . ';';
 		}
 
 		$properties = [];
 		foreach ($this->properties as $property) {
-			$properties[] = Helpers::formatDocComment($property->getComment())
+			$properties[] = Helpers::formatDocComment((string) $property->getComment())
 				. ($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName()
 				. ($property->value === NULL ? '' : ' = ' . Helpers::dump($property->value))
 				. ';';
