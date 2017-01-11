@@ -41,32 +41,7 @@ class Parameter
 	 */
 	public static function from(\ReflectionParameter $from)
 	{
-		$param = new static($from->getName());
-		$param->reference = $from->isPassedByReference();
-		if (PHP_VERSION_ID >= 70000) {
-			$param->typeHint = $from->hasType() ? (string) $from->getType() : NULL;
-			$param->nullable = $from->hasType() && $from->getType()->allowsNull();
-		} elseif ($from->isArray() || $from->isCallable()) {
-			$param->typeHint = $from->isArray() ? 'array' : 'callable';
-		} else {
-			try {
-				$param->typeHint = $from->getClass() ? $from->getClass()->getName() : NULL;
-			} catch (\ReflectionException $e) {
-				if (preg_match('#Class (.+) does not exist#', $e->getMessage(), $m)) {
-					$param->typeHint = $m[1];
-				} else {
-					throw $e;
-				}
-			}
-		}
-		if ($from->isDefaultValueAvailable()) {
-			$param->hasDefaultValue = TRUE;
-			$param->defaultValue = $from->isDefaultValueConstant()
-				? new PhpLiteral($from->getDefaultValueConstantName())
-				: $from->getDefaultValue();
-			$param->nullable = $param->nullable && $param->defaultValue !== NULL;
-		}
-		return $param;
+		return (new Factory)->fromParameterReflection($from);
 	}
 
 

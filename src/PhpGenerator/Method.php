@@ -56,34 +56,9 @@ class Method extends Member
 	 */
 	public static function from($from)
 	{
-		if (is_string($from) && strpos($from, '::')) {
-			$from = new \ReflectionMethod($from);
-		} elseif (is_array($from)) {
-			$from = new \ReflectionMethod($from[0], $from[1]);
-		} elseif (!$from instanceof \ReflectionFunctionAbstract) {
-			$from = new \ReflectionFunction($from);
-		}
-
-		$method = new static($from->isClosure() ? NULL : $from->getName());
-		foreach ($from->getParameters() as $param) {
-			$method->parameters[$param->getName()] = Parameter::from($param);
-		}
-		if ($from instanceof \ReflectionMethod) {
-			$isInterface = $from->getDeclaringClass()->isInterface();
-			$method->static = $from->isStatic();
-			$method->setVisibility($from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : ($isInterface ? NULL : 'public')));
-			$method->final = $from->isFinal();
-			$method->abstract = $from->isAbstract() && !$isInterface;
-			$method->body = $from->isAbstract() ? FALSE : '';
-		}
-		$method->returnReference = $from->returnsReference();
-		$method->variadic = $from->isVariadic();
-		$method->setComment(Helpers::unformatDocComment($from->getDocComment()));
-		if (PHP_VERSION_ID >= 70000 && $from->hasReturnType()) {
-			$method->returnType = (string) $from->getReturnType();
-			$method->returnNullable = $from->getReturnType()->allowsNull();
-		}
-		return $method;
+		return (new Factory)->fromFunctionReflection(
+			$from instanceof \ReflectionFunctionAbstract ? $from : Nette\Utils\Callback::toReflection($from)
+		);
 	}
 
 

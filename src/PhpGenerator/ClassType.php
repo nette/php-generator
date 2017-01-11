@@ -70,32 +70,9 @@ class ClassType
 	 */
 	public static function from($from)
 	{
-		$from = $from instanceof \ReflectionClass ? $from : new \ReflectionClass($from);
-		if (PHP_VERSION_ID >= 70000 && $from->isAnonymous()) {
-			$class = new static;
-		} else {
-			$class = new static($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
-		}
-		$class->type = $from->isInterface() ? 'interface' : ($from->isTrait() ? 'trait' : 'class');
-		$class->final = $from->isFinal() && $class->type === 'class';
-		$class->abstract = $from->isAbstract() && $class->type === 'class';
-		$class->implements = $from->getInterfaceNames();
-		$class->comment = Helpers::unformatDocComment($from->getDocComment());
-		if ($from->getParentClass()) {
-			$class->extends = $from->getParentClass()->getName();
-			$class->implements = array_diff($class->implements, $from->getParentClass()->getInterfaceNames());
-		}
-		foreach ($from->getProperties() as $prop) {
-			if ($prop->isDefault() && $prop->getDeclaringClass()->getName() === $from->getName()) {
-				$class->properties[$prop->getName()] = Property::from($prop);
-			}
-		}
-		foreach ($from->getMethods() as $method) {
-			if ($method->getDeclaringClass()->getName() === $from->getName()) {
-				$class->methods[$method->getName()] = Method::from($method)->setNamespace($class->namespace);
-			}
-		}
-		return $class;
+		return (new Factory)->fromClassReflection(
+			$from instanceof \ReflectionClass ? $from : new \ReflectionClass($from)
+		);
 	}
 
 

@@ -27,13 +27,7 @@ class Property extends Member
 	 */
 	public static function from(\ReflectionProperty $from)
 	{
-		$prop = new static($from->getName());
-		$defaults = $from->getDeclaringClass()->getDefaultProperties();
-		$prop->value = isset($defaults[$prop->getName()]) ? $defaults[$prop->getName()] : NULL;
-		$prop->setStatic($from->isStatic());
-		$prop->setVisibility($from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : 'public'));
-		$prop->setComment(Helpers::unformatDocComment($from->getDocComment()));
-		return $prop;
+		return (new Factory)->fromPropertyReflection($from);
 	}
 
 
