@@ -20,6 +20,11 @@ Assert::type(Nette\PhpGenerator\ClassType::class, $res);
 Assert::same('stdClass', $res->getName());
 
 
+$res = $factory->fromClassReflection(new ReflectionClass(new class {}));
+Assert::type(Nette\PhpGenerator\ClassType::class, $res);
+Assert::null($res->getName());
+
+
 $res = $factory->fromMethodReflection(new \ReflectionMethod(ReflectionClass::class, 'getName'));
 Assert::type(Nette\PhpGenerator\Method::class, $res);
 Assert::same('getName', $res->getName());

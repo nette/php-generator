@@ -24,11 +24,9 @@ class Factory
 	 */
 	public function fromClassReflection(\ReflectionClass $from)
 	{
-		if (PHP_VERSION_ID >= 70000 && $from->isAnonymous()) {
-			$class = new ClassType;
-		} else {
-			$class = new ClassType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
-		}
+		$class = $from->isAnonymous()
+			? new ClassType
+			: new ClassType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
 		$class->setType($from->isInterface() ? 'interface' : ($from->isTrait() ? 'trait' : 'class'));
 		$class->setFinal($from->isFinal() && $class->getType() === 'class');
 		$class->setAbstract($from->isAbstract() && $class->getType() === 'class');
@@ -71,7 +69,7 @@ class Factory
 		$method->setReturnReference($from->returnsReference());
 		$method->setVariadic($from->isVariadic());
 		$method->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
-		if (PHP_VERSION_ID >= 70000 && $from->hasReturnType()) {
+		if ($from->hasReturnType()) {
 			$method->setReturnType((string) $from->getReturnType());
 			$method->setReturnNullable($from->getReturnType()->allowsNull());
 		}
@@ -91,7 +89,7 @@ class Factory
 		if (!$from->isClosure()) {
 			$function->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		}
-		if (PHP_VERSION_ID >= 70000 && $from->hasReturnType()) {
+		if ($from->hasReturnType()) {
 			$function->setReturnType((string) $from->getReturnType());
 			$function->setReturnNullable($from->getReturnType()->allowsNull());
 		}
@@ -106,22 +104,8 @@ class Factory
 	{
 		$param = new Parameter($from->getName());
 		$param->setReference($from->isPassedByReference());
-		if (PHP_VERSION_ID >= 70000) {
-			$param->setTypeHint($from->hasType() ? (string) $from->getType() : NULL);
-			$param->setNullable($from->hasType() && $from->getType()->allowsNull());
-		} elseif ($from->isArray() || $from->isCallable()) {
-			$param->setTypeHint($from->isArray() ? 'array' : 'callable');
-		} else {
-			try {
-				$param->setTypeHint($from->getClass() ? $from->getClass()->getName() : NULL);
-			} catch (\ReflectionException $e) {
-				if (preg_match('#Class (.+) does not exist#', $e->getMessage(), $m)) {
-					$param->setTypeHint($m[1]);
-				} else {
-					throw $e;
-				}
-			}
-		}
+		$param->setTypeHint($from->hasType() ? (string) $from->getType() : NULL);
+		$param->setNullable($from->hasType() && $from->getType()->allowsNull());
 		if ($from->isDefaultValueAvailable()) {
 			$param->setOptional(TRUE);
 			$param->setDefaultValue($from->isDefaultValueConstant()
@@ -139,8 +123,7 @@ class Factory
 	public function fromPropertyReflection(\ReflectionProperty $from)
 	{
 		$prop = new Property($from->getName());
-		$defaults = $from->getDeclaringClass()->getDefaultProperties();
-		$prop->setValue(isset($defaults[$prop->getName()]) ? $defaults[$prop->getName()] : NULL);
+		$prop->setValue($from->getDeclaringClass()->getDefaultProperties()[$prop->getName()] ?? NULL);
 		$prop->setStatic($from->isStatic());
 		$prop->setVisibility($from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : 'public'));
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));

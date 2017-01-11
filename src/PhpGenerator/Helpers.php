@@ -106,7 +106,7 @@ class Helpers
 
 		} elseif (is_object($var)) {
 			$class = get_class($var);
-			if (PHP_VERSION_ID >= 70000 && (new \ReflectionObject($var))->isAnonymous()) {
+			if ((new \ReflectionObject($var))->isAnonymous()) {
 				throw new Nette\InvalidArgumentException('Cannot dump anonymous class.');
 
 			} elseif (in_array($class, ['DateTime', 'DateTimeImmutable'], TRUE)) {
