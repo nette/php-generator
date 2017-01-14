@@ -2,7 +2,6 @@
 
 /**
  * Test: Nette\PhpGenerator - PHP7 return type declarations
- * @phpversion 7.0
  */
 
 declare(strict_types=1);

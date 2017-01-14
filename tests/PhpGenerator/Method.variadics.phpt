@@ -2,7 +2,6 @@
 
 /**
  * Test: Nette\PhpGenerator & variadics.
- * @phpversion 5.6
  */
 
 declare(strict_types=1);

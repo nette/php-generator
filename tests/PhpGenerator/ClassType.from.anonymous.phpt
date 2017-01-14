@@ -2,7 +2,6 @@
 
 /**
  * Test: Nette\PhpGenerator generator.
- * @phpversion 7
  */
 
 declare(strict_types=1);
@@ -31,4 +30,4 @@ $res[] = ClassType::from(new class extends Class1 {
 	function a() {}
 });
 
-Assert::matchFile(__DIR__ . '/ClassType.from.php7.expect', implode("\n", $res));
+Assert::matchFile(__DIR__ . '/ClassType.from.anonymous.expect', implode("\n", $res));

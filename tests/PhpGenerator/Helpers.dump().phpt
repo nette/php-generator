@@ -29,7 +29,7 @@ Assert::same('FALSE', Helpers::dump(FALSE));
 
 Assert::same("''", Helpers::dump(''));
 Assert::same("'Hello'", Helpers::dump('Hello'));
-Assert::same("'I\xc3\xb1t\xc3\xabrn\xc3\xa2ti\xc3\xb4n\xc3\xa0liz\xc3\xa6ti\xc3\xb8n'", Helpers::dump("I\xc3\xb1t\xc3\xabrn\xc3\xa2ti\xc3\xb4n\xc3\xa0liz\xc3\xa6ti\xc3\xb8n")); // Iñtërnâtiônàlizætiøn
+Assert::same("'I\u{F1}t\u{EB}rn\u{E2}ti\u{F4}n\u{E0}liz\u{E6}ti\u{F8}n'", Helpers::dump("I\u{F1}t\u{EB}rn\u{E2}ti\u{F4}n\u{E0}liz\u{E6}ti\u{F8}n")); // Iñtërnâtiônàlizætiøn
 Assert::same('"\rHello \$"', Helpers::dump("\rHello $"));
 Assert::same("'He\\llo'", Helpers::dump('He\llo'));
 Assert::same('\'He\ll\\\\\o \\\'wor\\\\\\\'ld\\\\\'', Helpers::dump('He\ll\\\o \'wor\\\'ld\\'));
@@ -114,3 +114,7 @@ Assert::match(
 	"Nette\\PhpGenerator\\Helpers::createObject('TestDateTime', %A%)",
 	Helpers::dump(new TestDateTime('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague')))
 );
+
+Assert::exception(function () {
+	Helpers::dump(new class {});
+}, Nette\InvalidArgumentException::class, 'Cannot dump anonymous class.');
