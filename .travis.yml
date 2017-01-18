@@ -17,7 +17,7 @@ matrix:
 
 script:
     - vendor/bin/tester tests -s $coverageArgs
-    - php temp/code-checker/src/code-checker.php --short-arrays
+    - php temp/code-checker/src/code-checker.php --short-arrays --strict-types
 
 after_failure:
     # Print *.actual content
@@ -26,7 +26,7 @@ after_failure:
 before_script:
     # Install Nette Tester & Code Checker
     - travis_retry composer update --no-interaction --prefer-dist $dependencies
-    - travis_retry composer create-project nette/code-checker temp/code-checker ~2.5 --no-interaction
+    - travis_retry composer create-project nette/code-checker temp/code-checker ~2.8 --no-interaction
     - if [ "$coverage" == "on" ]; then coverageArgs="-p phpdbg --coverage ./coverage.xml --coverage-src ./src"; fi
 
 after_script:
