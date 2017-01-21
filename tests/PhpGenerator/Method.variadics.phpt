@@ -5,6 +5,8 @@
  * @phpversion 5.6
  */
 
+declare(strict_types=1);
+
 use Nette\PhpGenerator\Method;
 use Nette\PhpGenerator\Parameter;
 use Tester\Assert;

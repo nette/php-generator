@@ -4,6 +4,8 @@
  * Test: Nette\PhpGenerator generator.
  */
 
+declare(strict_types=1);
+
 namespace Abc;
 
 use Nette\PhpGenerator\ClassType;

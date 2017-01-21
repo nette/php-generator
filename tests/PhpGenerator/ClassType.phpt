@@ -4,6 +4,8 @@
  * Test: Nette\PhpGenerator for classes.
  */
 
+declare(strict_types=1);
+
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpLiteral;
 use Tester\Assert;

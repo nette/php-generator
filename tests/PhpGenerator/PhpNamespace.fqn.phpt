@@ -4,6 +4,8 @@
  * Test: empty namespaces.
  */
 
+declare(strict_types=1);
+
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpNamespace;
 use Tester\Assert;

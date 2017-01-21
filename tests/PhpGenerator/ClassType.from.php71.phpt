@@ -5,6 +5,8 @@
  * @phpversion 7.1
  */
 
+declare(strict_types=1);
+
 use Nette\PhpGenerator\ClassType;
 use Tester\Assert;
 

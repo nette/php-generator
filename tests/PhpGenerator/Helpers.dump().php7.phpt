@@ -5,6 +5,8 @@
  * @phpversion 7
  */
 
+declare(strict_types=1);
+
 use Nette\PhpGenerator\Helpers;
 use Tester\Assert;
 

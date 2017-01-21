@@ -4,6 +4,8 @@
  * Test: Nette\PhpGenerator\Helpers::dump()
  */
 
+declare(strict_types=1);
+
 use Nette\PhpGenerator\Helpers;
 use Nette\PhpGenerator\PhpLiteral;
 use Tester\Assert;
@@ -11,7 +13,7 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
-ini_set('serialize_precision', 14);
+ini_set('serialize_precision', '14');
 
 Assert::same('0', Helpers::dump(0));
 Assert::same('1', Helpers::dump(1));
