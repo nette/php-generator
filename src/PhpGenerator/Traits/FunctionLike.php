@@ -112,7 +112,7 @@ trait FunctionLike
 	 */
 	public function setVariadic(bool $val): self
 	{
-		$this->variadic = (bool) $val;
+		$this->variadic = $val;
 		return $this;
 	}
 
@@ -148,7 +148,7 @@ trait FunctionLike
 	 */
 	public function setReturnReference(bool $val): self
 	{
-		$this->returnReference = (bool) $val;
+		$this->returnReference = $val;
 		return $this;
 	}
 
@@ -164,7 +164,7 @@ trait FunctionLike
 	 */
 	public function setReturnNullable(bool $val): self
 	{
-		$this->returnNullable = (bool) $val;
+		$this->returnNullable = $val;
 		return $this;
 	}
 

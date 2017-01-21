@@ -243,7 +243,7 @@ class Helpers
 	 */
 	public static function createObject(string $class, array $props)
 	{
-		return unserialize('O' . substr(serialize((string) $class), 1, -1) . substr(serialize($props), 1));
+		return unserialize('O' . substr(serialize($class), 1, -1) . substr(serialize($props), 1));
 	}
 
 

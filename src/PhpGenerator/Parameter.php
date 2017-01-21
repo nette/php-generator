@@ -43,7 +43,7 @@ class Parameter
 	 */
 	public function setReference(bool $state = TRUE): self
 	{
-		$this->reference = (bool) $state;
+		$this->reference = $state;
 		return $this;
 	}
 
@@ -80,7 +80,7 @@ class Parameter
 	 */
 	public function setOptional(bool $state = TRUE): self
 	{
-		$this->hasDefaultValue = (bool) $state;
+		$this->hasDefaultValue = $state;
 		return $this;
 	}
 
@@ -100,7 +100,7 @@ class Parameter
 	 */
 	public function setNullable(bool $state = TRUE): self
 	{
-		$this->nullable = (bool) $state;
+		$this->nullable = $state;
 		return $this;
 	}
 

@@ -52,7 +52,7 @@ class Property
 	 */
 	public function setStatic(bool $state = TRUE): self
 	{
-		$this->static = (bool) $state;
+		$this->static = $state;
 		return $this;
 	}
 
