@@ -37,6 +37,9 @@ class PhpNamespace
 	private $classes = [];
 
 
+	/**
+	 * @param  string|NULL
+	 */
 	public function __construct($name = NULL)
 	{
 		$this->setName($name);

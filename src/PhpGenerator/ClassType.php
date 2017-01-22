@@ -76,6 +76,9 @@ class ClassType
 	}
 
 
+	/**
+	 * @param  string|NULL
+	 */
 	public function __construct($name = NULL, PhpNamespace $namespace = NULL)
 	{
 		$this->setName($name);
@@ -403,6 +406,7 @@ class ClassType
 
 
 	/**
+	 * @param  Constant[]|mixed[]
 	 * @return static
 	 */
 	public function setConstants(array $consts)

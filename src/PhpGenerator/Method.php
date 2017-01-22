@@ -13,7 +13,7 @@ use Nette;
 /**
  * Method or function description.
  *
- * @property string $body
+ * @property string|FALSE $body
  */
 class Method extends Member
 {
@@ -52,6 +52,7 @@ class Method extends Member
 
 
 	/**
+	 * @param  \ReflectionFunctionAbstract|callable
 	 * @return static
 	 */
 	public static function from($from)
@@ -177,6 +178,7 @@ class Method extends Member
 
 
 	/**
+	 * @param  string|FALSE
 	 * @return static
 	 */
 	public function setBody($code, array $args = NULL)
@@ -187,7 +189,7 @@ class Method extends Member
 
 
 	/**
-	 * @return string
+	 * @return string|FALSE
 	 */
 	public function getBody()
 	{
@@ -196,6 +198,7 @@ class Method extends Member
 
 
 	/**
+	 * @param  string
 	 * @return static
 	 */
 	public function addBody($code, array $args = NULL)

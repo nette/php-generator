@@ -149,6 +149,7 @@ class Helpers
 
 	/**
 	 * Generates PHP statement.
+	 * @param  string
 	 * @return string
 	 */
 	public static function format($statement, ...$args)
@@ -159,6 +160,7 @@ class Helpers
 
 	/**
 	 * Generates PHP statement.
+	 * @param  string
 	 * @return string
 	 */
 	public static function formatArgs($statement, array $args)
@@ -207,6 +209,7 @@ class Helpers
 
 
 	/**
+	 * @param  string
 	 * @return string
 	 */
 	public static function formatDocComment($content)
@@ -222,6 +225,7 @@ class Helpers
 
 
 	/**
+	 * @param  string
 	 * @return string
 	 */
 	public static function unformatDocComment($comment)
@@ -239,7 +243,11 @@ class Helpers
 	}
 
 
-	/** @internal */
+	/**
+	 * @param  string
+	 * @return object
+	 * @internal
+	 */
 	public static function createObject($class, array $props)
 	{
 		return unserialize('O' . substr(serialize((string) $class), 1, -1) . substr(serialize($props), 1));

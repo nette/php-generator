@@ -17,7 +17,9 @@ class Factory
 {
 	use Nette\SmartObject;
 
-
+	/**
+	 * @return ClassType
+	 */
 	public function fromClassReflection(\ReflectionClass $from)
 	{
 		if (PHP_VERSION_ID >= 70000 && $from->isAnonymous()) {
@@ -51,6 +53,9 @@ class Factory
 	}
 
 
+	/**
+	 * @return Method
+	 */
 	public function fromFunctionReflection(\ReflectionFunctionAbstract $from)
 	{
 		$method = new Method($from->isClosure() ? NULL : $from->getName());
@@ -78,6 +83,9 @@ class Factory
 	}
 
 
+	/**
+	 * @return Parameter
+	 */
 	public function fromParameterReflection(\ReflectionParameter $from)
 	{
 		$param = new Parameter($from->getName());
@@ -109,6 +117,9 @@ class Factory
 	}
 
 
+	/**
+	 * @return Property
+	 */
 	public function fromPropertyReflection(\ReflectionProperty $from)
 	{
 		$prop = new Property($from->getName());
