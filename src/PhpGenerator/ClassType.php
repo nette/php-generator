@@ -226,7 +226,7 @@ class ClassType
 	 */
 	public function setExtends($types)
 	{
-		if (!is_string($types) && !(is_array($types) && array_filter($types, 'is_string') === $types)) {
+		if (!is_string($types) && !(is_array($types) && Nette\Utils\Arrays::every($types, 'is_string'))) {
 			throw new Nette\InvalidArgumentException('Argument must be string or string[].');
 		}
 		$this->extends = $types;
@@ -535,7 +535,7 @@ class ClassType
 	{
 		$method = (new Method($name))->setNamespace($this->namespace);
 		if ($this->type === 'interface') {
-			$method->setVisibility(NULL)->setBody(FALSE);
+			$method->setBody(FALSE);
 		} else {
 			$method->setVisibility('public');
 		}

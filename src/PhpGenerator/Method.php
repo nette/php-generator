@@ -20,7 +20,7 @@ class Method extends Member
 	/** @var array of name => Parameter */
 	private $parameters = [];
 
-	/** @var array of name => bool */
+	/** @var Parameter[] */
 	private $uses = [];
 
 	/** @var string|FALSE */

@@ -39,13 +39,13 @@ class Factory
 		$props = $methods = [];
 		foreach ($from->getProperties() as $prop) {
 			if ($prop->isDefault() && $prop->getDeclaringClass()->getName() === $from->getName()) {
-				$props[$prop->getName()] = $this->fromPropertyReflection($prop);
+				$props[] = $this->fromPropertyReflection($prop);
 			}
 		}
 		$class->setProperties($props);
 		foreach ($from->getMethods() as $method) {
 			if ($method->getDeclaringClass()->getName() === $from->getName()) {
-				$methods[$method->getName()] = $this->fromFunctionReflection($method)->setNamespace($class->getNamespace());
+				$methods[] = $this->fromFunctionReflection($method)->setNamespace($class->getNamespace());
 			}
 		}
 		$class->setMethods($methods);
@@ -59,11 +59,7 @@ class Factory
 	public function fromFunctionReflection(\ReflectionFunctionAbstract $from)
 	{
 		$method = new Method($from->isClosure() ? NULL : $from->getName());
-		$params = [];
-		foreach ($from->getParameters() as $param) {
-			$params[$param->getName()] = $this->fromParameterReflection($param);
-		}
-		$method->setParameters($params);
+		$method->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
 		if ($from instanceof \ReflectionMethod) {
 			$isInterface = $from->getDeclaringClass()->isInterface();
 			$method->setStatic($from->isStatic());
