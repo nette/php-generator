@@ -17,7 +17,7 @@ use Nette;
  *
  * @property string $body
  */
-class Closure
+final class Closure
 {
 	use Nette\SmartObject;
 	use Traits\FunctionLike;

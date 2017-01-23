@@ -22,7 +22,7 @@ use Nette\Utils\Strings;
  * - variable amount of use statements
  * - one or more class declarations
  */
-class PhpNamespace
+final class PhpNamespace
 {
 	use Nette\SmartObject;
 

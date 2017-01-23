@@ -13,7 +13,7 @@ namespace Nette\PhpGenerator;
 /**
  * PHP literal value.
  */
-class PhpLiteral
+final class PhpLiteral
 {
 	/** @var string */
 	private $value;

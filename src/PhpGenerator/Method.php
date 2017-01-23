@@ -17,7 +17,7 @@ use Nette;
  *
  * @property string|NULL $body
  */
-class Method
+final class Method
 {
 	use Nette\SmartObject;
 	use Traits\FunctionLike;

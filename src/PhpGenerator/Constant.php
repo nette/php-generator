@@ -15,7 +15,7 @@ use Nette;
 /**
  * Class constant.
  */
-class Constant
+final class Constant
 {
 	use Nette\SmartObject;
 	use Traits\NameAware;

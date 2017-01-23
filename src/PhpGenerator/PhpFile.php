@@ -21,7 +21,7 @@ use Nette\Utils\Strings;
  * - doc comments
  * - one or more namespaces
  */
-class PhpFile
+final class PhpFile
 {
 	use Nette\SmartObject;
 	use Traits\CommentAware;

@@ -15,7 +15,7 @@ use Nette;
 /**
  * Creates a representation based on reflection.
  */
-class Factory
+final class Factory
 {
 	use Nette\SmartObject;
 

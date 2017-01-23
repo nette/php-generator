@@ -17,7 +17,7 @@ use Nette;
  *
  * @property string $body
  */
-class GlobalFunction
+final class GlobalFunction
 {
 	use Nette\SmartObject;
 	use Traits\FunctionLike;

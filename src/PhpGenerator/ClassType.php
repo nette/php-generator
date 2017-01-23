@@ -19,7 +19,7 @@ use Nette\Utils\Strings;
  * @property Method[] $methods
  * @property Property[] $properties
  */
-class ClassType
+final class ClassType
 {
 	use Nette\SmartObject;
 	use Traits\CommentAware;

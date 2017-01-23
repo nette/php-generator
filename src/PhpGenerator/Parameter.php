@@ -17,7 +17,7 @@ use Nette;
  *
  * @property mixed $defaultValue
  */
-class Parameter
+final class Parameter
 {
 	use Nette\SmartObject;
 	use Traits\NameAware;

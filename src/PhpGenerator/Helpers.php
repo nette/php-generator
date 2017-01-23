@@ -15,7 +15,7 @@ use Nette;
 /**
  * PHP code generator utils.
  */
-class Helpers
+final class Helpers
 {
 	use Nette\StaticClass;
 

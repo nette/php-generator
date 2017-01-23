@@ -17,7 +17,7 @@ use Nette;
  *
  * @property mixed $value
  */
-class Property
+final class Property
 {
 	use Nette\SmartObject;
 	use Traits\NameAware;
