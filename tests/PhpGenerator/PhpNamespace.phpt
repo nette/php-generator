@@ -14,6 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 
 $namespace = new PhpNamespace('');
 
+Assert::same('', $namespace->getName());
 Assert::same('A', $namespace->unresolveName('A'));
 Assert::same('foo\A', $namespace->unresolveName('foo\A'));
 
@@ -30,6 +31,7 @@ foreach (['String', 'string', 'int', 'float', 'bool', 'array', 'callable', 'self
 
 $namespace = new PhpNamespace('Foo');
 
+Assert::same('Foo', $namespace->getName());
 Assert::same('\A', $namespace->unresolveName('\A'));
 Assert::same('\A', $namespace->unresolveName('A'));
 Assert::same('A', $namespace->unresolveName('foo\A'));

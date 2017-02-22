@@ -45,11 +45,11 @@ class PhpNamespace
 
 
 	/**
-	 * @param  string|NULL
+	 * @param  string
 	 */
 	public function __construct($name)
 	{
-		if ($name && !Helpers::isNamespace($name)) {
+		if ($name !== '' && !Helpers::isNamespace($name)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid name.");
 		}
 		$this->name = (string) $name;
@@ -66,11 +66,11 @@ class PhpNamespace
 
 
 	/**
-	 * @return string|NULL
+	 * @return string
 	 */
 	public function getName()
 	{
-		return $this->name ?: NULL;
+		return $this->name;
 	}
 
 

@@ -13,9 +13,12 @@ require __DIR__ . '/../bootstrap.php';
 
 Assert::noError(function () {
 	new Nette\PhpGenerator\PhpNamespace(''); // global namespace
-	new Nette\PhpGenerator\PhpNamespace(NULL); // global namespace for back compatibility
 	new Nette\PhpGenerator\PhpNamespace('Iñtërnâti\ônàlizætiøn');
 });
+
+Assert::exception(function () {
+	new Nette\PhpGenerator\PhpNamespace(NULL);
+}, Nette\InvalidArgumentException::class);
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\PhpNamespace('*');

@@ -67,7 +67,7 @@ class PhpFile
 
 
 	/**
-	 * @param  string NULL means global namespace
+	 * @param  string
 	 * @return PhpNamespace
 	 */
 	public function addNamespace($name)
@@ -85,7 +85,7 @@ class PhpFile
 	public function __toString()
 	{
 		foreach ($this->namespaces as $namespace) {
-			$namespace->setBracketedSyntax(count($this->namespaces) > 1 && isset($this->namespaces[NULL]));
+			$namespace->setBracketedSyntax(count($this->namespaces) > 1 && isset($this->namespaces['']));
 		}
 
 		return Strings::normalize(
