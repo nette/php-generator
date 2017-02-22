@@ -12,7 +12,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-$namespace = new PhpNamespace;
+$namespace = new PhpNamespace('');
 
 Assert::same('A', $namespace->unresolveName('A'));
 Assert::same('foo\A', $namespace->unresolveName('foo\A'));

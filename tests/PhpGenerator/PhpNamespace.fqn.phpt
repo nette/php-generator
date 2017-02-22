@@ -38,7 +38,7 @@ Assert::matchFile(__DIR__ . '/PhpNamespace.fqn1.expect', (string) $class);
 
 
 // global namespace
-$class = new ClassType('Example', new PhpNamespace);
+$class = new ClassType('Example', new PhpNamespace(''));
 $class
 	->setExtends('\ParentClass')
 	->addImplement('One')
