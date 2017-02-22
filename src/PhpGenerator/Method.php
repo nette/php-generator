@@ -51,12 +51,12 @@ class Method
 	/**
 	 * @param  string
 	 */
-	public function __construct($name = NULL)
+	public function __construct($name)
 	{
 		if ($name === NULL) {
 			throw new Nette\DeprecatedException('For closures use Nette\PhpGenerator\Closure instead of Nette\PhpGenerator\Method.');
 		}
-		$this->setName($name);
+		$this->name = (string) $name;
 	}
 
 

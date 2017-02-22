@@ -42,14 +42,14 @@ class PhpNamespace
 	 */
 	public function __construct($name = NULL)
 	{
-		$this->setName($name);
+		$this->name = (string) $name;
 	}
 
 
 	/** @deprecated */
 	public function setName($name)
 	{
-		$this->name = (string) $name;
+		$this->__construct($name);
 		return $this;
 	}
 
