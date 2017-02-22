@@ -42,6 +42,9 @@ class PhpNamespace
 	 */
 	public function __construct($name = NULL)
 	{
+		if ($name && !Helpers::isNamespace($name)) {
+			throw new Nette\InvalidArgumentException("Value '$name' is not valid name.");
+		}
 		$this->name = (string) $name;
 	}
 

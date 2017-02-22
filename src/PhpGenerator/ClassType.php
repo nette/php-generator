@@ -141,6 +141,9 @@ class ClassType
 	 */
 	public function setName($name)
 	{
+		if ($name !== NULL && !Helpers::isIdentifier($name)) {
+			throw new Nette\InvalidArgumentException("Value '$name' is not valid class name.");
+		}
 		$this->name = $name;
 		return $this;
 	}

@@ -55,8 +55,10 @@ class Method
 	{
 		if ($name === NULL) {
 			throw new Nette\DeprecatedException('For closures use Nette\PhpGenerator\Closure instead of Nette\PhpGenerator\Method.');
+		} elseif (!Helpers::isIdentifier($name)) {
+			throw new Nette\InvalidArgumentException("Value '$name' is not valid name.");
 		}
-		$this->name = (string) $name;
+		$this->name = $name;
 	}
 
 

@@ -7,6 +7,8 @@
 
 namespace Nette\PhpGenerator\Traits;
 
+use Nette;
+
 
 /**
  * @internal
@@ -22,7 +24,10 @@ trait NameAware
 	 */
 	public function __construct($name)
 	{
-		$this->name = (string) $name;
+		if (!Nette\PhpGenerator\Helpers::isIdentifier($name)) {
+			throw new Nette\InvalidArgumentException("Value '$name' is not valid name.");
+		}
+		$this->name = $name;
 	}
 
 
