@@ -244,6 +244,15 @@ class Helpers
 
 
 	/**
+	 * @return bool
+	 */
+	public static function isNamespace($value)
+	{
+		return is_string($value) && preg_match('#^' . Helpers::PHP_IDENT . '(\\\\' . Helpers::PHP_IDENT . ')*\z#', $value);
+	}
+
+
+	/**
 	 * @param  string
 	 * @return object
 	 * @internal
