@@ -15,7 +15,7 @@ use Nette;
 /**
  * Class method.
  *
- * @property string|FALSE $body
+ * @property string|NULL $body
  */
 class Method
 {
@@ -24,6 +24,9 @@ class Method
 	use Traits\NameAware;
 	use Traits\VisibilityAware;
 	use Traits\CommentAware;
+
+	/** @var string|NULL */
+	private $body = '';
 
 	/** @var bool */
 	private $static = FALSE;
@@ -77,25 +80,29 @@ class Method
 			. $this->name
 			. $this->parametersToString()
 			. $this->returnTypeToString()
-			. ($this->abstract || $this->body === FALSE
+			. ($this->abstract || $this->body === NULL
 				? ';'
 				: "\n{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}');
 	}
 
 
 	/**
-	 * @param  string|FALSE
+	 * @param  string|NULL
 	 * @return static
 	 */
 	public function setBody($code, array $args = NULL)
 	{
+		if ($code === FALSE) {
+			$code = NULL;
+			trigger_error(__METHOD__ . '() use NULL instead of FALSE', E_USER_DEPRECATED);
+		}
 		$this->body = $args === NULL ? $code : Helpers::formatArgs($code, $args);
 		return $this;
 	}
 
 
 	/**
-	 * @return string|FALSE
+	 * @return string|NULL
 	 */
 	public function getBody()
 	{
