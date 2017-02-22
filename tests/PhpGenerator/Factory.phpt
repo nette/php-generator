@@ -18,7 +18,7 @@ Assert::type(Nette\PhpGenerator\ClassType::class, $res);
 Assert::same('stdClass', $res->getName());
 
 
-$res = $factory->fromFunctionReflection(new \ReflectionMethod(ReflectionClass::class, 'getName'));
+$res = $factory->fromMethodReflection(new \ReflectionMethod(ReflectionClass::class, 'getName'));
 Assert::type(Nette\PhpGenerator\Method::class, $res);
 Assert::same('getName', $res->getName());
 

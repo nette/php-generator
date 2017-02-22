@@ -45,7 +45,7 @@ class Factory
 		$class->setProperties($props);
 		foreach ($from->getMethods() as $method) {
 			if ($method->getDeclaringClass()->getName() === $from->getName()) {
-				$methods[] = $this->fromFunctionReflection($method)->setNamespace($class->getNamespace());
+				$methods[] = $this->fromMethodReflection($method)->setNamespace($class->getNamespace());
 			}
 		}
 		$class->setMethods($methods);
@@ -56,30 +56,44 @@ class Factory
 	/**
 	 * @return Method
 	 */
-	public function fromFunctionReflection(\ReflectionFunctionAbstract $from)
+	public function fromMethodReflection(\ReflectionMethod $from)
 	{
-		$method = $from instanceof \ReflectionMethod 
-			? new Method($from->getName()) 
-			: ($from->isClosure() ? new Closure : new GlobalFunction($from->getName()));
+		$method = new Method($from->getName());
 		$method->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
-		if ($from instanceof \ReflectionMethod) {
-			$isInterface = $from->getDeclaringClass()->isInterface();
-			$method->setStatic($from->isStatic());
-			$method->setVisibility($from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : ($isInterface ? NULL : 'public')));
-			$method->setFinal($from->isFinal());
-			$method->setAbstract($from->isAbstract() && !$isInterface);
-			$method->setBody($from->isAbstract() ? FALSE : '');
-		}
+		$method->setStatic($from->isStatic());
+		$isInterface = $from->getDeclaringClass()->isInterface();
+		$method->setVisibility($from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : ($isInterface ? NULL : 'public')));
+		$method->setFinal($from->isFinal());
+		$method->setAbstract($from->isAbstract() && !$isInterface);
+		$method->setBody($from->isAbstract() ? FALSE : '');
 		$method->setReturnReference($from->returnsReference());
 		$method->setVariadic($from->isVariadic());
-		if (!$from->isClosure()) {
-			$method->setComment(Helpers::unformatDocComment($from->getDocComment()));
-		}
+		$method->setComment(Helpers::unformatDocComment($from->getDocComment()));
 		if (PHP_VERSION_ID >= 70000 && $from->hasReturnType()) {
 			$method->setReturnType((string) $from->getReturnType());
 			$method->setReturnNullable($from->getReturnType()->allowsNull());
 		}
 		return $method;
+	}
+
+
+	/**
+	 * @return GlobalFunction|Closure
+	 */
+	public function fromFunctionReflection(\ReflectionFunction $from)
+	{
+		$function = $from->isClosure() ? new Closure : new GlobalFunction($from->getName());
+		$function->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
+		$function->setReturnReference($from->returnsReference());
+		$function->setVariadic($from->isVariadic());
+		if (!$from->isClosure()) {
+			$function->setComment(Helpers::unformatDocComment($from->getDocComment()));
+		}
+		if (PHP_VERSION_ID >= 70000 && $from->hasReturnType()) {
+			$function->setReturnType((string) $from->getReturnType());
+			$function->setReturnNullable($from->getReturnType()->allowsNull());
+		}
+		return $function;
 	}
 
 
