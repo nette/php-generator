@@ -58,7 +58,9 @@ class Factory
 	 */
 	public function fromFunctionReflection(\ReflectionFunctionAbstract $from)
 	{
-		$method = new Method($from->isClosure() ? NULL : $from->getName());
+		$method = $from instanceof \ReflectionMethod 
+			? new Method($from->getName()) 
+			: ($from->isClosure() ? new Closure : new GlobalFunction($from->getName()));
 		$method->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
 		if ($from instanceof \ReflectionMethod) {
 			$isInterface = $from->getDeclaringClass()->isInterface();
@@ -70,7 +72,9 @@ class Factory
 		}
 		$method->setReturnReference($from->returnsReference());
 		$method->setVariadic($from->isVariadic());
-		$method->setComment(Helpers::unformatDocComment($from->getDocComment()));
+		if (!$from->isClosure()) {
+			$method->setComment(Helpers::unformatDocComment($from->getDocComment()));
+		}
 		if (PHP_VERSION_ID >= 70000 && $from->hasReturnType()) {
 			$method->setReturnType((string) $from->getReturnType());
 			$method->setReturnNullable($from->getReturnType()->allowsNull());

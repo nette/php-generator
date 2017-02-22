@@ -24,10 +24,9 @@ Assert::same('getName', $res->getName());
 
 
 $res = $factory->fromFunctionReflection(new \ReflectionFunction('trim'));
-Assert::type(Nette\PhpGenerator\Method::class, $res);
+Assert::type(Nette\PhpGenerator\GlobalFunction::class, $res);
 Assert::same('trim', $res->getName());
 
 
 $res = $factory->fromFunctionReflection(new \ReflectionFunction(function () {}));
-Assert::type(Nette\PhpGenerator\Method::class, $res);
-Assert::same('', $res->getName());
+Assert::type(Nette\PhpGenerator\Closure::class, $res);

@@ -1,17 +1,13 @@
 <?php
 
-/**
- * Test: Nette\PhpGenerator & function.
- */
-
-use Nette\PhpGenerator\Method;
+use Nette\PhpGenerator\Closure;
 use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
 
 
-$function = new Method;
+$function = new Closure;
 $function
 	->setReturnReference(TRUE)
 	->setBody('return $a + $b;');
@@ -28,26 +24,8 @@ Assert::match(
 }', (string) $function);
 
 
-/** closure */
 $closure = function (stdClass $a, $b = NULL) {};
-$function = Method::from($closure);
+$function = Closure::from($closure);
 Assert::match(
-'/**
- * closure
- */
-function (stdClass $a, $b = NULL) {
-}', (string) $function);
-
-
-/** global */
-function func(stdClass $a, $b = NULL) {
-};
-
-$function = Method::from('func');
-Assert::match(
-'/**
- * global
- */
-function func(stdClass $a, $b = NULL)
-{
+'function (stdClass $a, $b = NULL) {
 }', (string) $function);

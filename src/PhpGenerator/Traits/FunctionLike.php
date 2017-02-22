@@ -18,6 +18,9 @@ use Nette\PhpGenerator\PhpNamespace;
  */
 trait FunctionLike
 {
+	/** @var string */
+	private $body = '';
+
 	/** @var array of name => Parameter */
 	private $parameters = [];
 
@@ -35,6 +38,37 @@ trait FunctionLike
 
 	/** @var PhpNamespace|NULL */
 	private $namespace;
+
+
+	/**
+	 * @param  string
+	 * @return static
+	 */
+	public function setBody($code, array $args = NULL)
+	{
+		$this->body = $args === NULL ? $code : Helpers::formatArgs($code, $args);
+		return $this;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getBody()
+	{
+		return $this->body;
+	}
+
+
+	/**
+	 * @param  string
+	 * @return static
+	 */
+	public function addBody($code, array $args = NULL)
+	{
+		$this->body .= ($args === NULL ? $code : Helpers::formatArgs($code, $args)) . "\n";
+		return $this;
+	}
 
 
 	/**

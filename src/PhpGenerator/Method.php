@@ -11,7 +11,7 @@ use Nette;
 
 
 /**
- * Method or function description.
+ * Class method.
  *
  * @property string|FALSE $body
  */
@@ -22,12 +22,6 @@ class Method
 	use Traits\NameAware;
 	use Traits\VisibilityAware;
 	use Traits\CommentAware;
-
-	/** @var Parameter[] */
-	private $uses = [];
-
-	/** @var string|FALSE */
-	private $body = '';
 
 	/** @var bool */
 	private $static = FALSE;
@@ -52,14 +46,22 @@ class Method
 
 
 	/**
+	 * @param  string
+	 */
+	public function __construct($name = NULL)
+	{
+		if ($name === NULL) {
+			throw new Nette\DeprecatedException('For closures use Nette\PhpGenerator\GlobalFunction instead of Nette\PhpGenerator\Method.');
+		}
+		$this->setName($name);
+	}
+
+
+	/**
 	 * @return string  PHP code
 	 */
 	public function __toString()
 	{
-		$uses = [];
-		foreach ($this->uses as $param) {
-			$uses[] = ($param->isReference() ? '&' : '') . '$' . $param->getName();
-		}
 		return Helpers::formatDocComment($this->comment . "\n")
 			. ($this->abstract ? 'abstract ' : '')
 			. ($this->final ? 'final ' : '')
@@ -69,38 +71,10 @@ class Method
 			. ($this->returnReference ? '&' : '')
 			. $this->name
 			. $this->parametersToString()
-			. ($this->uses ? ' use (' . implode(', ', $uses) . ')' : '')
 			. $this->returnTypeToString()
-			. ($this->abstract || $this->body === FALSE ? ';'
-				: ($this->name ? "\n" : ' ') . "{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}');
-	}
-
-
-	/**
-	 * @return static
-	 */
-	public function setUses(array $val)
-	{
-		$this->uses = $val;
-		return $this;
-	}
-
-
-	/**
-	 * @return array
-	 */
-	public function getUses()
-	{
-		return $this->uses;
-	}
-
-
-	/**
-	 * @return Parameter
-	 */
-	public function addUse($name)
-	{
-		return $this->uses[] = new Parameter($name);
+			. ($this->abstract || $this->body === FALSE
+				? ';'
+				: "\n{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}');
 	}
 
 
@@ -121,17 +95,6 @@ class Method
 	public function getBody()
 	{
 		return $this->body;
-	}
-
-
-	/**
-	 * @param  string
-	 * @return static
-	 */
-	public function addBody($code, array $args = NULL)
-	{
-		$this->body .= ($args === NULL ? $code : Helpers::formatArgs($code, $args)) . "\n";
-		return $this;
 	}
 
 
