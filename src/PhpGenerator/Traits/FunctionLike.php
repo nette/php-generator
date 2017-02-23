@@ -128,7 +128,7 @@ trait FunctionLike
 	 */
 	public function setReturnType(?string $val): self
 	{
-		$this->returnType = $val ? (string) $val : null;
+		$this->returnType = $val;
 		return $this;
 	}
 

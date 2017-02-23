@@ -59,7 +59,7 @@ final class Parameter
 	 */
 	public function setTypeHint(?string $hint): self
 	{
-		$this->typeHint = $hint ? (string) $hint : null;
+		$this->typeHint = $hint;
 		return $this;
 	}
 

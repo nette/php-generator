@@ -24,7 +24,7 @@ trait CommentAware
 	 */
 	public function setComment(?string $val): self
 	{
-		$this->comment = $val ? (string) $val : null;
+		$this->comment = $val;
 		return $this;
 	}
 
