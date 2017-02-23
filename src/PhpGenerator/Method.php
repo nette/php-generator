@@ -75,20 +75,16 @@ final class Method
 
 
 	/**
-	 * @param  string|null
 	 * @return static
 	 */
-	public function setBody($code, array $args = null): self
+	public function setBody(?string $code, array $args = null): self
 	{
 		$this->body = $args === null ? $code : Helpers::formatArgs($code, $args);
 		return $this;
 	}
 
 
-	/**
-	 * @return string|null
-	 */
-	public function getBody()
+	public function getBody(): ?string
 	{
 		return $this->body;
 	}

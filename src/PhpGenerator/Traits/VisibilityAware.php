@@ -25,7 +25,7 @@ trait VisibilityAware
 	 * @param  string|null  public|protected|private
 	 * @return static
 	 */
-	public function setVisibility($val): self
+	public function setVisibility(?string $val): self
 	{
 		if (!in_array($val, ['public', 'protected', 'private', null], true)) {
 			throw new Nette\InvalidArgumentException('Argument must be public|protected|private.');
@@ -35,10 +35,7 @@ trait VisibilityAware
 	}
 
 
-	/**
-	 * @return string|null
-	 */
-	public function getVisibility()
+	public function getVisibility(): ?string
 	{
 		return $this->visibility;
 	}

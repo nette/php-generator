@@ -124,20 +124,16 @@ final class ClassType
 	}
 
 
-	/**
-	 * @return PhpNamespace|null
-	 */
-	public function getNamespace()
+	public function getNamespace(): ?PhpNamespace
 	{
 		return $this->namespace;
 	}
 
 
 	/**
-	 * @param  string|null
 	 * @return static
 	 */
-	public function setName($name): self
+	public function setName(?string $name): self
 	{
 		if ($name !== null && !Helpers::isIdentifier($name)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid class name.");
@@ -147,10 +143,7 @@ final class ClassType
 	}
 
 
-	/**
-	 * @return string|null
-	 */
-	public function getName()
+	public function getName(): ?string
 	{
 		return $this->name;
 	}

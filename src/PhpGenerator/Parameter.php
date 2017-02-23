@@ -55,20 +55,16 @@ final class Parameter
 
 
 	/**
-	 * @param  string|null
 	 * @return static
 	 */
-	public function setTypeHint($hint): self
+	public function setTypeHint(?string $hint): self
 	{
 		$this->typeHint = $hint ? (string) $hint : null;
 		return $this;
 	}
 
 
-	/**
-	 * @return string|null
-	 */
-	public function getTypeHint()
+	public function getTypeHint(): ?string
 	{
 		return $this->typeHint;
 	}

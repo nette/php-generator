@@ -124,20 +124,16 @@ trait FunctionLike
 
 
 	/**
-	 * @param  string|null
 	 * @return static
 	 */
-	public function setReturnType($val): self
+	public function setReturnType(?string $val): self
 	{
 		$this->returnType = $val ? (string) $val : null;
 		return $this;
 	}
 
 
-	/**
-	 * @return string|null
-	 */
-	public function getReturnType()
+	public function getReturnType(): ?string
 	{
 		return $this->returnType;
 	}
