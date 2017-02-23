@@ -25,19 +25,15 @@ class GlobalFunction
 	use Traits\CommentAware;
 
 	/**
-	 * @param  string
 	 * @return static
 	 */
-	public static function from($function)
+	public static function from(string $function): self
 	{
 		return (new Factory)->fromFunctionReflection(new \ReflectionFunction($function));
 	}
 
 
-	/**
-	 * @return string  PHP code
-	 */
-	public function __toString()
+	public function __toString(): string
 	{
 		return Helpers::formatDocComment($this->comment . "\n")
 			. 'function '

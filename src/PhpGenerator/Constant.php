@@ -29,16 +29,13 @@ class Constant
 	/**
 	 * @return static
 	 */
-	public function setValue($val)
+	public function setValue($val): self
 	{
 		$this->value = $val;
 		return $this;
 	}
 
 
-	/**
-	 * @return mixed
-	 */
 	public function getValue()
 	{
 		return $this->value;

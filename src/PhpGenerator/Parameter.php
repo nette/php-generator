@@ -39,20 +39,16 @@ class Parameter
 
 
 	/**
-	 * @param  bool
 	 * @return static
 	 */
-	public function setReference($state = TRUE)
+	public function setReference(bool $state = TRUE): self
 	{
 		$this->reference = (bool) $state;
 		return $this;
 	}
 
 
-	/**
-	 * @return bool
-	 */
-	public function isReference()
+	public function isReference(): bool
 	{
 		return $this->reference;
 	}
@@ -62,7 +58,7 @@ class Parameter
 	 * @param  string|NULL
 	 * @return static
 	 */
-	public function setTypeHint($hint)
+	public function setTypeHint($hint): self
 	{
 		$this->typeHint = $hint ? (string) $hint : NULL;
 		return $this;
@@ -80,10 +76,9 @@ class Parameter
 
 	/**
 	 * @deprecated  just use setDefaultValue()
-	 * @param  bool
 	 * @return static
 	 */
-	public function setOptional($state = TRUE)
+	public function setOptional(bool $state = TRUE): self
 	{
 		$this->hasDefaultValue = (bool) $state;
 		return $this;
@@ -92,9 +87,8 @@ class Parameter
 
 	/**
 	 * @deprecated  use hasDefaultValue()
-	 * @return bool
 	 */
-	public function isOptional()
+	public function isOptional(): bool
 	{
 		trigger_error(__METHOD__ . '() is deprecated, use hasDefaultValue()', E_USER_DEPRECATED);
 		return $this->hasDefaultValue;
@@ -102,20 +96,16 @@ class Parameter
 
 
 	/**
-	 * @param  bool
 	 * @return static
 	 */
-	public function setNullable($state = TRUE)
+	public function setNullable(bool $state = TRUE): self
 	{
 		$this->nullable = (bool) $state;
 		return $this;
 	}
 
 
-	/**
-	 * @return bool
-	 */
-	public function isNullable()
+	public function isNullable(): bool
 	{
 		return $this->nullable;
 	}
@@ -124,7 +114,7 @@ class Parameter
 	/**
 	 * @return static
 	 */
-	public function setDefaultValue($val)
+	public function setDefaultValue($val): self
 	{
 		$this->defaultValue = $val;
 		$this->hasDefaultValue = TRUE;
@@ -132,19 +122,13 @@ class Parameter
 	}
 
 
-	/**
-	 * @return mixed
-	 */
 	public function getDefaultValue()
 	{
 		return $this->defaultValue;
 	}
 
 
-	/**
-	 * @return bool
-	 */
-	public function hasDefaultValue()
+	public function hasDefaultValue(): bool
 	{
 		return $this->hasDefaultValue;
 	}

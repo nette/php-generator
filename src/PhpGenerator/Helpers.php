@@ -26,15 +26,14 @@ class Helpers
 
 	/**
 	 * Returns a PHP representation of a variable.
-	 * @return string
 	 */
-	public static function dump($var)
+	public static function dump($var): string
 	{
 		return self::_dump($var);
 	}
 
 
-	private static function _dump(&$var, $level = 0)
+	private static function _dump(&$var, int $level = 0)
 	{
 		if ($var instanceof PhpLiteral) {
 			return (string) $var;
@@ -151,10 +150,8 @@ class Helpers
 
 	/**
 	 * Generates PHP statement.
-	 * @param  string
-	 * @return string
 	 */
-	public static function format($statement, ...$args)
+	public static function format(string $statement, ...$args): string
 	{
 		return self::formatArgs($statement, $args);
 	}
@@ -162,10 +159,8 @@ class Helpers
 
 	/**
 	 * Generates PHP statement.
-	 * @param  string
-	 * @return string
 	 */
-	public static function formatArgs($statement, array $args)
+	public static function formatArgs(string $statement, array $args): string
 	{
 		$a = strpos($statement, '?');
 		while ($a !== FALSE) {
@@ -203,9 +198,8 @@ class Helpers
 
 	/**
 	 * Returns a PHP representation of a object member.
-	 * @return string
 	 */
-	public static function formatMember($name)
+	public static function formatMember($name): string
 	{
 		return $name instanceof PhpLiteral || !self::isIdentifier($name)
 			? '{' . self::_dump($name) . '}'
@@ -213,11 +207,7 @@ class Helpers
 	}
 
 
-	/**
-	 * @param  string
-	 * @return string
-	 */
-	public static function formatDocComment($content)
+	public static function formatDocComment(string $content): string
 	{
 		if (($s = trim($content)) === '') {
 			return '';
@@ -229,60 +219,41 @@ class Helpers
 	}
 
 
-	/**
-	 * @param  string
-	 * @return string
-	 */
-	public static function unformatDocComment($comment)
+	public static function unformatDocComment(string $comment): string
 	{
 		return preg_replace('#^\s*\* ?#m', '', trim(trim(trim($comment), '/*')));
 	}
 
 
-	/**
-	 * @return bool
-	 */
-	public static function isIdentifier($value)
+	public static function isIdentifier($value): bool
 	{
 		return is_string($value) && preg_match('#^' . self::PHP_IDENT . '\z#', $value);
 	}
 
 
-	/**
-	 * @return bool
-	 */
-	public static function isNamespace($value)
+	public static function isNamespace($value): bool
 	{
 		return is_string($value) && preg_match('#^' . Helpers::PHP_IDENT . '(\\\\' . Helpers::PHP_IDENT . ')*\z#', $value);
 	}
 
 
 	/**
-	 * @param  string
 	 * @return object
 	 * @internal
 	 */
-	public static function createObject($class, array $props)
+	public static function createObject(string $class, array $props)
 	{
 		return unserialize('O' . substr(serialize((string) $class), 1, -1) . substr(serialize($props), 1));
 	}
 
 
-	/**
-	 * @param  string
-	 * @return string
-	 */
-	public static function extractNamespace($name)
+	public static function extractNamespace(string $name): string
 	{
 		return ($pos = strrpos($name, '\\')) ? substr($name, 0, $pos) : '';
 	}
 
 
-	/**
-	 * @param  string
-	 * @return string
-	 */
-	public static function extractShortName($name)
+	public static function extractShortName(string $name): string
 	{
 		return ($pos = strrpos($name, '\\')) === FALSE ? $name : substr($name, $pos + 1);
 	}

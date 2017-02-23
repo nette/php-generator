@@ -39,10 +39,9 @@ class Method
 
 
 	/**
-	 * @param  callable
 	 * @return static
 	 */
-	public static function from($method)
+	public static function from($method): self
 	{
 		if ($method instanceof \ReflectionMethod) {
 			trigger_error(__METHOD__ . '() accepts only method name.', E_USER_DEPRECATED);
@@ -53,10 +52,7 @@ class Method
 	}
 
 
-	/**
-	 * @param  string
-	 */
-	public function __construct($name)
+	public function __construct(string $name)
 	{
 		if (!Helpers::isIdentifier($name)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid name.");
@@ -65,10 +61,7 @@ class Method
 	}
 
 
-	/**
-	 * @return string  PHP code
-	 */
-	public function __toString()
+	public function __toString(): string
 	{
 		return Helpers::formatDocComment($this->comment . "\n")
 			. ($this->abstract ? 'abstract ' : '')
@@ -90,7 +83,7 @@ class Method
 	 * @param  string|NULL
 	 * @return static
 	 */
-	public function setBody($code, array $args = NULL)
+	public function setBody($code, array $args = NULL): self
 	{
 		if ($code === FALSE) {
 			$code = NULL;
@@ -111,60 +104,48 @@ class Method
 
 
 	/**
-	 * @param  bool
 	 * @return static
 	 */
-	public function setStatic($val)
+	public function setStatic(bool $val): self
 	{
 		$this->static = (bool) $val;
 		return $this;
 	}
 
 
-	/**
-	 * @return bool
-	 */
-	public function isStatic()
+	public function isStatic(): bool
 	{
 		return $this->static;
 	}
 
 
 	/**
-	 * @param  bool
 	 * @return static
 	 */
-	public function setFinal($val)
+	public function setFinal(bool $val): self
 	{
 		$this->final = (bool) $val;
 		return $this;
 	}
 
 
-	/**
-	 * @return bool
-	 */
-	public function isFinal()
+	public function isFinal(): bool
 	{
 		return $this->final;
 	}
 
 
 	/**
-	 * @param  bool
 	 * @return static
 	 */
-	public function setAbstract($val)
+	public function setAbstract(bool $val): self
 	{
 		$this->abstract = (bool) $val;
 		return $this;
 	}
 
 
-	/**
-	 * @return bool
-	 */
-	public function isAbstract()
+	public function isAbstract(): bool
 	{
 		return $this->abstract;
 	}

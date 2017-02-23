@@ -18,7 +18,7 @@ Assert::noError(function () {
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\PhpNamespace(NULL);
-}, Nette\InvalidArgumentException::class);
+}, TypeError::class);
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\PhpNamespace('*');
@@ -69,7 +69,7 @@ Assert::noError(function () {
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\Property(NULL);
-}, Nette\InvalidArgumentException::class);
+}, TypeError::class);
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\Property('');
@@ -90,7 +90,7 @@ Assert::exception(function () {
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\Parameter(NULL);
-}, Nette\InvalidArgumentException::class);
+}, TypeError::class);
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\Parameter('*');
@@ -111,7 +111,7 @@ Assert::exception(function () {
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\Method(NULL);
-}, Nette\InvalidArgumentException::class);
+}, TypeError::class);
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\Method('*');
@@ -128,7 +128,7 @@ Assert::exception(function () {
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\GlobalFunction(NULL);
-}, Nette\InvalidArgumentException::class);
+}, TypeError::class);
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\GlobalFunction('*');
@@ -141,7 +141,7 @@ Assert::noError(function () {
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\Constant(NULL);
-}, Nette\InvalidArgumentException::class);
+}, TypeError::class);
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\Constant('');

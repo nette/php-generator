@@ -19,19 +19,13 @@ class PhpLiteral
 	private $value;
 
 
-	/**
-	 * @param  string
-	 */
-	public function __construct($value)
+	public function __construct(string $value)
 	{
 		$this->value = (string) $value;
 	}
 
 
-	/**
-	 * @return string
-	 */
-	public function __toString()
+	public function __toString(): string
 	{
 		return $this->value;
 	}

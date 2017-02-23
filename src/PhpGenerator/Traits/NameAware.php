@@ -21,10 +21,7 @@ trait NameAware
 	private $name;
 
 
-	/**
-	 * @param  string
-	 */
-	public function __construct($name)
+	public function __construct(string $name)
 	{
 		if (!Nette\PhpGenerator\Helpers::isIdentifier($name)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid name.");
@@ -33,10 +30,7 @@ trait NameAware
 	}
 
 
-	/**
-	 * @return string
-	 */
-	public function getName()
+	public function getName(): string
 	{
 		return $this->name;
 	}

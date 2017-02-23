@@ -44,10 +44,7 @@ class PhpNamespace
 	private $classes = [];
 
 
-	/**
-	 * @param  string
-	 */
-	public function __construct($name)
+	public function __construct(string $name)
 	{
 		if ($name !== '' && !Helpers::isNamespace($name)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid name.");
@@ -65,44 +62,34 @@ class PhpNamespace
 	}
 
 
-	/**
-	 * @return string
-	 */
-	public function getName()
+	public function getName(): string
 	{
 		return $this->name;
 	}
 
 
 	/**
-	 * @param  bool
 	 * @return static
 	 * @internal
 	 */
-	public function setBracketedSyntax($state = TRUE)
+	public function setBracketedSyntax(bool $state = TRUE): self
 	{
 		$this->bracketedSyntax = (bool) $state;
 		return $this;
 	}
 
 
-	/**
-	 * @return bool
-	 */
-	public function getBracketedSyntax()
+	public function getBracketedSyntax(): bool
 	{
 		return $this->bracketedSyntax;
 	}
 
 
 	/**
-	 * @param  string
-	 * @param  string
-	 * @param  string
 	 * @throws InvalidStateException
 	 * @return static
 	 */
-	public function addUse($name, $alias = NULL, &$aliasOut = NULL)
+	public function addUse(string $name, string $alias = NULL, string &$aliasOut = NULL): self
 	{
 		$name = ltrim($name, '\\');
 		if ($alias === NULL && $this->name === Helpers::extractNamespace($name)) {
@@ -135,17 +122,13 @@ class PhpNamespace
 	/**
 	 * @return string[]
 	 */
-	public function getUses()
+	public function getUses(): array
 	{
 		return $this->uses;
 	}
 
 
-	/**
-	 * @param  string
-	 * @return string
-	 */
-	public function unresolveName($name)
+	public function unresolveName(string $name): string
 	{
 		if (isset(self::$keywords[strtolower($name)]) || $name === '') {
 			return $name;
@@ -170,11 +153,7 @@ class PhpNamespace
 	}
 
 
-	/**
-	 * @param  string
-	 * @return ClassType
-	 */
-	public function addClass($name)
+	public function addClass(string $name): ClassType
 	{
 		if (!isset($this->classes[$name])) {
 			$this->addUse($this->name . '\\' . $name);
@@ -184,21 +163,13 @@ class PhpNamespace
 	}
 
 
-	/**
-	 * @param  string
-	 * @return ClassType
-	 */
-	public function addInterface($name)
+	public function addInterface(string $name): ClassType
 	{
 		return $this->addClass($name)->setType(ClassType::TYPE_INTERFACE);
 	}
 
 
-	/**
-	 * @param  string
-	 * @return ClassType
-	 */
-	public function addTrait($name)
+	public function addTrait(string $name): ClassType
 	{
 		return $this->addClass($name)->setType(ClassType::TYPE_TRAIT);
 	}
@@ -207,16 +178,13 @@ class PhpNamespace
 	/**
 	 * @return ClassType[]
 	 */
-	public function getClasses()
+	public function getClasses(): array
 	{
 		return $this->classes;
 	}
 
 
-	/**
-	 * @return string PHP code
-	 */
-	public function __toString()
+	public function __toString(): string
 	{
 		$uses = [];
 		asort($this->uses);

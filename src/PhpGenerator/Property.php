@@ -34,16 +34,13 @@ class Property
 	/**
 	 * @return static
 	 */
-	public function setValue($val)
+	public function setValue($val): self
 	{
 		$this->value = $val;
 		return $this;
 	}
 
 
-	/**
-	 * @return mixed
-	 */
 	public function &getValue()
 	{
 		return $this->value;
@@ -51,20 +48,16 @@ class Property
 
 
 	/**
-	 * @param  bool
 	 * @return static
 	 */
-	public function setStatic($state = TRUE)
+	public function setStatic(bool $state = TRUE): self
 	{
 		$this->static = (bool) $state;
 		return $this;
 	}
 
 
-	/**
-	 * @return bool
-	 */
-	public function isStatic()
+	public function isStatic(): bool
 	{
 		return $this->static;
 	}
