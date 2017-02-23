@@ -15,10 +15,13 @@ use Nette;
  *
  * @property string|FALSE $body
  */
-class Method extends Member
+class Method
 {
-	/** @var array of name => Parameter */
-	private $parameters = [];
+	use Nette\SmartObject;
+	use Traits\FunctionLike;
+	use Traits\NameAware;
+	use Traits\VisibilityAware;
+	use Traits\CommentAware;
 
 	/** @var Parameter[] */
 	private $uses = [];
@@ -35,21 +38,6 @@ class Method extends Member
 	/** @var bool */
 	private $abstract = FALSE;
 
-	/** @var bool */
-	private $returnReference = FALSE;
-
-	/** @var bool */
-	private $variadic = FALSE;
-
-	/** @var PhpNamespace|NULL */
-	private $namespace;
-
-	/** @var string|NULL */
-	private $returnType;
-
-	/** @var bool */
-	private $returnNullable;
-
 
 	/**
 	 * @param  callable
@@ -64,88 +52,27 @@ class Method extends Member
 
 
 	/**
-	 * @param  string|NULL
-	 */
-	public function __construct($name = NULL)
-	{
-		$this->setName($name);
-	}
-
-
-	/**
 	 * @return string  PHP code
 	 */
 	public function __toString()
 	{
-		$parameters = [];
-		foreach ($this->parameters as $param) {
-			$variadic = $this->variadic && $param === end($this->parameters);
-			$hint = $param->getTypeHint();
-			$parameters[] = ($hint ? ($param->isNullable() ? '?' : '') . ($this->namespace ? $this->namespace->unresolveName($hint) : $hint) . ' ' : '')
-				. ($param->isReference() ? '&' : '')
-				. ($variadic ? '...' : '')
-				. '$' . $param->getName()
-				. ($param->hasDefaultValue() && !$variadic ? ' = ' . Helpers::dump($param->defaultValue) : '');
-		}
 		$uses = [];
 		foreach ($this->uses as $param) {
 			$uses[] = ($param->isReference() ? '&' : '') . '$' . $param->getName();
 		}
-
-		return Helpers::formatDocComment($this->getComment() . "\n")
+		return Helpers::formatDocComment($this->comment . "\n")
 			. ($this->abstract ? 'abstract ' : '')
 			. ($this->final ? 'final ' : '')
-			. ($this->getVisibility() ? $this->getVisibility() . ' ' : '')
+			. ($this->visibility ? $this->visibility . ' ' : '')
 			. ($this->static ? 'static ' : '')
 			. 'function '
 			. ($this->returnReference ? '&' : '')
-			. $this->getName()
-			. '(' . implode(', ', $parameters) . ')'
+			. $this->name
+			. $this->parametersToString()
 			. ($this->uses ? ' use (' . implode(', ', $uses) . ')' : '')
-			. ($this->returnType ? ': ' . ($this->returnNullable ? '?' : '')
-				. ($this->namespace ? $this->namespace->unresolveName($this->returnType) : $this->returnType) : '')
+			. $this->returnTypeToString()
 			. ($this->abstract || $this->body === FALSE ? ';'
-				: ($this->getName() ? "\n" : ' ') . "{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}');
-	}
-
-
-	/**
-	 * @param  Parameter[]
-	 * @return static
-	 */
-	public function setParameters(array $val)
-	{
-		$this->parameters = [];
-		foreach ($val as $v) {
-			if (!$v instanceof Parameter) {
-				throw new Nette\InvalidArgumentException('Argument must be Nette\PhpGenerator\Parameter[].');
-			}
-			$this->parameters[$v->getName()] = $v;
-		}
-		return $this;
-	}
-
-
-	/**
-	 * @return Parameter[]
-	 */
-	public function getParameters()
-	{
-		return $this->parameters;
-	}
-
-
-	/**
-	 * @param  string  without $
-	 * @return Parameter
-	 */
-	public function addParameter($name, $defaultValue = NULL)
-	{
-		$param = new Parameter($name);
-		if (func_num_args() > 1) {
-			$param->setOptional(TRUE)->setDefaultValue($defaultValue);
-		}
-		return $this->parameters[$name] = $param;
+				: ($this->name ? "\n" : ' ') . "{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}');
 	}
 
 
@@ -265,96 +192,6 @@ class Method extends Member
 	public function isAbstract()
 	{
 		return $this->abstract;
-	}
-
-
-	/**
-	 * @param  bool
-	 * @return static
-	 */
-	public function setReturnReference($val)
-	{
-		$this->returnReference = (bool) $val;
-		return $this;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function getReturnReference()
-	{
-		return $this->returnReference;
-	}
-
-
-	/**
-	 * @param  bool
-	 * @return static
-	 */
-	public function setReturnNullable($val)
-	{
-		$this->returnNullable = (bool) $val;
-		return $this;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function getReturnNullable()
-	{
-		return $this->returnNullable;
-	}
-
-
-	/**
-	 * @param  bool
-	 * @return static
-	 */
-	public function setVariadic($val)
-	{
-		$this->variadic = (bool) $val;
-		return $this;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isVariadic()
-	{
-		return $this->variadic;
-	}
-
-
-	/**
-	 * @return static
-	 */
-	public function setNamespace(PhpNamespace $val = NULL)
-	{
-		$this->namespace = $val;
-		return $this;
-	}
-
-
-	/**
-	 * @param  string|NULL
-	 * @return static
-	 */
-	public function setReturnType($val)
-	{
-		$this->returnType = $val ? (string) $val : NULL;
-		return $this;
-	}
-
-
-	/**
-	 * @return string|NULL
-	 */
-	public function getReturnType()
-	{
-		return $this->returnType;
 	}
 
 }

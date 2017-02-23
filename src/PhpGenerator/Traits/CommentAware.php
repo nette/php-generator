@@ -5,75 +5,16 @@
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
 
-namespace Nette\PhpGenerator;
-
-use Nette;
+namespace Nette\PhpGenerator\Traits;
 
 
 /**
- * Class member.
+ * @internal
  */
-abstract class Member
+trait CommentAware
 {
-	use Nette\SmartObject;
-
-	/** @var string */
-	private $name;
-
-	/** @var string|NULL  public|protected|private */
-	private $visibility;
-
 	/** @var string|NULL */
 	private $comment;
-
-
-	/**
-	 * @param  string
-	 */
-	public function __construct($name = '')
-	{
-		$this->setName($name);
-	}
-
-
-	/** @deprecated */
-	public function setName($name)
-	{
-		$this->name = (string) $name;
-		return $this;
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
-
-
-	/**
-	 * @param  string|NULL  public|protected|private
-	 * @return static
-	 */
-	public function setVisibility($val)
-	{
-		if (!in_array($val, ['public', 'protected', 'private', NULL], TRUE)) {
-			throw new Nette\InvalidArgumentException('Argument must be public|protected|private.');
-		}
-		$this->visibility = $val;
-		return $this;
-	}
-
-
-	/**
-	 * @return string|NULL
-	 */
-	public function getVisibility()
-	{
-		return $this->visibility;
-	}
 
 
 	/**

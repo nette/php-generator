@@ -13,8 +13,13 @@ use Nette;
 /**
  * Class property description.
  */
-class Property extends Member
+class Property
 {
+	use Nette\SmartObject;
+	use Traits\NameAware;
+	use Traits\VisibilityAware;
+	use Traits\CommentAware;
+
 	/** @var mixed */
 	public $value;
 
