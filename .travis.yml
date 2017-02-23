@@ -1,6 +1,5 @@
 language: php
 php:
-    - 7.0
     - 7.1
     - 7.2
 
@@ -35,7 +34,7 @@ jobs:
 
             script:
                 - php temp/code-checker/src/code-checker.php --short-arrays --strict-types
-                - php temp/coding-standard/ecs check src tests --config temp/coding-standard/coding-standard-php70.neon
+                - php temp/coding-standard/ecs check src tests --config temp/coding-standard/coding-standard-php71.neon
 
 
         -   stage: Code Coverage
