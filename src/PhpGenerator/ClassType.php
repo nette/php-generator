@@ -65,13 +65,13 @@ class ClassType
 
 
 	/**
-	 * @param  \ReflectionClass|string
+	 * @param  string|object
 	 * @return static
 	 */
-	public static function from($from)
+	public static function from($class)
 	{
 		return (new Factory)->fromClassReflection(
-			$from instanceof \ReflectionClass ? $from : new \ReflectionClass($from)
+			$class instanceof \ReflectionClass ? $class : new \ReflectionClass($class)
 		);
 	}
 

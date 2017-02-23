@@ -52,13 +52,13 @@ class Method extends Member
 
 
 	/**
-	 * @param  \ReflectionFunctionAbstract|callable
+	 * @param  callable
 	 * @return static
 	 */
-	public static function from($from)
+	public static function from($method)
 	{
 		return (new Factory)->fromFunctionReflection(
-			$from instanceof \ReflectionFunctionAbstract ? $from : Nette\Utils\Callback::toReflection($from)
+			$method instanceof \ReflectionFunctionAbstract ? $method : Nette\Utils\Callback::toReflection($method)
 		);
 	}
 
