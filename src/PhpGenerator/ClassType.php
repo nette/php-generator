@@ -89,6 +89,12 @@ class ClassType
 	 */
 	public function __toString()
 	{
+		$traits = [];
+		foreach ($this->traits as $trait => $resolutions) {
+			$traits[] = 'use ' . ($this->namespace ? $this->namespace->unresolveName($trait) : $trait)
+				. ($resolutions ? " {\n\t" . implode(";\n\t", $resolutions) . ";\n}" : ';');
+		}
+
 		$consts = [];
 		foreach ($this->consts as $const) {
 			$consts[] = Helpers::formatDocComment($const->getComment())
@@ -117,7 +123,7 @@ class ClassType
 			. ($this->implements ? 'implements ' . implode(', ', $mapper($this->implements)) . ' ' : '')
 			. ($this->name ? "\n" : '') . "{\n"
 			. Strings::indent(
-				($this->traits ? 'use ' . implode(";\nuse ", $mapper($this->traits)) . ";\n\n" : '')
+				($this->traits ? implode("\n", $traits) . "\n\n" : '')
 				. ($this->consts ? implode('', $consts) . "\n" : '')
 				. ($this->properties ? implode("\n", $properties) . "\n" : '')
 				. ($this->methods ? "\n" . implode("\n\n\n", $this->methods) . "\n\n" : ''), 1)
@@ -293,7 +299,7 @@ class ClassType
 	 */
 	public function setTraits(array $traits)
 	{
-		$this->traits = $traits;
+		$this->traits = array_fill_keys($traits, []);
 		return $this;
 	}
 
@@ -303,7 +309,7 @@ class ClassType
 	 */
 	public function getTraits()
 	{
-		return $this->traits;
+		return array_keys($this->traits);
 	}
 
 
@@ -311,9 +317,9 @@ class ClassType
 	 * @param  string
 	 * @return static
 	 */
-	public function addTrait($trait)
+	public function addTrait($trait, array $resolutions = [])
 	{
-		$this->traits[] = (string) $trait;
+		$this->traits[$trait] = $resolutions;
 		return $this;
 	}
 

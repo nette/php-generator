@@ -7,6 +7,9 @@
 abstract final class Example extends ParentClass implements IExample, IOne
 {
 	use ObjectTrait;
+	use AnotherTrait {
+		sayHello as protected;
+	}
 
 	const ROLE = 'admin';
 	const ACTIVE = FALSE;

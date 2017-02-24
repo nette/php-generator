@@ -20,6 +20,7 @@ $class
 	->addImplement('IExample')
 	->addImplement('IOne')
 	->addTrait('ObjectTrait')
+	->addTrait('AnotherTrait', ['sayHello as protected'])
 	->addComment("Description of class.\nThis is example\n")
 	->addComment('@property-read Nette\Forms\Form $form')
 	->setConsts(['ROLE' => 'admin'])
