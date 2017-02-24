@@ -23,9 +23,7 @@ class ClassType
 	use Traits\CommentAware;
 
 	const TYPE_CLASS = 'class';
-
 	const TYPE_INTERFACE = 'interface';
-
 	const TYPE_TRAIT = 'trait';
 
 	/** @var PhpNamespace|NULL */
@@ -99,7 +97,7 @@ class ClassType
 		foreach ($this->consts as $const) {
 			$consts[] = Helpers::formatDocComment($const->getComment())
 				. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
-				. 'const ' . $const->getName() . ' = ' . Helpers::dump($const->getValue()) . ";\n";
+				. 'const ' . $const->getName() . ' = ' . Helpers::dump($const->getValue()) . ';';
 		}
 
 		$properties = [];
@@ -107,7 +105,7 @@ class ClassType
 			$properties[] = Helpers::formatDocComment($property->getComment())
 				. ($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName()
 				. ($property->value === NULL ? '' : ' = ' . Helpers::dump($property->value))
-				. ";\n";
+				. ';';
 		}
 
 		$mapper = function (array $arr) {
@@ -124,8 +122,8 @@ class ClassType
 			. ($this->name ? "\n" : '') . "{\n"
 			. Strings::indent(
 				($this->traits ? implode("\n", $traits) . "\n\n" : '')
-				. ($this->consts ? implode('', $consts) . "\n" : '')
-				. ($this->properties ? implode("\n", $properties) . "\n" : '')
+				. ($this->consts ? implode("\n", $consts) . "\n\n" : '')
+				. ($this->properties ? implode("\n\n", $properties) . "\n\n" : '')
 				. ($this->methods ? "\n" . implode("\n\n\n", $this->methods) . "\n\n" : ''), 1)
 			. '}'
 		) . ($this->name ? "\n" : '');
