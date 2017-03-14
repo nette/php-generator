@@ -162,11 +162,13 @@ final class Helpers
 	 */
 	public static function formatArgs(string $statement, array $args): string
 	{
-		$tokens = preg_split('#(\.\.\.\?|\$\?|->\?|::\?|\?\*|\?)#', $statement, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$tokens = preg_split('#(\.\.\.\?|\$\?|->\?|::\?|\\\\\?|\?\*|\?)#', $statement, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$res = '';
 		foreach ($tokens as $n => $token) {
 			if ($n % 2 === 0) {
 				$res .= $token;
+			} elseif ($token === '\\?') {
+				$res .= '?';
 			} elseif (!$args) {
 				throw new Nette\InvalidArgumentException('Insufficient number of arguments.');
 			} elseif ($token === '?') {
