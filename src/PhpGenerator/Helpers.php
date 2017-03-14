@@ -19,9 +19,9 @@ final class Helpers
 {
 	use Nette\StaticClass;
 
-	const PHP_IDENT = '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*';
-	const MAX_DEPTH = 50;
-	const WRAP_LENGTH = 70;
+	public const PHP_IDENT = '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*';
+	private const MAX_DEPTH = 50;
+	private const WRAP_LENGTH = 70;
 
 
 	/**
