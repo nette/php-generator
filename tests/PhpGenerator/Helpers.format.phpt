@@ -16,6 +16,7 @@ Assert::same('func(1)', Helpers::format('func(?)', 1, 2));
 
 Assert::same('func', Helpers::formatArgs('func', [1, 2]));
 Assert::same('func(1)', Helpers::formatArgs('func(?)', [1, 2]));
+Assert::same('func(1 ? 2 : 3)', Helpers::formatArgs('func(1 \? 2 : 3)', []));
 Assert::same('func([1, 2])', Helpers::formatArgs('func(?)', [[1, 2]]));
 Assert::same('func(1, 2)', Helpers::formatArgs('func(...?)', [[1, 2]]));
 Assert::same('func(1, 2)', Helpers::formatArgs('func(?*)', [[1, 2]])); // old way
