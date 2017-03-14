@@ -162,37 +162,33 @@ final class Helpers
 	 */
 	public static function formatArgs(string $statement, array $args): string
 	{
-		$a = strpos($statement, '?');
-		while ($a !== FALSE) {
-			if (!$args) {
+		$tokens = preg_split('#(\$\?|->\?|::\?|\?\*|\?)#', $statement, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$res = '';
+		foreach ($tokens as $n => $token) {
+			if ($n % 2 === 0) {
+				$res .= $token;
+			} elseif (!$args) {
 				throw new Nette\InvalidArgumentException('Insufficient number of arguments.');
-			}
-			$arg = array_shift($args);
-			if (substr($statement, $a + 1, 1) === '*') { // ?*
+			} elseif ($token === '?') {
+				$res .= self::dump(array_shift($args));
+			} elseif ($token === '?*') {
+				$arg = array_shift($args);
 				if (!is_array($arg)) {
 					throw new Nette\InvalidArgumentException('Argument must be an array.');
 				}
-				$s = substr($statement, 0, $a);
 				$sep = '';
 				foreach ($arg as $tmp) {
-					$s .= $sep . self::dump($tmp);
-					$sep = strlen($s) - strrpos($s, "\n") > self::WRAP_LENGTH ? ",\n\t" : ', ';
+					$res .= $sep . self::dump($tmp);
+					$sep = strlen($res) - strrpos($res, "\n") > self::WRAP_LENGTH ? ",\n\t" : ', ';
 				}
-				$statement = $s . substr($statement, $a + 2);
-				$a = strlen($s);
-
-			} else {
-				$arg = substr($statement, $a - 1, 1) === '$' || in_array(substr($statement, $a - 2, 2), ['->', '::'], TRUE)
-					? self::formatMember($arg) : self::_dump($arg);
-				$statement = substr_replace($statement, $arg, $a, 1);
-				$a += strlen($arg);
+			} else { // $  ->  ::
+				$res .= substr($token, 0, -1) . self::formatMember(array_shift($args));
 			}
-			$a = strpos($statement, '?', $a);
 		}
 		if ($args) {
 			throw new Nette\InvalidArgumentException('Insufficient number of placeholders.');
 		}
-		return $statement;
+		return $res;
 	}
 
 
