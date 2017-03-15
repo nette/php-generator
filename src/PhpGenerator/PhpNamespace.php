@@ -155,11 +155,12 @@ final class PhpNamespace
 
 	public function addClass(string $name): ClassType
 	{
-		if (!isset($this->classes[$name])) {
-			$this->addUse($this->name . '\\' . $name);
-			$this->classes[$name] = new ClassType($name, $this);
+		if (isset($this->classes[$name])) {
+			trigger_error(__METHOD__ . "() class $name was already added.", E_USER_DEPRECATED);
+			return $this->classes[$name];
 		}
-		return $this->classes[$name];
+		$this->addUse($this->name . '\\' . $name);
+		return $this->classes[$name] = new ClassType($name, $this);
 	}
 
 
