@@ -63,6 +63,36 @@ Assert::exception(function () {
 }, Nette\InvalidArgumentException::class);
 
 
+$class = new Nette\PhpGenerator\ClassType('Abc');
+Assert::exception(function () use ($class) {
+	$class->setExtends('*');
+}, Nette\InvalidArgumentException::class, "Value '*' is not valid class name.");
+
+Assert::exception(function () use ($class) {
+	$class->setExtends(['A', '*']);
+}, Nette\InvalidArgumentException::class, "Value '*' is not valid class name.");
+
+Assert::exception(function () use ($class) {
+	$class->addExtend('*');
+}, Nette\InvalidArgumentException::class, "Value '*' is not valid class name.");
+
+Assert::exception(function () use ($class) {
+	$class->setImplements(['A', '*']);
+}, Nette\InvalidArgumentException::class, "Value '*' is not valid class name.");
+
+Assert::exception(function () use ($class) {
+	$class->addImplement('*');
+}, Nette\InvalidArgumentException::class, "Value '*' is not valid class name.");
+
+Assert::exception(function () use ($class) {
+	$class->setTraits(['A', '*']);
+}, Nette\InvalidArgumentException::class, "Value '*' is not valid class name.");
+
+Assert::exception(function () use ($class) {
+	$class->addTrait('*');
+}, Nette\InvalidArgumentException::class, "Value '*' is not valid class name.");
+
+
 Assert::noError(function () {
 	new Nette\PhpGenerator\Property('Iñtërnâtiônàlizætiøn');
 });

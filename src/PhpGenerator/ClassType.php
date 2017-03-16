@@ -218,9 +218,10 @@ final class ClassType
 	 */
 	public function setExtends($names): self
 	{
-		if (!is_string($names) && !(is_array($names) && Nette\Utils\Arrays::every($names, 'is_string'))) {
+		if (!is_string($names) && !is_array($names)) {
 			throw new Nette\InvalidArgumentException('Argument must be string or string[].');
 		}
+		$this->validate((array) $names);
 		$this->extends = $names;
 		return $this;
 	}
@@ -240,6 +241,7 @@ final class ClassType
 	 */
 	public function addExtend(string $name): self
 	{
+		$this->validate([$name]);
 		$this->extends = (array) $this->extends;
 		$this->extends[] = $name;
 		return $this;
@@ -252,6 +254,7 @@ final class ClassType
 	 */
 	public function setImplements(array $names): self
 	{
+		$this->validate($names);
 		$this->implements = $names;
 		return $this;
 	}
@@ -271,6 +274,7 @@ final class ClassType
 	 */
 	public function addImplement(string $name): self
 	{
+		$this->validate([$name]);
 		$this->implements[] = $name;
 		return $this;
 	}
@@ -282,6 +286,7 @@ final class ClassType
 	 */
 	public function setTraits(array $names): self
 	{
+		$this->validate($names);
 		$this->traits = array_fill_keys($names, []);
 		return $this;
 	}
@@ -301,6 +306,7 @@ final class ClassType
 	 */
 	public function addTrait(string $name, array $resolutions = []): self
 	{
+		$this->validate([$name]);
 		$this->traits[$name] = $resolutions;
 		return $this;
 	}
@@ -457,6 +463,16 @@ final class ClassType
 			$method->setVisibility('public');
 		}
 		return $this->methods[$name] = $method;
+	}
+
+
+	private function validate(array $names)
+	{
+		foreach ($names as $name) {
+			if (!Helpers::isNamespaceIdentifier($name, TRUE)) {
+				throw new Nette\InvalidArgumentException("Value '$name' is not valid class name.");
+			}
+		}
 	}
 
 }
