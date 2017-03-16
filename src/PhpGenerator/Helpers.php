@@ -229,9 +229,10 @@ final class Helpers
 	}
 
 
-	public static function isNamespaceIdentifier($value): bool
+	public static function isNamespaceIdentifier($value, bool $allowLeadingSlash = FALSE): bool
 	{
-		return is_string($value) && preg_match('#^' . Helpers::PHP_IDENT . '(\\\\' . Helpers::PHP_IDENT . ')*\z#', $value);
+		$re = '#^' . ($allowLeadingSlash ? '\\\\?' : '') . Helpers::PHP_IDENT . '(\\\\' . Helpers::PHP_IDENT . ')*\z#';
+		return is_string($value) && preg_match($re, $value);
 	}
 
 
