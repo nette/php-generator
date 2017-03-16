@@ -57,6 +57,11 @@ class Closure
 	 */
 	public function setUses(array $uses)
 	{
+		foreach ($uses as $use) {
+			if (!$use instanceof Parameter) {
+				throw new Nette\InvalidArgumentException('Argument must be Nette\PhpGenerator\Parameter[].');
+			}
+		}
 		$this->uses = $uses;
 		return $this;
 	}
