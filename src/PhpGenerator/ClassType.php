@@ -216,12 +216,12 @@ final class ClassType
 	 * @param  string|string[]
 	 * @return static
 	 */
-	public function setExtends($types): self
+	public function setExtends($names): self
 	{
-		if (!is_string($types) && !(is_array($types) && Nette\Utils\Arrays::every($types, 'is_string'))) {
+		if (!is_string($names) && !(is_array($names) && Nette\Utils\Arrays::every($names, 'is_string'))) {
 			throw new Nette\InvalidArgumentException('Argument must be string or string[].');
 		}
-		$this->extends = $types;
+		$this->extends = $names;
 		return $this;
 	}
 
@@ -238,10 +238,10 @@ final class ClassType
 	/**
 	 * @return static
 	 */
-	public function addExtend(string $type): self
+	public function addExtend(string $name): self
 	{
 		$this->extends = (array) $this->extends;
-		$this->extends[] = $type;
+		$this->extends[] = $name;
 		return $this;
 	}
 
@@ -250,9 +250,9 @@ final class ClassType
 	 * @param  string[]
 	 * @return static
 	 */
-	public function setImplements(array $types): self
+	public function setImplements(array $names): self
 	{
-		$this->implements = $types;
+		$this->implements = $names;
 		return $this;
 	}
 
@@ -269,9 +269,9 @@ final class ClassType
 	/**
 	 * @return static
 	 */
-	public function addImplement(string $type): self
+	public function addImplement(string $name): self
 	{
-		$this->implements[] = $type;
+		$this->implements[] = $name;
 		return $this;
 	}
 
@@ -280,9 +280,9 @@ final class ClassType
 	 * @param  string[]
 	 * @return static
 	 */
-	public function setTraits(array $traits): self
+	public function setTraits(array $names): self
 	{
-		$this->traits = array_fill_keys($traits, []);
+		$this->traits = array_fill_keys($names, []);
 		return $this;
 	}
 
@@ -299,9 +299,9 @@ final class ClassType
 	/**
 	 * @return static
 	 */
-	public function addTrait(string $trait, array $resolutions = []): self
+	public function addTrait(string $name, array $resolutions = []): self
 	{
-		$this->traits[$trait] = $resolutions;
+		$this->traits[$name] = $resolutions;
 		return $this;
 	}
 
