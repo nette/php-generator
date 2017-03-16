@@ -56,6 +56,7 @@ final class Closure
 	 */
 	public function setUses(array $uses): self
 	{
+		(function (Parameter ...$uses) {})(...$uses);
 		$this->uses = $uses;
 		return $this;
 	}
