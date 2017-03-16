@@ -229,7 +229,7 @@ final class Helpers
 	}
 
 
-	public static function isNamespace($value): bool
+	public static function isNamespaceIdentifier($value): bool
 	{
 		return is_string($value) && preg_match('#^' . Helpers::PHP_IDENT . '(\\\\' . Helpers::PHP_IDENT . ')*\z#', $value);
 	}
