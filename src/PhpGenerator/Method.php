@@ -107,9 +107,9 @@ class Method
 	 * @param  bool
 	 * @return static
 	 */
-	public function setStatic($val)
+	public function setStatic($state = TRUE)
 	{
-		$this->static = (bool) $val;
+		$this->static = (bool) $state;
 		return $this;
 	}
 
@@ -127,9 +127,9 @@ class Method
 	 * @param  bool
 	 * @return static
 	 */
-	public function setFinal($val)
+	public function setFinal($state = TRUE)
 	{
-		$this->final = (bool) $val;
+		$this->final = (bool) $state;
 		return $this;
 	}
 
@@ -147,9 +147,9 @@ class Method
 	 * @param  bool
 	 * @return static
 	 */
-	public function setAbstract($val)
+	public function setAbstract($state = TRUE)
 	{
-		$this->abstract = (bool) $val;
+		$this->abstract = (bool) $state;
 		return $this;
 	}
 

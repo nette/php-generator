@@ -34,7 +34,7 @@ trait FunctionLike
 	private $returnReference = FALSE;
 
 	/** @var bool */
-	private $returnNullable;
+	private $returnNullable = FALSE;
 
 	/** @var PhpNamespace|NULL */
 	private $namespace;
@@ -115,9 +115,9 @@ trait FunctionLike
 	 * @param  bool
 	 * @return static
 	 */
-	public function setVariadic($val)
+	public function setVariadic($state = TRUE)
 	{
-		$this->variadic = (bool) $val;
+		$this->variadic = (bool) $state;
 		return $this;
 	}
 
@@ -155,9 +155,9 @@ trait FunctionLike
 	 * @param  bool
 	 * @return static
 	 */
-	public function setReturnReference($val)
+	public function setReturnReference($state = TRUE)
 	{
-		$this->returnReference = (bool) $val;
+		$this->returnReference = (bool) $state;
 		return $this;
 	}
 
@@ -175,9 +175,9 @@ trait FunctionLike
 	 * @param  bool
 	 * @return static
 	 */
-	public function setReturnNullable($val)
+	public function setReturnNullable($state = TRUE)
 	{
-		$this->returnNullable = (bool) $val;
+		$this->returnNullable = (bool) $state;
 		return $this;
 	}
 
