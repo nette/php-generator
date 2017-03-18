@@ -26,6 +26,24 @@ Assert::match(
 }', (string) $function);
 
 
+$uses = $function->getUses();
+Assert::count(2, $uses);
+Assert::type(Nette\PhpGenerator\Parameter::class, $uses[0]);
+Assert::type(Nette\PhpGenerator\Parameter::class, $uses[1]);
+
+$uses = $function->setUses([$uses[0]]);
+
+Assert::match(
+'function &($a, $b) use ($this) {
+	return $a + $b;
+}', (string) $function);
+
+Assert::exception(function () {
+	$function = new Closure;
+	$function->setUses([123]);
+}, TypeError::class);
+
+
 $closure = function (stdClass $a, $b = NULL) {};
 $function = Closure::from($closure);
 Assert::match(

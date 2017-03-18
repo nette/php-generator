@@ -37,6 +37,7 @@ Assert::same('\A', $namespace->unresolveName('A'));
 Assert::same('A', $namespace->unresolveName('foo\A'));
 
 $namespace->addUse('Bar\C');
+Assert::same(['C' => 'Bar\\C'], $namespace->getUses());
 
 Assert::same('\Bar', $namespace->unresolveName('Bar'));
 Assert::same('C', $namespace->unresolveName('\bar\C'));
@@ -53,6 +54,9 @@ Assert::same($namespace, $classA->getNamespace());
 
 $interfaceB = $namespace->addInterface('B');
 Assert::same($namespace, $interfaceB->getNamespace());
+
+Assert::count(2, $namespace->getClasses());
+Assert::type(Nette\PhpGenerator\ClassType::class, $namespace->getClasses()['A']);
 
 Assert::exception(function () use ($namespace) {
 	$traitC = $namespace->addTrait('C');

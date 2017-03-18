@@ -20,6 +20,8 @@ $interface
 	->addExtend('ITwo')
 	->addComment('Description of interface');
 
+Assert::same(['IOne', 'ITwo'], $interface->getExtends());
+
 $interface->addMethod('getForm');
 
 Assert::matchFile(__DIR__ . '/ClassType.interface.expect', (string) $interface);
