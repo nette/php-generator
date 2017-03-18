@@ -106,9 +106,9 @@ final class Method
 	/**
 	 * @return static
 	 */
-	public function setStatic(bool $val): self
+	public function setStatic(bool $state = TRUE): self
 	{
-		$this->static = $val;
+		$this->static = $state;
 		return $this;
 	}
 
@@ -122,9 +122,9 @@ final class Method
 	/**
 	 * @return static
 	 */
-	public function setFinal(bool $val): self
+	public function setFinal(bool $state = TRUE): self
 	{
-		$this->final = $val;
+		$this->final = $state;
 		return $this;
 	}
 
@@ -138,9 +138,9 @@ final class Method
 	/**
 	 * @return static
 	 */
-	public function setAbstract(bool $val): self
+	public function setAbstract(bool $state = TRUE): self
 	{
-		$this->abstract = $val;
+		$this->abstract = $state;
 		return $this;
 	}
 
