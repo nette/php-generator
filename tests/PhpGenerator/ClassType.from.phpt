@@ -69,6 +69,11 @@ class Class3
 	public $prop1;
 }
 
+class Class4
+{
+	const THE_CONSTANT = 9;
+}
+
 $res[] = ClassType::from(Interface1::class);
 $res[] = ClassType::from(Interface2::class);
 $res[] = ClassType::from(Class1::class);
@@ -76,5 +81,6 @@ $res[] = ClassType::from(new Class2);
 $obj = new Class3;
 $obj->prop2 = 1;
 $res[] = (new Factory)->fromClassReflection(new \ReflectionObject($obj));
+$res[] = ClassType::from(Class4::class);
 
 Assert::matchFile(__DIR__ . '/ClassType.from.expect', implode("\n", $res));

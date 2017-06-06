@@ -46,6 +46,7 @@ final class Factory
 			}
 		}
 		$class->setMethods($methods);
+		$class->setConstants($from->getConstants());
 		return $class;
 	}
 
