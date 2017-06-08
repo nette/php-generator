@@ -23,7 +23,14 @@ class ClassA
 	function func3(): void {}
 }
 
+class ClassB
+{
+	private const THE_PRIVATE_CONSTANT = 9;
+	public const THE_PUBLIC_CONSTANT = 9;
+}
+
 
 $res[] = ClassType::from(ClassA::class);
+$res[] = ClassType::from(ClassB::class);
 
 Assert::matchFile(__DIR__ . '/ClassType.from.php71.expect', implode("\n", $res));

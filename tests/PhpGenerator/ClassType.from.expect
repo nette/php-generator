@@ -64,3 +64,9 @@ class Class3
 	public $prop1;
 
 }
+
+class Class4
+{
+	const THE_CONSTANT = 9;
+
+}
