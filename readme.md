@@ -9,11 +9,14 @@ Nette PHP Generator
 
 Generate PHP code, classes, namespaces etc. with a simple programmatical API.
 
-Usage is very easy. In first, install it using Composer:
+Usage is very easy. Install it using Composer:
 
 ```
 composer require nette/php-generator
 ```
+
+The last stable release requires PHP version 5.6 or newer (is compatible with PHP 7.0 and 7.1). The dev-master version requires PHP 7.0.
+
 
 Examples
 --------
