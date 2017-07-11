@@ -40,5 +40,4 @@ trait VisibilityAware
 	{
 		return $this->visibility;
 	}
-
 }

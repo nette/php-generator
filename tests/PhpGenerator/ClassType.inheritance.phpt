@@ -1,7 +1,6 @@
 <?php
 
 use Nette\PhpGenerator\ClassType;
-use ReflectionClass;
 use Tester\Assert;
 
 
@@ -14,6 +13,7 @@ class A
 	protected $b;
 	private $c;
 
+
 	function foo()
 	{
 	}
@@ -25,6 +25,7 @@ class B extends A
 	public $d;
 	protected $e;
 	private $f;
+
 
 	function bar()
 	{

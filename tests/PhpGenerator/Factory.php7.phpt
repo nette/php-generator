@@ -14,6 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 
 $factory = new Factory;
 
-$res = $factory->fromClassReflection(new ReflectionClass(new class {}));
+$res = $factory->fromClassReflection(new ReflectionClass(new class {
+}));
 Assert::type(Nette\PhpGenerator\ClassType::class, $res);
 Assert::null($res->getName());

@@ -47,5 +47,4 @@ trait NameAware
 	{
 		return $this->name;
 	}
-
 }

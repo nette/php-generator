@@ -33,5 +33,4 @@ class PhpLiteral
 	{
 		return $this->value;
 	}
-
 }

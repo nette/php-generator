@@ -92,5 +92,4 @@ class PhpFile
 			. implode("\n\n", $this->namespaces)
 		) . "\n";
 	}
-
 }

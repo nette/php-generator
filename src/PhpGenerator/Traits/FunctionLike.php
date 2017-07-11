@@ -229,5 +229,4 @@ trait FunctionLike
 			? ': ' . ($this->returnNullable ? '?' : '') . ($this->namespace ? $this->namespace->unresolveName($this->returnType) : $this->returnType)
 			: '';
 	}
-
 }

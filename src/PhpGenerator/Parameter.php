@@ -152,5 +152,4 @@ class Parameter
 	{
 		return $this->hasDefaultValue;
 	}
-
 }

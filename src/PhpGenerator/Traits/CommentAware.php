@@ -70,5 +70,4 @@ trait CommentAware
 		trigger_error(__METHOD__ . '() is deprecated, use addComment()', E_USER_DEPRECATED);
 		return $this->addComment($s);
 	}
-
 }

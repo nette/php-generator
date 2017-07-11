@@ -83,5 +83,4 @@ class Closure
 	{
 		return $this->uses[] = new Parameter($name);
 	}
-
 }

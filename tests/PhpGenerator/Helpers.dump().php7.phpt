@@ -13,5 +13,6 @@ require __DIR__ . '/../bootstrap.php';
 
 
 Assert::exception(function () {
-	Helpers::dump(new class {});
+	Helpers::dump(new class {
+	});
 }, Nette\InvalidArgumentException::class, 'Cannot dump anonymous class.');

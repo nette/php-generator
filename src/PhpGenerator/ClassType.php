@@ -507,5 +507,4 @@ class ClassType
 			}
 		}
 	}
-
 }

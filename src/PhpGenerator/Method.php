@@ -161,5 +161,4 @@ class Method
 	{
 		return $this->abstract;
 	}
-
 }

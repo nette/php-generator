@@ -6,7 +6,6 @@
  */
 
 use Nette\PhpGenerator\Method;
-use Nette\PhpGenerator\Parameter;
 use Tester\Assert;
 
 
@@ -18,6 +17,7 @@ require __DIR__ . '/../bootstrap.php';
 interface Variadics
 {
 	function foo(...$foo);
+
 	function bar($foo, array &...$bar);
 }
 

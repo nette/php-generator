@@ -41,5 +41,4 @@ class Constant
 	{
 		return $this->value;
 	}
-
 }

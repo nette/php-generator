@@ -30,7 +30,9 @@ abstract class Class1 implements Interface1
 {
 	/** @return Class1 */
 	function func1()
-	{}
+	{
+	}
+
 
 	abstract protected function func2();
 }
@@ -50,15 +52,19 @@ class Class2 extends Class1 implements Interface2
 
 	static public $static;
 
+
 	/**
 	 * Func3
 	 * @return Class1
 	 */
 	private function &func3(array $a = [], Class2 $b = NULL, \Abc\Unknown $c, \Xyz\Unknown $d, callable $e, $f = Unknown::ABC, $g)
-	{}
+	{
+	}
+
 
 	final function func2()
-	{}
+	{
+	}
 }
 
 class Class3

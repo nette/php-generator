@@ -144,5 +144,4 @@ class Factory
 		$prop->setComment(Helpers::unformatDocComment($from->getDocComment()));
 		return $prop;
 	}
-
 }

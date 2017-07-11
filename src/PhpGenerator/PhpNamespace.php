@@ -242,5 +242,4 @@ class PhpNamespace
 				. $body;
 		}
 	}
-
 }
