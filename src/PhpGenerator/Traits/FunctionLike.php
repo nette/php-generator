@@ -27,27 +27,27 @@ trait FunctionLike
 	private $parameters = [];
 
 	/** @var bool */
-	private $variadic = FALSE;
+	private $variadic = false;
 
-	/** @var string|NULL */
+	/** @var string|null */
 	private $returnType;
 
 	/** @var bool */
-	private $returnReference = FALSE;
+	private $returnReference = false;
 
 	/** @var bool */
-	private $returnNullable = FALSE;
+	private $returnNullable = false;
 
-	/** @var PhpNamespace|NULL */
+	/** @var PhpNamespace|null */
 	private $namespace;
 
 
 	/**
 	 * @return static
 	 */
-	public function setBody(string $code, array $args = NULL): self
+	public function setBody(string $code, array $args = null): self
 	{
-		$this->body = $args === NULL ? $code : Helpers::formatArgs($code, $args);
+		$this->body = $args === null ? $code : Helpers::formatArgs($code, $args);
 		return $this;
 	}
 
@@ -61,9 +61,9 @@ trait FunctionLike
 	/**
 	 * @return static
 	 */
-	public function addBody(string $code, array $args = NULL): self
+	public function addBody(string $code, array $args = null): self
 	{
-		$this->body .= ($args === NULL ? $code : Helpers::formatArgs($code, $args)) . "\n";
+		$this->body .= ($args === null ? $code : Helpers::formatArgs($code, $args)) . "\n";
 		return $this;
 	}
 
@@ -97,7 +97,7 @@ trait FunctionLike
 	/**
 	 * @param  string  without $
 	 */
-	public function addParameter(string $name, $defaultValue = NULL): Parameter
+	public function addParameter(string $name, $defaultValue = null): Parameter
 	{
 		$param = new Parameter($name);
 		if (func_num_args() > 1) {
@@ -110,7 +110,7 @@ trait FunctionLike
 	/**
 	 * @return static
 	 */
-	public function setVariadic(bool $state = TRUE): self
+	public function setVariadic(bool $state = true): self
 	{
 		$this->variadic = $state;
 		return $this;
@@ -124,18 +124,18 @@ trait FunctionLike
 
 
 	/**
-	 * @param  string|NULL
+	 * @param  string|null
 	 * @return static
 	 */
 	public function setReturnType($val): self
 	{
-		$this->returnType = $val ? (string) $val : NULL;
+		$this->returnType = $val ? (string) $val : null;
 		return $this;
 	}
 
 
 	/**
-	 * @return string|NULL
+	 * @return string|null
 	 */
 	public function getReturnType()
 	{
@@ -146,7 +146,7 @@ trait FunctionLike
 	/**
 	 * @return static
 	 */
-	public function setReturnReference(bool $state = TRUE): self
+	public function setReturnReference(bool $state = true): self
 	{
 		$this->returnReference = $state;
 		return $this;
@@ -162,7 +162,7 @@ trait FunctionLike
 	/**
 	 * @return static
 	 */
-	public function setReturnNullable(bool $state = TRUE): self
+	public function setReturnNullable(bool $state = true): self
 	{
 		$this->returnNullable = $state;
 		return $this;
@@ -178,7 +178,7 @@ trait FunctionLike
 	/**
 	 * @return static
 	 */
-	public function setNamespace(PhpNamespace $val = NULL): self
+	public function setNamespace(PhpNamespace $val = null): self
 	{
 		$this->namespace = $val;
 		return $this;

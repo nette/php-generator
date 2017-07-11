@@ -23,16 +23,16 @@ final class Parameter
 	use Traits\NameAware;
 
 	/** @var bool */
-	private $reference = FALSE;
+	private $reference = false;
 
-	/** @var string|NULL */
+	/** @var string|null */
 	private $typeHint;
 
 	/** @var bool */
-	private $nullable = FALSE;
+	private $nullable = false;
 
 	/** @var bool */
-	private $hasDefaultValue = FALSE;
+	private $hasDefaultValue = false;
 
 	/** @var mixed */
 	private $defaultValue;
@@ -41,7 +41,7 @@ final class Parameter
 	/**
 	 * @return static
 	 */
-	public function setReference(bool $state = TRUE): self
+	public function setReference(bool $state = true): self
 	{
 		$this->reference = $state;
 		return $this;
@@ -55,18 +55,18 @@ final class Parameter
 
 
 	/**
-	 * @param  string|NULL
+	 * @param  string|null
 	 * @return static
 	 */
 	public function setTypeHint($hint): self
 	{
-		$this->typeHint = $hint ? (string) $hint : NULL;
+		$this->typeHint = $hint ? (string) $hint : null;
 		return $this;
 	}
 
 
 	/**
-	 * @return string|NULL
+	 * @return string|null
 	 */
 	public function getTypeHint()
 	{
@@ -78,7 +78,7 @@ final class Parameter
 	 * @deprecated  just use setDefaultValue()
 	 * @return static
 	 */
-	public function setOptional(bool $state = TRUE): self
+	public function setOptional(bool $state = true): self
 	{
 		$this->hasDefaultValue = $state;
 		return $this;
@@ -98,7 +98,7 @@ final class Parameter
 	/**
 	 * @return static
 	 */
-	public function setNullable(bool $state = TRUE): self
+	public function setNullable(bool $state = true): self
 	{
 		$this->nullable = $state;
 		return $this;
@@ -117,7 +117,7 @@ final class Parameter
 	public function setDefaultValue($val): self
 	{
 		$this->defaultValue = $val;
-		$this->hasDefaultValue = TRUE;
+		$this->hasDefaultValue = true;
 		return $this;
 	}
 

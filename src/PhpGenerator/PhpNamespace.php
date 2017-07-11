@@ -35,7 +35,7 @@ final class PhpNamespace
 	private $name;
 
 	/** @var bool */
-	private $bracketedSyntax = FALSE;
+	private $bracketedSyntax = false;
 
 	/** @var string[] */
 	private $uses = [];
@@ -72,7 +72,7 @@ final class PhpNamespace
 	 * @return static
 	 * @internal
 	 */
-	public function setBracketedSyntax(bool $state = TRUE): self
+	public function setBracketedSyntax(bool $state = true): self
 	{
 		$this->bracketedSyntax = $state;
 		return $this;
@@ -89,15 +89,15 @@ final class PhpNamespace
 	 * @throws InvalidStateException
 	 * @return static
 	 */
-	public function addUse(string $name, string $alias = NULL, string &$aliasOut = NULL): self
+	public function addUse(string $name, string $alias = null, string &$aliasOut = null): self
 	{
 		$name = ltrim($name, '\\');
-		if ($alias === NULL && $this->name === Helpers::extractNamespace($name)) {
+		if ($alias === null && $this->name === Helpers::extractNamespace($name)) {
 			$alias = Helpers::extractShortName($name);
 		}
-		if ($alias === NULL) {
+		if ($alias === null) {
 			$path = explode('\\', $name);
-			$counter = NULL;
+			$counter = null;
 			do {
 				if (empty($path)) {
 					$counter++;
@@ -134,7 +134,7 @@ final class PhpNamespace
 			return $name;
 		}
 		$name = ltrim($name, '\\');
-		$res = NULL;
+		$res = null;
 		$lower = strtolower($name);
 		foreach ($this->uses as $alias => $for) {
 			if (Strings::startsWith($lower . '\\', strtolower($for) . '\\')) {

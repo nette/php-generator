@@ -23,9 +23,9 @@ Assert::same('0.1', Helpers::dump(0.1));
 Assert::same('INF', Helpers::dump(INF));
 Assert::same('-INF', Helpers::dump(-INF));
 Assert::same('NAN', Helpers::dump(NAN));
-Assert::same('NULL', Helpers::dump(NULL));
-Assert::same('TRUE', Helpers::dump(TRUE));
-Assert::same('FALSE', Helpers::dump(FALSE));
+Assert::same('NULL', Helpers::dump(null));
+Assert::same('TRUE', Helpers::dump(true));
+Assert::same('FALSE', Helpers::dump(false));
 
 Assert::same("''", Helpers::dump(''));
 Assert::same("'Hello'", Helpers::dump('Hello'));

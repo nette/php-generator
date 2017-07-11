@@ -57,10 +57,10 @@ final class Factory
 		$method->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
 		$method->setStatic($from->isStatic());
 		$isInterface = $from->getDeclaringClass()->isInterface();
-		$method->setVisibility($from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : ($isInterface ? NULL : 'public')));
+		$method->setVisibility($from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : ($isInterface ? null : 'public')));
 		$method->setFinal($from->isFinal());
 		$method->setAbstract($from->isAbstract() && !$isInterface);
-		$method->setBody($from->isAbstract() ? NULL : '');
+		$method->setBody($from->isAbstract() ? null : '');
 		$method->setReturnReference($from->returnsReference());
 		$method->setVariadic($from->isVariadic());
 		$method->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
@@ -96,13 +96,13 @@ final class Factory
 	{
 		$param = new Parameter($from->getName());
 		$param->setReference($from->isPassedByReference());
-		$param->setTypeHint($from->hasType() ? (string) $from->getType() : NULL);
+		$param->setTypeHint($from->hasType() ? (string) $from->getType() : null);
 		$param->setNullable($from->hasType() && $from->getType()->allowsNull());
 		if ($from->isDefaultValueAvailable()) {
 			$param->setDefaultValue($from->isDefaultValueConstant()
 				? new PhpLiteral($from->getDefaultValueConstantName())
 				: $from->getDefaultValue());
-			$param->setNullable($param->isNullable() && $param->getDefaultValue() !== NULL);
+			$param->setNullable($param->isNullable() && $param->getDefaultValue() !== null);
 		}
 		return $param;
 	}
@@ -111,7 +111,7 @@ final class Factory
 	public function fromPropertyReflection(\ReflectionProperty $from): Property
 	{
 		$prop = new Property($from->getName());
-		$prop->setValue($from->getDeclaringClass()->getDefaultProperties()[$prop->getName()] ?? NULL);
+		$prop->setValue($from->getDeclaringClass()->getDefaultProperties()[$prop->getName()] ?? null);
 		$prop->setStatic($from->isStatic());
 		$prop->setVisibility($from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : 'public'));
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));

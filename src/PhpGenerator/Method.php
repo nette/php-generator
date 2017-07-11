@@ -15,7 +15,7 @@ use Nette;
 /**
  * Class method.
  *
- * @property string|NULL $body
+ * @property string|null $body
  */
 final class Method
 {
@@ -25,17 +25,17 @@ final class Method
 	use Traits\VisibilityAware;
 	use Traits\CommentAware;
 
-	/** @var string|NULL */
+	/** @var string|null */
 	private $body = '';
 
 	/** @var bool */
-	private $static = FALSE;
+	private $static = false;
 
 	/** @var bool */
-	private $final = FALSE;
+	private $final = false;
 
 	/** @var bool */
-	private $abstract = FALSE;
+	private $abstract = false;
 
 
 	/**
@@ -73,29 +73,29 @@ final class Method
 			. $this->name
 			. $this->parametersToString()
 			. $this->returnTypeToString()
-			. ($this->abstract || $this->body === NULL
+			. ($this->abstract || $this->body === null
 				? ';'
 				: "\n{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}');
 	}
 
 
 	/**
-	 * @param  string|NULL
+	 * @param  string|null
 	 * @return static
 	 */
-	public function setBody($code, array $args = NULL): self
+	public function setBody($code, array $args = null): self
 	{
-		if ($code === FALSE) {
-			$code = NULL;
-			trigger_error(__METHOD__ . '() use NULL instead of FALSE', E_USER_DEPRECATED);
+		if ($code === false) {
+			$code = null;
+			trigger_error(__METHOD__ . '() use null instead of false', E_USER_DEPRECATED);
 		}
-		$this->body = $args === NULL ? $code : Helpers::formatArgs($code, $args);
+		$this->body = $args === null ? $code : Helpers::formatArgs($code, $args);
 		return $this;
 	}
 
 
 	/**
-	 * @return string|NULL
+	 * @return string|null
 	 */
 	public function getBody()
 	{
@@ -106,7 +106,7 @@ final class Method
 	/**
 	 * @return static
 	 */
-	public function setStatic(bool $state = TRUE): self
+	public function setStatic(bool $state = true): self
 	{
 		$this->static = $state;
 		return $this;
@@ -122,7 +122,7 @@ final class Method
 	/**
 	 * @return static
 	 */
-	public function setFinal(bool $state = TRUE): self
+	public function setFinal(bool $state = true): self
 	{
 		$this->final = $state;
 		return $this;
@@ -138,7 +138,7 @@ final class Method
 	/**
 	 * @return static
 	 */
-	public function setAbstract(bool $state = TRUE): self
+	public function setAbstract(bool $state = true): self
 	{
 		$this->abstract = $state;
 		return $this;

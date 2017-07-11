@@ -188,7 +188,7 @@ Anonymous class
 ---------------
 
 ```php
-$class = new Nette\PhpGenerator\ClassType(NULL);
+$class = new Nette\PhpGenerator\ClassType(null);
 $class->addMethod('__construct')
 	->addParameter('foo');
 
@@ -339,6 +339,6 @@ $class = Nette\PhpGenerator\ClassType::from(PDO::class);
 $function = Nette\PhpGenerator\GlobalFunction::from('trim');
 
 $closure = Nette\PhpGenerator\Closure::from(
-	function (stdClass $a, $b = NULL) {}
+	function (stdClass $a, $b = null) {}
 );
 ```

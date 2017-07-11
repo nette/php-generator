@@ -11,14 +11,14 @@ require __DIR__ . '/../bootstrap.php';
 
 $function = new Closure;
 $function
-	->setReturnReference(TRUE)
+	->setReturnReference(true)
 	->setBody('return $a + $b;');
 
 $function->addParameter('a');
 $function->addParameter('b');
 $function->addUse('this');
 $function->addUse('vars')
-	->setReference(TRUE);
+	->setReference(true);
 
 Assert::match(
 'function &($a, $b) use ($this, &$vars) {
@@ -44,7 +44,7 @@ Assert::exception(function () {
 }, TypeError::class);
 
 
-$closure = function (stdClass $a, $b = NULL) {};
+$closure = function (stdClass $a, $b = null) {};
 $function = Closure::from($closure);
 Assert::match(
 'function (stdClass $a, $b = NULL) {

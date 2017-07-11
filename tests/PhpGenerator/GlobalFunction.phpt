@@ -10,7 +10,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 /** global */
-function func(stdClass $a, $b = NULL)
+function func(stdClass $a, $b = null)
 {
 };
 

@@ -17,7 +17,7 @@ Assert::noError(function () {
 });
 
 Assert::exception(function () {
-	new Nette\PhpGenerator\PhpNamespace(NULL);
+	new Nette\PhpGenerator\PhpNamespace(null);
 }, TypeError::class);
 
 Assert::exception(function () {
@@ -38,7 +38,7 @@ Assert::exception(function () {
 
 
 Assert::noError(function () {
-	new Nette\PhpGenerator\ClassType(NULL); // anonymous class
+	new Nette\PhpGenerator\ClassType(null); // anonymous class
 	new Nette\PhpGenerator\ClassType('Iñtërnâtiônàlizætiøn');
 });
 
@@ -98,7 +98,7 @@ Assert::noError(function () {
 });
 
 Assert::exception(function () {
-	new Nette\PhpGenerator\Property(NULL);
+	new Nette\PhpGenerator\Property(null);
 }, TypeError::class);
 
 Assert::exception(function () {
@@ -119,7 +119,7 @@ Assert::exception(function () {
 }, Nette\InvalidArgumentException::class);
 
 Assert::exception(function () {
-	new Nette\PhpGenerator\Parameter(NULL);
+	new Nette\PhpGenerator\Parameter(null);
 }, TypeError::class);
 
 Assert::exception(function () {
@@ -140,7 +140,7 @@ Assert::exception(function () {
 }, Nette\InvalidArgumentException::class);
 
 Assert::exception(function () {
-	new Nette\PhpGenerator\Method(NULL);
+	new Nette\PhpGenerator\Method(null);
 }, TypeError::class);
 
 Assert::exception(function () {
@@ -157,7 +157,7 @@ Assert::exception(function () {
 }, Nette\InvalidArgumentException::class);
 
 Assert::exception(function () {
-	new Nette\PhpGenerator\GlobalFunction(NULL);
+	new Nette\PhpGenerator\GlobalFunction(null);
 }, TypeError::class);
 
 Assert::exception(function () {
@@ -170,7 +170,7 @@ Assert::noError(function () {
 });
 
 Assert::exception(function () {
-	new Nette\PhpGenerator\Constant(NULL);
+	new Nette\PhpGenerator\Constant(null);
 }, TypeError::class);
 
 Assert::exception(function () {

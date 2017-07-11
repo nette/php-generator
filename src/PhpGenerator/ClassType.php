@@ -28,20 +28,20 @@ final class ClassType
 	const TYPE_INTERFACE = 'interface';
 	const TYPE_TRAIT = 'trait';
 
-	/** @var PhpNamespace|NULL */
+	/** @var PhpNamespace|null */
 	private $namespace;
 
-	/** @var string|NULL */
+	/** @var string|null */
 	private $name;
 
 	/** @var string  class|interface|trait */
 	private $type = 'class';
 
 	/** @var bool */
-	private $final = FALSE;
+	private $final = false;
 
 	/** @var bool */
-	private $abstract = FALSE;
+	private $abstract = false;
 
 	/** @var string|string[] */
 	private $extends = [];
@@ -77,7 +77,7 @@ final class ClassType
 	}
 
 
-	public function __construct(string $name = NULL, PhpNamespace $namespace = NULL)
+	public function __construct(string $name = null, PhpNamespace $namespace = null)
 	{
 		$this->setName($name);
 		$this->namespace = $namespace;
@@ -103,7 +103,7 @@ final class ClassType
 		foreach ($this->properties as $property) {
 			$properties[] = Helpers::formatDocComment((string) $property->getComment())
 				. ($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName()
-				. ($property->getValue() === NULL ? '' : ' = ' . Helpers::dump($property->getValue()))
+				. ($property->getValue() === null ? '' : ' = ' . Helpers::dump($property->getValue()))
 				. ';';
 		}
 
@@ -130,7 +130,7 @@ final class ClassType
 
 
 	/**
-	 * @return PhpNamespace|NULL
+	 * @return PhpNamespace|null
 	 */
 	public function getNamespace()
 	{
@@ -139,12 +139,12 @@ final class ClassType
 
 
 	/**
-	 * @param  string|NULL
+	 * @param  string|null
 	 * @return static
 	 */
 	public function setName($name): self
 	{
-		if ($name !== NULL && !Helpers::isIdentifier($name)) {
+		if ($name !== null && !Helpers::isIdentifier($name)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid class name.");
 		}
 		$this->name = $name;
@@ -153,7 +153,7 @@ final class ClassType
 
 
 	/**
-	 * @return string|NULL
+	 * @return string|null
 	 */
 	public function getName()
 	{
@@ -166,7 +166,7 @@ final class ClassType
 	 */
 	public function setType(string $type): self
 	{
-		if (!in_array($type, ['class', 'interface', 'trait'], TRUE)) {
+		if (!in_array($type, ['class', 'interface', 'trait'], true)) {
 			throw new Nette\InvalidArgumentException('Argument must be class|interface|trait.');
 		}
 		$this->type = $type;
@@ -183,7 +183,7 @@ final class ClassType
 	/**
 	 * @return static
 	 */
-	public function setFinal(bool $state = TRUE): self
+	public function setFinal(bool $state = true): self
 	{
 		$this->final = $state;
 		return $this;
@@ -199,7 +199,7 @@ final class ClassType
 	/**
 	 * @return static
 	 */
-	public function setAbstract(bool $state = TRUE): self
+	public function setAbstract(bool $state = true): self
 	{
 		$this->abstract = $state;
 		return $this;
@@ -413,7 +413,7 @@ final class ClassType
 	/**
 	 * @param  string  without $
 	 */
-	public function addProperty(string $name, $value = NULL): Property
+	public function addProperty(string $name, $value = null): Property
 	{
 		return $this->properties[$name] = (new Property($name))->setValue($value);
 	}
@@ -458,7 +458,7 @@ final class ClassType
 	{
 		$method = (new Method($name))->setNamespace($this->namespace);
 		if ($this->type === 'interface') {
-			$method->setBody(NULL);
+			$method->setBody(null);
 		} else {
 			$method->setVisibility('public');
 		}
@@ -469,7 +469,7 @@ final class ClassType
 	private function validate(array $names)
 	{
 		foreach ($names as $name) {
-			if (!Helpers::isNamespaceIdentifier($name, TRUE)) {
+			if (!Helpers::isNamespaceIdentifier($name, true)) {
 				throw new Nette\InvalidArgumentException("Value '$name' is not valid class name.");
 			}
 		}

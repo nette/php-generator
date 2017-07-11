@@ -16,7 +16,7 @@ require __DIR__ . '/../bootstrap.php';
 /** */
 class ClassA
 {
-	function func1(A $a, ?B $b, ?C $c = NULL, D $d = NULL, E $e, ?int $i = 1, ?array $arr = [])
+	function func1(A $a, ?B $b, ?C $c = null, D $d = null, E $e, ?int $i = 1, ?array $arr = [])
 	{
 	}
 
