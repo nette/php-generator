@@ -4,9 +4,7 @@
  */
 interface Interface1
 {
-
 	function func1();
-
 }
 
 interface Interface2
@@ -15,7 +13,6 @@ interface Interface2
 
 abstract class Class1 implements Interface1
 {
-
 	/**
 	 * @return Class1
 	 */
@@ -25,7 +22,6 @@ abstract class Class1 implements Interface1
 
 
 	abstract protected function func2();
-
 }
 
 class Class2 extends Class1 implements Interface2
@@ -56,12 +52,12 @@ class Class2 extends Class1 implements Interface2
 	final public function func2()
 	{
 	}
-
 }
 
 class Class3
 {
 	public $prop1;
+
 
 }
 

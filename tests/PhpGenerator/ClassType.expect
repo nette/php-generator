@@ -42,5 +42,4 @@ abstract final class Example extends ParentClass implements IExample, IOne
 
 
 	abstract public function show($item, array &$res = null);
-
 }

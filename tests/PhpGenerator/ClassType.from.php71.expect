@@ -1,6 +1,5 @@
 class ClassA
 {
-
 	public function func1(A $a, ?B $b, C $c = null, D $d = null, E $e, ?int $i = 1, ?array $arr = [])
 	{
 	}
@@ -14,7 +13,6 @@ class ClassA
 	public function func3(): void
 	{
 	}
-
 }
 
 class ClassB

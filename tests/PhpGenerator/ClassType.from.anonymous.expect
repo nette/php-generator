@@ -12,12 +12,9 @@
 	private function b()
 	{
 	}
-
 }
 extends Class1 {
-
 	public function a()
 	{
 	}
-
 }

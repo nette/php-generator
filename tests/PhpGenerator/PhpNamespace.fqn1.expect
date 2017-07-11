@@ -3,7 +3,6 @@ class Example extends \ParentClass implements One, \Two
 	use Three;
 	use \Four;
 
-
 	public function one(): One
 	{
 	}
@@ -12,5 +11,4 @@ class Example extends \ParentClass implements One, \Two
 	public function two(One $one, \Two $two): \Two
 	{
 	}
-
 }

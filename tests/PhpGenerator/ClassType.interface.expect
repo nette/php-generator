@@ -3,7 +3,5 @@
  */
 interface IExample extends IOne, ITwo
 {
-
 	function getForm();
-
 }

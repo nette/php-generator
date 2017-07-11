@@ -122,8 +122,8 @@ final class ClassType
 			. Strings::indent(
 				($this->traits ? implode("\n", $traits) . "\n\n" : '')
 				. ($this->consts ? implode("\n", $consts) . "\n\n" : '')
-				. ($this->properties ? implode("\n\n", $properties) . "\n\n" : '')
-				. ($this->methods ? "\n" . implode("\n\n\n", $this->methods) . "\n\n" : ''), 1)
+				. ($this->properties ? implode("\n\n", $properties) . "\n\n\n" : '')
+				. ($this->methods ? implode("\n\n\n", $this->methods) . "\n" : ''), 1)
 			. '}'
 		) . ($this->name ? "\n" : '');
 	}
