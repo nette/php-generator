@@ -19,7 +19,7 @@ require __DIR__ . '/../bootstrap.php';
  */
 interface Interface1
 {
-	function func1();
+	public function func1();
 }
 
 interface Interface2
@@ -29,7 +29,7 @@ interface Interface2
 abstract class Class1 implements Interface1
 {
 	/** @return Class1 */
-	function func1()
+	public function func1()
 	{
 	}
 
@@ -62,7 +62,7 @@ class Class2 extends Class1 implements Interface2
 	}
 
 
-	final function func2()
+	final public function func2()
 	{
 	}
 }

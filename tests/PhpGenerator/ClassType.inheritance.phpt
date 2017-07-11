@@ -14,7 +14,7 @@ class A
 	private $c;
 
 
-	function foo()
+	public function foo()
 	{
 	}
 }
@@ -27,7 +27,7 @@ class B extends A
 	private $f;
 
 
-	function bar()
+	public function bar()
 	{
 		return 3;
 	}

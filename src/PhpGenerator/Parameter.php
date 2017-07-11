@@ -18,6 +18,9 @@ class Parameter
 	use Nette\SmartObject;
 	use Traits\NameAware;
 
+	/** @var mixed */
+	public $defaultValue;
+
 	/** @var bool */
 	private $reference = false;
 
@@ -29,9 +32,6 @@ class Parameter
 
 	/** @var bool */
 	private $hasDefaultValue = false;
-
-	/** @var mixed */
-	public $defaultValue;
 
 
 	/**

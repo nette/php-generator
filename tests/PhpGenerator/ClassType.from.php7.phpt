@@ -14,7 +14,7 @@ require __DIR__ . '/../bootstrap.php';
 
 abstract class Class1
 {
-	function func1()
+	public function func1()
 	{
 	}
 }
@@ -25,7 +25,7 @@ $res[] = ClassType::from(new class {
 	private $b;
 
 
-	function a()
+	public function a()
 	{
 	}
 
@@ -36,7 +36,7 @@ $res[] = ClassType::from(new class {
 });
 
 $res[] = ClassType::from(new class extends Class1 {
-	function a()
+	public function a()
 	{
 	}
 });
