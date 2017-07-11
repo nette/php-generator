@@ -33,7 +33,7 @@ class PhpNamespace
 	private $name;
 
 	/** @var bool */
-	private $bracketedSyntax = FALSE;
+	private $bracketedSyntax = false;
 
 	/** @var string[] */
 	private $uses = [];
@@ -43,9 +43,9 @@ class PhpNamespace
 
 
 	/**
-	 * @param  string|NULL
+	 * @param  string|null
 	 */
-	public function __construct($name = NULL)
+	public function __construct($name = null)
 	{
 		if ($name && !Helpers::isNamespaceIdentifier($name)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid name.");
@@ -63,11 +63,11 @@ class PhpNamespace
 
 
 	/**
-	 * @return string|NULL
+	 * @return string|null
 	 */
 	public function getName()
 	{
-		return $this->name ?: NULL;
+		return $this->name ?: null;
 	}
 
 
@@ -76,7 +76,7 @@ class PhpNamespace
 	 * @return static
 	 * @internal
 	 */
-	public function setBracketedSyntax($state = TRUE)
+	public function setBracketedSyntax($state = true)
 	{
 		$this->bracketedSyntax = (bool) $state;
 		return $this;
@@ -99,15 +99,15 @@ class PhpNamespace
 	 * @throws InvalidStateException
 	 * @return static
 	 */
-	public function addUse($name, $alias = NULL, &$aliasOut = NULL)
+	public function addUse($name, $alias = null, &$aliasOut = null)
 	{
 		$name = ltrim($name, '\\');
-		if ($alias === NULL && $this->name === Helpers::extractNamespace($name)) {
+		if ($alias === null && $this->name === Helpers::extractNamespace($name)) {
 			$alias = Helpers::extractShortName($name);
 		}
-		if ($alias === NULL) {
+		if ($alias === null) {
 			$path = explode('\\', $name);
-			$counter = NULL;
+			$counter = null;
 			do {
 				if (empty($path)) {
 					$counter++;
@@ -148,7 +148,7 @@ class PhpNamespace
 			return $name;
 		}
 		$name = ltrim($name, '\\');
-		$res = NULL;
+		$res = null;
 		$lower = strtolower($name);
 		foreach ($this->uses as $alias => $for) {
 			if (Strings::startsWith($lower . '\\', strtolower($for) . '\\')) {

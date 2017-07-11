@@ -62,10 +62,10 @@ class Factory
 		$method->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
 		$method->setStatic($from->isStatic());
 		$isInterface = $from->getDeclaringClass()->isInterface();
-		$method->setVisibility($from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : ($isInterface ? NULL : 'public')));
+		$method->setVisibility($from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : ($isInterface ? null : 'public')));
 		$method->setFinal($from->isFinal());
 		$method->setAbstract($from->isAbstract() && !$isInterface);
-		$method->setBody($from->isAbstract() ? FALSE : '');
+		$method->setBody($from->isAbstract() ? false : '');
 		$method->setReturnReference($from->returnsReference());
 		$method->setVariadic($from->isVariadic());
 		$method->setComment(Helpers::unformatDocComment($from->getDocComment()));
@@ -105,13 +105,13 @@ class Factory
 		$param = new Parameter($from->getName());
 		$param->setReference($from->isPassedByReference());
 		if (PHP_VERSION_ID >= 70000) {
-			$param->setTypeHint($from->hasType() ? (string) $from->getType() : NULL);
+			$param->setTypeHint($from->hasType() ? (string) $from->getType() : null);
 			$param->setNullable($from->hasType() && $from->getType()->allowsNull());
 		} elseif ($from->isArray() || $from->isCallable()) {
 			$param->setTypeHint($from->isArray() ? 'array' : 'callable');
 		} else {
 			try {
-				$param->setTypeHint($from->getClass() ? $from->getClass()->getName() : NULL);
+				$param->setTypeHint($from->getClass() ? $from->getClass()->getName() : null);
 			} catch (\ReflectionException $e) {
 				if (preg_match('#Class (.+) does not exist#', $e->getMessage(), $m)) {
 					$param->setTypeHint($m[1]);
@@ -121,11 +121,11 @@ class Factory
 			}
 		}
 		if ($from->isDefaultValueAvailable()) {
-			$param->setOptional(TRUE);
+			$param->setOptional(true);
 			$param->setDefaultValue($from->isDefaultValueConstant()
 				? new PhpLiteral($from->getDefaultValueConstantName())
 				: $from->getDefaultValue());
-			$param->setNullable($param->isNullable() && $param->getDefaultValue() !== NULL);
+			$param->setNullable($param->isNullable() && $param->getDefaultValue() !== null);
 		}
 		return $param;
 	}
@@ -138,7 +138,7 @@ class Factory
 	{
 		$prop = new Property($from->getName());
 		$defaults = $from->getDeclaringClass()->getDefaultProperties();
-		$prop->setValue(isset($defaults[$prop->getName()]) ? $defaults[$prop->getName()] : NULL);
+		$prop->setValue(isset($defaults[$prop->getName()]) ? $defaults[$prop->getName()] : null);
 		$prop->setStatic($from->isStatic());
 		$prop->setVisibility($from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : 'public'));
 		$prop->setComment(Helpers::unformatDocComment($from->getDocComment()));

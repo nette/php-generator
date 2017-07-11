@@ -39,17 +39,17 @@ class Helpers
 
 		} elseif (is_float($var)) {
 			if (is_finite($var)) {
-				$var = var_export($var, TRUE);
-				return strpos($var, '.') === FALSE ? $var . '.0' : $var; // workaround for PHP < 7.0.2
+				$var = var_export($var, true);
+				return strpos($var, '.') === false ? $var . '.0' : $var; // workaround for PHP < 7.0.2
 			}
-			return str_replace('.0', '', var_export($var, TRUE)); // workaround for PHP 7.0.2
+			return str_replace('.0', '', var_export($var, true)); // workaround for PHP 7.0.2
 
 		} elseif (is_bool($var)) {
 			return $var ? 'TRUE' : 'FALSE';
 
 		} elseif (is_string($var) && (preg_match('#[^\x09\x20-\x7E\xA0-\x{10FFFF}]#u', $var) || preg_last_error())) {
 			static $table;
-			if ($table === NULL) {
+			if ($table === null) {
 				foreach (array_merge(range("\x00", "\x1F"), range("\x7F", "\xFF")) as $ch) {
 					$table[$ch] = '\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
 				}
@@ -69,8 +69,8 @@ class Helpers
 			$space = str_repeat("\t", $level);
 
 			static $marker;
-			if ($marker === NULL) {
-				$marker = uniqid("\x00", TRUE);
+			if ($marker === null) {
+				$marker = uniqid("\x00", true);
 			}
 			if (empty($var)) {
 				$out = '';
@@ -81,7 +81,7 @@ class Helpers
 			} else {
 				$out = '';
 				$outAlt = "\n$space";
-				$var[$marker] = TRUE;
+				$var[$marker] = true;
 				$counter = 0;
 				foreach ($var as $k => &$v) {
 					if ($k !== $marker) {
@@ -93,7 +93,7 @@ class Helpers
 				}
 				unset($var[$marker]);
 			}
-			return '[' . (strpos($out, "\n") === FALSE && strlen($out) < self::WRAP_LENGTH ? $out : $outAlt) . ']';
+			return '[' . (strpos($out, "\n") === false && strlen($out) < self::WRAP_LENGTH ? $out : $outAlt) . ']';
 
 		} elseif ($var instanceof \Serializable) {
 			$var = serialize($var);
@@ -107,7 +107,7 @@ class Helpers
 			if (PHP_VERSION_ID >= 70000 && (new \ReflectionObject($var))->isAnonymous()) {
 				throw new Nette\InvalidArgumentException('Cannot dump anonymous class.');
 
-			} elseif (in_array($class, ['DateTime', 'DateTimeImmutable'], TRUE)) {
+			} elseif (in_array($class, ['DateTime', 'DateTimeImmutable'], true)) {
 				return self::formatArgs("new $class(?, new DateTimeZone(?))", [$var->format('Y-m-d H:i:s.u'), $var->getTimeZone()->getName()]);
 			}
 
@@ -115,7 +115,7 @@ class Helpers
 			$space = str_repeat("\t", $level);
 
 			static $list = [];
-			if ($level > self::MAX_DEPTH || in_array($var, $list, TRUE)) {
+			if ($level > self::MAX_DEPTH || in_array($var, $list, true)) {
 				throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
 
 			} else {
@@ -123,7 +123,7 @@ class Helpers
 				$list[] = $var;
 				if (method_exists($var, '__sleep')) {
 					foreach ($var->__sleep() as $v) {
-						$props[$v] = $props["\x00*\x00$v"] = $props["\x00$class\x00$v"] = TRUE;
+						$props[$v] = $props["\x00*\x00$v"] = $props["\x00$class\x00$v"] = true;
 					}
 				}
 				foreach ($arr as $k => &$v) {
@@ -142,7 +142,7 @@ class Helpers
 			throw new Nette\InvalidArgumentException('Cannot dump resource.');
 
 		} else {
-			return var_export($var, TRUE);
+			return var_export($var, true);
 		}
 	}
 
@@ -214,7 +214,7 @@ class Helpers
 	{
 		if (($s = trim($content)) === '') {
 			return '';
-		} elseif (strpos($content, "\n") === FALSE) {
+		} elseif (strpos($content, "\n") === false) {
 			return "/** $s */\n";
 		} else {
 			return str_replace("\n", "\n * ", "/**\n$s") . "\n */\n";
@@ -244,7 +244,7 @@ class Helpers
 	/**
 	 * @return bool
 	 */
-	public static function isNamespaceIdentifier($value, $allowLeadingSlash = FALSE)
+	public static function isNamespaceIdentifier($value, $allowLeadingSlash = false)
 	{
 		$re = '#^' . ($allowLeadingSlash ? '\\\\?' : '') . Helpers::PHP_IDENT . '(\\\\' . Helpers::PHP_IDENT . ')*\z#';
 		return is_string($value) && preg_match($re, $value);
@@ -278,6 +278,6 @@ class Helpers
 	 */
 	public static function extractShortName($name)
 	{
-		return ($pos = strrpos($name, '\\')) === FALSE ? $name : substr($name, $pos + 1);
+		return ($pos = strrpos($name, '\\')) === false ? $name : substr($name, $pos + 1);
 	}
 }

@@ -20,8 +20,8 @@ Assert::same([], $class->getExtends());
 Assert::same([], $class->getTraits());
 
 $class
-	->setAbstract(TRUE)
-	->setFinal(TRUE)
+	->setAbstract(true)
+	->setFinal(true)
 	->setExtends('ParentClass')
 	->addImplement('IExample')
 	->addImplement('IOne')
@@ -30,9 +30,9 @@ $class
 	->addComment("Description of class.\nThis is example\n")
 	->addComment('@property-read Nette\Forms\Form $form')
 	->setConsts(['ROLE' => 'admin'])
-	->addConst('ACTIVE', FALSE);
+	->addConst('ACTIVE', false);
 
-Assert::same(['ROLE' => 'admin', 'ACTIVE' => FALSE], $class->getConsts());
+Assert::same(['ROLE' => 'admin', 'ACTIVE' => false], $class->getConsts());
 
 Assert::true($class->isFinal());
 Assert::true($class->isAbstract());
@@ -52,8 +52,8 @@ $class->addProperty('handle')
 $class->addProperty('order')
 	->setValue(new PhpLiteral('RecursiveIteratorIterator::SELF_FIRST'));
 
-$p = $class->addProperty('sections', ['first' => TRUE])
-	->setStatic(TRUE);
+$p = $class->addProperty('sections', ['first' => true])
+	->setStatic(true);
 
 Assert::same($p, $class->getProperty('sections'));
 Assert::true($p->isStatic());
@@ -62,7 +62,7 @@ Assert::null($p->getVisibility());
 $m = $class->addMethod('getHandle')
 	->addComment('Returns file handle.')
 	->addComment('@return resource')
-	->setFinal(TRUE)
+	->setFinal(true)
 	->setBody('return $this->?;', ['handle']);
 
 Assert::same($m, $class->getMethod('getHandle'));
@@ -74,9 +74,9 @@ Assert::same('public', $m->getVisibility());
 Assert::same('return $this->handle;', $m->getBody());
 
 $m = $class->addMethod('getSections')
-	->setStatic(TRUE)
+	->setStatic(true)
 	->setVisibility('protected')
-	->setReturnReference(TRUE)
+	->setReturnReference(true)
 	->addBody('$mode = ?;', [123])
 	->addBody('return self::$sections;');
 $m->addParameter('mode', new PhpLiteral('self::ORDER'));
@@ -89,12 +89,12 @@ Assert::null($m->getReturnType());
 Assert::same('protected', $m->getVisibility());
 
 $method = $class->addMethod('show')
-	->setAbstract(TRUE);
+	->setAbstract(true);
 
 $method->addParameter('item');
 
-$method->addParameter('res', NULL)
-		->setReference(TRUE)
+$method->addParameter('res', null)
+		->setReference(true)
 		->setTypeHint('array');
 
 Assert::matchFile(__DIR__ . '/ClassType.expect', (string) $class);

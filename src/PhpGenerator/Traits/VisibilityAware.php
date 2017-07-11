@@ -15,17 +15,17 @@ use Nette;
  */
 trait VisibilityAware
 {
-	/** @var string|NULL  public|protected|private */
+	/** @var string|null  public|protected|private */
 	private $visibility;
 
 
 	/**
-	 * @param  string|NULL  public|protected|private
+	 * @param  string|null  public|protected|private
 	 * @return static
 	 */
 	public function setVisibility($val)
 	{
-		if (!in_array($val, ['public', 'protected', 'private', NULL], TRUE)) {
+		if (!in_array($val, ['public', 'protected', 'private', null], true)) {
 			throw new Nette\InvalidArgumentException('Argument must be public|protected|private.');
 		}
 		$this->visibility = $val;
@@ -34,7 +34,7 @@ trait VisibilityAware
 
 
 	/**
-	 * @return string|NULL
+	 * @return string|null
 	 */
 	public function getVisibility()
 	{

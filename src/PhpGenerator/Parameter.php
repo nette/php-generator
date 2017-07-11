@@ -19,16 +19,16 @@ class Parameter
 	use Traits\NameAware;
 
 	/** @var bool */
-	private $reference = FALSE;
+	private $reference = false;
 
-	/** @var string|NULL */
+	/** @var string|null */
 	private $typeHint;
 
 	/** @var bool */
-	private $nullable = FALSE;
+	private $nullable = false;
 
 	/** @var bool */
-	private $hasDefaultValue = FALSE;
+	private $hasDefaultValue = false;
 
 	/** @var mixed */
 	public $defaultValue;
@@ -49,7 +49,7 @@ class Parameter
 	 * @param  bool
 	 * @return static
 	 */
-	public function setReference($state = TRUE)
+	public function setReference($state = true)
 	{
 		$this->reference = (bool) $state;
 		return $this;
@@ -66,18 +66,18 @@ class Parameter
 
 
 	/**
-	 * @param  string|NULL
+	 * @param  string|null
 	 * @return static
 	 */
 	public function setTypeHint($hint)
 	{
-		$this->typeHint = $hint ? (string) $hint : NULL;
+		$this->typeHint = $hint ? (string) $hint : null;
 		return $this;
 	}
 
 
 	/**
-	 * @return string|NULL
+	 * @return string|null
 	 */
 	public function getTypeHint()
 	{
@@ -89,7 +89,7 @@ class Parameter
 	 * @param  bool
 	 * @return static
 	 */
-	public function setOptional($state = TRUE)
+	public function setOptional($state = true)
 	{
 		$this->hasDefaultValue = (bool) $state;
 		return $this;
@@ -110,7 +110,7 @@ class Parameter
 	 * @param  bool
 	 * @return static
 	 */
-	public function setNullable($state = TRUE)
+	public function setNullable($state = true)
 	{
 		$this->nullable = (bool) $state;
 		return $this;

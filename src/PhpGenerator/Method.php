@@ -13,7 +13,7 @@ use Nette;
 /**
  * Class method.
  *
- * @property string|FALSE $body
+ * @property string|false $body
  */
 class Method
 {
@@ -24,13 +24,13 @@ class Method
 	use Traits\CommentAware;
 
 	/** @var bool */
-	private $static = FALSE;
+	private $static = false;
 
 	/** @var bool */
-	private $final = FALSE;
+	private $final = false;
 
 	/** @var bool */
-	private $abstract = FALSE;
+	private $abstract = false;
 
 
 	/**
@@ -53,7 +53,7 @@ class Method
 	 */
 	public function __construct($name)
 	{
-		if ($name === NULL) {
+		if ($name === null) {
 			throw new Nette\DeprecatedException('For closures use Nette\PhpGenerator\Closure instead of Nette\PhpGenerator\Method.');
 		} elseif (!Helpers::isIdentifier($name)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid name.");
@@ -77,25 +77,25 @@ class Method
 			. $this->name
 			. $this->parametersToString()
 			. $this->returnTypeToString()
-			. ($this->abstract || $this->body === FALSE
+			. ($this->abstract || $this->body === false
 				? ';'
 				: "\n{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}');
 	}
 
 
 	/**
-	 * @param  string|FALSE
+	 * @param  string|false
 	 * @return static
 	 */
-	public function setBody($code, array $args = NULL)
+	public function setBody($code, array $args = null)
 	{
-		$this->body = $args === NULL ? $code : Helpers::formatArgs($code, $args);
+		$this->body = $args === null ? $code : Helpers::formatArgs($code, $args);
 		return $this;
 	}
 
 
 	/**
-	 * @return string|FALSE
+	 * @return string|false
 	 */
 	public function getBody()
 	{
@@ -107,7 +107,7 @@ class Method
 	 * @param  bool
 	 * @return static
 	 */
-	public function setStatic($state = TRUE)
+	public function setStatic($state = true)
 	{
 		$this->static = (bool) $state;
 		return $this;
@@ -127,7 +127,7 @@ class Method
 	 * @param  bool
 	 * @return static
 	 */
-	public function setFinal($state = TRUE)
+	public function setFinal($state = true)
 	{
 		$this->final = (bool) $state;
 		return $this;
@@ -147,7 +147,7 @@ class Method
 	 * @param  bool
 	 * @return static
 	 */
-	public function setAbstract($state = TRUE)
+	public function setAbstract($state = true)
 	{
 		$this->abstract = (bool) $state;
 		return $this;
