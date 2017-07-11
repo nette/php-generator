@@ -20,6 +20,6 @@ Assert::match(
 '/**
  * global
  */
-function func(stdClass $a, $b = NULL)
+function func(stdClass $a, $b = null)
 {
 }', (string) $function);

@@ -45,8 +45,8 @@ final class Helpers
 			}
 			return str_replace('.0', '', var_export($var, true)); // workaround for PHP 7.0.2
 
-		} elseif (is_bool($var)) {
-			return $var ? 'TRUE' : 'FALSE';
+		} elseif ($var === null) {
+			return 'null';
 
 		} elseif (is_string($var) && (preg_match('#[^\x09\x20-\x7E\xA0-\x{10FFFF}]#u', $var) || preg_last_error())) {
 			static $table;

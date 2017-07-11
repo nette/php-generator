@@ -47,5 +47,5 @@ Assert::exception(function () {
 $closure = function (stdClass $a, $b = null) {};
 $function = Closure::from($closure);
 Assert::match(
-'function (stdClass $a, $b = NULL) {
+'function (stdClass $a, $b = null) {
 }', (string) $function);
