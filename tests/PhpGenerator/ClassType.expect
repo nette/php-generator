@@ -12,7 +12,7 @@ abstract final class Example extends ParentClass implements IExample, IOne
 	}
 
 	const ROLE = 'admin';
-	const ACTIVE = FALSE;
+	const ACTIVE = false;
 	/** Commented */
 	private const FORCE_ARRAY = Nette\Utils\Json::FORCE_ARRAY;
 
@@ -21,7 +21,7 @@ abstract final class Example extends ParentClass implements IExample, IOne
 
 	public $order = RecursiveIteratorIterator::SELF_FIRST;
 
-	public static $sections = ['first' => TRUE];
+	public static $sections = ['first' => true];
 
 
 	/**
@@ -41,6 +41,6 @@ abstract final class Example extends ParentClass implements IExample, IOne
 	}
 
 
-	abstract public function show($item, array &$res = NULL);
+	abstract public function show($item, array &$res = null);
 
 }
