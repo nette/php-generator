@@ -6,11 +6,9 @@ class A implements A, C
 {
 	use \Bar\D;
 
-
 	public function test(C $a, self $b, parent $c, array $d, callable $e)
 	{
 	}
-
 }
 
 interface B
