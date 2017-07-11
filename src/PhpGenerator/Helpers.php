@@ -256,5 +256,4 @@ final class Helpers
 	{
 		return ($pos = strrpos($name, '\\')) === FALSE ? $name : substr($name, $pos + 1);
 	}
-
 }

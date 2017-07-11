@@ -62,10 +62,12 @@ class Test2 extends Test
 	private $c = 4;
 	public $d = 5;
 
+
 	function __sleep()
 	{
 		return ['c', 'b', 'a'];
 	}
+
 
 	function __wakeup()
 	{
@@ -80,10 +82,12 @@ class Test3 implements Serializable
 {
 	private $a;
 
+
 	function serialize()
 	{
 		return '';
 	}
+
 
 	function unserialize($s)
 	{
@@ -100,7 +104,8 @@ Assert::exception(function () {
 
 
 class TestDateTime extends DateTime
-{}
+{
+}
 
 Assert::same(
 	"new DateTime('2016-06-22 20:52:43.123400', new DateTimeZone('Europe/Prague'))",
@@ -116,5 +121,6 @@ Assert::match(
 );
 
 Assert::exception(function () {
-	Helpers::dump(new class {});
+	Helpers::dump(new class {
+	});
 }, Nette\InvalidArgumentException::class, 'Cannot dump anonymous class.');

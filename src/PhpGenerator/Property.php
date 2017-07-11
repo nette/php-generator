@@ -61,5 +61,4 @@ final class Property
 	{
 		return $this->static;
 	}
-
 }

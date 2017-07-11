@@ -132,5 +132,4 @@ final class Parameter
 	{
 		return $this->hasDefaultValue;
 	}
-
 }

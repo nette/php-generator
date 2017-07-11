@@ -149,5 +149,4 @@ final class Method
 	{
 		return $this->abstract;
 	}
-
 }

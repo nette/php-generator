@@ -43,5 +43,4 @@ final class GlobalFunction
 			. $this->returnTypeToString()
 			. "\n{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}';
 	}
-
 }

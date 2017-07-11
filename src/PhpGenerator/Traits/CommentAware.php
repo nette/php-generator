@@ -47,5 +47,4 @@ trait CommentAware
 		$this->comment .= $this->comment ? "\n$val" : $val;
 		return $this;
 	}
-
 }

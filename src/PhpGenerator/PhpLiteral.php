@@ -29,5 +29,4 @@ final class PhpLiteral
 	{
 		return $this->value;
 	}
-
 }

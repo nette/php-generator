@@ -474,5 +474,4 @@ final class ClassType
 			}
 		}
 	}
-
 }

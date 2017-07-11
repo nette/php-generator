@@ -20,7 +20,8 @@ Assert::type(Nette\PhpGenerator\ClassType::class, $res);
 Assert::same('stdClass', $res->getName());
 
 
-$res = $factory->fromClassReflection(new ReflectionClass(new class {}));
+$res = $factory->fromClassReflection(new ReflectionClass(new class {
+}));
 Assert::type(Nette\PhpGenerator\ClassType::class, $res);
 Assert::null($res->getName());
 

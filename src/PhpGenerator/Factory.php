@@ -117,5 +117,4 @@ final class Factory
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		return $prop;
 	}
-
 }

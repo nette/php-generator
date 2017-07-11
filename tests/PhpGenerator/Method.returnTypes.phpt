@@ -8,7 +8,9 @@ declare(strict_types=1);
 
 namespace A
 {
-	class Foo {}
+	class Foo
+	{
+	}
 }
 
 namespace
@@ -24,6 +26,7 @@ namespace
 	interface A
 	{
 		function testClass(): \A\Foo;
+
 		function testScalar(): string;
 	}
 
