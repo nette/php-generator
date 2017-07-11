@@ -16,17 +16,17 @@ require __DIR__ . '/../bootstrap.php';
 /** */
 class ClassA
 {
-	function func1(A $a, ?B $b, ?C $c = null, D $d = null, E $e, ?int $i = 1, ?array $arr = [])
+	public function func1(A $a, ?B $b, ?C $c = null, D $d = null, E $e, ?int $i = 1, ?array $arr = [])
 	{
 	}
 
 
-	function func2(): ?stdClass
+	public function func2(): ?stdClass
 	{
 	}
 
 
-	function func3(): void
+	public function func3(): void
 	{
 	}
 }

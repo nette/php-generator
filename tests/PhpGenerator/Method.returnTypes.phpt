@@ -25,15 +25,15 @@ namespace
 
 	interface A
 	{
-		function testClass(): \A\Foo;
+		public function testClass(): \A\Foo;
 
-		function testScalar(): string;
+		public function testScalar(): string;
 	}
 
-	$method = Method::from(A::class .'::testClass');
+	$method = Method::from(A::class . '::testClass');
 	Assert::same('A\Foo', $method->getReturnType());
 
-	$method = Method::from(A::class .'::testScalar');
+	$method = Method::from(A::class . '::testScalar');
 	Assert::same('string', $method->getReturnType());
 
 	// generating methods with return type declarations

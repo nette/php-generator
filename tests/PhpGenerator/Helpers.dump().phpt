@@ -35,7 +35,7 @@ Assert::same("'He\\llo'", Helpers::dump('He\llo'));
 Assert::same('\'He\ll\\\\\o \\\'wor\\\\\\\'ld\\\\\'', Helpers::dump('He\ll\\\o \'wor\\\'ld\\'));
 Assert::same('[]', Helpers::dump([]));
 
-Assert::same("[\$s]", Helpers::dump([new PhpLiteral('$s')]));
+Assert::same('[$s]', Helpers::dump([new PhpLiteral('$s')]));
 
 Assert::same('[1, 2, 3]', Helpers::dump([1, 2, 3]));
 Assert::same("['a', 7 => 'b', 'c', '9a' => 'd', 'e']", Helpers::dump(['a', 7 => 'b', 'c', '9a' => 'd', 9 => 'e']));
@@ -59,17 +59,17 @@ Assert::equal(new Test, eval('return ' . Helpers::dump(new Test) . ';'));
 
 class Test2 extends Test
 {
-	private $c = 4;
 	public $d = 5;
+	private $c = 4;
 
 
-	function __sleep()
+	public function __sleep()
 	{
 		return ['c', 'b', 'a'];
 	}
 
 
-	function __wakeup()
+	public function __wakeup()
 	{
 	}
 }
@@ -83,13 +83,13 @@ class Test3 implements Serializable
 	private $a;
 
 
-	function serialize()
+	public function serialize()
 	{
 		return '';
 	}
 
 
-	function unserialize($s)
+	public function unserialize($s)
 	{
 	}
 }

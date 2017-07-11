@@ -12,7 +12,7 @@ require __DIR__ . '/../bootstrap.php';
 /** global */
 function func(stdClass $a, $b = null)
 {
-};
+}
 
 
 $function = GlobalFunction::from('func');

@@ -20,6 +20,6 @@ Assert::same("/**\n * A\n * B\n * C\n */\n", Helpers::formatDocComment("A\nB\nC\
 
 Assert::same('', Helpers::unformatDocComment(''));
 Assert::same('', Helpers::unformatDocComment("/**  */\n\r\t"));
-Assert::same('@var string', Helpers::unformatDocComment(" /** @var string */ "));
+Assert::same('@var string', Helpers::unformatDocComment(' /** @var string */ '));
 Assert::same('@var string', Helpers::unformatDocComment("/**\n * @var string\n */"));
 Assert::same("A\nB\nC", Helpers::unformatDocComment("/**\n * A\n * B\n * C\n */\n"));
