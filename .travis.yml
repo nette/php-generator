@@ -10,6 +10,8 @@ matrix:
           env: dependencies="--prefer-lowest --prefer-stable"
         - php: 7.0
           env: coverage=on
+        - php: 7.1
+          env: codingStandard=on
 
     allow_failures:
         - php: 7.0
@@ -17,25 +19,34 @@ matrix:
 
 script:
     - vendor/bin/tester tests -s $coverageArgs
-    - php temp/code-checker/src/code-checker.php --short-arrays --strict-types
+    - >
+      if [ "$codingStandard" ]; then
+      php temp/code-checker/src/code-checker.php --short-arrays --strict-types
+      && php temp/coding-standard/ecs check src tests --config temp/coding-standard/coding-standard-php70.neon;
+      fi
 
 after_failure:
     # Print *.actual content
     - for i in $(find tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
 
 before_script:
-    # Install Nette Tester & Code Checker
+    # Install Nette Tester
     - travis_retry composer update --no-interaction --prefer-dist $dependencies
-    - travis_retry composer create-project nette/code-checker temp/code-checker ~2.8 --no-interaction
-    - if [ "$coverage" == "on" ]; then coverageArgs="-p phpdbg --coverage ./coverage.xml --coverage-src ./src"; fi
+    # Install Code Checkers
+    - >
+      if [ "$codingStandard" ]; then
+      travis_retry composer create-project nette/code-checker temp/code-checker ~2 --no-interaction;
+      travis_retry composer create-project nette/coding-standard temp/coding-standard --no-interaction;
+      fi
+    - if [ "$coverage" ]; then coverageArgs="-p phpdbg --coverage ./coverage.xml --coverage-src ./src"; fi
 
 after_script:
     # Report Code Coverage
     - >
-      if [ "$coverage" == "on" ]; then
+      if [ "$coverage" ]; then
       wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
-      && php coveralls.phar --verbose --config tests/.coveralls.yml
-      || true; fi
+      && php coveralls.phar --verbose --config tests/.coveralls.yml;
+      fi
 
 sudo: false
 
