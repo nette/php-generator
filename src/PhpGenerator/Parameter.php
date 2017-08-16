@@ -80,6 +80,7 @@ final class Parameter
 	 */
 	public function setOptional(bool $state = true): self
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use setDefaultValue()', E_USER_DEPRECATED);
 		$this->hasDefaultValue = $state;
 		return $this;
 	}
