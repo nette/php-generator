@@ -53,15 +53,6 @@ final class PhpNamespace
 	}
 
 
-	/** @deprecated */
-	public function setName($name)
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use constructor.', E_USER_DEPRECATED);
-		$this->__construct($name);
-		return $this;
-	}
-
-
 	public function getName(): string
 	{
 		return $this->name;
@@ -156,8 +147,7 @@ final class PhpNamespace
 	public function addClass(string $name): ClassType
 	{
 		if (isset($this->classes[$name])) {
-			trigger_error(__METHOD__ . "() class $name was already added.", E_USER_DEPRECATED);
-			return $this->classes[$name];
+			throw new Nette\InvalidArgumentException("Class $name was already added.");
 		}
 		$this->addUse($this->name . '\\' . $name);
 		return $this->classes[$name] = new ClassType($name, $this);

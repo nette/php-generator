@@ -43,12 +43,7 @@ final class Method
 	 */
 	public static function from($method): self
 	{
-		if ($method instanceof \ReflectionMethod) {
-			trigger_error(__METHOD__ . '() accepts only method name.', E_USER_DEPRECATED);
-		} else {
-			$method = Nette\Utils\Callback::toReflection($method);
-		}
-		return (new Factory)->fromMethodReflection($method);
+		return (new Factory)->fromMethodReflection(Nette\Utils\Callback::toReflection($method));
 	}
 
 
@@ -85,10 +80,6 @@ final class Method
 	 */
 	public function setBody($code, array $args = null): self
 	{
-		if ($code === false) {
-			$code = null;
-			trigger_error(__METHOD__ . '() use null instead of false', E_USER_DEPRECATED);
-		}
 		$this->body = $args === null ? $code : Helpers::formatArgs($code, $args);
 		return $this;
 	}

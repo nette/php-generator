@@ -68,12 +68,7 @@ final class ClassType
 	 */
 	public static function from($class): self
 	{
-		if ($class instanceof \ReflectionClass) {
-			trigger_error(__METHOD__ . '() accepts only class name or object.', E_USER_DEPRECATED);
-		}
-		return (new Factory)->fromClassReflection(
-			$class instanceof \ReflectionClass ? $class : new \ReflectionClass($class)
-		);
+		return (new Factory)->fromClassReflection(new \ReflectionClass($class));
 	}
 
 
@@ -308,39 +303,6 @@ final class ClassType
 	{
 		$this->validate([$name]);
 		$this->traits[$name] = $resolutions;
-		return $this;
-	}
-
-
-	/**
-	 * @deprecated  use setConstants()
-	 * @return static
-	 */
-	public function setConsts(array $consts): self
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use setConstants()', E_USER_DEPRECATED);
-		return $this->setConstants($consts);
-	}
-
-
-	/**
-	 * @deprecated  use getConstants()
-	 */
-	public function getConsts(): array
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use similar getConstants()', E_USER_DEPRECATED);
-		return array_map(function ($const) { return $const->getValue(); }, $this->consts);
-	}
-
-
-	/**
-	 * @deprecated  use addConstant()
-	 * @return static
-	 */
-	public function addConst(string $name, $value): self
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use similar addConstant()', E_USER_DEPRECATED);
-		$this->addConstant($name, $value);
 		return $this;
 	}
 

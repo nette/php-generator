@@ -87,16 +87,6 @@ final class Parameter
 
 
 	/**
-	 * @deprecated  use hasDefaultValue()
-	 */
-	public function isOptional(): bool
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use hasDefaultValue()', E_USER_DEPRECATED);
-		return $this->hasDefaultValue;
-	}
-
-
-	/**
 	 * @return static
 	 */
 	public function setNullable(bool $state = true): self
