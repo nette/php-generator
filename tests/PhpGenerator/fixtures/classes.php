@@ -71,3 +71,28 @@ class Class4
 {
 	const THE_CONSTANT = 9;
 }
+
+/** */
+class Class5
+{
+	public function func1(\A $a, ?\B $b, ?\C $c = null, \D $d = null, \E $e, ?int $i = 1, ?array $arr = [])
+	{
+	}
+
+
+	public function func2(): ?\stdClass
+	{
+	}
+
+
+	public function func3(): void
+	{
+	}
+}
+
+
+class Class6
+{
+	private const THE_PRIVATE_CONSTANT = 9;
+	public const THE_PUBLIC_CONSTANT = 9;
+}

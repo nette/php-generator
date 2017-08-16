@@ -22,5 +22,7 @@ $obj = new Abc\Class3;
 $obj->prop2 = 1;
 $res[] = (new Factory)->fromClassReflection(new \ReflectionObject($obj));
 $res[] = ClassType::from(Abc\Class4::class);
+$res[] = ClassType::from(Abc\Class5::class);
+$res[] = ClassType::from(Abc\Class6::class);
 
 Assert::matchFile(__DIR__ . '/ClassType.from.expect', implode("\n", $res));
