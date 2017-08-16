@@ -15,7 +15,11 @@ Usage is very easy. Install it using Composer:
 composer require nette/php-generator
 ```
 
-The last stable release requires PHP version 5.6 or newer (is compatible with PHP 7.0 and 7.1). The dev-master version requires PHP 7.0.
+Requirements
+------------
+- v2.6 requires PHP 5.6 or newer (is compatible up to 7.2)
+- v3.0 requires PHP 7.0 or newer (is compatible up to 7.2)
+- v3.1 requires PHP 7.1 or newer (is compatible up to 7.2)
 
 
 Examples
