@@ -10,7 +10,9 @@ require __DIR__ . '/../bootstrap.php';
 class A
 {
 	public $a;
+
 	protected $b;
+
 	private $c;
 
 
@@ -23,7 +25,9 @@ class A
 class B extends A
 {
 	public $d;
+
 	protected $e;
+
 	private $f;
 
 

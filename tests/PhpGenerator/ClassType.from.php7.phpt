@@ -22,6 +22,7 @@ abstract class Class1
 
 $res[] = ClassType::from(new class {
 	public $a;
+
 	private $b;
 
 
