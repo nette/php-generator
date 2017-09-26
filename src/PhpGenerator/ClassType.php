@@ -25,7 +25,9 @@ final class ClassType
 	use Traits\CommentAware;
 
 	const TYPE_CLASS = 'class';
+
 	const TYPE_INTERFACE = 'interface';
+
 	const TYPE_TRAIT = 'trait';
 
 	/** @var PhpNamespace|null */
