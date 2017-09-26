@@ -49,7 +49,9 @@ Assert::same("(object) [\n\t'a' => (object) [\n\t\t'b' => 2,\n\t],\n]", Helpers:
 class Test
 {
 	public $a = 1;
+
 	protected $b = 2;
+
 	private $c = 3;
 }
 
@@ -60,6 +62,7 @@ Assert::equal(new Test, eval('return ' . Helpers::dump(new Test) . ';'));
 class Test2 extends Test
 {
 	public $d = 5;
+
 	private $c = 4;
 
 
