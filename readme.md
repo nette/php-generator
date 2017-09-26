@@ -7,16 +7,28 @@ Nette PHP Generator
 [![Latest Stable Version](https://poser.pugx.org/nette/php-generator/v/stable)](https://github.com/nette/php-generator/releases)
 [![License](https://img.shields.io/badge/license-New%20BSD-blue.svg)](https://github.com/nette/php-generator/blob/master/license.md)
 
+
+Introduction
+------------
+
 Generate PHP code, classes, namespaces etc. with a simple programmatical API.
 
-Usage is very easy. In first, install it using Composer:
+Documentation can be found on the [website](https://doc.nette.org/php-generator).
+
+
+Installation
+------------
+
+The recommended way to install is via Composer:
 
 ```
 composer require nette/php-generator
 ```
 
-Examples
---------
+Usage
+-----
+
+Usage is very easy. Let's start with a straightforward example of generating class:
 
 ```php
 $class = new Nette\PhpGenerator\ClassType('Demo');
