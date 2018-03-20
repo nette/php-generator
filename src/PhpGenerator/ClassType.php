@@ -50,7 +50,7 @@ final class ClassType
 	/** @var string[] */
 	private $implements = [];
 
-	/** @var string[] */
+	/** @var array[] */
 	private $traits = [];
 
 	/** @var Constant[] name => Constant */
@@ -422,7 +422,7 @@ final class ClassType
 	}
 
 
-	private function validate(array $names)
+	private function validate(array $names): void
 	{
 		foreach ($names as $name) {
 			if (!Helpers::isNamespaceIdentifier($name, true)) {
