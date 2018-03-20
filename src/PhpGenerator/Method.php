@@ -89,7 +89,7 @@ final class Method
 			$code = null;
 			trigger_error(__METHOD__ . '() use null instead of false', E_USER_DEPRECATED);
 		}
-		$this->body = $args === null ? $code : Helpers::formatArgs($code, $args);
+		$this->body = $args === null || $code === null ? $code : Helpers::formatArgs($code, $args);
 		return $this;
 	}
 

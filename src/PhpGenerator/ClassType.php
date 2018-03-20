@@ -51,7 +51,7 @@ final class ClassType
 	/** @var string[] */
 	private $implements = [];
 
-	/** @var string[] */
+	/** @var array[] */
 	private $traits = [];
 
 	/** @var Constant[] name => Constant */
