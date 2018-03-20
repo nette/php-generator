@@ -51,7 +51,7 @@ final class Closure
 
 
 	/**
-	 * @param  Parameter[]
+	 * @param  Parameter[]  $uses
 	 * @return static
 	 */
 	public function setUses(array $uses): self

@@ -69,7 +69,7 @@ trait FunctionLike
 
 
 	/**
-	 * @param  Parameter[]
+	 * @param  Parameter[]  $val
 	 * @return static
 	 */
 	public function setParameters(array $val): self
@@ -95,7 +95,7 @@ trait FunctionLike
 
 
 	/**
-	 * @param  string  without $
+	 * @param  string  $name without $
 	 */
 	public function addParameter(string $name, $defaultValue = null): Parameter
 	{
@@ -124,7 +124,7 @@ trait FunctionLike
 
 
 	/**
-	 * @param  string|null
+	 * @param  string|null  $val
 	 * @return static
 	 */
 	public function setReturnType($val): self

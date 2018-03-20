@@ -65,7 +65,7 @@ final class ClassType
 
 
 	/**
-	 * @param  string|object
+	 * @param  string|object  $class
 	 * @return static
 	 */
 	public static function from($class): self
@@ -141,7 +141,7 @@ final class ClassType
 
 
 	/**
-	 * @param  string|null
+	 * @param  string|null  $name
 	 * @return static
 	 */
 	public function setName($name): self
@@ -215,7 +215,7 @@ final class ClassType
 
 
 	/**
-	 * @param  string|string[]
+	 * @param  string|string[]  $names
 	 * @return static
 	 */
 	public function setExtends($names): self
@@ -251,7 +251,7 @@ final class ClassType
 
 
 	/**
-	 * @param  string[]
+	 * @param  string[]  $names
 	 * @return static
 	 */
 	public function setImplements(array $names): self
@@ -283,7 +283,7 @@ final class ClassType
 
 
 	/**
-	 * @param  string[]
+	 * @param  string[]  $names
 	 * @return static
 	 */
 	public function setTraits(array $names): self
@@ -348,7 +348,7 @@ final class ClassType
 
 
 	/**
-	 * @param  Constant[]|mixed[]
+	 * @param  Constant[]|mixed[]  $consts
 	 * @return static
 	 */
 	public function setConstants(array $consts): self
@@ -378,7 +378,7 @@ final class ClassType
 
 
 	/**
-	 * @param  Property[]
+	 * @param  Property[]  $props
 	 * @return static
 	 */
 	public function setProperties(array $props): self
@@ -413,7 +413,7 @@ final class ClassType
 
 
 	/**
-	 * @param  string  without $
+	 * @param  string  $name  without $
 	 */
 	public function addProperty(string $name, $value = null): Property
 	{
@@ -422,7 +422,7 @@ final class ClassType
 
 
 	/**
-	 * @param  Method[]
+	 * @param  Method[]  $methods
 	 * @return static
 	 */
 	public function setMethods(array $methods): self

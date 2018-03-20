@@ -55,7 +55,7 @@ final class Parameter
 
 
 	/**
-	 * @param  string|null
+	 * @param  string|null  $hint
 	 * @return static
 	 */
 	public function setTypeHint($hint): self

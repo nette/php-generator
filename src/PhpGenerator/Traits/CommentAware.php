@@ -20,7 +20,7 @@ trait CommentAware
 
 
 	/**
-	 * @param  string|null
+	 * @param  string|null  $val
 	 * @return static
 	 */
 	public function setComment($val): self

@@ -80,7 +80,7 @@ final class Method
 
 
 	/**
-	 * @param  string|null
+	 * @param  string|null  $code
 	 * @return static
 	 */
 	public function setBody($code, array $args = null): self
