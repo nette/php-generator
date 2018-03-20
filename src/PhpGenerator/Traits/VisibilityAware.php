@@ -22,7 +22,7 @@ trait VisibilityAware
 
 
 	/**
-	 * @param  string|null  public|protected|private
+	 * @param  string|null  $val  public|protected|private
 	 * @return static
 	 */
 	public function setVisibility(?string $val): self
