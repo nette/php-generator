@@ -357,7 +357,7 @@ final class ClassType
 	}
 
 
-	public function getProperty($name): Property
+	public function getProperty(string $name): Property
 	{
 		if (!isset($this->properties[$name])) {
 			throw new Nette\InvalidArgumentException("Property '$name' not found.");
@@ -401,7 +401,7 @@ final class ClassType
 	}
 
 
-	public function getMethod($name): Method
+	public function getMethod(string $name): Method
 	{
 		if (!isset($this->methods[$name])) {
 			throw new Nette\InvalidArgumentException("Method '$name' not found.");

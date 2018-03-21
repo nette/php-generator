@@ -68,7 +68,7 @@ final class Closure
 	}
 
 
-	public function addUse($name): Parameter
+	public function addUse(string $name): Parameter
 	{
 		return $this->uses[] = new Parameter($name);
 	}
