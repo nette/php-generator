@@ -39,6 +39,7 @@ final class Method
 
 
 	/**
+	 * @param  string|array  $method
 	 * @return static
 	 */
 	public static function from($method): self
