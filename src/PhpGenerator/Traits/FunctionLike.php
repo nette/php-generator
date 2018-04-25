@@ -40,8 +40,19 @@ trait FunctionLike
 
 	/** @var PhpNamespace|null */
 	private $namespace;
+	
+	/** @var string */
+	private $implode = ', ';
 
-
+	/**
+	 * @return static
+	 */
+	public function setImplode(string $glue): self
+	{
+		$this->implode = $glue;
+		return $this;
+	}
+	
 	/**
 	 * @return static
 	 */
@@ -193,7 +204,7 @@ trait FunctionLike
 				. '$' . $param->getName()
 				. ($param->hasDefaultValue() && !$variadic ? ' = ' . Helpers::dump($param->getDefaultValue()) : '');
 		}
-		return '(' . implode(', ', $params) . ')';
+		return '(' . implode($this->implode, $params) . ')';
 	}
 
 
