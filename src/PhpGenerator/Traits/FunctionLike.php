@@ -193,7 +193,10 @@ trait FunctionLike
 				. '$' . $param->getName()
 				. ($param->hasDefaultValue() && !$variadic ? ' = ' . Helpers::dump($param->getDefaultValue()) : '');
 		}
-		return '(' . implode(', ', $params) . ')';
+
+		return strlen($tmp = implode(', ', $params)) > Helpers::WRAP_LENGTH && count($params) > 1
+			? "(\n\t" . implode(",\n\t", $params) . "\n)"
+			: "($tmp)";
 	}
 
 
