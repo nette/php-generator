@@ -21,9 +21,11 @@ final class Helpers
 
 	const PHP_IDENT = '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*';
 
-	const MAX_DEPTH = 50;
+	const WRAP_LENGTH = 100;
 
-	const WRAP_LENGTH = 70;
+	const INDENT_LENGTH = 4;
+
+	const MAX_DEPTH = 50;
 
 
 	/**
@@ -83,7 +85,7 @@ final class Helpers
 
 			} else {
 				$out = '';
-				$outAlt = "\n$space";
+				$outWrapped = "\n$space";
 				$var[$marker] = true;
 				$counter = 0;
 				foreach ($var as $k => &$v) {
@@ -91,12 +93,13 @@ final class Helpers
 						$item = ($k === $counter ? '' : self::_dump($k, $level + 1) . ' => ') . self::_dump($v, $level + 1);
 						$counter = is_int($k) ? max($k + 1, $counter) : $counter;
 						$out .= ($out === '' ? '' : ', ') . $item;
-						$outAlt .= "\t$item,\n$space";
+						$outWrapped .= "\t$item,\n$space";
 					}
 				}
 				unset($var[$marker]);
 			}
-			return '[' . (strpos($out, "\n") === false && strlen($out) < self::WRAP_LENGTH ? $out : $outAlt) . ']';
+			$wrap = strpos($out, "\n") !== false || strlen($out) > self::WRAP_LENGTH - $level * self::INDENT_LENGTH;
+			return '[' . ($wrap ? $outWrapped : $out) . ']';
 
 		} elseif ($var instanceof \Serializable) {
 			$var = serialize($var);

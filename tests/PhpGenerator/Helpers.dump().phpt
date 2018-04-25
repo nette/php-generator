@@ -39,7 +39,12 @@ Assert::same('[$s]', Helpers::dump([new PhpLiteral('$s')]));
 
 Assert::same('[1, 2, 3]', Helpers::dump([1, 2, 3]));
 Assert::same("['a', 7 => 'b', 'c', '9a' => 'd', 'e']", Helpers::dump(['a', 7 => 'b', 'c', '9a' => 'd', 9 => 'e']));
-Assert::same("[\n\t[\n\t\t'a',\n\t\t'loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong',\n\t],\n]", Helpers::dump([['a', 'loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong']]));
+Assert::match("[
+	[
+		'a',
+		'loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong',
+	],
+]", Helpers::dump([['a', 'loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong']]));
 Assert::same("['a' => 1, [\"\\r\" => \"\\r\", 2], 3]", Helpers::dump(['a' => 1, ["\r" => "\r", 2], 3]));
 
 Assert::same("(object) [\n\t'a' => 1,\n\t'b' => 2,\n]", Helpers::dump((object) ['a' => 1, 'b' => 2]));
