@@ -75,11 +75,14 @@ class Method
 			. 'function '
 			. ($this->returnReference ? '&' : '')
 			. $this->name
-			. $this->parametersToString()
+			. ($params = $this->parametersToString())
 			. $this->returnTypeToString()
 			. ($this->abstract || $this->body === false
 				? ';'
-				: "\n{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}');
+				: (strpos($params, "\n") === false ? "\n" : ' ')
+					. "{\n"
+					. Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1)
+					. '}');
 	}
 
 
