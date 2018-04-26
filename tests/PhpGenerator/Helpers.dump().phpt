@@ -27,6 +27,7 @@ Assert::same('false', Helpers::dump(false));
 
 Assert::same("''", Helpers::dump(''));
 Assert::same("'Hello'", Helpers::dump('Hello'));
+Assert::same('"\t\n\t"', Helpers::dump("\t\n\t"));
 Assert::same("'I\xc3\xb1t\xc3\xabrn\xc3\xa2ti\xc3\xb4n\xc3\xa0liz\xc3\xa6ti\xc3\xb8n'", Helpers::dump("I\xc3\xb1t\xc3\xabrn\xc3\xa2ti\xc3\xb4n\xc3\xa0liz\xc3\xa6ti\xc3\xb8n")); // Iñtërnâtiônàlizætiøn
 Assert::same('"\rHello \$"', Helpers::dump("\rHello $"));
 Assert::same("'He\\llo'", Helpers::dump('He\llo'));

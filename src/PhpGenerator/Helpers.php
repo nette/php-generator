@@ -285,4 +285,15 @@ class Helpers
 	{
 		return ($pos = strrpos($name, '\\')) === false ? $name : substr($name, $pos + 1);
 	}
+
+
+	/**
+	 * @param  string
+	 * @param  int
+	 * @return string
+	 */
+	public static function tabsToSpaces($s, $count = self::INDENT_LENGTH)
+	{
+		return str_replace("\t", str_repeat(' ', $count), $s);
+	}
 }
