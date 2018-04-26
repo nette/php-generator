@@ -183,11 +183,14 @@ final class Helpers
 				if (!is_array($arg)) {
 					throw new Nette\InvalidArgumentException('Argument must be an array.');
 				}
-				$sep = '';
+				$items = [];
 				foreach ($arg as $tmp) {
-					$res .= $sep . self::dump($tmp);
-					$sep = strlen($res) - strrpos($res, "\n") > self::WRAP_LENGTH ? ",\n\t" : ', ';
+					$items[] = self::dump($tmp);
 				}
+				$res .= strlen($tmp = implode(', ', $items)) > self::WRAP_LENGTH && count($items) > 1
+					? "\n" . Nette\Utils\Strings::indent(implode(",\n", $items), 1) . "\n"
+					: $tmp;
+
 			} else { // $  ->  ::
 				$res .= substr($token, 0, -1) . self::formatMember(array_shift($args));
 			}
