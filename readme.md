@@ -148,6 +148,21 @@ class Demo
 }
 ```
 
+Tabs versus spaces
+------------------
+
+The generated code uses tabs for indentation, which makes it very easy to change it to any number of spaces:
+
+```php
+use Nette\PhpGenerator\Helpers;
+
+$class = new Nette\PhpGenerator\ClassType('Demo');
+// ...
+
+echo Helpers::tabsToSpaces((string) $class); // 4 spaces indentation
+echo Helpers::tabsToSpaces((string) $class, 2); // 2 spaces indentation
+```
+
 Literals
 --------
 

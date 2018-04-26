@@ -29,6 +29,7 @@ Assert::same('false', Helpers::dump(false));
 
 Assert::same("''", Helpers::dump(''));
 Assert::same("'Hello'", Helpers::dump('Hello'));
+Assert::same('"\t\n\t"', Helpers::dump("\t\n\t"));
 Assert::same("'I\u{F1}t\u{EB}rn\u{E2}ti\u{F4}n\u{E0}liz\u{E6}ti\u{F8}n'", Helpers::dump("I\u{F1}t\u{EB}rn\u{E2}ti\u{F4}n\u{E0}liz\u{E6}ti\u{F8}n")); // Iñtërnâtiônàlizætiøn
 Assert::same('"\rHello \$"', Helpers::dump("\rHello $"));
 Assert::same("'He\\llo'", Helpers::dump('He\llo'));
