@@ -1,5 +1,4 @@
-- bug fix? yes/no   <!-- #issue numbers, if any -->
-- new feature? yes/no
+- bug fix / new feature?   <!-- #issue numbers, if any -->
 - BC break? yes/no
 - doc PR: nette/docs#???  <!-- highly welcome, see https://nette.org/en/writing -->
 
