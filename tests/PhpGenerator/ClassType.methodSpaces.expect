@@ -1,0 +1,10 @@
+class A
+{
+	public function foo()
+	{
+	}
+
+	public function bar()
+	{
+	}
+}
