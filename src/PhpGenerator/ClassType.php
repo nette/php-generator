@@ -65,6 +65,7 @@ final class ClassType
 	/** @var int */
 	private $methodSpaces = 2;
 
+
 	/**
 	 * @param  string|object  $class
 	 * @return static
@@ -423,6 +424,7 @@ final class ClassType
 		return $this->methods[$name] = $method;
 	}
 
+
 	/**
 	 * Set the number of spaces used in between method declarations.
 	 *
@@ -432,6 +434,7 @@ final class ClassType
 	{
 		$this->methodSpaces = $spaces;
 	}
+
 
 	private function validate(array $names): void
 	{
