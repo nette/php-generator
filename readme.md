@@ -15,6 +15,8 @@ Generate PHP code, classes, namespaces etc. with a simple programmatical API.
 
 Documentation can be found on the [website](https://doc.nette.org/php-generator).
 
+If you like Nette, **[please make a donation now](https://nette.org/donate)**. Thank you!
+
 
 Installation
 ------------
