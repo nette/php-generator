@@ -27,7 +27,15 @@ final class Factory
 		$class->setType($from->isInterface() ? 'interface' : ($from->isTrait() ? 'trait' : 'class'));
 		$class->setFinal($from->isFinal() && $class->getType() === 'class');
 		$class->setAbstract($from->isAbstract() && $class->getType() === 'class');
-		$class->setImplements($from->getInterfaceNames());
+
+		$ifaces = $from->getInterfaceNames();
+		foreach ($ifaces as $iface) {
+			$ifaces = array_filter($ifaces, function ($item) use ($iface) {
+				return !is_subclass_of($iface, $item);
+			});
+		}
+		$class->setImplements($ifaces);
+
 		$class->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		if ($from->getParentClass()) {
 			$class->setExtends($from->getParentClass()->getName());
