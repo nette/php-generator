@@ -8,7 +8,22 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-class A
+interface I1
+{
+}
+
+
+interface I2
+{
+}
+
+
+interface I3 extends I2
+{
+}
+
+
+class A implements I1
 {
 	public $a;
 
@@ -23,7 +38,7 @@ class A
 }
 
 
-class B extends A
+class B extends A implements I3
 {
 	public $d;
 
