@@ -40,9 +40,10 @@ $method = (new Method('create'))
 	->setBody('return null;');
 $method->addParameter('a')->setTypeHint('string');
 $method->addParameter('b')->setTypeHint('bool');
+$method->addParameter('c')->setDefaultValueConstantName('DateTime::ISO8601')->setTypeHint('string');
 
 Assert::match(
-'function create(string $a, bool $b)
+'function create(string $a, bool $b, string $c = DateTime::ISO8601)
 {
 	return null;
 }
