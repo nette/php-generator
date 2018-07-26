@@ -23,7 +23,7 @@ trait FunctionLike
 	/** @var string */
 	private $body = '';
 
-	/** @var array of name => Parameter */
+	/** @var array|Parameter[] of name => Parameter */
 	private $parameters = [];
 
 	/** @var bool */
@@ -69,7 +69,7 @@ trait FunctionLike
 
 
 	/**
-	 * @param  Parameter[]  $val
+	 * @param  Parameter[] $val
 	 * @return static
 	 */
 	public function setParameters(array $val): self
@@ -95,7 +95,7 @@ trait FunctionLike
 
 
 	/**
-	 * @param  string  $name without $
+	 * @param  string $name without $
 	 */
 	public function addParameter(string $name, $defaultValue = null): Parameter
 	{
@@ -191,7 +191,7 @@ trait FunctionLike
 				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')
 				. '$' . $param->getName()
-				. ($param->hasDefaultValue() && !$variadic ? ' = ' . Helpers::dump($param->getDefaultValue()) : '');
+				. $this->buildDefaultValue($param, $variadic);
 		}
 
 		return strlen($tmp = implode(', ', $params)) > Helpers::WRAP_LENGTH && count($params) > 1
@@ -205,5 +205,17 @@ trait FunctionLike
 		return $this->returnType
 			? ': ' . ($this->returnNullable ? '?' : '') . ($this->namespace ? $this->namespace->unresolveName($this->returnType) : $this->returnType)
 			: '';
+	}
+
+	protected function buildDefaultValue(Parameter $param, bool $variadic): string
+	{
+		if ($param->hasDefaultValue() && !$param->isDefaultValueConstant()) {
+			$defaultValue = !$variadic ? ' = ' . Helpers::dump($param->getDefaultValue()) : '';
+		} elseif ($param->isDefaultValueConstant()) {
+			$defaultValue = ' = ' . $param->getDefaultValueConstantName();
+		} else {
+			$defaultValue = '';
+		}
+		return $defaultValue;
 	}
 }

@@ -37,6 +37,12 @@ final class Parameter
 	/** @var mixed */
 	private $defaultValue;
 
+	/** @var bool */
+	private $isDefaultValueConstant = false;
+
+	/** @var string */
+	private $defaultValueConstantName;
+
 
 	/**
 	 * @return static
@@ -119,4 +125,22 @@ final class Parameter
 	{
 		return $this->hasDefaultValue;
 	}
+
+	public function isDefaultValueConstant(): bool
+	{
+		return $this->isDefaultValueConstant;
+	}
+
+	public function setDefaultValueConstantName(string $constantName): self
+	{
+		$this->defaultValueConstantName = $constantName;
+		$this->isDefaultValueConstant = true;
+		return $this;
+	}
+
+	public function getDefaultValueConstantName(): string
+	{
+		return $this->defaultValueConstantName;
+	}
+
 }

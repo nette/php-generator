@@ -9,7 +9,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 /** global */
-function func(stdClass $a, $b = null)
+function func(stdClass $a, $b = null, string $c = DateTime::ISO8601)
 {
 }
 
@@ -19,6 +19,6 @@ Assert::match(
 '/**
  * global
  */
-function func(stdClass $a, $b = null)
+function func(stdClass $a, $b = null, string $c = DateTime::ISO8601)
 {
 }', (string) $function);
