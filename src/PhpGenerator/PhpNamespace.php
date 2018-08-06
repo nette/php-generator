@@ -106,6 +106,7 @@ final class PhpNamespace
 
 		$aliasOut = $alias;
 		$this->uses[$alias] = $name;
+		asort($this->uses);
 		return $this;
 	}
 
@@ -127,9 +128,9 @@ final class PhpNamespace
 		$name = ltrim($name, '\\');
 		$res = null;
 		$lower = strtolower($name);
-		foreach ($this->uses as $alias => $for) {
-			if (Strings::startsWith($lower . '\\', strtolower($for) . '\\')) {
-				$short = $alias . substr($name, strlen($for));
+		foreach ($this->uses as $alias => $original) {
+			if (Strings::startsWith($lower . '\\', strtolower($original) . '\\')) {
+				$short = $alias . substr($name, strlen($original));
 				if (!isset($res) || strlen($res) > strlen($short)) {
 					$res = $short;
 				}
@@ -178,15 +179,14 @@ final class PhpNamespace
 	public function __toString(): string
 	{
 		$uses = [];
-		asort($this->uses);
-		foreach ($this->uses as $alias => $name) {
-			$useNamespace = Helpers::extractNamespace($name);
+		foreach ($this->uses as $alias => $original) {
+			$useNamespace = Helpers::extractNamespace($original);
 
 			if ($this->name !== $useNamespace) {
-				if ($alias === $name || substr($name, -(strlen($alias) + 1)) === '\\' . $alias) {
-					$uses[] = "use {$name};";
+				if ($alias === $original || substr($original, -(strlen($alias) + 1)) === '\\' . $alias) {
+					$uses[] = "use $original;";
 				} else {
-					$uses[] = "use {$name} as {$alias};";
+					$uses[] = "use $original as $alias;";
 				}
 			}
 		}
@@ -195,12 +195,12 @@ final class PhpNamespace
 			. implode("\n", $this->classes);
 
 		if ($this->bracketedSyntax) {
-			return 'namespace' . ($this->name ? ' ' . $this->name : '') . " {\n\n"
+			return 'namespace' . ($this->name ? " $this->name" : '') . " {\n\n"
 				. Strings::indent($body)
 				. "\n}\n";
 
 		} else {
-			return ($this->name ? "namespace {$this->name};\n\n" : '')
+			return ($this->name ? "namespace $this->name;\n\n" : '')
 				. $body;
 		}
 	}

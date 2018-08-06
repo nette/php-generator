@@ -73,7 +73,7 @@ final class Method
 				? ';'
 				: (strpos($params, "\n") === false ? "\n" : ' ')
 					. "{\n"
-					. Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1)
+					. Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"))
 					. '}');
 	}
 

@@ -82,9 +82,11 @@ final class ClassType
 
 	public function __toString(): string
 	{
+		$resolver = $this->namespace ? [$this->namespace, 'unresolveName'] : function ($s) { return $s; };
+
 		$traits = [];
 		foreach ($this->traits as $trait => $resolutions) {
-			$traits[] = 'use ' . ($this->namespace ? $this->namespace->unresolveName($trait) : $trait)
+			$traits[] = 'use ' . $resolver($trait)
 				. ($resolutions ? " {\n\t" . implode(";\n\t", $resolutions) . ";\n}" : ';');
 		}
 
@@ -103,23 +105,19 @@ final class ClassType
 				. ';';
 		}
 
-		$mapper = function (array $arr) {
-			return $this->namespace ? array_map([$this->namespace, 'unresolveName'], $arr) : $arr;
-		};
-
 		return Strings::normalize(
 			Helpers::formatDocComment($this->comment . "\n")
 			. ($this->abstract ? 'abstract ' : '')
 			. ($this->final ? 'final ' : '')
 			. ($this->name ? "$this->type $this->name " : '')
-			. ($this->extends ? 'extends ' . implode(', ', $mapper((array) $this->extends)) . ' ' : '')
-			. ($this->implements ? 'implements ' . implode(', ', $mapper($this->implements)) . ' ' : '')
+			. ($this->extends ? 'extends ' . implode(', ', array_map($resolver, (array) $this->extends)) . ' ' : '')
+			. ($this->implements ? 'implements ' . implode(', ', array_map($resolver, $this->implements)) . ' ' : '')
 			. ($this->name ? "\n" : '') . "{\n"
 			. Strings::indent(
-				($this->traits ? implode("\n", $traits) . "\n\n" : '')
-				. ($this->consts ? implode("\n", $consts) . "\n\n" : '')
-				. ($this->properties ? implode("\n\n", $properties) . "\n\n\n" : '')
-				. ($this->methods ? implode("\n\n\n", $this->methods) . "\n" : ''), 1)
+				($traits ? implode("\n", $traits) . "\n\n" : '')
+				. ($consts ? implode("\n", $consts) . "\n\n" : '')
+				. ($properties ? implode("\n\n", $properties) . "\n\n\n" : '')
+				. ($this->methods ? implode("\n\n\n", $this->methods) . "\n" : ''))
 			. '}'
 		) . ($this->name ? "\n" : '');
 	}

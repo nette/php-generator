@@ -48,9 +48,9 @@ final class Closure
 		return 'function '
 			. ($this->returnReference ? '&' : '')
 			. $this->parametersToString()
-			. ($this->uses ? " use ($useStr)" : '')
+			. ($uses ? " use ($useStr)" : '')
 			. $this->returnTypeToString()
-			. " {\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"), 1) . '}';
+			. " {\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n")) . '}';
 	}
 
 
