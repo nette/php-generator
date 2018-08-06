@@ -190,31 +190,4 @@ trait FunctionLike
 		$this->namespace = $val;
 		return $this;
 	}
-
-
-	protected function parametersToString(): string
-	{
-		$params = [];
-		foreach ($this->parameters as $param) {
-			$variadic = $this->variadic && $param === end($this->parameters);
-			$hint = $param->getTypeHint();
-			$params[] = ($hint ? ($param->isNullable() ? '?' : '') . ($this->namespace ? $this->namespace->unresolveName($hint) : $hint) . ' ' : '')
-				. ($param->isReference() ? '&' : '')
-				. ($variadic ? '...' : '')
-				. '$' . $param->getName()
-				. ($param->hasDefaultValue() && !$variadic ? ' = ' . Helpers::dump($param->getDefaultValue()) : '');
-		}
-
-		return strlen($tmp = implode(', ', $params)) > Helpers::WRAP_LENGTH && count($params) > 1
-			? "(\n\t" . implode(",\n\t", $params) . "\n)"
-			: "($tmp)";
-	}
-
-
-	protected function returnTypeToString(): string
-	{
-		return $this->returnType
-			? ': ' . ($this->returnNullable ? '?' : '') . ($this->namespace ? $this->namespace->unresolveName($this->returnType) : $this->returnType)
-			: '';
-	}
 }

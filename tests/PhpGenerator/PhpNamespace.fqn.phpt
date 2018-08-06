@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpNamespace;
+use Nette\PhpGenerator\Printer;
 
 require __DIR__ . '/../bootstrap.php';
 
@@ -35,6 +36,9 @@ $method->addParameter('two')
 
 sameFile(__DIR__ . '/expected/PhpNamespace.fqn1.expect', (string) $class);
 
+sameFile(__DIR__ . '/expected/PhpNamespace.fqn1.expect', (new Printer)->printClass($class));
+
+
 
 // global namespace
 $class = new ClassType('Example', new PhpNamespace(''));
@@ -58,3 +62,5 @@ $method->addParameter('two')
 		->setTypeHint('\Two');
 
 sameFile(__DIR__ . '/expected/PhpNamespace.fqn2.expect', (string) $class);
+
+sameFile(__DIR__ . '/expected/PhpNamespace.fqn2.expect', (new Printer)->printClass($class, new PhpNamespace('')));

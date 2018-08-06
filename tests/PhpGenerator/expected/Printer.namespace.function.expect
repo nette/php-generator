@@ -1,0 +1,4 @@
+function func(C $var): \stdClass
+{
+	return 123;
+}

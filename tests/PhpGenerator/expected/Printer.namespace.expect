@@ -1,0 +1,20 @@
+namespace Foo;
+
+use Bar\C;
+
+/**
+ * Description of class.
+ * This is example
+ */
+final class A extends \ParentClass implements \IExample, IOne
+{
+	use ObjectTrait;
+
+	/**
+	 * @return resource
+	 */
+	final public function first(C $var): \stdClass
+	{
+		return $this->handle;
+	}
+}

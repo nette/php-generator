@@ -50,22 +50,7 @@ final class Method
 
 	public function __toString(): string
 	{
-		return Helpers::formatDocComment($this->comment . "\n")
-			. ($this->abstract ? 'abstract ' : '')
-			. ($this->final ? 'final ' : '')
-			. ($this->visibility ? $this->visibility . ' ' : '')
-			. ($this->static ? 'static ' : '')
-			. 'function '
-			. ($this->returnReference ? '&' : '')
-			. $this->name
-			. ($params = $this->parametersToString())
-			. $this->returnTypeToString()
-			. ($this->abstract || $this->body === null
-				? ';'
-				: (strpos($params, "\n") === false ? "\n" : ' ')
-					. "{\n"
-					. Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n"))
-					. '}');
+		return (new Printer)->printMethod($this, $this->namespace);
 	}
 
 

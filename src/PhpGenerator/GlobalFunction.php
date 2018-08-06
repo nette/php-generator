@@ -35,12 +35,6 @@ final class GlobalFunction
 
 	public function __toString(): string
 	{
-		return Helpers::formatDocComment($this->comment . "\n")
-			. 'function '
-			. ($this->returnReference ? '&' : '')
-			. $this->name
-			. $this->parametersToString()
-			. $this->returnTypeToString()
-			. "\n{\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n")) . '}';
+		return (new Printer)->printFunction($this, $this->namespace);
 	}
 }

@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Nette\PhpGenerator;
 
 use Nette;
-use Nette\Utils\Strings;
 
 
 /**
@@ -87,44 +86,7 @@ final class ClassType
 
 	public function __toString(): string
 	{
-		$resolver = $this->namespace ? [$this->namespace, 'unresolveName'] : function ($s) { return $s; };
-
-		$traits = [];
-		foreach ($this->traits as $trait => $resolutions) {
-			$traits[] = 'use ' . $resolver($trait)
-				. ($resolutions ? " {\n\t" . implode(";\n\t", $resolutions) . ";\n}" : ';');
-		}
-
-		$consts = [];
-		foreach ($this->consts as $const) {
-			$consts[] = Helpers::formatDocComment((string) $const->getComment())
-				. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
-				. 'const ' . $const->getName() . ' = ' . Helpers::dump($const->getValue()) . ';';
-		}
-
-		$properties = [];
-		foreach ($this->properties as $property) {
-			$properties[] = Helpers::formatDocComment((string) $property->getComment())
-				. ($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName()
-				. ($property->getValue() === null ? '' : ' = ' . Helpers::dump($property->getValue()))
-				. ';';
-		}
-
-		return Strings::normalize(
-			Helpers::formatDocComment($this->comment . "\n")
-			. ($this->abstract ? 'abstract ' : '')
-			. ($this->final ? 'final ' : '')
-			. ($this->name ? "$this->type $this->name " : '')
-			. ($this->extends ? 'extends ' . implode(', ', array_map($resolver, (array) $this->extends)) . ' ' : '')
-			. ($this->implements ? 'implements ' . implode(', ', array_map($resolver, $this->implements)) . ' ' : '')
-			. ($this->name ? "\n" : '') . "{\n"
-			. Strings::indent(
-				($traits ? implode("\n", $traits) . "\n\n" : '')
-				. ($consts ? implode("\n", $consts) . "\n\n" : '')
-				. ($properties ? implode("\n\n", $properties) . "\n\n\n" : '')
-				. ($this->methods ? implode("\n\n\n", $this->methods) . "\n" : ''))
-			. '}'
-		) . ($this->name ? "\n" : '');
+		return (new Printer)->printClass($this, $this->namespace);
 	}
 
 

@@ -1,0 +1,33 @@
+/**
+ * Description of class.
+ * This is example
+ */
+final class Example extends ParentClass implements IExample
+{
+	use ObjectTrait;
+	use AnotherTrait {
+		sayHello as protected;
+	}
+
+	/** Commented */
+	private const FORCE_ARRAY = Nette\Utils\Json::FORCE_ARRAY;
+
+	/** @var resource  orignal file handle */
+	private $handle;
+
+	public $order = RecursiveIteratorIterator::SELF_FIRST;
+
+
+	/**
+	 * @return resource
+	 */
+	final public function first(stdClass $var): stdClass
+	{
+		return $this->handle;
+	}
+
+
+	public function second()
+	{
+	}
+}
