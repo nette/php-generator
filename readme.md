@@ -27,6 +27,7 @@ The recommended way to install is via Composer:
 composer require nette/php-generator
 ```
 
+- v3.2 requires PHP 7.1 or newer (is compatible up to 7.3)
 - v3.1 requires PHP 7.1 or newer (is compatible up to 7.3)
 - v3.0 requires PHP 7.0 or newer (is compatible up to 7.3)
 - v2.6 requires PHP 5.6 or newer (is compatible up to 7.3)
