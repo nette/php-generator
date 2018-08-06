@@ -390,6 +390,10 @@ $namespace = new Nette\PhpGenerator\PhpNamespace('Foo');
 $class = $namespace->addClass('Task');
 $interface = $namespace->addInterface('Countable');
 $trait = $namespace->addTrait('NameAware');
+
+// or
+$class = new Nette\PhpGenerator\ClassType('Task');
+$namespace->add($class);
 ```
 
 If the class already exists, it will be overwritten.
