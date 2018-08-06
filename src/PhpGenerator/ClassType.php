@@ -314,6 +314,32 @@ final class ClassType
 
 
 	/**
+	 * @param  Method|Property|Constant  $member
+	 * @return static
+	 */
+	public function addMember($member): self
+	{
+		if ($member instanceof Method) {
+			if ($this->type === self::TYPE_INTERFACE) {
+				$member->setBody(null);
+			}
+			$this->methods[$member->getName()] = $member->setNamespace($this->namespace);
+
+		} elseif ($member instanceof Property) {
+			$this->properties[$member->getName()] = $member;
+
+		} elseif ($member instanceof Constant) {
+			$this->consts[$member->getName()] = $member;
+
+		} else {
+			throw new Nette\InvalidArgumentException('Argument must be Method|Property|Constant.');
+		}
+
+		return $this;
+	}
+
+
+	/**
 	 * @param  Constant[]|mixed[]  $consts
 	 * @return static
 	 */
