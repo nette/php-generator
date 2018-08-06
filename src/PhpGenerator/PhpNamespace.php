@@ -145,10 +145,25 @@ final class PhpNamespace
 	}
 
 
+	/**
+	 * @return static
+	 */
+	public function add(ClassType $class): self
+	{
+		$name = $class->getName();
+		if ($name === null) {
+			throw new Nette\InvalidArgumentException('Class does not have a name.');
+		}
+		$this->addUse($this->name . '\\' . $name);
+		$this->classes[$name] = $class;
+		return $this;
+	}
+
+
 	public function addClass(string $name): ClassType
 	{
-		$this->addUse($this->name . '\\' . $name);
-		return $this->classes[$name] = new ClassType($name, $this);
+		$this->add($class = new ClassType($name, $this));
+		return $class;
 	}
 
 
