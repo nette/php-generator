@@ -35,6 +35,7 @@ $class->addMethod('first')
 
 Assert::matchFile(__DIR__ . '/expected/Printer.namespace.expect', $printer->printNamespace($namespace));
 Assert::matchFile(__DIR__ . '/expected/Printer.namespace.class.expect', $printer->printClass($class, $namespace));
+Assert::matchFile(__DIR__ . '/expected/Printer.namespace.class2.expect', $printer->printClass($class));
 Assert::matchFile(__DIR__ . '/expected/Printer.namespace.method.expect', $printer->printMethod($class->getMethod('first')));
 
 
