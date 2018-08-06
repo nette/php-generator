@@ -116,6 +116,8 @@ It results in:
 	}
 ```
 
+If the property, constant, method or parameter already exist, it will be overwritten.
+
 PHP Generator supports all new PHP 7.2 features:
 
 ```php
@@ -356,19 +358,41 @@ function foo($a)
 Namespace
 ---------
 
-Namespaces may include `use` statements in addition to classes, interfaces, or traits. These statements are used when generating code, so use full class names in the definitions and they will be replace with aliases or fully qualified names in the resulting code.
+Classes, traits and interfaces (hereinafter classes) can be grouped into namespaces:
+
+```php
+$namespace = new Nette\PhpGenerator\PhpNamespace('Foo');
+
+$class = $namespace->addClass('Task');
+$interface = $namespace->addInterface('Countable');
+$trait = $namespace->addTrait('NameAware');
+```
+
+If the class already exists, it will be overwritten.
+
+You can define use-statements:
+
+```php
+$namespace->addUse('Http\Request'); // use Http\Request;
+$namespace->addUse('Http\Request', 'HttpReq'); // use Http\Request as HttpReq;
+```
+
+**IMPORTANT NOTE:** when the class is part of the namespace, it is rendered slightly differently: all types (ie. type hints, return types, parent class name,
+implemented interfaces and used traits) are automatically *resolved*. It means that you have to **use full class names** in definitions
+and they will be replaced with aliases (according to the use-statements) or fully qualified names in the resulting code:
 
 ```php
 $namespace = new Nette\PhpGenerator\PhpNamespace('Foo');
 $namespace->addUse('Bar\AliasedClass');
 
 $class = $namespace->addClass('Demo');
-$class->addImplement('Foo\A') // resolves to A
-	->addTrait('Bar\AliasedClass'); // resolves to AliasedClass
+$class->addImplement('Foo\A') // it will resolve to A
+	->addTrait('Bar\AliasedClass'); // it will resolve to AliasedClass
 
 $method = $class->addMethod('method');
+$method->addComment('@return ' . $namespace->unresolveName('Foo\D')); // in comments resolve manually
 $method->addParameter('arg')
-	->setTypeHint('Bar\OtherClass'); // resolves to \Bar\OtherClass
+	->setTypeHint('Bar\OtherClass'); // it will resolve to \Bar\OtherClass
 
 echo $namespace;
 ```
@@ -384,12 +408,49 @@ class Demo implements A
 {
 	use AliasedClass;
 
+	/**
+	 * @return D
+	 */
 	public function method(\Bar\OtherClass $arg)
 	{
 	}
 }
 ```
 
+PHP Files
+---------
+
+PHP files can contains multiple classes, namespaces and comments:
+
+```php
+$file = new Nette\PhpGenerator\PhpFile;
+$file->addComment('This file is auto-generated.');
+
+$namespace = $file->addNamespace('Foo');
+$class = $namespace->addClass('A');
+$class->addMethod('hello');
+
+echo $file;
+```
+
+Result:
+
+```php
+<?php
+
+/**
+ * This file is auto-generated.
+ */
+
+namespace Foo;
+
+class A
+{
+	public function hello()
+	{
+	}
+}
+```
 
 Generate using Reflection
 -------------------------
