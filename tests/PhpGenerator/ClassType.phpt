@@ -20,6 +20,7 @@ Assert::false($class->isFinal());
 Assert::false($class->isAbstract());
 Assert::same([], $class->getExtends());
 Assert::same([], $class->getTraits());
+Assert::same([], $class->getTraitResolutions());
 
 $class
 	->setAbstract(true)
@@ -38,6 +39,7 @@ Assert::true($class->isFinal());
 Assert::true($class->isAbstract());
 Assert::same('ParentClass', $class->getExtends());
 Assert::same(['ObjectTrait', 'AnotherTrait'], $class->getTraits());
+Assert::same(['ObjectTrait' => [], 'AnotherTrait' => ['sayHello as protected']], $class->getTraitResolutions());
 Assert::count(2, $class->getConstants());
 Assert::type(Nette\PhpGenerator\Constant::class, $class->getConstants()['ROLE']);
 

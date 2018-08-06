@@ -63,6 +63,15 @@ final class PhpFile
 	}
 
 
+	/**
+	 * @return PhpNamespace[]
+	 */
+	public function getNamespaces(): array
+	{
+		return $this->namespaces;
+	}
+
+
 	public function __toString(): string
 	{
 		foreach ($this->namespaces as $namespace) {

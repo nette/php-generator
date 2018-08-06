@@ -291,6 +291,15 @@ final class ClassType
 
 
 	/**
+	 * @internal
+	 */
+	public function getTraitResolutions(): array
+	{
+		return $this->traits;
+	}
+
+
+	/**
 	 * @return static
 	 */
 	public function addTrait(string $name, array $resolutions = []): self
