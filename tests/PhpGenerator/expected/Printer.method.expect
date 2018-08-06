@@ -1,0 +1,7 @@
+/**
+ * @return resource
+ */
+final public function first(stdClass $var): stdClass
+{
+	return $this->handle;
+}

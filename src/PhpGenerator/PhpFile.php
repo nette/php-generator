@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Nette\PhpGenerator;
 
 use Nette;
-use Nette\Utils\Strings;
 
 
 /**
@@ -77,10 +76,6 @@ final class PhpFile
 
 	public function __toString(): string
 	{
-		return Strings::normalize(
-			"<?php\n"
-			. ($this->comment ? "\n" . Helpers::formatDocComment($this->comment . "\n") . "\n" : '')
-			. implode("\n\n", $this->namespaces)
-		) . "\n";
+		return (new Printer)->printFile($this);
 	}
 }

@@ -1,0 +1,3 @@
+function (stdClass $var): stdClass {
+	return 123;
+}

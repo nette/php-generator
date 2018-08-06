@@ -37,20 +37,7 @@ final class Closure
 
 	public function __toString(): string
 	{
-		$uses = [];
-		foreach ($this->uses as $param) {
-			$uses[] = ($param->isReference() ? '&' : '') . '$' . $param->getName();
-		}
-		$useStr = strlen($tmp = implode(', ', $uses)) > Helpers::WRAP_LENGTH && count($uses) > 1
-			? "\n\t" . implode(",\n\t", $uses) . "\n"
-			: $tmp;
-
-		return 'function '
-			. ($this->returnReference ? '&' : '')
-			. $this->parametersToString()
-			. ($uses ? " use ($useStr)" : '')
-			. $this->returnTypeToString()
-			. " {\n" . Nette\Utils\Strings::indent(ltrim(rtrim($this->body) . "\n")) . '}';
+		return (new Printer)->printClosure($this);
 	}
 
 

@@ -190,30 +190,6 @@ final class PhpNamespace
 
 	public function __toString(): string
 	{
-		$uses = [];
-		foreach ($this->uses as $alias => $original) {
-			$useNamespace = Helpers::extractNamespace($original);
-
-			if ($this->name !== $useNamespace) {
-				if ($alias === $original || substr($original, -(strlen($alias) + 1)) === '\\' . $alias) {
-					$uses[] = "use $original;";
-				} else {
-					$uses[] = "use $original as $alias;";
-				}
-			}
-		}
-
-		$body = ($uses ? implode("\n", $uses) . "\n\n" : '')
-			. implode("\n", $this->classes);
-
-		if ($this->bracketedSyntax) {
-			return 'namespace' . ($this->name ? " $this->name" : '') . " {\n\n"
-				. Strings::indent($body)
-				. "\n}\n";
-
-		} else {
-			return ($this->name ? "namespace $this->name;\n\n" : '')
-				. $body;
-		}
+		return (new Printer)->printNamespace($this);
 	}
 }
