@@ -34,7 +34,7 @@ $method->addParameter('one')
 $method->addParameter('two')
 		->setTypeHint('\Two');
 
-Assert::matchFile(__DIR__ . '/PhpNamespace.fqn1.expect', (string) $class);
+Assert::matchFile(__DIR__ . '/expected/PhpNamespace.fqn1.expect', (string) $class);
 
 
 // global namespace
@@ -58,4 +58,4 @@ $method->addParameter('one')
 $method->addParameter('two')
 		->setTypeHint('\Two');
 
-Assert::matchFile(__DIR__ . '/PhpNamespace.fqn2.expect', (string) $class);
+Assert::matchFile(__DIR__ . '/expected/PhpNamespace.fqn2.expect', (string) $class);

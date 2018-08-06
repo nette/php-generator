@@ -68,15 +68,15 @@ $traitG = $file->addTrait('Baz\\G');
 Assert::same($file->addNamespace('Baz'), $traitG->getNamespace());
 
 
-Assert::matchFile(__DIR__ . '/PhpFile.regular.expect', (string) $file);
+Assert::matchFile(__DIR__ . '/expected/PhpFile.regular.expect', (string) $file);
 
 $file->addClass('H');
 
 $file->addClass('FooBar\\I');
 
-Assert::matchFile(__DIR__ . '/PhpFile.bracketed.expect', (string) $file);
+Assert::matchFile(__DIR__ . '/expected/PhpFile.bracketed.expect', (string) $file);
 
 $file = new PhpFile;
 $file->addClass('A');
 
-Assert::matchFile(__DIR__ . '/PhpFile.globalNamespace.expect', (string) $file);
+Assert::matchFile(__DIR__ . '/expected/PhpFile.globalNamespace.expect', (string) $file);

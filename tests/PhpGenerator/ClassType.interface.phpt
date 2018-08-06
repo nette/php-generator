@@ -24,4 +24,4 @@ Assert::same(['IOne', 'ITwo'], $interface->getExtends());
 
 $interface->addMethod('getForm');
 
-Assert::matchFile(__DIR__ . '/ClassType.interface.expect', (string) $interface);
+Assert::matchFile(__DIR__ . '/expected/ClassType.interface.expect', (string) $interface);

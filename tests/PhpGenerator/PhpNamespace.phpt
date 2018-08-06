@@ -75,4 +75,4 @@ $method->addParameter('c')->setTypeHint('parent');
 $method->addParameter('d')->setTypeHint('array');
 $method->addParameter('e')->setTypeHint('callable');
 
-Assert::matchFile(__DIR__ . '/PhpNamespace.expect', (string) $namespace);
+Assert::matchFile(__DIR__ . '/expected/PhpNamespace.expect', (string) $namespace);
