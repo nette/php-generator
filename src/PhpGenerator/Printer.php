@@ -20,6 +20,13 @@ class Printer
 {
 	use Nette\SmartObject;
 
+	/** @var string */
+	protected $indentation = "\t";
+
+	/** @var int */
+	protected $linesBetweenMethods = 2;
+
+
 	public function printFunction(GlobalFunction $function, PhpNamespace $namespace = null): string
 	{
 		return Helpers::formatDocComment($function->getComment() . "\n")
@@ -28,7 +35,7 @@ class Printer
 			. $function->getName()
 			. $this->printParameters($function, $namespace)
 			. $this->printReturnType($function, $namespace)
-			. "\n{\n" . Strings::indent(ltrim(rtrim($function->getBody()) . "\n")) . '}';
+			. "\n{\n" . $this->indent(ltrim(rtrim($function->getBody()) . "\n")) . '}';
 	}
 
 
@@ -39,7 +46,7 @@ class Printer
 			$uses[] = ($param->isReference() ? '&' : '') . '$' . $param->getName();
 		}
 		$useStr = strlen($tmp = implode(', ', $uses)) > Helpers::WRAP_LENGTH && count($uses) > 1
-			? "\n\t" . implode(",\n\t", $uses) . "\n"
+			? "\n" . $this->indentation . implode(",\n" . $this->indentation, $uses) . "\n"
 			: $tmp;
 
 		return 'function '
@@ -47,7 +54,7 @@ class Printer
 			. $this->printParameters($closure, null)
 			. ($uses ? " use ($useStr)" : '')
 			. $this->printReturnType($closure, null)
-			. " {\n" . Strings::indent(ltrim(rtrim($closure->getBody()) . "\n")) . '}';
+			. " {\n" . $this->indent(ltrim(rtrim($closure->getBody()) . "\n")) . '}';
 	}
 
 
@@ -67,7 +74,7 @@ class Printer
 				? ';'
 				: (strpos($params, "\n") === false ? "\n" : ' ')
 					. "{\n"
-					. Strings::indent(ltrim(rtrim($method->getBody()) . "\n"))
+					. $this->indent(ltrim(rtrim($method->getBody()) . "\n"))
 					. '}');
 	}
 
@@ -79,7 +86,7 @@ class Printer
 		$traits = [];
 		foreach ($class->getTraitResolutions() as $trait => $resolutions) {
 			$traits[] = 'use ' . $resolver($trait)
-				. ($resolutions ? " {\n\t" . implode(";\n\t", $resolutions) . ";\n}" : ';');
+				. ($resolutions ? " {\n" . $this->indentation . implode(";\n" . $this->indentation, $resolutions) . ";\n}" : ';');
 		}
 
 		$consts = [];
@@ -102,6 +109,8 @@ class Printer
 			$methods[] = $this->printMethod($method, $namespace);
 		}
 
+		$methodSpace = str_repeat("\n", $this->linesBetweenMethods + 1);
+
 		return Strings::normalize(
 			Helpers::formatDocComment($class->getComment() . "\n")
 			. ($class->isAbstract() ? 'abstract ' : '')
@@ -110,11 +119,11 @@ class Printer
 			. ($class->getExtends() ? 'extends ' . implode(', ', array_map($resolver, (array) $class->getExtends())) . ' ' : '')
 			. ($class->getImplements() ? 'implements ' . implode(', ', array_map($resolver, $class->getImplements())) . ' ' : '')
 			. ($class->getName() ? "\n" : '') . "{\n"
-			. Strings::indent(
+			. $this->indent(
 				($traits ? implode("\n", $traits) . "\n\n" : '')
 				. ($consts ? implode("\n", $consts) . "\n\n" : '')
-				. ($properties ? implode("\n\n", $properties) . "\n\n\n" : '')
-				. ($methods ? implode("\n\n\n", $methods) . "\n" : ''))
+				. ($properties ? implode("\n\n", $properties) . $methodSpace : '')
+				. ($methods ? implode($methodSpace, $methods) . "\n" : ''))
 			. '}'
 		) . ($class->getName() ? "\n" : '');
 	}
@@ -147,7 +156,7 @@ class Printer
 
 		if ($namespace->getBracketedSyntax()) {
 			return 'namespace' . ($name ? " $name" : '') . " {\n\n"
-				. Strings::indent($body)
+				. $this->indent($body)
 				. "\n}\n";
 
 		} else {
@@ -172,6 +181,12 @@ class Printer
 	}
 
 
+	protected function indent(string $s): string
+	{
+		return Strings::indent($s, 1, $this->indentation);
+	}
+
+
 	/**
 	 * @param Nette\PhpGenerator\Traits\FunctionLike  $function
 	 */
@@ -190,7 +205,7 @@ class Printer
 		}
 
 		return strlen($tmp = implode(', ', $params)) > Helpers::WRAP_LENGTH && count($params) > 1
-			? "(\n\t" . implode(",\n\t", $params) . "\n)"
+			? "(\n" . $this->indentation . implode(",\n" . $this->indentation, $params) . "\n)"
 			: "($tmp)";
 	}
 
