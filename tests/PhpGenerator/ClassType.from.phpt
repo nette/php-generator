@@ -23,4 +23,4 @@ $obj->prop2 = 1;
 $res[] = (new Factory)->fromClassReflection(new \ReflectionObject($obj));
 $res[] = ClassType::from(Abc\Class4::class);
 
-Assert::matchFile(__DIR__ . '/ClassType.from.expect', implode("\n", $res));
+Assert::matchFile(__DIR__ . '/expected/ClassType.from.expect', implode("\n", $res));

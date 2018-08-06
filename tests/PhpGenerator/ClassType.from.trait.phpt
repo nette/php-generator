@@ -45,4 +45,4 @@ $res[] = ClassType::from('Trait2');
 $res[] = ClassType::from('Class1');
 $res[] = ClassType::from('Class2');
 
-Assert::matchFile(__DIR__ . '/ClassType.from.trait.expect', implode("\n", $res));
+Assert::matchFile(__DIR__ . '/expected/ClassType.from.trait.expect', implode("\n", $res));
