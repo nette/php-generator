@@ -153,6 +153,19 @@ class Demo
 }
 ```
 
+You can also add existing `Method`, `Property` or `Constant` objects to the class:
+
+```php
+$method = new Nette\PhpGenerator\Method('getHandle');
+$property = new Nette\PhpGenerator\Property('handle');
+$const = new Nette\PhpGenerator\Constant('ROLE');
+
+$class = (new Nette\PhpGenerator\ClassType('Demo'))
+	->addMember($method)
+	->addMember($property)
+	->addMember($const);
+```
+
 Tabs versus spaces
 ------------------
 
