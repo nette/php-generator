@@ -55,4 +55,4 @@ class B extends A implements I3
 }
 
 
-Assert::matchFile(__DIR__ . '/ClassType.inheritance.expect', (string) ClassType::from('B'));
+Assert::matchFile(__DIR__ . '/expected/ClassType.inheritance.expect', (string) ClassType::from('B'));

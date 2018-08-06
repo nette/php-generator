@@ -43,4 +43,4 @@ $res[] = ClassType::from(new class extends Class1 {
 	}
 });
 
-Assert::matchFile(__DIR__ . '/ClassType.from.anonymous.expect', implode("\n", $res));
+Assert::matchFile(__DIR__ . '/expected/ClassType.from.anonymous.expect', implode("\n", $res));
