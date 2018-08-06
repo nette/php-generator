@@ -50,7 +50,7 @@ final class Factory
 		$class->setProperties($props);
 		foreach ($from->getMethods() as $method) {
 			if ($method->getDeclaringClass()->getName() === $from->getName()) {
-				$methods[] = $this->fromMethodReflection($method)->setNamespace($class->getNamespace());
+				$methods[] = $this->fromMethodReflection($method);
 			}
 		}
 		$class->setMethods($methods);

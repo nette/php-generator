@@ -289,7 +289,7 @@ final class ClassType
 			if ($this->type === self::TYPE_INTERFACE) {
 				$member->setBody(null);
 			}
-			$this->methods[$member->getName()] = $member->setNamespace($this->namespace);
+			$this->methods[$member->getName()] = $member;
 
 		} elseif ($member instanceof Property) {
 			$this->properties[$member->getName()] = $member;
@@ -411,7 +411,7 @@ final class ClassType
 			if (!$v instanceof Method) {
 				throw new Nette\InvalidArgumentException('Argument must be Nette\PhpGenerator\Method[].');
 			}
-			$this->methods[$v->getName()] = $v->setNamespace($this->namespace);
+			$this->methods[$v->getName()] = $v;
 		}
 		return $this;
 	}
@@ -437,7 +437,7 @@ final class ClassType
 
 	public function addMethod(string $name): Method
 	{
-		$method = (new Method($name))->setNamespace($this->namespace);
+		$method = new Method($name);
 		if ($this->type === self::TYPE_INTERFACE) {
 			$method->setBody(null);
 		} else {
