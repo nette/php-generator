@@ -179,17 +179,19 @@ $class->addMember($methodRecount);
 Tabs versus spaces
 ------------------
 
-The generated code uses tabs for indentation, which makes it very easy to change it to any number of spaces:
+The generated code uses tabs for indentation. If you want to have the output compatible with PSR-2 or PSR-12, use `PsrPrinter`:
 
 ```php
-use Nette\PhpGenerator\Helpers;
+$printer = new Nette\PhpGenerator\PsrPrinter;
 
 $class = new Nette\PhpGenerator\ClassType('Demo');
 // ...
 
-echo Helpers::tabsToSpaces((string) $class); // 4 spaces indentation
-echo Helpers::tabsToSpaces((string) $class, 2); // 2 spaces indentation
+echo $printer->printClass($class); // 4 spaces indentation
 ```
+
+It can be used also for functions, closures, namespaces etc.
+
 
 Literals
 --------
@@ -284,6 +286,9 @@ $function->setBody('return $a + $b;');
 $function->addParameter('a');
 $function->addParameter('b');
 echo $function;
+
+// or use PsrPrinter for output compatible with PSR-2 / PSR-12
+// echo (new Nette\PhpGenerator\PsrPrinter)->printFunction($function);
 ```
 
 Result:
@@ -308,6 +313,9 @@ $closure->addParameter('b');
 $closure->addUse('c')
 	->setReference();
 echo $closure;
+
+// or use PsrPrinter for output compatible with PSR-2 / PSR-12
+// echo (new Nette\PhpGenerator\PsrPrinter)->printClosure($closure);
 ```
 
 Result:
@@ -423,6 +431,9 @@ $method->addParameter('arg')
 	->setTypeHint('Bar\OtherClass'); // it will resolve to \Bar\OtherClass
 
 echo $namespace;
+
+// or use PsrPrinter for output compatible with PSR-2 / PSR-12
+// echo (new Nette\PhpGenerator\PsrPrinter)->printNamespace($namespace);
 ```
 
 Result:
@@ -459,6 +470,9 @@ $class = $namespace->addClass('A');
 $class->addMethod('hello');
 
 echo $file;
+
+// or use PsrPrinter for output compatible with PSR-2 / PSR-12
+// echo (new Nette\PhpGenerator\PsrPrinter)->printFile($file);
 ```
 
 Result:
