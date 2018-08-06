@@ -30,6 +30,7 @@ composer require nette/php-generator
 - v2.6 requires PHP 5.6 or newer (is compatible up to 7.2)
 - v3.0 requires PHP 7.0 or newer (is compatible up to 7.2)
 - v3.1 requires PHP 7.1 or newer (is compatible up to 7.2)
+- v3.2 requires PHP 7.1 or newer (is compatible up to 7.2)
 
 
 Usage
