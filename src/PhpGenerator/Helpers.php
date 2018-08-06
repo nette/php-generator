@@ -188,7 +188,7 @@ final class Helpers
 					$items[] = self::dump($tmp);
 				}
 				$res .= strlen($tmp = implode(', ', $items)) > self::WRAP_LENGTH && count($items) > 1
-					? "\n" . Nette\Utils\Strings::indent(implode(",\n", $items), 1) . "\n"
+					? "\n" . Nette\Utils\Strings::indent(implode(",\n", $items)) . "\n"
 					: $tmp;
 
 			} else { // $  ->  ::
