@@ -62,6 +62,9 @@ final class ClassType
 	/** @var Method[] name => Method */
 	private $methods = [];
 
+	/** @var int */
+	private $methodSpaces = 2;
+
 
 	/**
 	 * @param  string|object  $class
@@ -119,7 +122,7 @@ final class ClassType
 				($this->traits ? implode("\n", $traits) . "\n\n" : '')
 				. ($this->consts ? implode("\n", $consts) . "\n\n" : '')
 				. ($this->properties ? implode("\n\n", $properties) . "\n\n\n" : '')
-				. ($this->methods ? implode("\n\n\n", $this->methods) . "\n" : ''), 1)
+				. ($this->methods ? implode(str_repeat("\n", $this->methodSpaces + 1), $this->methods) . "\n" : ''), 1)
 			. '}'
 		) . ($this->name ? "\n" : '');
 	}
@@ -429,6 +432,17 @@ final class ClassType
 			$method->setVisibility('public');
 		}
 		return $this->methods[$name] = $method;
+	}
+
+
+	/**
+	 * Set the number of spaces used in between method declarations.
+	 *
+	 * @param int $spaces
+	 */
+	public function setMethodSpacing(int $spaces)
+	{
+		$this->methodSpaces = $spaces;
 	}
 
 
