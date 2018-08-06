@@ -12,7 +12,6 @@ namespace Nette\PhpGenerator\Traits;
 use Nette;
 use Nette\PhpGenerator\Helpers;
 use Nette\PhpGenerator\Parameter;
-use Nette\PhpGenerator\PhpNamespace;
 
 
 /**
@@ -37,9 +36,6 @@ trait FunctionLike
 
 	/** @var bool */
 	private $returnNullable = false;
-
-	/** @var PhpNamespace|null */
-	private $namespace;
 
 
 	/**
@@ -183,11 +179,11 @@ trait FunctionLike
 
 
 	/**
-	 * @return static
+	 * @deprecated
 	 */
 	public function setNamespace(PhpNamespace $val = null): self
 	{
-		$this->namespace = $val;
+		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		return $this;
 	}
 }

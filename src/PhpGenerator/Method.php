@@ -59,7 +59,7 @@ final class Method
 
 	public function __toString(): string
 	{
-		return (new Printer)->printMethod($this, $this->namespace);
+		return (new Printer)->printMethod($this);
 	}
 
 

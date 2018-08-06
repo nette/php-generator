@@ -35,6 +35,6 @@ final class GlobalFunction
 
 	public function __toString(): string
 	{
-		return (new Printer)->printFunction($this, $this->namespace);
+		return (new Printer)->printFunction($this);
 	}
 }
