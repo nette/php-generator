@@ -58,6 +58,9 @@ final class PhpFile
 	{
 		if (!isset($this->namespaces[$name])) {
 			$this->namespaces[$name] = new PhpNamespace($name);
+			foreach ($this->namespaces as $namespace) {
+				$namespace->setBracketedSyntax(count($this->namespaces) > 1 && isset($this->namespaces['']));
+			}
 		}
 		return $this->namespaces[$name];
 	}
@@ -74,10 +77,6 @@ final class PhpFile
 
 	public function __toString(): string
 	{
-		foreach ($this->namespaces as $namespace) {
-			$namespace->setBracketedSyntax(count($this->namespaces) > 1 && isset($this->namespaces['']));
-		}
-
 		return Strings::normalize(
 			"<?php\n"
 			. ($this->comment ? "\n" . Helpers::formatDocComment($this->comment . "\n") . "\n" : '')
