@@ -33,6 +33,7 @@ $class->addMethod('first')
 
 sameFile(__DIR__ . '/expected/Printer.namespace.expect', $printer->printNamespace($namespace));
 sameFile(__DIR__ . '/expected/Printer.namespace.class.expect', $printer->printClass($class, $namespace));
+sameFile(__DIR__ . '/expected/Printer.namespace.class2.expect', $printer->printClass($class));
 sameFile(__DIR__ . '/expected/Printer.namespace.method.expect', $printer->printMethod($class->getMethod('first')));
 
 

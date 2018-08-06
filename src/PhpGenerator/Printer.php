@@ -97,6 +97,11 @@ class Printer
 				. ';';
 		}
 
+		$methods = [];
+		foreach ($class->getMethods() as $method) {
+			$methods[] = $this->printMethod($method, $namespace);
+		}
+
 		return Strings::normalize(
 			Helpers::formatDocComment($class->getComment() . "\n")
 			. ($class->isAbstract() ? 'abstract ' : '')
@@ -109,7 +114,7 @@ class Printer
 				($traits ? implode("\n", $traits) . "\n\n" : '')
 				. ($consts ? implode("\n", $consts) . "\n\n" : '')
 				. ($properties ? implode("\n\n", $properties) . "\n\n\n" : '')
-				. ($class->getMethods() ? implode("\n\n\n", $class->getMethods()) . "\n" : ''))
+				. ($methods ? implode("\n\n\n", $methods) . "\n" : ''))
 			. '}'
 		) . ($class->getName() ? "\n" : '');
 	}
@@ -132,8 +137,13 @@ class Printer
 			}
 		}
 
+		$classes = [];
+		foreach ($namespace->getClasses() as $class) {
+			$classes[] = $this->printClass($class, $namespace);
+		}
+
 		$body = ($uses ? implode("\n", $uses) . "\n\n" : '')
-			. implode("\n", $namespace->getClasses());
+			. implode("\n", $classes);
 
 		if ($namespace->getBracketedSyntax()) {
 			return 'namespace' . ($name ? " $name" : '') . " {\n\n"
@@ -149,10 +159,15 @@ class Printer
 
 	public function printFile(PhpFile $file): string
 	{
+		$namespaces = [];
+		foreach ($file->getNamespaces() as $namespace) {
+			$namespaces[] = $this->printNamespace($namespace);
+		}
+
 		return Strings::normalize(
 			"<?php\n"
 			. ($file->getComment() ? "\n" . Helpers::formatDocComment($file->getComment() . "\n") . "\n" : '')
-			. implode("\n\n", $file->getNamespaces())
+			. implode("\n\n", $namespaces)
 		) . "\n";
 	}
 
