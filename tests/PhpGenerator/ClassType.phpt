@@ -93,6 +93,9 @@ Assert::same('protected', $m->getVisibility());
 $method = $class->addMethod('show')
 	->setAbstract(true);
 
+$method->addParameter('foo');
+$method->removeParameter('foo');
+
 $method->addParameter('item');
 
 $method->addParameter('res', null)
