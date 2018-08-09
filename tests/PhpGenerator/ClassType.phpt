@@ -123,3 +123,24 @@ Assert::exception(function () {
 	$class = new ClassType;
 	$class->addMethod('method')->setVisibility('unknown');
 }, Nette\InvalidArgumentException::class, 'Argument must be public|protected|private.');
+
+
+// remove members
+$class = new ClassType('Example');
+$class->addConstant('a', 1);
+$class->addConstant('b', 1);
+$class->removeConstant('b')->removeConstant('c');
+
+Assert::same(['a'], array_keys($class->getConstants()));
+
+$class->addProperty('a');
+$class->addProperty('b');
+$class->removeProperty('b')->removeProperty('c');
+
+Assert::same(['a'], array_keys($class->getProperties()));
+
+$class->addMethod('a');
+$class->addMethod('b');
+$class->removeMethod('b')->removeMethod('c');
+
+Assert::same(['a'], array_keys($class->getMethods()));
