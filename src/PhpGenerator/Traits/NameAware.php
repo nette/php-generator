@@ -34,4 +34,19 @@ trait NameAware
 	{
 		return $this->name;
 	}
+
+
+	/**
+	 * Returns clone with a different name.
+	 * @return static
+	 */
+	public function cloneWithName(string $name): self
+	{
+		if (!Nette\PhpGenerator\Helpers::isIdentifier($name)) {
+			throw new Nette\InvalidArgumentException("Value '$name' is not valid name.");
+		}
+		$dolly = clone $this;
+		$dolly->name = $name;
+		return $dolly;
+	}
 }

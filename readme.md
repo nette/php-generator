@@ -168,6 +168,14 @@ $class = (new Nette\PhpGenerator\ClassType('Demo'))
 	->addMember($const);
 ```
 
+You can clone existing methods, properties and constants with a different name using `cloneWithName()`:
+
+```php
+$methodCount = $class->getMethod('count');
+$methodRecount = $methodCount->cloneWithName('recount');
+$class->addMember($methodRecount);
+```
+
 Tabs versus spaces
 ------------------
 
