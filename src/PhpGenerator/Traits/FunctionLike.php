@@ -108,6 +108,17 @@ trait FunctionLike
 
 
 	/**
+	 * @param  string  $name without $
+	 * @return static
+	 */
+	public function removeParameter(string $name): self
+	{
+		unset($this->parameters[$name]);
+		return $this;
+	}
+
+
+	/**
 	 * @return static
 	 */
 	public function setVariadic(bool $state = true): self
