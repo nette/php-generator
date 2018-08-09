@@ -147,9 +147,6 @@ final class PhpNamespace
 
 	public function addClass(string $name): ClassType
 	{
-		if (isset($this->classes[$name])) {
-			throw new Nette\InvalidArgumentException("Class $name was already added.");
-		}
 		$this->addUse($this->name . '\\' . $name);
 		return $this->classes[$name] = new ClassType($name, $this);
 	}
