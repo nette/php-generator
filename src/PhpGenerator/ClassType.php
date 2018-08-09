@@ -41,7 +41,7 @@ final class ClassType
 	private $name;
 
 	/** @var string  class|interface|trait */
-	private $type = 'class';
+	private $type = self::TYPE_CLASS;
 
 	/** @var bool */
 	private $final = false;
@@ -158,7 +158,7 @@ final class ClassType
 	 */
 	public function setType(string $type): self
 	{
-		if (!in_array($type, ['class', 'interface', 'trait'], true)) {
+		if (!in_array($type, [self::TYPE_CLASS, self::TYPE_INTERFACE, self::TYPE_TRAIT], true)) {
 			throw new Nette\InvalidArgumentException('Argument must be class|interface|trait.');
 		}
 		$this->type = $type;
@@ -425,10 +425,10 @@ final class ClassType
 	public function addMethod(string $name): Method
 	{
 		$method = (new Method($name))->setNamespace($this->namespace);
-		if ($this->type === 'interface') {
+		if ($this->type === self::TYPE_INTERFACE) {
 			$method->setBody(null);
 		} else {
-			$method->setVisibility('public');
+			$method->setVisibility(self::VISIBILITY_PUBLIC);
 		}
 		return $this->methods[$name] = $method;
 	}
