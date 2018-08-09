@@ -29,6 +29,11 @@ final class ClassType
 		TYPE_INTERFACE = 'interface',
 		TYPE_TRAIT = 'trait';
 
+	public const
+		VISIBILITY_PUBLIC = 'public',
+		VISIBILITY_PROTECTED = 'protected',
+		VISIBILITY_PRIVATE = 'private';
+
 	/** @var PhpNamespace|null */
 	private $namespace;
 
