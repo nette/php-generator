@@ -24,9 +24,9 @@ final class Factory
 		$class = $from->isAnonymous()
 			? new ClassType
 			: new ClassType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
-		$class->setType($from->isInterface() ? 'interface' : ($from->isTrait() ? 'trait' : 'class'));
-		$class->setFinal($from->isFinal() && $class->getType() === 'class');
-		$class->setAbstract($from->isAbstract() && $class->getType() === 'class');
+		$class->setType($from->isInterface() ? $class::TYPE_INTERFACE : ($from->isTrait() ? $class::TYPE_TRAIT : $class::TYPE_CLASS));
+		$class->setFinal($from->isFinal() && $class->getType() === $class::TYPE_CLASS);
+		$class->setAbstract($from->isAbstract() && $class->getType() === $class::TYPE_CLASS);
 
 		$ifaces = $from->getInterfaceNames();
 		foreach ($ifaces as $iface) {
@@ -65,7 +65,10 @@ final class Factory
 		$method->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
 		$method->setStatic($from->isStatic());
 		$isInterface = $from->getDeclaringClass()->isInterface();
-		$method->setVisibility($from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : ($isInterface ? null : 'public')));
+		$method->setVisibility($from->isPrivate()
+			? ClassType::VISIBILITY_PRIVATE
+			: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ($isInterface ? null : ClassType::VISIBILITY_PUBLIC))
+		);
 		$method->setFinal($from->isFinal());
 		$method->setAbstract($from->isAbstract() && !$isInterface);
 		$method->setBody($from->isAbstract() ? null : '');
@@ -121,7 +124,10 @@ final class Factory
 		$prop = new Property($from->getName());
 		$prop->setValue($from->getDeclaringClass()->getDefaultProperties()[$prop->getName()] ?? null);
 		$prop->setStatic($from->isStatic());
-		$prop->setVisibility($from->isPrivate() ? 'private' : ($from->isProtected() ? 'protected' : 'public'));
+		$prop->setVisibility($from->isPrivate()
+			? ClassType::VISIBILITY_PRIVATE
+			: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
+		);
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		return $prop;
 	}
