@@ -370,6 +370,16 @@ final class ClassType
 
 
 	/**
+	 * @return static
+	 */
+	public function removeConstant(string $name): self
+	{
+		unset($this->consts[$name]);
+		return $this;
+	}
+
+
+	/**
 	 * @param  Property[]  $props
 	 * @return static
 	 */
@@ -410,6 +420,17 @@ final class ClassType
 	public function addProperty(string $name, $value = null): Property
 	{
 		return $this->properties[$name] = (new Property($name))->setValue($value);
+	}
+
+
+	/**
+	 * @param  string  $name without $
+	 * @return static
+	 */
+	public function removeProperty(string $name): self
+	{
+		unset($this->properties[$name]);
+		return $this;
 	}
 
 
@@ -457,6 +478,16 @@ final class ClassType
 			$method->setVisibility(self::VISIBILITY_PUBLIC);
 		}
 		return $this->methods[$name] = $method;
+	}
+
+
+	/**
+	 * @return static
+	 */
+	public function removeMethod(string $name): self
+	{
+		unset($this->methods[$name]);
+		return $this;
 	}
 
 

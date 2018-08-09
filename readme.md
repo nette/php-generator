@@ -119,6 +119,8 @@ It results in:
 
 If the property, constant, method or parameter already exist, it will be overwritten.
 
+Members can be removed using `removeProperty()`, `removeConstant()`, `removeMethod()` or `removeParameter()`.
+
 PHP Generator supports all new PHP 7.3 features:
 
 ```php
