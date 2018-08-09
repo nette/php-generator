@@ -128,6 +128,10 @@ final class ClassType
 	}
 
 
+	/**
+	 * Deprecated: an object can be in multiple namespaces.
+	 * @deprecated
+	 */
 	public function getNamespace(): ?PhpNamespace
 	{
 		return $this->namespace;
