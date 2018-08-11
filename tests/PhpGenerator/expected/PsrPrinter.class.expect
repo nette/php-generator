@@ -2,7 +2,7 @@
  * Description of class.
  * This is example
  */
-abstract final class Example extends ParentClass implements IExample
+abstract class Example extends ParentClass implements IExample
 {
     use ObjectTrait;
     use AnotherTrait {

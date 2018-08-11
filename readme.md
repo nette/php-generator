@@ -43,7 +43,6 @@ $class = new Nette\PhpGenerator\ClassType('Demo');
 
 $class
 	->setAbstract()
-	->setFinal()
 	->setExtends('ParentClass')
 	->addImplement('Countable')
 	->addTrait('Nette\SmartObject')
@@ -63,7 +62,7 @@ It will render this result:
  *
  * @property-read Nette\Forms\Form $form
  */
-abstract final class Demo extends ParentClass implements Countable
+abstract class Demo extends ParentClass implements Countable
 {
 	use Nette\SmartObject;
 }

@@ -16,7 +16,6 @@ $printer = new Printer;
 
 $class = (new ClassType('Example'))
 	->setAbstract(true)
-	->setFinal(true)
 	->setExtends('ParentClass')
 	->addImplement('IExample')
 	->setTraits(['ObjectTrait'])

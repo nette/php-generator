@@ -143,6 +143,9 @@ final class ClassType
 	 */
 	public function setFinal(bool $state = true): self
 	{
+		if ($state && $this->isAbstract()) {
+			throw new Nette\InvalidStateException('Class cannot be final and abstract.');
+		}
 		$this->final = $state;
 		return $this;
 	}
@@ -159,6 +162,9 @@ final class ClassType
 	 */
 	public function setAbstract(bool $state = true): self
 	{
+		if ($state && $this->isFinal()) {
+			throw new Nette\InvalidStateException('Class cannot be final and abstract.');
+		}
 		$this->abstract = $state;
 		return $this;
 	}

@@ -17,7 +17,6 @@ $namespace->addUse('Bar\C');
 
 $class = $namespace->addClass('A')
 	->setAbstract(true)
-	->setFinal(true)
 	->setExtends('ParentClass')
 	->addImplement('IExample')
 	->addImplement('Foo\IOne')

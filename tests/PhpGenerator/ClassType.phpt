@@ -24,7 +24,6 @@ Assert::same([], $class->getTraitResolutions());
 
 $class
 	->setAbstract(true)
-	->setFinal(true)
 	->setExtends('ParentClass')
 	->addImplement('IExample')
 	->addImplement('IOne')
@@ -35,7 +34,7 @@ $class
 	->setConstants(['ROLE' => 'admin'])
 	->addConstant('ACTIVE', false);
 
-Assert::true($class->isFinal());
+Assert::false($class->isFinal());
 Assert::true($class->isAbstract());
 Assert::same('ParentClass', $class->getExtends());
 Assert::same(['ObjectTrait', 'AnotherTrait'], $class->getTraits());
@@ -147,3 +146,14 @@ $class->addMethod('b');
 $class->removeMethod('b')->removeMethod('c');
 
 Assert::same(['a'], array_keys($class->getMethods()));
+
+// class cannot be final and abstract
+Assert::exception(function () {
+	$class = new ClassType;
+	$class->setFinal(true)->setAbstract(true);
+}, Nette\InvalidStateException::class, 'Class cannot be final and abstract.');
+
+Assert::exception(function () {
+	$class = new ClassType;
+	$class->setAbstract(true)->setFinal(true);
+}, Nette\InvalidStateException::class, 'Class cannot be final and abstract.');

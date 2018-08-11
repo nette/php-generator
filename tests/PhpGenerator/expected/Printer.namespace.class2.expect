@@ -2,7 +2,7 @@
  * Description of class.
  * This is example
  */
-abstract final class A extends ParentClass implements IExample, Foo\IOne
+abstract class A extends ParentClass implements IExample, Foo\IOne
 {
 	use Foo\ObjectTrait;
 
