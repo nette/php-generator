@@ -57,14 +57,11 @@ class Class2 extends Class1 implements Interface2
 class Class3
 {
 	public $prop1;
-
-
 }
 
 class Class4
 {
 	const THE_CONSTANT = 9;
-
 }
 
 class Class5
@@ -88,5 +85,4 @@ class Class6
 {
 	const THE_PRIVATE_CONSTANT = 9;
 	const THE_PUBLIC_CONSTANT = 9;
-
 }

@@ -43,7 +43,8 @@ same(
 'function variadic()
 {
 	return 42;
-}', (string) $method);
+}
+', (string) $method);
 
 
 // variadic method with one parameter
@@ -56,7 +57,8 @@ same(
 'function variadic(...$foo)
 {
 	return 42;
-}', (string) $method);
+}
+', (string) $method);
 
 
 // variadic method with multiple parameters
@@ -71,7 +73,8 @@ same(
 'function variadic($foo, $bar, ...$baz)
 {
 	return 42;
-}', (string) $method);
+}
+', (string) $method);
 
 
 // method with typehinted variadic param
@@ -84,7 +87,8 @@ same(
 'function variadic(array ...$foo)
 {
 	return 42;
-}', (string) $method);
+}
+', (string) $method);
 
 
 // method with typrhinted by-value variadic param
@@ -97,4 +101,5 @@ same(
 'function variadic(array &...$foo)
 {
 	return 42;
-}', (string) $method);
+}
+', (string) $method);

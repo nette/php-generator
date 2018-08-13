@@ -35,7 +35,7 @@ class Printer
 			. $function->getName()
 			. $this->printParameters($function, $namespace)
 			. $this->printReturnType($function, $namespace)
-			. "\n{\n" . $this->indent(ltrim(rtrim($function->getBody()) . "\n")) . '}';
+			. "\n{\n" . $this->indent(ltrim(rtrim($function->getBody()) . "\n")) . "}\n";
 	}
 
 
@@ -71,11 +71,11 @@ class Printer
 			. ($params = $this->printParameters($method, $namespace))
 			. $this->printReturnType($method, $namespace)
 			. ($method->isAbstract() || $method->getBody() === null
-				? ';'
+				? ";\n"
 				: (strpos($params, "\n") === false ? "\n" : ' ')
 					. "{\n"
 					. $this->indent(ltrim(rtrim($method->getBody()) . "\n"))
-					. '}');
+					. "}\n");
 	}
 
 
@@ -86,14 +86,14 @@ class Printer
 		$traits = [];
 		foreach ($class->getTraitResolutions() as $trait => $resolutions) {
 			$traits[] = 'use ' . $resolver($trait)
-				. ($resolutions ? " {\n" . $this->indentation . implode(";\n" . $this->indentation, $resolutions) . ";\n}" : ';');
+				. ($resolutions ? " {\n" . $this->indentation . implode(";\n" . $this->indentation, $resolutions) . ";\n}\n" : ";\n");
 		}
 
 		$consts = [];
 		foreach ($class->getConstants() as $const) {
 			$consts[] = Helpers::formatDocComment((string) $const->getComment())
 				. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
-				. 'const ' . $const->getName() . ' = ' . Helpers::dump($const->getValue()) . ';';
+				. 'const ' . $const->getName() . ' = ' . Helpers::dump($const->getValue()) . ";\n";
 		}
 
 		$properties = [];
@@ -101,7 +101,7 @@ class Printer
 			$properties[] = Helpers::formatDocComment((string) $property->getComment())
 				. ($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName()
 				. ($property->getValue() === null ? '' : ' = ' . Helpers::dump($property->getValue()))
-				. ';';
+				. ";\n";
 		}
 
 		$methods = [];
@@ -109,7 +109,13 @@ class Printer
 			$methods[] = $this->printMethod($method, $namespace);
 		}
 
-		$methodSpace = str_repeat("\n", $this->linesBetweenMethods + 1);
+		$members = array_filter([
+			implode('', $traits),
+			implode('', $consts),
+			implode("\n", $properties),
+			($methods && $properties ? str_repeat("\n", $this->linesBetweenMethods - 1) : '')
+			. implode(str_repeat("\n", $this->linesBetweenMethods), $methods),
+		]);
 
 		return Strings::normalize(
 			Helpers::formatDocComment($class->getComment() . "\n")
@@ -119,11 +125,7 @@ class Printer
 			. ($class->getExtends() ? 'extends ' . implode(', ', array_map($resolver, (array) $class->getExtends())) . ' ' : '')
 			. ($class->getImplements() ? 'implements ' . implode(', ', array_map($resolver, $class->getImplements())) . ' ' : '')
 			. ($class->getName() ? "\n" : '') . "{\n"
-			. $this->indent(
-				($traits ? implode("\n", $traits) . "\n\n" : '')
-				. ($consts ? implode("\n", $consts) . "\n\n" : '')
-				. ($properties ? implode("\n\n", $properties) . $methodSpace : '')
-				. ($methods ? implode($methodSpace, $methods) . "\n" : ''))
+			. ($members ? $this->indent(implode("\n", $members)) : '')
 			. '}'
 		) . ($class->getName() ? "\n" : '');
 	}
@@ -155,9 +157,9 @@ class Printer
 			. implode("\n", $classes);
 
 		if ($namespace->getBracketedSyntax()) {
-			return 'namespace' . ($name ? " $name" : '') . " {\n\n"
+			return 'namespace' . ($name ? " $name" : '') . "\n{\n"
 				. $this->indent($body)
-				. "\n}\n";
+				. "}\n";
 
 		} else {
 			return ($name ? "namespace $name;\n\n" : '')
@@ -175,7 +177,8 @@ class Printer
 
 		return Strings::normalize(
 			"<?php\n"
-			. ($file->getComment() ? "\n" . Helpers::formatDocComment($file->getComment() . "\n") . "\n" : '')
+			. ($file->getComment() ? "\n" . Helpers::formatDocComment($file->getComment() . "\n") : '')
+			. "\n"
 			. ($file->getStrictTypes() ? "declare(strict_types=1);\n\n" : '')
 			. implode("\n\n", $namespaces)
 		) . "\n";

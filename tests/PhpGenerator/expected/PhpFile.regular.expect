@@ -11,7 +11,6 @@ class A implements A, \Bar\C
 {
 	use C;
 	use \Bar\D;
-
 }
 
 interface B
@@ -28,7 +27,6 @@ namespace Bar;
 class B extends \Foo\A implements \Foo\B
 {
 	use \Foo\C;
-
 }
 
 interface C

@@ -30,4 +30,5 @@ same(
 	string $l
 ) {
 	return null;
-}', (string) $method);
+}
+', (string) $method);

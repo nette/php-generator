@@ -46,6 +46,7 @@ namespace
 		'function create(): Foo
 {
 	return new Foo();
-}', (string) $method);
+}
+', (string) $method);
 
 }

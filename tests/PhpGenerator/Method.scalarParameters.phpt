@@ -45,4 +45,5 @@ same(
 'function create(string $a, bool $b)
 {
 	return null;
-}', (string) $method);
+}
+', (string) $method);

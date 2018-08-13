@@ -5,13 +5,12 @@
  * Hey there, I'm here to document things.
  */
 
-namespace Foo {
-
+namespace Foo
+{
 	class A implements A, \Bar\C
 	{
 		use C;
 		use \Bar\D;
-
 	}
 
 	interface B
@@ -21,16 +20,14 @@ namespace Foo {
 	trait C
 	{
 	}
-
 }
 
 
-namespace Bar {
-
+namespace Bar
+{
 	class B extends \Foo\A implements \Foo\B
 	{
 		use \Foo\C;
-
 	}
 
 	interface C
@@ -40,12 +37,11 @@ namespace Bar {
 	trait D
 	{
 	}
-
 }
 
 
-namespace Baz {
-
+namespace Baz
+{
 	class E
 	{
 	}
@@ -57,23 +53,20 @@ namespace Baz {
 	trait G
 	{
 	}
-
 }
 
 
-namespace {
-
+namespace
+{
 	class H
 	{
 	}
-
 }
 
 
-namespace FooBar {
-
+namespace FooBar
+{
 	class I
 	{
 	}
-
 }
