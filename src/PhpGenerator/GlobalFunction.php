@@ -35,6 +35,10 @@ final class GlobalFunction
 
 	public function __toString(): string
 	{
-		return (new Printer)->printFunction($this);
+		try {
+			return (new Printer)->printFunction($this);
+		} catch (\Throwable $e) {
+			trigger_error('Exception in ' . __METHOD__ . "(): {$e->getMessage()} in {$e->getFile()}:{$e->getLine()}", E_USER_ERROR);
+		}
 	}
 }

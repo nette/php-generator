@@ -50,7 +50,11 @@ final class Method
 
 	public function __toString(): string
 	{
-		return (new Printer)->printMethod($this);
+		try {
+			return (new Printer)->printMethod($this);
+		} catch (\Throwable $e) {
+			trigger_error('Exception in ' . __METHOD__ . "(): {$e->getMessage()} in {$e->getFile()}:{$e->getLine()}", E_USER_ERROR);
+		}
 	}
 
 

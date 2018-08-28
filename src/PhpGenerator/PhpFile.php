@@ -76,6 +76,10 @@ final class PhpFile
 
 	public function __toString(): string
 	{
-		return (new Printer)->printFile($this);
+		try {
+			return (new Printer)->printFile($this);
+		} catch (\Throwable $e) {
+			trigger_error('Exception in ' . __METHOD__ . "(): {$e->getMessage()} in {$e->getFile()}:{$e->getLine()}", E_USER_ERROR);
+		}
 	}
 }

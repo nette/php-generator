@@ -190,6 +190,10 @@ final class PhpNamespace
 
 	public function __toString(): string
 	{
-		return (new Printer)->printNamespace($this);
+		try {
+			return (new Printer)->printNamespace($this);
+		} catch (\Throwable $e) {
+			trigger_error('Exception in ' . __METHOD__ . "(): {$e->getMessage()} in {$e->getFile()}:{$e->getLine()}", E_USER_ERROR);
+		}
 	}
 }
