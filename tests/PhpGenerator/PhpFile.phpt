@@ -80,3 +80,10 @@ $file = new PhpFile;
 $file->addClass('A');
 
 sameFile(__DIR__ . '/expected/PhpFile.globalNamespace.expect', (string) $file);
+
+$file = new PhpFile;
+$file->addComment('This file is auto-generated. DO NOT EDIT!');
+$file->setStrictTypes();
+$file->addClass('A');
+
+sameFile(__DIR__ . '/expected/PhpFile.strictTypes.expect', (string) $file);

@@ -28,6 +28,9 @@ final class PhpFile
 	/** @var PhpNamespace[] */
 	private $namespaces = [];
 
+	/** @var bool */
+	private $strictTypes = false;
+
 
 	public function addClass(string $name): ClassType
 	{
@@ -71,6 +74,23 @@ final class PhpFile
 	public function getNamespaces(): array
 	{
 		return $this->namespaces;
+	}
+
+
+	/**
+	 * Adds declare(strict_types=1) to output.
+	 * @return static
+	 */
+	public function setStrictTypes(bool $on = true): self
+	{
+		$this->strictTypes = $on;
+		return $this;
+	}
+
+
+	public function getStrictTypes(): bool
+	{
+		return $this->strictTypes;
 	}
 
 

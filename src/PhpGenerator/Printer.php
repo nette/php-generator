@@ -176,6 +176,7 @@ class Printer
 		return Strings::normalize(
 			"<?php\n"
 			. ($file->getComment() ? "\n" . Helpers::formatDocComment($file->getComment() . "\n") . "\n" : '')
+			. ($file->getStrictTypes() ? "declare(strict_types=1);\n\n" : '')
 			. implode("\n\n", $namespaces)
 		) . "\n";
 	}

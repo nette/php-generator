@@ -1,0 +1,11 @@
+<?php
+
+/**
+ * This file is auto-generated. DO NOT EDIT!
+ */
+
+declare(strict_types=1);
+
+class A
+{
+}

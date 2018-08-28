@@ -464,6 +464,7 @@ PHP files can contains multiple classes, namespaces and comments:
 ```php
 $file = new Nette\PhpGenerator\PhpFile;
 $file->addComment('This file is auto-generated.');
+$file->setStrictTypes(); // adds declare(strict_types=1)
 
 $namespace = $file->addNamespace('Foo');
 $class = $namespace->addClass('A');
@@ -483,6 +484,8 @@ Result:
 /**
  * This file is auto-generated.
  */
+
+declare(strict_types=1);
 
 namespace Foo;
 
