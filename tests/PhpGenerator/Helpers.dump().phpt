@@ -40,7 +40,7 @@ Assert::same('[$s]', Helpers::dump([new PhpLiteral('$s')]));
 
 Assert::same('[1, 2, 3]', Helpers::dump([1, 2, 3]));
 Assert::same("['a', 7 => 'b', 'c', '9a' => 'd', 'e']", Helpers::dump(['a', 7 => 'b', 'c', '9a' => 'd', 9 => 'e']));
-Assert::match("[
+same("[
 	[
 		'a',
 		'loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong',
@@ -124,8 +124,12 @@ Assert::same(
 	"new DateTimeImmutable('2016-06-22 20:52:43.123400', new DateTimeZone('Europe/Prague'))",
 	Helpers::dump(new DateTimeImmutable('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague')))
 );
-Assert::match(
-	"Nette\\PhpGenerator\\Helpers::createObject('TestDateTime', %A%)",
+same(
+	"Nette\\PhpGenerator\\Helpers::createObject('TestDateTime', [
+	'date' => '2016-06-22 20:52:43.123400',
+	'timezone_type' => 3,
+	'timezone' => 'Europe/Prague',
+])",
 	Helpers::dump(new TestDateTime('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague')))
 );
 

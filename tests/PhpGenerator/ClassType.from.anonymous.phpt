@@ -7,7 +7,6 @@
 declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
-use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -43,4 +42,4 @@ $res[] = ClassType::from(new class extends Class1 {
 	}
 });
 
-Assert::matchFile(__DIR__ . '/expected/ClassType.from.anonymous.expect', implode("\n", $res));
+sameFile(__DIR__ . '/expected/ClassType.from.anonymous.expect', implode("\n", $res));

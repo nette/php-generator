@@ -7,7 +7,6 @@
 declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
-use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -45,4 +44,4 @@ $res[] = ClassType::from('Trait2');
 $res[] = ClassType::from('Class1');
 $res[] = ClassType::from('Class2');
 
-Assert::matchFile(__DIR__ . '/expected/ClassType.from.trait.expect', implode("\n", $res));
+sameFile(__DIR__ . '/expected/ClassType.from.trait.expect', implode("\n", $res));

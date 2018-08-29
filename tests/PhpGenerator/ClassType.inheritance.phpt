@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
-use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -55,4 +54,4 @@ class B extends A implements I3
 }
 
 
-Assert::matchFile(__DIR__ . '/expected/ClassType.inheritance.expect', (string) ClassType::from('B'));
+sameFile(__DIR__ . '/expected/ClassType.inheritance.expect', (string) ClassType::from('B'));

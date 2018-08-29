@@ -20,7 +20,7 @@ $function->addUse('this');
 $function->addUse('vars')
 	->setReference(true);
 
-Assert::match(
+same(
 'function &($a, $b) use ($this, &$vars) {
 	return $a + $b;
 }', (string) $function);
@@ -33,7 +33,7 @@ Assert::type(Nette\PhpGenerator\Parameter::class, $uses[1]);
 
 $uses = $function->setUses([$uses[0]]);
 
-Assert::match(
+same(
 'function &($a, $b) use ($this) {
 	return $a + $b;
 }', (string) $function);
@@ -46,6 +46,6 @@ Assert::exception(function () {
 
 $closure = function (stdClass $a, $b = null) {};
 $function = Closure::from($closure);
-Assert::match(
+same(
 'function (stdClass $a, $b = null) {
 }', (string) $function);

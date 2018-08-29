@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Nette\PhpGenerator\Closure;
-use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -17,7 +16,7 @@ for ($name = 'abcde'; $name < 'abcdr'; $name++) {
 	$function->addUse($name);
 }
 
-Assert::match(
+same(
 'function (
 	$abcde,
 	$abcdf,

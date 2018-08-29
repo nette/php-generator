@@ -41,9 +41,8 @@ $method = (new Method('create'))
 $method->addParameter('a')->setTypeHint('string');
 $method->addParameter('b')->setTypeHint('bool');
 
-Assert::match(
+same(
 'function create(string $a, bool $b)
 {
 	return null;
-}
-', (string) $method);
+}', (string) $method);

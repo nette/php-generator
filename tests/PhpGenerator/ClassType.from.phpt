@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Factory;
-use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -25,4 +24,4 @@ $res[] = ClassType::from(Abc\Class4::class);
 $res[] = ClassType::from(Abc\Class5::class);
 $res[] = ClassType::from(Abc\Class6::class);
 
-Assert::matchFile(__DIR__ . '/expected/ClassType.from.expect', implode("\n", $res));
+sameFile(__DIR__ . '/expected/ClassType.from.expect', implode("\n", $res));

@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpNamespace;
-use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
@@ -34,7 +33,7 @@ $method->addParameter('one')
 $method->addParameter('two')
 		->setTypeHint('\Two');
 
-Assert::matchFile(__DIR__ . '/expected/PhpNamespace.fqn1.expect', (string) $class);
+sameFile(__DIR__ . '/expected/PhpNamespace.fqn1.expect', (string) $class);
 
 
 // global namespace
@@ -58,4 +57,4 @@ $method->addParameter('one')
 $method->addParameter('two')
 		->setTypeHint('\Two');
 
-Assert::matchFile(__DIR__ . '/expected/PhpNamespace.fqn2.expect', (string) $class);
+sameFile(__DIR__ . '/expected/PhpNamespace.fqn2.expect', (string) $class);
