@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpLiteral;
 use Nette\PhpGenerator\Printer;
+use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -65,3 +66,11 @@ $closure
 		->setTypeHint('stdClass');
 
 sameFile(__DIR__ . '/expected/Printer.closure.expect', $printer->printClosure($closure));
+
+
+// printer validates class
+Assert::exception(function () {
+	$class = new ClassType;
+	$class->setFinal(true)->setAbstract(true);
+	(new Printer)->printClass($class);
+}, Nette\InvalidStateException::class, 'Class cannot be abstract and final.');

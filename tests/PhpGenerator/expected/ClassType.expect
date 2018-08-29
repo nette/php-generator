@@ -4,7 +4,7 @@
  *
  * @property-read Nette\Forms\Form $form
  */
-abstract final class Example extends ParentClass implements IExample, IOne
+abstract class Example extends ParentClass implements IExample, IOne
 {
 	use ObjectTrait;
 	use AnotherTrait {

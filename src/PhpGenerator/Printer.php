@@ -60,6 +60,7 @@ class Printer
 
 	public function printMethod(Method $method, PhpNamespace $namespace = null): string
 	{
+		$method->validate();
 		return Helpers::formatDocComment($method->getComment() . "\n")
 			. ($method->isAbstract() ? 'abstract ' : '')
 			. ($method->isFinal() ? 'final ' : '')
@@ -81,6 +82,7 @@ class Printer
 
 	public function printClass(ClassType $class, PhpNamespace $namespace = null): string
 	{
+		$class->validate();
 		$resolver = $namespace ? [$namespace, 'unresolveName'] : function ($s) { return $s; };
 
 		$traits = [];

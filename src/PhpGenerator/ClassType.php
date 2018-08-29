@@ -183,7 +183,7 @@ final class ClassType
 		if (!is_string($names) && !is_array($names)) {
 			throw new Nette\InvalidArgumentException('Argument must be string or string[].');
 		}
-		$this->validate((array) $names);
+		$this->validateNames((array) $names);
 		$this->extends = $names;
 		return $this;
 	}
@@ -203,7 +203,7 @@ final class ClassType
 	 */
 	public function addExtend(string $name): self
 	{
-		$this->validate([$name]);
+		$this->validateNames([$name]);
 		$this->extends = (array) $this->extends;
 		$this->extends[] = $name;
 		return $this;
@@ -216,7 +216,7 @@ final class ClassType
 	 */
 	public function setImplements(array $names): self
 	{
-		$this->validate($names);
+		$this->validateNames($names);
 		$this->implements = $names;
 		return $this;
 	}
@@ -236,7 +236,7 @@ final class ClassType
 	 */
 	public function addImplement(string $name): self
 	{
-		$this->validate([$name]);
+		$this->validateNames([$name]);
 		$this->implements[] = $name;
 		return $this;
 	}
@@ -248,7 +248,7 @@ final class ClassType
 	 */
 	public function setTraits(array $names): self
 	{
-		$this->validate($names);
+		$this->validateNames($names);
 		$this->traits = array_fill_keys($names, []);
 		return $this;
 	}
@@ -277,7 +277,7 @@ final class ClassType
 	 */
 	public function addTrait(string $name, array $resolutions = []): self
 	{
-		$this->validate([$name]);
+		$this->validateNames([$name]);
 		$this->traits[$name] = $resolutions;
 		return $this;
 	}
@@ -461,7 +461,21 @@ final class ClassType
 	}
 
 
-	private function validate(array $names): void
+	/**
+	 * @throws Nette\InvalidStateException
+	 */
+	public function validate(): void
+	{
+		if ($this->abstract && $this->final) {
+			throw new Nette\InvalidStateException('Class cannot be abstract and final.');
+
+		} elseif (!$this->name && ($this->abstract || $this->final)) {
+			throw new Nette\InvalidStateException('Anonymous class cannot be abstract or final.');
+		}
+	}
+
+
+	private function validateNames(array $names): void
 	{
 		foreach ($names as $name) {
 			if (!Helpers::isNamespaceIdentifier($name, true)) {

@@ -42,7 +42,6 @@ Usage is very easy. Let's start with a straightforward example of generating cla
 $class = new Nette\PhpGenerator\ClassType('Demo');
 
 $class
-	->setAbstract()
 	->setFinal()
 	->setExtends('ParentClass')
 	->addImplement('Countable')
@@ -63,7 +62,7 @@ It will render this result:
  *
  * @property-read Nette\Forms\Form $form
  */
-abstract final class Demo extends ParentClass implements Countable
+final class Demo extends ParentClass implements Countable
 {
 	use Nette\SmartObject;
 }
