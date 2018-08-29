@@ -40,7 +40,7 @@ Assert::same('[$s]', Helpers::dump([new PhpLiteral('$s')]));
 
 Assert::same('[1, 2, 3]', Helpers::dump([1, 2, 3]));
 Assert::same("['a', 7 => 'b', 'c', '9a' => 'd', 'e']", Helpers::dump(['a', 7 => 'b', 'c', '9a' => 'd', 9 => 'e']));
-Assert::match("[
+same("[
 	[
 		'a',
 		'loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong',

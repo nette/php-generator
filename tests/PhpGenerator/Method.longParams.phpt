@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Nette\PhpGenerator\Method;
-use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
@@ -15,7 +14,7 @@ for ($name = 'a'; $name < 'm'; $name++) {
 	$method->addParameter($name)->setTypeHint('string');
 }
 
-Assert::match(
+same(
 'function create(
 	string $a,
 	string $b,
@@ -31,5 +30,4 @@ Assert::match(
 	string $l
 ) {
 	return null;
-}
-', (string) $method);
+}', (string) $method);

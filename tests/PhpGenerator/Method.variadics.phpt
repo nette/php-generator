@@ -39,12 +39,11 @@ $method = (new Method('variadic'))
 	->setVariadic(true)
 	->setBody('return 42;');
 
-Assert::match(
+same(
 'function variadic()
 {
 	return 42;
-}
-', (string) $method);
+}', (string) $method);
 
 
 // variadic method with one parameter
@@ -53,12 +52,11 @@ $method = (new Method('variadic'))
 	->setBody('return 42;');
 $method->addParameter('foo');
 
-Assert::match(
+same(
 'function variadic(...$foo)
 {
 	return 42;
-}
-', (string) $method);
+}', (string) $method);
 
 
 // variadic method with multiple parameters
@@ -69,12 +67,11 @@ $method->addParameter('foo');
 $method->addParameter('bar');
 $method->addParameter('baz', []);
 
-Assert::match(
+same(
 'function variadic($foo, $bar, ...$baz)
 {
 	return 42;
-}
-', (string) $method);
+}', (string) $method);
 
 
 // method with typehinted variadic param
@@ -83,12 +80,11 @@ $method = (new Method('variadic'))
 	->setBody('return 42;');
 $method->addParameter('foo')->setTypeHint('array');
 
-Assert::match(
+same(
 'function variadic(array ...$foo)
 {
 	return 42;
-}
-', (string) $method);
+}', (string) $method);
 
 
 // method with typrhinted by-value variadic param
@@ -97,9 +93,8 @@ $method = (new Method('variadic'))
 	->setBody('return 42;');
 $method->addParameter('foo')->setTypeHint('array')->setReference(true);
 
-Assert::match(
+same(
 'function variadic(array &...$foo)
 {
 	return 42;
-}
-', (string) $method);
+}', (string) $method);

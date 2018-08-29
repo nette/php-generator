@@ -21,7 +21,7 @@ Assert::same('func(1 ? 2 : 3)', Helpers::formatArgs('func(1 \? 2 : 3)', []));
 Assert::same('func([1, 2])', Helpers::formatArgs('func(?)', [[1, 2]]));
 Assert::same('func(1, 2)', Helpers::formatArgs('func(...?)', [[1, 2]]));
 Assert::same('func(1, 2)', Helpers::formatArgs('func(?*)', [[1, 2]])); // old way
-Assert::match(
+same(
 'func(
 	10,
 	11,

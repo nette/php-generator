@@ -11,5 +11,18 @@ if (@!include __DIR__ . '/../vendor/autoload.php') {
 }
 
 
+function same(string $expected, $actual): void
+{
+	$expected = str_replace(PHP_EOL, "\n", $expected);
+	Tester\Assert::same($expected, $actual);
+}
+
+
+function sameFile(string $file, $actual): void
+{
+	same(file_get_contents($file), $actual);
+}
+
+
 Tester\Environment::setup();
 date_default_timezone_set('Europe/Prague');

@@ -42,11 +42,10 @@ namespace
 		->setReturnType('Foo')
 		->setBody('return new Foo();');
 
-	Assert::match(
+	same(
 		'function create(): Foo
 {
 	return new Foo();
-}
-', (string) $method);
+}', (string) $method);
 
 }
