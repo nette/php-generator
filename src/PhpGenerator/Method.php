@@ -48,15 +48,6 @@ final class Method
 	}
 
 
-	public function __construct(string $name)
-	{
-		if (!Helpers::isIdentifier($name)) {
-			throw new Nette\InvalidArgumentException("Value '$name' is not valid name.");
-		}
-		$this->name = $name;
-	}
-
-
 	public function __toString(): string
 	{
 		return Helpers::formatDocComment($this->comment . "\n")
