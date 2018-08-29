@@ -27,9 +27,9 @@ The recommended way to install is via Composer:
 composer require nette/php-generator
 ```
 
-- v2.6 requires PHP 5.6 or newer (is compatible up to 7.2)
-- v3.0 requires PHP 7.0 or newer (is compatible up to 7.2)
-- v3.1 requires PHP 7.1 or newer (is compatible up to 7.2)
+- v3.1 requires PHP 7.1 or newer (is compatible up to 7.3)
+- v3.0 requires PHP 7.0 or newer (is compatible up to 7.3)
+- v2.6 requires PHP 5.6 or newer (is compatible up to 7.3)
 
 
 Usage
@@ -118,7 +118,7 @@ It results in:
 
 If the property, constant, method or parameter already exist, it will be overwritten.
 
-PHP Generator supports all new PHP 7.2 features:
+PHP Generator supports all new PHP 7.3 features:
 
 ```php
 $class = new Nette\PhpGenerator\ClassType('Demo');
