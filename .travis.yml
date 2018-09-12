@@ -28,13 +28,13 @@ jobs:
             php: 7.1
             install:
                 # Install Nette Code Checker
-                - travis_retry composer create-project nette/code-checker temp/code-checker ~2 --no-progress
+                - travis_retry composer create-project nette/code-checker temp/code-checker ^3 --no-progress
                 # Install Nette Coding Standard
-                - travis_retry composer create-project nette/coding-standard temp/coding-standard --no-progress
+                - travis_retry composer create-project nette/coding-standard temp/coding-standard ^2 --no-progress
 
             script:
-                - php temp/code-checker/src/code-checker.php --short-arrays --strict-types
-                - php temp/coding-standard/ecs check src tests --config temp/coding-standard/coding-standard-php71.neon
+                - php temp/code-checker/code-checker --strict-types
+                - php temp/coding-standard/ecs check src tests --config temp/coding-standard/coding-standard-php71.yml
 
 
         -   stage: Code Coverage
