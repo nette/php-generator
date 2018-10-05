@@ -30,7 +30,7 @@ final class Factory
 
 		$ifaces = $from->getInterfaceNames();
 		foreach ($ifaces as $iface) {
-			$ifaces = array_filter($ifaces, function ($item) use ($iface) {
+			$ifaces = array_filter($ifaces, function (string $item) use ($iface): bool {
 				return !is_subclass_of($iface, $item);
 			});
 		}
