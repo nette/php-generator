@@ -78,6 +78,16 @@ final class PhpFile
 
 
 	/**
+	 * @return static
+	 */
+	public function addUse(string $name, string $alias = null): self
+	{
+		$this->addNamespace('')->addUse($name, $alias);
+		return $this;
+	}
+
+
+	/**
 	 * Adds declare(strict_types=1) to output.
 	 * @return static
 	 */

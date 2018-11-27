@@ -1,5 +1,7 @@
 <?php
 
+use B as C;
+
 class A
 {
 }

@@ -78,6 +78,8 @@ sameFile(__DIR__ . '/expected/PhpFile.bracketed.expect', (string) $file);
 
 $file = new PhpFile;
 $file->addClass('A');
+$file->addUse('A')
+	->addUse('B', 'C');
 
 sameFile(__DIR__ . '/expected/PhpFile.globalNamespace.expect', (string) $file);
 
