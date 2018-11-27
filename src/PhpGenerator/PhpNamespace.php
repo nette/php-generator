@@ -180,9 +180,7 @@ final class PhpNamespace
 	{
 		$uses = [];
 		foreach ($this->uses as $alias => $original) {
-			$useNamespace = Helpers::extractNamespace($original);
-
-			if ($this->name !== $useNamespace) {
+			if ($original !== ($this->name ? $this->name . '\\' . $alias : $alias)) {
 				if ($alias === $original || substr($original, -(strlen($alias) + 1)) === '\\' . $alias) {
 					$uses[] = "use $original;";
 				} else {
