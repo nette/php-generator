@@ -1,6 +1,7 @@
 namespace Foo;
 
 use Bar\C;
+use Foo\D as E;
 
 /**
  * Description of class.

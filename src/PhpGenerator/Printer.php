@@ -139,9 +139,7 @@ class Printer
 
 		$uses = [];
 		foreach ($namespace->getUses() as $alias => $original) {
-			$useNamespace = Helpers::extractNamespace($original);
-
-			if ($name !== $useNamespace) {
+			if ($original !== ($name ? $name . '\\' . $alias : $alias)) {
 				if ($alias === $original || substr($original, -(strlen($alias) + 1)) === '\\' . $alias) {
 					$uses[] = "use $original;";
 				} else {

@@ -13,6 +13,8 @@ $printer = new Printer;
 
 $namespace = new PhpNamespace('Foo');
 $namespace->addUse('Bar\C');
+$namespace->addUse('Foo\D');
+$namespace->addUse('Foo\D', 'E');
 
 $class = $namespace->addClass('A')
 	->setFinal(true)
