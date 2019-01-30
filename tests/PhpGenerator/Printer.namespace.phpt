@@ -38,6 +38,10 @@ sameFile(__DIR__ . '/expected/Printer.namespace.class.expect', $printer->printCl
 sameFile(__DIR__ . '/expected/Printer.namespace.class2.expect', $printer->printClass($class));
 sameFile(__DIR__ . '/expected/Printer.namespace.method.expect', $printer->printMethod($class->getMethod('first')));
 
+$printer2 = new Printer;
+$printer2->setTypeResolving(false);
+sameFile(__DIR__ . '/expected/Printer.namespace.unresolved.expect', $printer2->printNamespace($namespace));
+
 
 $function = new \Nette\PhpGenerator\GlobalFunction('func');
 $function

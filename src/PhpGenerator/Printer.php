@@ -26,6 +26,9 @@ class Printer
 	/** @var int */
 	protected $linesBetweenMethods = 2;
 
+	/** @var bool */
+	private $resolveTypes = true;
+
 
 	public function printFunction(GlobalFunction $function, PhpNamespace $namespace = null): string
 	{
@@ -83,7 +86,7 @@ class Printer
 	public function printClass(ClassType $class, PhpNamespace $namespace = null): string
 	{
 		$class->validate();
-		$resolver = $namespace ? [$namespace, 'unresolveName'] : function ($s) { return $s; };
+		$resolver = $this->resolveTypes && $namespace ? [$namespace, 'unresolveName'] : function ($s) { return $s; };
 
 		$traits = [];
 		foreach ($class->getTraitResolutions() as $trait => $resolutions) {
@@ -185,6 +188,16 @@ class Printer
 	}
 
 
+	/**
+	 * @return static
+	 */
+	public function setTypeResolving(bool $state = true): self
+	{
+		$this->resolveTypes = $state;
+		return $this;
+	}
+
+
 	protected function indent(string $s): string
 	{
 		return Strings::indent($s, 1, $this->indentation);
@@ -201,7 +214,7 @@ class Printer
 		foreach ($list as $param) {
 			$variadic = $function->isVariadic() && $param === end($list);
 			$hint = $param->getTypeHint();
-			$params[] = ($hint ? ($param->isNullable() ? '?' : '') . ($namespace ? $namespace->unresolveName($hint) : $hint) . ' ' : '')
+			$params[] = ($hint ? ($param->isNullable() ? '?' : '') . ($this->resolveTypes && $namespace ? $namespace->unresolveName($hint) : $hint) . ' ' : '')
 				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')
 				. '$' . $param->getName()
@@ -220,7 +233,7 @@ class Printer
 	protected function printReturnType($function, ?PhpNamespace $namespace): string
 	{
 		return $function->getReturnType()
-			? ': ' . ($function->getReturnNullable() ? '?' : '') . ($namespace ? $namespace->unresolveName($function->getReturnType()) : $function->getReturnType())
+			? ': ' . ($function->getReturnNullable() ? '?' : '') . ($this->resolveTypes && $namespace ? $namespace->unresolveName($function->getReturnType()) : $function->getReturnType())
 			: '';
 	}
 }

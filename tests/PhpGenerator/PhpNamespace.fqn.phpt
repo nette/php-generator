@@ -64,3 +64,6 @@ $method->addParameter('two')
 sameFile(__DIR__ . '/expected/PhpNamespace.fqn2.expect', (string) $class);
 
 sameFile(__DIR__ . '/expected/PhpNamespace.fqn2.expect', (new Printer)->printClass($class, new PhpNamespace('')));
+
+// no resolve
+sameFile(__DIR__ . '/expected/PhpNamespace.fqn1.expect', (new Printer)->printClass($class));

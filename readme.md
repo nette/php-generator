@@ -413,8 +413,9 @@ $namespace->addUse('Http\Request', 'HttpReq'); // use Http\Request as HttpReq;
 ```
 
 **IMPORTANT NOTE:** when the class is part of the namespace, it is rendered slightly differently: all types (ie. type hints, return types, parent class name,
-implemented interfaces and used traits) are automatically *resolved*. It means that you have to **use full class names** in definitions
-and they will be replaced with aliases (according to the use-statements) or fully qualified names in the resulting code:
+implemented interfaces and used traits) are automatically *resolved* (unless you turn it off, see below).
+It means that you have to **use full class names** in definitions and they will be replaced
+with aliases (according to the use-statements) or fully qualified names in the resulting code:
 
 ```php
 $namespace = new Nette\PhpGenerator\PhpNamespace('Foo');
@@ -453,6 +454,14 @@ class Demo implements A
 	{
 	}
 }
+```
+
+Auto-resolving can be turned off this way:
+
+```php
+$printer = new Nette\PhpGenerator\Printer; // or PsrPrinter
+$printer->setTypeResolving(false);
+echo $printer->printNamespace($namespace);
 ```
 
 PHP Files
