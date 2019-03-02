@@ -43,11 +43,7 @@ final class Helpers
 			return (string) $var;
 
 		} elseif (is_float($var)) {
-			if (is_finite($var)) {
-				$var = var_export($var, true);
-				return strpos($var, '.') === false ? $var . '.0' : $var; // workaround for PHP < 7.0.2
-			}
-			return str_replace('.0', '', var_export($var, true)); // workaround for PHP 7.0.2
+			return var_export($var, true);
 
 		} elseif ($var === null) {
 			return 'null';
