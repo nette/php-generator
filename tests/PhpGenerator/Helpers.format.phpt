@@ -17,10 +17,10 @@ Assert::same('func', Helpers::format('func'));
 Assert::same('func(1)', Helpers::format('func(?)', 1));
 Assert::same('func', Helpers::formatArgs('func', []));
 Assert::same('func(1)', Helpers::formatArgs('func(?)', [1]));
-Assert::same('func(1 ? 2 : 3)', Helpers::formatArgs('func(1 \? 2 : 3)', []));
-Assert::same('func([1, 2])', Helpers::formatArgs('func(?)', [[1, 2]]));
-Assert::same('func(1, 2)', Helpers::formatArgs('func(...?)', [[1, 2]]));
-Assert::same('func(1, 2)', Helpers::formatArgs('func(?*)', [[1, 2]])); // old way
+Assert::same('func(1 ? 2 : 3)', Helpers::format('func(1 \? 2 : 3)'));
+Assert::same('func([1, 2])', Helpers::format('func(?)', [1, 2]));
+Assert::same('func(1, 2)', Helpers::format('func(...?)', [1, 2]));
+Assert::same('func(1, 2)', Helpers::format('func(?*)', [1, 2])); // old way
 same(
 'func(
 	10,
@@ -51,11 +51,11 @@ same(
 	35,
 	36
 )',
-	Helpers::formatArgs('func(?*)', [range(10, 36)])
+	Helpers::format('func(?*)', range(10, 36))
 );
 
 Assert::exception(function () {
-	Helpers::formatArgs('func(...?)', [1, 2]);
+	Helpers::format('func(...?)', 1, 2);
 }, Nette\InvalidArgumentException::class, 'Argument must be an array.');
 
 Assert::exception(function () {
@@ -63,13 +63,13 @@ Assert::exception(function () {
 }, Nette\InvalidArgumentException::class, 'Insufficient number of placeholders.');
 
 Assert::exception(function () {
-	Helpers::formatArgs('func(?, ?, ?)', [1, 2]);
+	Helpers::format('func(?, ?, ?)', [1, 2]);
 }, Nette\InvalidArgumentException::class, 'Insufficient number of arguments.');
 
-Assert::same('$a = 2', Helpers::formatArgs('$? = ?', ['a', 2]));
-Assert::same('$obj->a = 2', Helpers::formatArgs('$obj->? = ?', ['a', 2]));
-Assert::same('$obj->{1} = 2', Helpers::formatArgs('$obj->? = ?', [1, 2]));
-Assert::same('$obj->{\' \'} = 2', Helpers::formatArgs('$obj->? = ?', [' ', 2]));
+Assert::same('$a = 2', Helpers::format('$? = ?', 'a', 2));
+Assert::same('$obj->a = 2', Helpers::format('$obj->? = ?', 'a', 2));
+Assert::same('$obj->{1} = 2', Helpers::format('$obj->? = ?', 1, 2));
+Assert::same('$obj->{\' \'} = 2', Helpers::format('$obj->? = ?', ' ', 2));
 
 Assert::same('Item', Helpers::formatMember('Item'));
 Assert::same("{'0Item'}", Helpers::formatMember('0Item'));

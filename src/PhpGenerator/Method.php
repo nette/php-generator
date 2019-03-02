@@ -63,7 +63,7 @@ final class Method
 	 */
 	public function setBody(?string $code, array $args = null): self
 	{
-		$this->body = $args === null || $code === null ? $code : Helpers::formatArgs($code, $args);
+		$this->body = $args === null || $code === null ? $code : Helpers::format($code, ...$args);
 		return $this;
 	}
 

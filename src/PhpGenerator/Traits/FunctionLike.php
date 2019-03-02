@@ -43,7 +43,7 @@ trait FunctionLike
 	 */
 	public function setBody(string $code, array $args = null): self
 	{
-		$this->body = $args === null ? $code : Helpers::formatArgs($code, $args);
+		$this->body = $args === null ? $code : Helpers::format($code, ...$args);
 		return $this;
 	}
 
@@ -59,7 +59,7 @@ trait FunctionLike
 	 */
 	public function addBody(string $code, array $args = null): self
 	{
-		$this->body .= ($args === null ? $code : Helpers::formatArgs($code, $args)) . "\n";
+		$this->body .= ($args === null ? $code : Helpers::format($code, ...$args)) . "\n";
 		return $this;
 	}
 

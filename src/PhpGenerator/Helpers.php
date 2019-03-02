@@ -110,7 +110,7 @@ final class Helpers
 				throw new Nette\InvalidArgumentException('Cannot dump anonymous class.');
 
 			} elseif (in_array($class, ['DateTime', 'DateTimeImmutable'], true)) {
-				return self::formatArgs("new $class(?, new DateTimeZone(?))", [$var->format('Y-m-d H:i:s.u'), $var->getTimeZone()->getName()]);
+				return self::format("new $class(?, new DateTimeZone(?))", $var->format('Y-m-d H:i:s.u'), $var->getTimeZone()->getName());
 			}
 
 			$arr = (array) $var;
