@@ -57,6 +57,8 @@ $p = $class->addProperty('sections', ['first' => true])
 	->setStatic(true);
 
 Assert::same($p, $class->getProperty('sections'));
+Assert::true($class->hasProperty('sections'));
+Assert::false($class->hasProperty('unknown'));
 Assert::true($p->isStatic());
 Assert::null($p->getVisibility());
 
@@ -67,6 +69,8 @@ $m = $class->addMethod('getHandle')
 	->setBody('return $this->?;', ['handle']);
 
 Assert::same($m, $class->getMethod('getHandle'));
+Assert::true($class->hasMethod('getHandle'));
+Assert::false($class->hasMethod('unknown'));
 Assert::true($m->isFinal());
 Assert::false($m->isStatic());
 Assert::false($m->isAbstract());
