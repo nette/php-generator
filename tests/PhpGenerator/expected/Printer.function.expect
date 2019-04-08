@@ -1,4 +1,5 @@
 function func(stdClass $var): stdClass
 {
+	func();
 	return 123;
 }

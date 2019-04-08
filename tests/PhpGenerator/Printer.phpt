@@ -26,6 +26,8 @@ $class->addConstant('FORCE_ARRAY', new PhpLiteral('Nette\Utils\Json::FORCE_ARRAY
 	->setVisibility('private')
 	->addComment('Commented');
 
+$class->addConstant('MULTILINE', ['aaaaaaaaaaaa' => 1, 'bbbbbbbbbbb' => 2, 'cccccccccccccc' => 3, 'dddddddddddd' => 4, 'eeeeeeeeeeee' => 5]);
+
 $class->addProperty('handle')
 	->setVisibility('private')
 	->addComment('@var resource  orignal file handle');
@@ -33,11 +35,13 @@ $class->addProperty('handle')
 $class->addProperty('order')
 	->setValue(new PhpLiteral('RecursiveIteratorIterator::SELF_FIRST'));
 
+$class->addProperty('multiline', ['aaaaaaaaaaaa' => 1, 'bbbbbbbbbbb' => 2, 'cccccccccccccc' => 3, 'dddddddddddd' => 4, 'eeeeeeeeeeee' => 5]);
+
 $class->addMethod('first')
 	->addComment('@return resource')
 	->setFinal(true)
 	->setReturnType('stdClass')
-	->setBody('return $this->?;', ['handle'])
+	->setBody("func();\nreturn \$this->?;", ['handle'])
 	->addParameter('var')
 		->setTypeHint('stdClass');
 
@@ -51,7 +55,7 @@ sameFile(__DIR__ . '/expected/Printer.method.expect', $printer->printMethod($cla
 $function = new Nette\PhpGenerator\GlobalFunction('func');
 $function
 	->setReturnType('stdClass')
-	->setBody('return 123;')
+	->setBody("func();\nreturn 123;")
 	->addParameter('var')
 		->setTypeHint('stdClass');
 
@@ -61,7 +65,7 @@ sameFile(__DIR__ . '/expected/Printer.function.expect', $printer->printFunction(
 $closure = new Nette\PhpGenerator\Closure;
 $closure
 	->setReturnType('stdClass')
-	->setBody('return 123;')
+	->setBody("func();\nreturn 123;")
 	->addParameter('var')
 		->setTypeHint('stdClass');
 

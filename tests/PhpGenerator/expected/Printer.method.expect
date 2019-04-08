@@ -3,5 +3,6 @@
  */
 final public function first(stdClass $var): stdClass
 {
+	func();
 	return $this->handle;
 }
