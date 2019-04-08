@@ -48,7 +48,7 @@ sameFile(__DIR__ . '/expected/Printer.class.expect', $printer->printClass($class
 sameFile(__DIR__ . '/expected/Printer.method.expect', $printer->printMethod($class->getMethod('first')));
 
 
-$function = new \Nette\PhpGenerator\GlobalFunction('func');
+$function = new Nette\PhpGenerator\GlobalFunction('func');
 $function
 	->setReturnType('stdClass')
 	->setBody('return 123;')
@@ -58,7 +58,7 @@ $function
 sameFile(__DIR__ . '/expected/Printer.function.expect', $printer->printFunction($function));
 
 
-$closure = new \Nette\PhpGenerator\Closure;
+$closure = new Nette\PhpGenerator\Closure;
 $closure
 	->setReturnType('stdClass')
 	->setBody('return 123;')

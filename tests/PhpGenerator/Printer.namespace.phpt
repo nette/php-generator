@@ -43,7 +43,7 @@ $printer2->setTypeResolving(false);
 sameFile(__DIR__ . '/expected/Printer.namespace.unresolved.expect', $printer2->printNamespace($namespace));
 
 
-$function = new \Nette\PhpGenerator\GlobalFunction('func');
+$function = new Nette\PhpGenerator\GlobalFunction('func');
 $function
 	->setReturnType('stdClass')
 	->setBody('return 123;')
