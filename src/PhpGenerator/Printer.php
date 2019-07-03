@@ -139,24 +139,14 @@ class Printer
 	public function printNamespace(PhpNamespace $namespace): string
 	{
 		$name = $namespace->getName();
-
-		$uses = [];
-		foreach ($namespace->getUses() as $alias => $original) {
-			if ($original !== ($name ? $name . '\\' . $alias : $alias)) {
-				if ($alias === $original || substr($original, -(strlen($alias) + 1)) === '\\' . $alias) {
-					$uses[] = "use $original;";
-				} else {
-					$uses[] = "use $original as $alias;";
-				}
-			}
-		}
+		$uses = $this->printUses($namespace);
 
 		$classes = [];
 		foreach ($namespace->getClasses() as $class) {
 			$classes[] = $this->printClass($class, $namespace);
 		}
 
-		$body = ($uses ? implode("\n", $uses) . "\n\n" : '')
+		$body = ($uses ? $uses . "\n\n" : '')
 			. implode("\n", $classes);
 
 		if ($namespace->getBracketedSyntax()) {
@@ -201,6 +191,23 @@ class Printer
 	protected function indent(string $s): string
 	{
 		return Strings::indent($s, 1, $this->indentation);
+	}
+
+
+	protected function printUses(PhpNamespace $namespace): string
+	{
+		$name = $namespace->getName();
+		$uses = [];
+		foreach ($namespace->getUses() as $alias => $original) {
+			if ($original !== ($name ? $name . '\\' . $alias : $alias)) {
+				if ($alias === $original || substr($original, -(strlen($alias) + 1)) === '\\' . $alias) {
+					$uses[] = "use $original;";
+				} else {
+					$uses[] = "use $original as $alias;";
+				}
+			}
+		}
+		return implode("\n", $uses);
 	}
 
 
