@@ -12,7 +12,10 @@ $printer = new Printer;
 
 
 $namespace = new PhpNamespace('Foo');
+$namespace->addUse('GlobA');
+$namespace->addUse('GlobB', 'GB');
 $namespace->addUse('Bar\C');
+$namespace->addUse('Bar\C2', 'C3');
 $namespace->addUse('Foo\D');
 $namespace->addUse('Foo\D', 'E');
 

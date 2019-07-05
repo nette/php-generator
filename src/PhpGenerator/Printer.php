@@ -224,16 +224,24 @@ class Printer
 	protected function printUses(PhpNamespace $namespace): string
 	{
 		$name = $namespace->getName();
-		$uses = [];
+		$list = [];
 		foreach ($namespace->getUses() as $alias => $original) {
 			if ($original !== ($name ? $name . '\\' . $alias : $alias)) {
-				if ($alias === $original || substr($original, -(strlen($alias) + 1)) === '\\' . $alias) {
-					$uses[] = "use $original;";
-				} else {
-					$uses[] = "use $original as $alias;";
-				}
+				$useAlias = $alias !== $original && substr($original, -(strlen($alias) + 1)) !== '\\' . $alias;
+				$list[Helpers::extractNamespace($original)][] = Helpers::extractShortName($original) . ($useAlias ? " as $alias" : '');
 			}
 		}
+
+		$uses = [];
+		foreach ($list as $namespaceName => $shortName) {
+			$brackets = count($shortName) > 1 && $namespaceName !== '';
+			$uses[] = 'use ' . ($namespaceName === '' ? '' : "$namespaceName\\")
+				. ($brackets ? '{' : '')
+				. implode(', ', $shortName)
+				. ($brackets ? '}' : '')
+				. ';';
+		}
+
 		return implode("\n", $uses);
 	}
 

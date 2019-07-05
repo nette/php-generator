@@ -1,7 +1,8 @@
 namespace Foo;
 
-use Bar\C;
+use Bar\{C, C2 as C3};
 use Foo\D as E;
+use GlobA, GlobB as GB;
 
 /**
  * Description of class.
