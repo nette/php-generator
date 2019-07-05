@@ -20,4 +20,10 @@ final class PsrPrinter extends Printer
 
 	/** @var int */
 	protected $linesBetweenMethods = 1;
+
+
+	protected function dump($var): string
+	{
+		return str_replace("\t", $this->indentation, Helpers::dump($var));
+	}
 }

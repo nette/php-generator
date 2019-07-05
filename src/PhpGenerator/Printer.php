@@ -98,14 +98,14 @@ class Printer
 		foreach ($class->getConstants() as $const) {
 			$consts[] = Helpers::formatDocComment((string) $const->getComment())
 				. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
-				. 'const ' . $const->getName() . ' = ' . Helpers::dump($const->getValue()) . ";\n";
+				. 'const ' . $const->getName() . ' = ' . $this->dump($const->getValue()) . ";\n";
 		}
 
 		$properties = [];
 		foreach ($class->getProperties() as $property) {
 			$properties[] = Helpers::formatDocComment((string) $property->getComment())
 				. ($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName()
-				. ($property->getValue() === null ? '' : ' = ' . Helpers::dump($property->getValue()))
+				. ($property->getValue() === null ? '' : ' = ' . $this->dump($property->getValue()))
 				. ";\n";
 		}
 
@@ -194,6 +194,12 @@ class Printer
 	}
 
 
+	protected function dump($var): string
+	{
+		return Helpers::dump($var);
+	}
+
+
 	protected function printUses(PhpNamespace $namespace): string
 	{
 		$name = $namespace->getName();
@@ -225,7 +231,7 @@ class Printer
 				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')
 				. '$' . $param->getName()
-				. ($param->hasDefaultValue() && !$variadic ? ' = ' . Helpers::dump($param->getDefaultValue()) : '');
+				. ($param->hasDefaultValue() && !$variadic ? ' = ' . $this->dump($param->getDefaultValue()) : '');
 		}
 
 		return strlen($tmp = implode(', ', $params)) > Helpers::WRAP_LENGTH && count($params) > 1
