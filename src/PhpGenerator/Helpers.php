@@ -64,7 +64,7 @@ final class Helpers
 			return '"' . strtr($var, $table) . '"';
 
 		} elseif (is_string($var)) {
-			return "'" . preg_replace('#\'|\\\\(?=[\'\\\\]|\z)#', '\\\\$0', $var) . "'";
+			return "'" . preg_replace('#\'|\\\\(?=[\'\\\\]|$)#D', '\\\\$0', $var) . "'";
 
 		} elseif (is_array($var)) {
 			$space = str_repeat("\t", $level);
@@ -229,13 +229,13 @@ final class Helpers
 
 	public static function isIdentifier($value): bool
 	{
-		return is_string($value) && preg_match('#^' . self::PHP_IDENT . '\z#', $value);
+		return is_string($value) && preg_match('#^' . self::PHP_IDENT . '$#D', $value);
 	}
 
 
 	public static function isNamespaceIdentifier($value, bool $allowLeadingSlash = false): bool
 	{
-		$re = '#^' . ($allowLeadingSlash ? '\\\\?' : '') . self::PHP_IDENT . '(\\\\' . self::PHP_IDENT . ')*\z#';
+		$re = '#^' . ($allowLeadingSlash ? '\\\\?' : '') . self::PHP_IDENT . '(\\\\' . self::PHP_IDENT . ')*$#D';
 		return is_string($value) && preg_match($re, $value);
 	}
 
