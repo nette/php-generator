@@ -27,10 +27,10 @@ The recommended way to install is via Composer:
 composer require nette/php-generator
 ```
 
-- v3.2 requires PHP 7.1 or newer (is compatible up to 7.3)
-- v3.1 requires PHP 7.1 or newer (is compatible up to 7.3)
-- v3.0 requires PHP 7.0 or newer (is compatible up to 7.3)
-- v2.6 requires PHP 5.6 or newer (is compatible up to 7.3)
+- PhpGenerator 3.2 is compatible with PHP 7.1 to 7.4
+- PhpGenerator 3.1 is compatible with PHP 7.1 to 7.3
+- PhpGenerator 3.0 is compatible with PHP 7.0 to 7.3
+- PhpGenerator 2.6 is compatible with PHP 5.6 to 7.3
 
 
 Usage
