@@ -31,13 +31,13 @@ final class Helpers
 	/**
 	 * Returns a PHP representation of a variable.
 	 */
-	public static function dump($var): string
+	public static function dump($var, int $initLength = 0): string
 	{
-		return self::_dump($var);
+		return self::_dump($var, $initLength);
 	}
 
 
-	private static function _dump(&$var, int $level = 0)
+	private static function _dump(&$var, int $initLength = 0, int $level = 0)
 	{
 		if ($var instanceof PhpLiteral) {
 			return (string) $var;
@@ -86,7 +86,7 @@ final class Helpers
 				$counter = 0;
 				foreach ($var as $k => &$v) {
 					if ($k !== $marker) {
-						$item = ($k === $counter ? '' : self::_dump($k, $level + 1) . ' => ') . self::_dump($v, $level + 1);
+						$item = ($k === $counter ? '' : self::_dump($k, $initLength, $level + 1) . ' => ') . self::_dump($v, $initLength, $level + 1);
 						$counter = is_int($k) ? max($k + 1, $counter) : $counter;
 						$out .= ($out === '' ? '' : ', ') . $item;
 						$outWrapped .= "\t$item,\n$space";
@@ -94,12 +94,12 @@ final class Helpers
 				}
 				unset($var[$marker]);
 			}
-			$wrap = strpos($out, "\n") !== false || strlen($out) > self::WRAP_LENGTH - $level * self::INDENT_LENGTH;
+			$wrap = strpos($out, "\n") !== false || strlen($out) + $initLength + 2 > self::WRAP_LENGTH - $level * self::INDENT_LENGTH;
 			return '[' . ($wrap ? $outWrapped : $out) . ']';
 
 		} elseif ($var instanceof \Serializable) {
 			$var = serialize($var);
-			return 'unserialize(' . self::_dump($var, $level) . ')';
+			return 'unserialize(' . self::_dump($var, $initLength, $level) . ')';
 
 		} elseif ($var instanceof \Closure) {
 			throw new Nette\InvalidArgumentException('Cannot dump closure.');
@@ -130,7 +130,7 @@ final class Helpers
 				}
 				foreach ($arr as $k => &$v) {
 					if (!isset($props) || isset($props[$k])) {
-						$out .= "$space\t" . self::_dump($k, $level + 1) . ' => ' . self::_dump($v, $level + 1) . ",\n";
+						$out .= "$space\t" . self::_dump($k, $initLength, $level + 1) . ' => ' . self::_dump($v, $initLength, $level + 1) . ",\n";
 					}
 				}
 				array_pop($list);

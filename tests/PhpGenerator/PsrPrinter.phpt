@@ -36,6 +36,10 @@ $class->addProperty('order')
 
 $class->addProperty('multiline', ['aaaaaaaaaaaa' => 1, 'bbbbbbbbbbb' => 2, 'cccccccccccccc' => 3, 'dddddddddddd' => 4, 'eeeeeeeeeeee' => 5]);
 
+$class->addProperty('multilineShort', ['aaaaaaa' => 1, 'bbbbbbb' => 2, 'ccccccc' => 3, 'ddddddd' => 4, 'eeeeee' => 5]);
+
+$class->addProperty('short', ['aaaaaaa' => 1, 'bbbbbbb' => 2, 'ccccccc' => 3, 'ddddddd' => 4, 'eeeeee' => 5]);
+
 $class->addMethod('first')
 	->addComment('@return resource')
 	->setFinal(true)

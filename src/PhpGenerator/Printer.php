@@ -102,10 +102,12 @@ class Printer
 		}
 
 		$properties = [];
+		$initLengthDefault = strlen($this->indentation) + 4;
 		foreach ($class->getProperties() as $property) {
+			$definition = (($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName());
 			$properties[] = Helpers::formatDocComment((string) $property->getComment())
-				. ($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName()
-				. ($property->getValue() === null ? '' : ' = ' . $this->dump($property->getValue()))
+				. $definition
+				. ($property->getValue() === null ? '' : ' = ' . $this->dump($property->getValue(), strlen($definition) + $initLengthDefault))
 				. ";\n";
 		}
 
@@ -194,9 +196,9 @@ class Printer
 	}
 
 
-	protected function dump($var): string
+	protected function dump($var, int $initLength = 0): string
 	{
-		return Helpers::dump($var);
+		return Helpers::dump($var, $initLength);
 	}
 
 

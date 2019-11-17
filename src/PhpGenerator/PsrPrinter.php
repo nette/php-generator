@@ -22,8 +22,8 @@ final class PsrPrinter extends Printer
 	protected $linesBetweenMethods = 1;
 
 
-	protected function dump($var): string
+	protected function dump($var, int $initLength = 0): string
 	{
-		return str_replace("\t", $this->indentation, Helpers::dump($var));
+		return str_replace("\t", $this->indentation, Helpers::dump($var, $initLength));
 	}
 }

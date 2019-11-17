@@ -32,6 +32,16 @@ final class Example extends ParentClass implements IExample
         'eeeeeeeeeeee' => 5,
     ];
 
+    public $multilineShort = [
+        'aaaaaaa' => 1,
+        'bbbbbbb' => 2,
+        'ccccccc' => 3,
+        'ddddddd' => 4,
+        'eeeeee' => 5,
+    ];
+
+    public $short = ['aaaaaaa' => 1, 'bbbbbbb' => 2, 'ccccccc' => 3, 'ddddddd' => 4, 'eeeeee' => 5];
+
     /**
      * @return resource
      */
