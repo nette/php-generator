@@ -172,6 +172,12 @@ trait FunctionLike
 	}
 
 
+	public function isReturnNullable(): bool
+	{
+		return $this->returnNullable;
+	}
+
+
 	public function getReturnNullable(): bool
 	{
 		return $this->returnNullable;

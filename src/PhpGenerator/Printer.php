@@ -246,7 +246,7 @@ class Printer
 	protected function printReturnType($function, ?PhpNamespace $namespace): string
 	{
 		return $function->getReturnType()
-			? ': ' . ($function->getReturnNullable() ? '?' : '') . ($this->resolveTypes && $namespace ? $namespace->unresolveName($function->getReturnType()) : $function->getReturnType())
+			? ': ' . ($function->isReturnNullable() ? '?' : '') . ($this->resolveTypes && $namespace ? $namespace->unresolveName($function->getReturnType()) : $function->getReturnType())
 			: '';
 	}
 }

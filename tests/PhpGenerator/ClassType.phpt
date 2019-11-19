@@ -89,7 +89,7 @@ $m->addParameter('mode', new PhpLiteral('self::ORDER'));
 Assert::false($m->isFinal());
 Assert::true($m->isStatic());
 Assert::true($m->getReturnReference());
-Assert::false($m->getReturnNullable());
+Assert::false($m->isReturnNullable());
 Assert::null($m->getReturnType());
 Assert::same('protected', $m->getVisibility());
 
