@@ -332,6 +332,26 @@ function ($a, $b) use (&$c) {
 }
 ```
 
+Arrow function
+--------------
+
+Code of arrow function:
+
+```php
+$function = new Nette\PhpGenerator\ArrowFunction;
+$function->setBody('$a + $b');
+$function->addParameter('a');
+$function->addParameter('b');
+
+echo $function;
+```
+
+Result:
+
+```php
+fn &($a, $b) => $a + $b;
+```
+
 Method and Function Body Generator
 ----------------------------------
 

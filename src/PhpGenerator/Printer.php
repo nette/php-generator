@@ -61,6 +61,16 @@ class Printer
 	}
 
 
+	public function printArrowFunction(ArrowFunction $function): string
+	{
+		return 'fn '
+			. ($function->getReturnReference() ? '&' : '')
+			. $this->printParameters($function, null)
+			. $this->printReturnType($function, null)
+			. ' => ' . trim($function->getBody()) . ';';
+	}
+
+
 	public function printMethod(Method $method, PhpNamespace $namespace = null): string
 	{
 		$method->validate();
