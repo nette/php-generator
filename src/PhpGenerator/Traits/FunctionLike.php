@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Nette\PhpGenerator\Traits;
 
 use Nette;
-use Nette\PhpGenerator\Helpers;
+use Nette\PhpGenerator\Dumper;
 use Nette\PhpGenerator\Parameter;
 
 
@@ -43,7 +43,7 @@ trait FunctionLike
 	 */
 	public function setBody(string $code, array $args = null): self
 	{
-		$this->body = $args === null ? $code : Helpers::format($code, ...$args);
+		$this->body = $args === null ? $code : Dumper::format($code, ...$args);
 		return $this;
 	}
 
@@ -59,7 +59,7 @@ trait FunctionLike
 	 */
 	public function addBody(string $code, array $args = null): self
 	{
-		$this->body .= ($args === null ? $code : Helpers::format($code, ...$args)) . "\n";
+		$this->body .= ($args === null ? $code : Dumper::format($code, ...$args)) . "\n";
 		return $this;
 	}
 
