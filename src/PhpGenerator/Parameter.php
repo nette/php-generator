@@ -70,9 +70,7 @@ final class Parameter
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @deprecated  use setType() */
 	public function setTypeHint(?string $type): self
 	{
 		$this->typeHint = $type;
@@ -80,6 +78,7 @@ final class Parameter
 	}
 
 
+	/** @deprecated  use getType() */
 	public function getTypeHint(): ?string
 	{
 		return $this->typeHint;

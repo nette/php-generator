@@ -178,6 +178,7 @@ trait FunctionLike
 	}
 
 
+	/** @deprecated  use isReturnNullable() */
 	public function getReturnNullable(): bool
 	{
 		return $this->returnNullable;
