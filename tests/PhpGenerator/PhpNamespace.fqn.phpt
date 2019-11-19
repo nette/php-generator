@@ -29,10 +29,10 @@ $method = $class->addMethod('two')
 	->setReturnType('\Two');
 
 $method->addParameter('one')
-		->setTypeHint('One');
+		->setType('One');
 
 $method->addParameter('two')
-		->setTypeHint('\Two');
+		->setType('\Two');
 
 sameFile(__DIR__ . '/expected/PhpNamespace.fqn1.expect', (string) $class);
 
@@ -56,10 +56,10 @@ $method = $class->addMethod('two')
 	->setReturnType('\Two');
 
 $method->addParameter('one')
-		->setTypeHint('One');
+		->setType('One');
 
 $method->addParameter('two')
-		->setTypeHint('\Two');
+		->setType('\Two');
 
 sameFile(__DIR__ . '/expected/PhpNamespace.fqn2.expect', (string) $class);
 

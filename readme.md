@@ -27,7 +27,7 @@ The recommended way to install is via Composer:
 composer require nette/php-generator
 ```
 
-- v3.2 requires PHP 7.1 or newer (is compatible up to 7.3)
+- v3.2 requires PHP 7.1 or newer (is compatible up to 7.4)
 - v3.1 requires PHP 7.1 or newer (is compatible up to 7.3)
 - v3.0 requires PHP 7.0 or newer (is compatible up to 7.3)
 - v2.6 requires PHP 5.6 or newer (is compatible up to 7.3)
@@ -100,7 +100,7 @@ $method = $class->addMethod('count')
 
 $method->addParameter('items', []) // $items = []
 		->setReference() // &$items = []
-		->setTypeHint('array'); // array &$items = []
+		->setType('array'); // array &$items = []
 ```
 
 It results in:
@@ -120,10 +120,15 @@ If the property, constant, method or parameter already exist, it will be overwri
 
 Members can be removed using `removeProperty()`, `removeConstant()`, `removeMethod()` or `removeParameter()`.
 
-PHP Generator supports all new PHP 7.3 features:
+PHP Generator supports all new PHP 7.3 and 7.4 features:
 
 ```php
 $class = new Nette\PhpGenerator\ClassType('Demo');
+
+$class->addProperty('items')
+	->setType('array')
+	->setNullable()
+	->setInitialized();
 
 $class->addConstant('ID', 123)
 	->setVisibility('private'); // constant visiblity
@@ -134,7 +139,7 @@ $method = $class->addMethod('getValue')
 	->setBody('return count($this->items);');
 
 $method->addParameter('id')
-		->setTypeHint('int') // scalar type hint
+		->setType('int') // scalar type hint
 		->setNullable(); // nullable type hint
 
 echo $class;
@@ -145,6 +150,8 @@ Result:
 ```php
 class Demo
 {
+	public ?array $items = null;
+
 	private const ID = 123;
 
 	public function getValue(?int $id): ?int
@@ -325,6 +332,26 @@ function ($a, $b) use (&$c) {
 }
 ```
 
+Arrow function
+--------------
+
+Code of arrow function:
+
+```php
+$function = new Nette\PhpGenerator\ArrowFunction;
+$function->setBody('$a + $b');
+$function->addParameter('a');
+$function->addParameter('b');
+
+echo $function;
+```
+
+Result:
+
+```php
+fn &($a, $b) => $a + $b;
+```
+
 Method and Function Body Generator
 ----------------------------------
 
@@ -428,7 +455,7 @@ $class->addImplement('Foo\A') // it will resolve to A
 $method = $class->addMethod('method');
 $method->addComment('@return ' . $namespace->unresolveName('Foo\D')); // in comments resolve manually
 $method->addParameter('arg')
-	->setTypeHint('Bar\OtherClass'); // it will resolve to \Bar\OtherClass
+	->setType('Bar\OtherClass'); // it will resolve to \Bar\OtherClass
 
 echo $namespace;
 

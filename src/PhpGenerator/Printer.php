@@ -61,6 +61,16 @@ class Printer
 	}
 
 
+	public function printArrowFunction(ArrowFunction $function): string
+	{
+		return 'fn '
+			. ($function->getReturnReference() ? '&' : '')
+			. $this->printParameters($function, null)
+			. $this->printReturnType($function, null)
+			. ' => ' . trim($function->getBody()) . ';';
+	}
+
+
 	public function printMethod(Method $method, PhpNamespace $namespace = null): string
 	{
 		$method->validate();
@@ -104,10 +114,12 @@ class Printer
 		$properties = [];
 		$initLengthDefault = strlen($this->indentation) + 4;
 		foreach ($class->getProperties() as $property) {
-			$definition = (($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName());
+			$type = $property->getType();
 			$properties[] = Helpers::formatDocComment((string) $property->getComment())
-				. $definition
-				. ($property->getValue() === null ? '' : ' = ' . $this->dump($property->getValue(), strlen($definition) + $initLengthDefault))
+				. ($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' '
+				. ($type ? ($property->isNullable() ? '?' : '') . ($this->resolveTypes && $namespace ? $namespace->unresolveName($type) : $type) . ' ' : '')
+				. '$' . $property->getName()
+				. ($property->getValue() === null && !$property->isInitialized() ? '' : ' = ' . $this->dump($property->getValue()))
 				. ";\n";
 		}
 
@@ -151,7 +163,7 @@ class Printer
 		$body = ($uses ? $uses . "\n\n" : '')
 			. implode("\n", $classes);
 
-		if ($namespace->getBracketedSyntax()) {
+		if ($namespace->hasBracketedSyntax()) {
 			return 'namespace' . ($name ? " $name" : '') . "\n{\n"
 				. $this->indent($body)
 				. "}\n";
@@ -174,7 +186,7 @@ class Printer
 			"<?php\n"
 			. ($file->getComment() ? "\n" . Helpers::formatDocComment($file->getComment() . "\n") : '')
 			. "\n"
-			. ($file->getStrictTypes() ? "declare(strict_types=1);\n\n" : '')
+			. ($file->hasStrictTypes() ? "declare(strict_types=1);\n\n" : '')
 			. implode("\n\n", $namespaces)
 		) . "\n";
 	}
@@ -228,8 +240,8 @@ class Printer
 		$list = $function->getParameters();
 		foreach ($list as $param) {
 			$variadic = $function->isVariadic() && $param === end($list);
-			$hint = $param->getTypeHint();
-			$params[] = ($hint ? ($param->isNullable() ? '?' : '') . ($this->resolveTypes && $namespace ? $namespace->unresolveName($hint) : $hint) . ' ' : '')
+			$type = $param->getType();
+			$params[] = ($type ? ($param->isNullable() ? '?' : '') . ($this->resolveTypes && $namespace ? $namespace->unresolveName($type) : $type) . ' ' : '')
 				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')
 				. '$' . $param->getName()
@@ -248,7 +260,7 @@ class Printer
 	protected function printReturnType($function, ?PhpNamespace $namespace): string
 	{
 		return $function->getReturnType()
-			? ': ' . ($function->getReturnNullable() ? '?' : '') . ($this->resolveTypes && $namespace ? $namespace->unresolveName($function->getReturnType()) : $function->getReturnType())
+			? ': ' . ($function->isReturnNullable() ? '?' : '') . ($this->resolveTypes && $namespace ? $namespace->unresolveName($function->getReturnType()) : $function->getReturnType())
 			: '';
 	}
 }

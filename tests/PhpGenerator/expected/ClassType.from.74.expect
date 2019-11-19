@@ -1,0 +1,10 @@
+class Class7
+{
+	public \A $a;
+
+	public ?\B $b;
+
+	public ?\C $c = null;
+
+	public ?int $i = 1;
+}

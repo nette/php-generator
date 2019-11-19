@@ -46,7 +46,7 @@ $class->addMethod('first')
 	->setReturnType('stdClass')
 	->setBody("func();\nreturn \$this->?;", ['handle'])
 	->addParameter('var')
-		->setTypeHint('stdClass');
+		->setType('stdClass');
 
 $class->addMethod('second');
 

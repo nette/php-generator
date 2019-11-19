@@ -53,6 +53,14 @@ $class->addProperty('handle')
 $class->addProperty('order')
 	->setValue(new PhpLiteral('RecursiveIteratorIterator::SELF_FIRST'));
 
+$class->addProperty('typed1')
+	->setType('array');
+
+$class->addProperty('typed2')
+	->setType('array')
+	->setNullable()
+	->setInitialized();
+
 $p = $class->addProperty('sections', ['first' => true])
 	->setStatic(true);
 
@@ -89,7 +97,7 @@ $m->addParameter('mode', new PhpLiteral('self::ORDER'));
 Assert::false($m->isFinal());
 Assert::true($m->isStatic());
 Assert::true($m->getReturnReference());
-Assert::false($m->getReturnNullable());
+Assert::false($m->isReturnNullable());
 Assert::null($m->getReturnType());
 Assert::same('protected', $m->getVisibility());
 
@@ -103,7 +111,7 @@ $method->addParameter('item');
 
 $method->addParameter('res', null)
 		->setReference(true)
-		->setTypeHint('array');
+		->setType('array');
 
 sameFile(__DIR__ . '/expected/ClassType.expect', (string) $class);
 
@@ -115,7 +123,7 @@ $class->setMethods(array_values($methods));
 Assert::same($methods, $class->getMethods());
 
 $properties = $class->getProperties();
-Assert::count(3, $properties);
+Assert::count(5, $properties);
 $class->setProperties(array_values($properties));
 Assert::same($properties, $class->getProperties());
 

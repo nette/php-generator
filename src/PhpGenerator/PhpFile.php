@@ -98,6 +98,13 @@ final class PhpFile
 	}
 
 
+	public function hasStrictTypes(): bool
+	{
+		return $this->strictTypes;
+	}
+
+
+	/** @deprecated  use hasStrictTypes() */
 	public function getStrictTypes(): bool
 	{
 		return $this->strictTypes;
