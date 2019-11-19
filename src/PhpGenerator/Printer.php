@@ -103,9 +103,12 @@ class Printer
 
 		$properties = [];
 		foreach ($class->getProperties() as $property) {
+			$type = $property->getType();
 			$properties[] = Helpers::formatDocComment((string) $property->getComment())
-				. ($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' $' . $property->getName()
-				. ($property->getValue() === null ? '' : ' = ' . $this->dump($property->getValue()))
+				. ($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' '
+				. ($type ? ($property->isNullable() ? '?' : '') . ($this->resolveTypes && $namespace ? $namespace->unresolveName($type) : $type) . ' ' : '')
+				. '$' . $property->getName()
+				. ($property->getValue() === null && !$property->isInitialized() ? '' : ' = ' . $this->dump($property->getValue()))
 				. ";\n";
 		}
 

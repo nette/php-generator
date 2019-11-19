@@ -121,13 +121,19 @@ final class Factory
 
 	public function fromPropertyReflection(\ReflectionProperty $from): Property
 	{
+		$defaults = $from->getDeclaringClass()->getDefaultProperties();
 		$prop = new Property($from->getName());
-		$prop->setValue($from->getDeclaringClass()->getDefaultProperties()[$prop->getName()] ?? null);
+		$prop->setValue($defaults[$prop->getName()] ?? null);
 		$prop->setStatic($from->isStatic());
 		$prop->setVisibility($from->isPrivate()
 			? ClassType::VISIBILITY_PRIVATE
 			: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
 		);
+		if (PHP_VERSION_ID >= 70400 && ($type = $from->getType())) {
+			$prop->setType($type->getName());
+			$prop->setNullable($type->allowsNull());
+			$prop->setInitialized(array_key_exists($prop->getName(), $defaults));
+		}
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		return $prop;
 	}

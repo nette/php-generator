@@ -53,6 +53,14 @@ $class->addProperty('handle')
 $class->addProperty('order')
 	->setValue(new PhpLiteral('RecursiveIteratorIterator::SELF_FIRST'));
 
+$class->addProperty('typed1')
+	->setType('array');
+
+$class->addProperty('typed2')
+	->setType('array')
+	->setNullable()
+	->setInitialized();
+
 $p = $class->addProperty('sections', ['first' => true])
 	->setStatic(true);
 
@@ -115,7 +123,7 @@ $class->setMethods(array_values($methods));
 Assert::same($methods, $class->getMethods());
 
 $properties = $class->getProperties();
-Assert::count(3, $properties);
+Assert::count(5, $properties);
 $class->setProperties(array_values($properties));
 Assert::same($properties, $class->getProperties());
 
