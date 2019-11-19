@@ -69,10 +69,10 @@ $classA
 	->addTrait('Bar\\D');
 
 $method = $classA->addMethod('test');
-$method->addParameter('a')->setTypeHint('Bar\C');
-$method->addParameter('b')->setTypeHint('self');
-$method->addParameter('c')->setTypeHint('parent');
-$method->addParameter('d')->setTypeHint('array');
-$method->addParameter('e')->setTypeHint('callable');
+$method->addParameter('a')->setType('Bar\C');
+$method->addParameter('b')->setType('self');
+$method->addParameter('c')->setType('parent');
+$method->addParameter('d')->setType('array');
+$method->addParameter('e')->setType('callable');
 
 sameFile(__DIR__ . '/expected/PhpNamespace.expect', (string) $namespace);

@@ -70,6 +70,12 @@ final class PhpNamespace
 	}
 
 
+	public function hasBracketedSyntax(): bool
+	{
+		return $this->bracketedSyntax;
+	}
+
+
 	public function getBracketedSyntax(): bool
 	{
 		return $this->bracketedSyntax;

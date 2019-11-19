@@ -100,7 +100,7 @@ $method = $class->addMethod('count')
 
 $method->addParameter('items', []) // $items = []
 		->setReference() // &$items = []
-		->setTypeHint('array'); // array &$items = []
+		->setType('array'); // array &$items = []
 ```
 
 It results in:
@@ -134,7 +134,7 @@ $method = $class->addMethod('getValue')
 	->setBody('return count($this->items);');
 
 $method->addParameter('id')
-		->setTypeHint('int') // scalar type hint
+		->setType('int') // scalar type hint
 		->setNullable(); // nullable type hint
 
 echo $class;
@@ -428,7 +428,7 @@ $class->addImplement('Foo\A') // it will resolve to A
 $method = $class->addMethod('method');
 $method->addComment('@return ' . $namespace->unresolveName('Foo\D')); // in comments resolve manually
 $method->addParameter('arg')
-	->setTypeHint('Bar\OtherClass'); // it will resolve to \Bar\OtherClass
+	->setType('Bar\OtherClass'); // it will resolve to \Bar\OtherClass
 
 echo $namespace;
 

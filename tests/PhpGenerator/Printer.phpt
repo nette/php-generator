@@ -43,7 +43,7 @@ $class->addMethod('first')
 	->setReturnType('stdClass')
 	->setBody("func();\nreturn \$this->?;", ['handle'])
 	->addParameter('var')
-		->setTypeHint('stdClass');
+		->setType('stdClass');
 
 $class->addMethod('second');
 
@@ -57,7 +57,7 @@ $function
 	->setReturnType('stdClass')
 	->setBody("func();\nreturn 123;")
 	->addParameter('var')
-		->setTypeHint('stdClass');
+		->setType('stdClass');
 
 sameFile(__DIR__ . '/expected/Printer.function.expect', $printer->printFunction($function));
 
@@ -67,7 +67,7 @@ $closure
 	->setReturnType('stdClass')
 	->setBody("func();\nreturn 123;")
 	->addParameter('var')
-		->setTypeHint('stdClass');
+		->setType('stdClass');
 
 sameFile(__DIR__ . '/expected/Printer.closure.expect', $printer->printClosure($closure));
 

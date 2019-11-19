@@ -11,7 +11,7 @@ $method = (new Method('create'))
 	->setBody('return null;');
 
 for ($name = 'a'; $name < 'm'; $name++) {
-	$method->addParameter($name)->setTypeHint('string');
+	$method->addParameter($name)->setType('string');
 }
 
 same(

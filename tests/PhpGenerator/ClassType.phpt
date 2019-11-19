@@ -103,7 +103,7 @@ $method->addParameter('item');
 
 $method->addParameter('res', null)
 		->setReference(true)
-		->setTypeHint('array');
+		->setType('array');
 
 sameFile(__DIR__ . '/expected/ClassType.expect', (string) $class);
 
