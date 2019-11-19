@@ -38,10 +38,26 @@ same(
 	return $a + $b;
 }', (string) $function);
 
+
+
 Assert::exception(function () {
 	$function = new Closure;
 	$function->setUses([123]);
 }, TypeError::class);
+
+
+
+$function = new Closure;
+$function
+	->setReturnType('array')
+	->setBody('return [];')
+	->addUse('this');
+
+same(
+'function () use ($this): array {
+	return [];
+}', (string) $function);
+
 
 
 $closure = function (stdClass $a, $b = null) {};
