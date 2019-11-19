@@ -26,7 +26,7 @@ final class Parameter
 	private $reference = false;
 
 	/** @var string|null */
-	private $typeHint;
+	private $type;
 
 	/** @var bool */
 	private $nullable = false;
@@ -57,16 +57,31 @@ final class Parameter
 	/**
 	 * @return static
 	 */
-	public function setTypeHint(?string $hint): self
+	public function setType(?string $type): self
 	{
-		$this->typeHint = $hint;
+		$this->type = $type;
 		return $this;
 	}
 
 
+	public function getType(): ?string
+	{
+		return $this->type;
+	}
+
+
+	/** @deprecated  use setType() */
+	public function setTypeHint(?string $type): self
+	{
+		$this->type = $type;
+		return $this;
+	}
+
+
+	/** @deprecated  use getType() */
 	public function getTypeHint(): ?string
 	{
-		return $this->typeHint;
+		return $this->type;
 	}
 
 

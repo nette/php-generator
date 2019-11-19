@@ -30,7 +30,7 @@ $class->addMethod('first')
 	->setReturnType('stdClass')
 	->setBody('return $this->?;', ['handle'])
 	->addParameter('var')
-		->setTypeHint('Bar\C');
+		->setType('Bar\C');
 
 
 sameFile(__DIR__ . '/expected/Printer.namespace.expect', $printer->printNamespace($namespace));
@@ -48,6 +48,6 @@ $function
 	->setReturnType('stdClass')
 	->setBody('return 123;')
 	->addParameter('var')
-		->setTypeHint('Bar\C');
+		->setType('Bar\C');
 
 sameFile(__DIR__ . '/expected/Printer.namespace.function.expect', $printer->printFunction($function, $namespace));

@@ -28,7 +28,7 @@ Assert::true($method->isVariadic());
 $method = Method::from(Variadics::class . '::bar');
 Assert::true($method->isVariadic());
 Assert::true($method->getParameters()['bar']->isReference());
-Assert::same('array', $method->getParameters()['bar']->getTypeHint());
+Assert::same('array', $method->getParameters()['bar']->getType());
 
 
 
@@ -81,7 +81,7 @@ same(
 $method = (new Method('variadic'))
 	->setVariadic(true)
 	->setBody('return 42;');
-$method->addParameter('foo')->setTypeHint('array');
+$method->addParameter('foo')->setType('array');
 
 same(
 'function variadic(array ...$foo)
@@ -95,7 +95,7 @@ same(
 $method = (new Method('variadic'))
 	->setVariadic(true)
 	->setBody('return 42;');
-$method->addParameter('foo')->setTypeHint('array')->setReference(true);
+$method->addParameter('foo')->setType('array')->setReference(true);
 
 same(
 'function variadic(array &...$foo)

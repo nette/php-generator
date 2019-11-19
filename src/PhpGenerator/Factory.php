@@ -107,7 +107,7 @@ final class Factory
 	{
 		$param = new Parameter($from->getName());
 		$param->setReference($from->isPassedByReference());
-		$param->setTypeHint($from->hasType() ? $from->getType()->getName() : null);
+		$param->setType($from->hasType() ? $from->getType()->getName() : null);
 		$param->setNullable($from->hasType() && $from->getType()->allowsNull());
 		if ($from->isDefaultValueAvailable()) {
 			$param->setDefaultValue($from->isDefaultValueConstant()
