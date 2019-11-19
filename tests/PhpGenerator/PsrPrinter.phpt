@@ -40,7 +40,7 @@ $class->addMethod('first')
 	->addComment('@return resource')
 	->setFinal(true)
 	->setReturnType('stdClass')
-	->setBody("func();\nreturn \$this->?;", ['handle'])
+	->setBody("func();\nreturn ?;", [['aaaaaaaaaaaa' => 1, 'bbbbbbbbbbb' => 2, 'cccccccccccccc' => 3, 'dddddddddddd' => 4, 'eeeeeeeeeeee' => 5]])
 	->addParameter('var')
 		->setType('stdClass');
 

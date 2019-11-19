@@ -209,6 +209,7 @@ class Printer
 
 	protected function indent(string $s): string
 	{
+		$s = str_replace("\t", $this->indentation, $s);
 		return Strings::indent($s, 1, $this->indentation);
 	}
 
