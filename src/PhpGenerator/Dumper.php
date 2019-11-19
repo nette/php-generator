@@ -35,7 +35,7 @@ final class Dumper
 	}
 
 
-	private function dumpVar(&$var, int $level = 0): string
+	private function dumpVar(&$var, array $parents = [], int $level = 0): string
 	{
 		if ($var instanceof PhpLiteral) {
 			return (string) $var;
@@ -47,10 +47,10 @@ final class Dumper
 			return $this->dumpString($var);
 
 		} elseif (is_array($var)) {
-			return $this->dumpArray($var, $level);
+			return $this->dumpArray($var, $parents, $level);
 
 		} elseif (is_object($var)) {
-			return $this->dumpObject($var, $level);
+			return $this->dumpObject($var, $parents, $level);
 
 		} elseif (is_resource($var)) {
 			throw new Nette\InvalidArgumentException('Cannot dump resource.');
@@ -83,7 +83,7 @@ final class Dumper
 	}
 
 
-	private function dumpArray(array &$var, int $level): string
+	private function dumpArray(array &$var, array $parents, int $level): string
 	{
 		static $marker;
 		if ($marker === null) {
@@ -104,7 +104,7 @@ final class Dumper
 
 		foreach ($var as $k => &$v) {
 			if ($k !== $marker) {
-				$item = ($k === $counter ? '' : $this->dumpVar($k, $level + 1) . ' => ') . $this->dumpVar($v, $level + 1);
+				$item = ($k === $counter ? '' : $this->dumpVar($k) . ' => ') . $this->dumpVar($v, $parents, $level + 1);
 				$counter = is_int($k) ? max($k + 1, $counter) : $counter;
 				$outInline .= ($outInline === '' ? '' : ', ') . $item;
 				$outWrapped .= "\t$item,\n$space";
@@ -117,7 +117,7 @@ final class Dumper
 	}
 
 
-	private function dumpObject(&$var, int $level): string
+	private function dumpObject(&$var, array $parents, int $level): string
 	{
 		if ($var instanceof \Serializable) {
 			return 'unserialize(' . $this->dumpString(serialize($var)) . ')';
@@ -137,13 +137,12 @@ final class Dumper
 		$arr = (array) $var;
 		$space = str_repeat("\t", $level);
 
-		static $list = [];
-		if ($level > $this->maxDepth || in_array($var, $list, true)) {
+		if ($level > $this->maxDepth || in_array($var, $parents ?? [], true)) {
 			throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
 		}
 
 		$out = "\n";
-		$list[] = $var;
+		$parents[] = $var;
 		if (method_exists($var, '__sleep')) {
 			foreach ($var->__sleep() as $v) {
 				$props[$v] = $props["\x00*\x00$v"] = $props["\x00$class\x00$v"] = true;
@@ -152,11 +151,11 @@ final class Dumper
 
 		foreach ($arr as $k => &$v) {
 			if (!isset($props) || isset($props[$k])) {
-				$out .= "$space\t" . $this->dumpVar($k, $level + 1) . ' => ' . $this->dumpVar($v, $level + 1) . ",\n";
+				$out .= "$space\t" . $this->dumpVar($k) . ' => ' . $this->dumpVar($v, $parents, $level + 1) . ",\n";
 			}
 		}
 
-		array_pop($list);
+		array_pop($parents);
 		$out .= $space;
 		return $class === 'stdClass'
 			? "(object) [$out]"
