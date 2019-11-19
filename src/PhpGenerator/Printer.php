@@ -48,7 +48,7 @@ class Printer
 		foreach ($closure->getUses() as $param) {
 			$uses[] = ($param->isReference() ? '&' : '') . '$' . $param->getName();
 		}
-		$useStr = strlen($tmp = implode(', ', $uses)) > Dumper::WRAP_LENGTH && count($uses) > 1
+		$useStr = strlen($tmp = implode(', ', $uses)) > (new Dumper)->wrapLength && count($uses) > 1
 			? "\n" . $this->indentation . implode(",\n" . $this->indentation, $uses) . "\n"
 			: $tmp;
 
@@ -254,7 +254,7 @@ class Printer
 				. ($param->hasDefaultValue() && !$variadic ? ' = ' . $this->dump($param->getDefaultValue()) : '');
 		}
 
-		return strlen($tmp = implode(', ', $params)) > Dumper::WRAP_LENGTH && count($params) > 1
+		return strlen($tmp = implode(', ', $params)) > (new Dumper)->wrapLength && count($params) > 1
 			? "(\n" . $this->indentation . implode(",\n" . $this->indentation, $params) . "\n)"
 			: "($tmp)";
 	}

@@ -17,11 +17,13 @@ use Nette;
  */
 final class Dumper
 {
-	public const WRAP_LENGTH = 100;
-
 	private const INDENT_LENGTH = 4;
 
-	private const MAX_DEPTH = 50;
+	/** @var int */
+	public $maxDepth = 50;
+
+	/** @var int */
+	public $wrapLength = 100;
 
 
 	/**
@@ -90,7 +92,7 @@ final class Dumper
 		if (empty($var)) {
 			return '[]';
 
-		} elseif ($level > self::MAX_DEPTH || isset($var[$marker])) {
+		} elseif ($level > $this->maxDepth || isset($var[$marker])) {
 			throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
 		}
 
@@ -110,7 +112,7 @@ final class Dumper
 		}
 
 		unset($var[$marker]);
-		$wrap = strpos($outInline, "\n") !== false || strlen($outInline) > self::WRAP_LENGTH - $level * self::INDENT_LENGTH;
+		$wrap = strpos($outInline, "\n") !== false || strlen($outInline) > $this->wrapLength - $level * self::INDENT_LENGTH;
 		return '[' . ($wrap ? $outWrapped : $outInline) . ']';
 	}
 
@@ -136,7 +138,7 @@ final class Dumper
 		$space = str_repeat("\t", $level);
 
 		static $list = [];
-		if ($level > self::MAX_DEPTH || in_array($var, $list, true)) {
+		if ($level > $this->maxDepth || in_array($var, $list, true)) {
 			throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
 		}
 
@@ -187,7 +189,7 @@ final class Dumper
 				foreach ($arg as $tmp) {
 					$items[] = $this->dump($tmp);
 				}
-				$res .= strlen($tmp = implode(', ', $items)) > self::WRAP_LENGTH && count($items) > 1
+				$res .= strlen($tmp = implode(', ', $items)) > $this->wrapLength && count($items) > 1
 					? "\n" . Nette\Utils\Strings::indent(implode(",\n", $items)) . "\n"
 					: $tmp;
 
