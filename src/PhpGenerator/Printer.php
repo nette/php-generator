@@ -61,6 +61,22 @@ class Printer
 	}
 
 
+	public function printArrowFunction(Closure $closure): string
+	{
+		foreach ($closure->getUses() as $use) {
+			if ($use->isReference()) {
+				throw new Nette\InvalidArgumentException('Arrow function cannot bind variables by-reference.');
+			}
+		}
+
+		return 'fn '
+			. ($closure->getReturnReference() ? '&' : '')
+			. $this->printParameters($closure, null)
+			. $this->printReturnType($closure, null)
+			. ' => ' . trim($closure->getBody()) . ';';
+	}
+
+
 	public function printMethod(Method $method, PhpNamespace $namespace = null): string
 	{
 		$method->validate();

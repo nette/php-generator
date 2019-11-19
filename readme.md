@@ -335,6 +335,27 @@ function ($a, $b) use (&$c) {
 }
 ```
 
+Arrow function
+--------------
+
+You can also print closure as arrow function using printer:
+
+```php
+$closure = new Nette\PhpGenerator\Closure;
+$closure->setBody('return $a + $b;');
+$closure->addParameter('a');
+$closure->addParameter('b');
+
+// or use PsrPrinter for output compatible with PSR-2 / PSR-12
+echo (new Nette\PhpGenerator\Printer)->printArrowFunction($closure);
+```
+
+Result:
+
+```php
+fn ($a, $b) => $a + $b;
+```
+
 Method and Function Body Generator
 ----------------------------------
 
