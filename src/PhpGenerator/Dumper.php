@@ -29,13 +29,13 @@ final class Dumper
 	/**
 	 * Returns a PHP representation of a variable.
 	 */
-	public function dump($var): string
+	public function dump($var, int $column = 0): string
 	{
-		return $this->dumpVar($var);
+		return $this->dumpVar($var, [], 0, $column);
 	}
 
 
-	private function dumpVar(&$var, array $parents = [], int $level = 0): string
+	private function dumpVar(&$var, array $parents = [], int $level = 0, int $column = 0): string
 	{
 		if ($var instanceof PhpLiteral) {
 			return (string) $var;
@@ -47,7 +47,7 @@ final class Dumper
 			return $this->dumpString($var);
 
 		} elseif (is_array($var)) {
-			return $this->dumpArray($var, $parents, $level);
+			return $this->dumpArray($var, $parents, $level, $column);
 
 		} elseif (is_object($var)) {
 			return $this->dumpObject($var, $parents, $level);
@@ -83,7 +83,7 @@ final class Dumper
 	}
 
 
-	private function dumpArray(array &$var, array $parents, int $level): string
+	private function dumpArray(array &$var, array $parents, int $level, int $column): string
 	{
 		if (empty($var)) {
 			return '[]';
@@ -99,14 +99,18 @@ final class Dumper
 		$counter = 0;
 
 		foreach ($var as $k => &$v) {
-			$item = ($k === $counter ? '' : $this->dumpVar($k) . ' => ') . $this->dumpVar($v, $parents, $level + 1);
+			$keyPart = $k === $counter ? '' : $this->dumpVar($k) . ' => ';
 			$counter = is_int($k) ? max($k + 1, $counter) : $counter;
-			$outInline .= ($outInline === '' ? '' : ', ') . $item;
-			$outWrapped .= "\t$item,\n$space";
+			$outInline .= ($outInline === '' ? '' : ', ') . $keyPart;
+			$outInline .= $this->dumpVar($v, $parents, 0, $column + strlen($outInline));
+			$outWrapped .= "\t"
+				. $keyPart
+				. $this->dumpVar($v, $parents, $level + 1, strlen($keyPart))
+				. ",\n$space";
 		}
 
 		array_pop($parents);
-		$wrap = strpos($outInline, "\n") !== false || strlen($outInline) > $this->wrapLength - $level * self::INDENT_LENGTH;
+		$wrap = strpos($outInline, "\n") !== false || $level * self::INDENT_LENGTH + $column + strlen($outInline) + 3 > $this->wrapLength; // 3 = [],
 		return '[' . ($wrap ? $outWrapped : $outInline) . ']';
 	}
 
@@ -145,7 +149,10 @@ final class Dumper
 
 		foreach ($arr as $k => &$v) {
 			if (!isset($props) || isset($props[$k])) {
-				$out .= "$space\t" . $this->dumpVar($k) . ' => ' . $this->dumpVar($v, $parents, $level + 1) . ",\n";
+				$out .= "$space\t"
+					. ($keyPart = $this->dumpVar($k) . ' => ')
+					. $this->dumpVar($v, $parents, $level + 1, strlen($keyPart))
+					. ",\n";
 			}
 		}
 

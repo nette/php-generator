@@ -112,19 +112,22 @@ class Printer
 
 		$consts = [];
 		foreach ($class->getConstants() as $const) {
+			$def = ($const->getVisibility() ? $const->getVisibility() . ' ' : '') . 'const ' . $const->getName() . ' = ';
 			$consts[] = Helpers::formatDocComment((string) $const->getComment())
-				. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
-				. 'const ' . $const->getName() . ' = ' . $this->dump($const->getValue()) . ";\n";
+				. $def
+				. $this->dump($const->getValue(), strlen($def)) . ";\n";
 		}
 
 		$properties = [];
 		foreach ($class->getProperties() as $property) {
 			$type = $property->getType();
-			$properties[] = Helpers::formatDocComment((string) $property->getComment())
-				. ($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' '
+			$def = (($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' '
 				. ($type ? ($property->isNullable() ? '?' : '') . ($this->resolveTypes && $namespace ? $namespace->unresolveName($type) : $type) . ' ' : '')
-				. '$' . $property->getName()
-				. ($property->getValue() === null && !$property->isInitialized() ? '' : ' = ' . $this->dump($property->getValue()))
+				. '$' . $property->getName());
+
+			$properties[] = Helpers::formatDocComment((string) $property->getComment())
+				. $def
+				. ($property->getValue() === null && !$property->isInitialized() ? '' : ' = ' . $this->dump($property->getValue(), strlen($def) + 3)) // 3 = ' = '
 				. ";\n";
 		}
 
@@ -214,9 +217,9 @@ class Printer
 	}
 
 
-	protected function dump($var): string
+	protected function dump($var, int $column = 0): string
 	{
-		return (new Dumper)->dump($var);
+		return (new Dumper)->dump($var, $column);
 	}
 
 
