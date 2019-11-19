@@ -30,6 +30,15 @@ final class Property
 	/** @var bool */
 	private $static = false;
 
+	/** @var string|null */
+	private $type;
+
+	/** @var bool */
+	private $nullable = false;
+
+	/** @var bool */
+	private $initialized = false;
+
 
 	/**
 	 * @return static
@@ -60,5 +69,53 @@ final class Property
 	public function isStatic(): bool
 	{
 		return $this->static;
+	}
+
+
+	/**
+	 * @return static
+	 */
+	public function setType(?string $val): self
+	{
+		$this->type = $val;
+		return $this;
+	}
+
+
+	public function getType(): ?string
+	{
+		return $this->type;
+	}
+
+
+	/**
+	 * @return static
+	 */
+	public function setNullable(bool $state = true): self
+	{
+		$this->nullable = $state;
+		return $this;
+	}
+
+
+	public function isNullable(): bool
+	{
+		return $this->nullable;
+	}
+
+
+	/**
+	 * @return static
+	 */
+	public function setInitialized(bool $state = true): self
+	{
+		$this->initialized = $state;
+		return $this;
+	}
+
+
+	public function isInitialized(): bool
+	{
+		return $this->initialized;
 	}
 }

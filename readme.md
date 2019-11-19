@@ -120,10 +120,15 @@ If the property, constant, method or parameter already exist, it will be overwri
 
 Members can be removed using `removeProperty()`, `removeConstant()`, `removeMethod()` or `removeParameter()`.
 
-PHP Generator supports all new PHP 7.3 features:
+PHP Generator supports all new PHP 7.3 and 7.4 features:
 
 ```php
 $class = new Nette\PhpGenerator\ClassType('Demo');
+
+$class->addProperty('items')
+	->setType('array')
+	->setNullable()
+	->setInitialized();
 
 $class->addConstant('ID', 123)
 	->setVisibility('private'); // constant visiblity
@@ -145,6 +150,8 @@ Result:
 ```php
 class Demo
 {
+	public ?array $items = null;
+
 	private const ID = 123;
 
 	public function getValue(?int $id): ?int
