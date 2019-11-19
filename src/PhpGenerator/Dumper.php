@@ -192,24 +192,17 @@ final class Dumper
 					: $tmp;
 
 			} else { // $  ->  ::
-				$res .= substr($token, 0, -1) . $this->formatMember(array_shift($args));
+				$arg = array_shift($args);
+				if ($arg instanceof PhpLiteral || !Helpers::isIdentifier($arg)) {
+					$arg = '{' . $this->dumpVar($arg) . '}';
+				}
+				$res .= substr($token, 0, -1) . $arg;
 			}
 		}
 		if ($args) {
 			throw new Nette\InvalidArgumentException('Insufficient number of placeholders.');
 		}
 		return $res;
-	}
-
-
-	/**
-	 * Returns a PHP representation of a object member.
-	 */
-	private function formatMember($name): string
-	{
-		return $name instanceof PhpLiteral || !Helpers::isIdentifier($name)
-			? '{' . $this->dumpVar($name) . '}'
-			: $name;
 	}
 
 
