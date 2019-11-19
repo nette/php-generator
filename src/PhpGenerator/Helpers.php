@@ -25,21 +25,21 @@ final class Helpers
 	/** @deprecated  use Nette\PhpGenerator\Dumper::dump() */
 	public static function dump($var): string
 	{
-		return Dumper::dump($var);
+		return (new Dumper)->dump($var);
 	}
 
 
 	/** @deprecated  use Nette\PhpGenerator\Dumper::format() */
 	public static function format(string $statement, ...$args): string
 	{
-		return Dumper::format($statement, ...$args);
+		return (new Dumper)->format($statement, ...$args);
 	}
 
 
 	/** @deprecated  use Nette\PhpGenerator\Dumper::format() */
 	public static function formatArgs(string $statement, array $args): string
 	{
-		return Dumper::format($statement, ...$args);
+		return (new Dumper)->format($statement, ...$args);
 	}
 
 

@@ -550,3 +550,17 @@ $closure = Nette\PhpGenerator\Closure::from(
 	function (stdClass $a, $b = null) {}
 );
 ```
+
+Variables dumper
+----------------
+
+The Dumper returns a parsable PHP string representation of a variable. It provides a better function that you can use instead of `var_export()`
+with more readable output.
+
+```php
+$dumper = new Nette\PhpGenerator\Dumper;
+
+$var = ['a', 'b', 123];
+
+echo $dumper->dump($var); // prints ['a', 'b', 123]
+```

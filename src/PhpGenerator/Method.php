@@ -66,7 +66,7 @@ final class Method
 	 */
 	public function setBody(?string $code, array $args = null): self
 	{
-		$this->body = $args === null || $code === null ? $code : Dumper::format($code, ...$args);
+		$this->body = $args === null || $code === null ? $code : (new Dumper)->format($code, ...$args);
 		return $this;
 	}
 

@@ -17,8 +17,6 @@ use Nette;
  */
 final class Dumper
 {
-	use Nette\StaticClass;
-
 	public const WRAP_LENGTH = 100;
 
 	private const INDENT_LENGTH = 4;
@@ -29,13 +27,13 @@ final class Dumper
 	/**
 	 * Returns a PHP representation of a variable.
 	 */
-	public static function dump($var): string
+	public function dump($var): string
 	{
-		return self::_dump($var);
+		return $this->_dump($var);
 	}
 
 
-	private static function _dump(&$var, int $level = 0)
+	private function _dump(&$var, int $level = 0)
 	{
 		if ($var instanceof PhpLiteral) {
 			return (string) $var;
@@ -84,7 +82,7 @@ final class Dumper
 				$counter = 0;
 				foreach ($var as $k => &$v) {
 					if ($k !== $marker) {
-						$item = ($k === $counter ? '' : self::_dump($k, $level + 1) . ' => ') . self::_dump($v, $level + 1);
+						$item = ($k === $counter ? '' : $this->_dump($k, $level + 1) . ' => ') . $this->_dump($v, $level + 1);
 						$counter = is_int($k) ? max($k + 1, $counter) : $counter;
 						$out .= ($out === '' ? '' : ', ') . $item;
 						$outWrapped .= "\t$item,\n$space";
@@ -97,7 +95,7 @@ final class Dumper
 
 		} elseif ($var instanceof \Serializable) {
 			$var = serialize($var);
-			return 'unserialize(' . self::_dump($var, $level) . ')';
+			return 'unserialize(' . $this->_dump($var, $level) . ')';
 
 		} elseif ($var instanceof \Closure) {
 			throw new Nette\InvalidArgumentException('Cannot dump closure.');
@@ -108,7 +106,7 @@ final class Dumper
 				throw new Nette\InvalidArgumentException('Cannot dump anonymous class.');
 
 			} elseif (in_array($class, ['DateTime', 'DateTimeImmutable'], true)) {
-				return self::format("new $class(?, new DateTimeZone(?))", $var->format('Y-m-d H:i:s.u'), $var->getTimeZone()->getName());
+				return $this->format("new $class(?, new DateTimeZone(?))", $var->format('Y-m-d H:i:s.u'), $var->getTimeZone()->getName());
 			}
 
 			$arr = (array) $var;
@@ -128,7 +126,7 @@ final class Dumper
 				}
 				foreach ($arr as $k => &$v) {
 					if (!isset($props) || isset($props[$k])) {
-						$out .= "$space\t" . self::_dump($k, $level + 1) . ' => ' . self::_dump($v, $level + 1) . ",\n";
+						$out .= "$space\t" . $this->_dump($k, $level + 1) . ' => ' . $this->_dump($v, $level + 1) . ",\n";
 					}
 				}
 				array_pop($list);
@@ -150,7 +148,7 @@ final class Dumper
 	/**
 	 * Generates PHP statement.
 	 */
-	public static function format(string $statement, ...$args): string
+	public function format(string $statement, ...$args): string
 	{
 		$tokens = preg_split('#(\.\.\.\?|\$\?|->\?|::\?|\\\\\?|\?\*|\?)#', $statement, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$res = '';
@@ -162,7 +160,7 @@ final class Dumper
 			} elseif (!$args) {
 				throw new Nette\InvalidArgumentException('Insufficient number of arguments.');
 			} elseif ($token === '?') {
-				$res .= self::dump(array_shift($args));
+				$res .= $this->dump(array_shift($args));
 			} elseif ($token === '...?' || $token === '?*') {
 				$arg = array_shift($args);
 				if (!is_array($arg)) {
@@ -170,14 +168,14 @@ final class Dumper
 				}
 				$items = [];
 				foreach ($arg as $tmp) {
-					$items[] = self::dump($tmp);
+					$items[] = $this->dump($tmp);
 				}
 				$res .= strlen($tmp = implode(', ', $items)) > self::WRAP_LENGTH && count($items) > 1
 					? "\n" . Nette\Utils\Strings::indent(implode(",\n", $items)) . "\n"
 					: $tmp;
 
 			} else { // $  ->  ::
-				$res .= substr($token, 0, -1) . self::formatMember(array_shift($args));
+				$res .= substr($token, 0, -1) . $this->formatMember(array_shift($args));
 			}
 		}
 		if ($args) {
@@ -190,10 +188,10 @@ final class Dumper
 	/**
 	 * Returns a PHP representation of a object member.
 	 */
-	private static function formatMember($name): string
+	private function formatMember($name): string
 	{
 		return $name instanceof PhpLiteral || !Helpers::isIdentifier($name)
-			? '{' . self::_dump($name) . '}'
+			? '{' . $this->_dump($name) . '}'
 			: $name;
 	}
 

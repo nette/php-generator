@@ -13,12 +13,13 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-Assert::same('func', Dumper::format('func'));
-Assert::same('func(1)', Dumper::format('func(?)', 1));
-Assert::same('func(1 ? 2 : 3)', Dumper::format('func(1 \? 2 : 3)'));
-Assert::same('func([1, 2])', Dumper::format('func(?)', [1, 2]));
-Assert::same('func(1, 2)', Dumper::format('func(...?)', [1, 2]));
-Assert::same('func(1, 2)', Dumper::format('func(?*)', [1, 2])); // old way
+$dumper = new Dumper;
+Assert::same('func', $dumper->format('func'));
+Assert::same('func(1)', $dumper->format('func(?)', 1));
+Assert::same('func(1 ? 2 : 3)', $dumper->format('func(1 \? 2 : 3)'));
+Assert::same('func([1, 2])', $dumper->format('func(?)', [1, 2]));
+Assert::same('func(1, 2)', $dumper->format('func(...?)', [1, 2]));
+Assert::same('func(1, 2)', $dumper->format('func(?*)', [1, 2])); // old way
 same(
 'func(
 	10,
@@ -49,22 +50,25 @@ same(
 	35,
 	36
 )',
-	Dumper::format('func(?*)', range(10, 36))
+	$dumper->format('func(?*)', range(10, 36))
 );
 
 Assert::exception(function () {
-	Dumper::format('func(...?)', 1, 2);
+	$dumper = new Dumper;
+	$dumper->format('func(...?)', 1, 2);
 }, Nette\InvalidArgumentException::class, 'Argument must be an array.');
 
 Assert::exception(function () {
-	Dumper::format('func(?)', 1, 2);
+	$dumper = new Dumper;
+	$dumper->format('func(?)', 1, 2);
 }, Nette\InvalidArgumentException::class, 'Insufficient number of placeholders.');
 
 Assert::exception(function () {
-	Dumper::format('func(?, ?, ?)', [1, 2]);
+	$dumper = new Dumper;
+	$dumper->format('func(?, ?, ?)', [1, 2]);
 }, Nette\InvalidArgumentException::class, 'Insufficient number of arguments.');
 
-Assert::same('$a = 2', Dumper::format('$? = ?', 'a', 2));
-Assert::same('$obj->a = 2', Dumper::format('$obj->? = ?', 'a', 2));
-Assert::same('$obj->{1} = 2', Dumper::format('$obj->? = ?', 1, 2));
-Assert::same('$obj->{\' \'} = 2', Dumper::format('$obj->? = ?', ' ', 2));
+Assert::same('$a = 2', $dumper->format('$? = ?', 'a', 2));
+Assert::same('$obj->a = 2', $dumper->format('$obj->? = ?', 'a', 2));
+Assert::same('$obj->{1} = 2', $dumper->format('$obj->? = ?', 1, 2));
+Assert::same('$obj->{\' \'} = 2', $dumper->format('$obj->? = ?', ' ', 2));

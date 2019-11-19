@@ -216,7 +216,7 @@ class Printer
 
 	protected function dump($var): string
 	{
-		return Dumper::dump($var);
+		return (new Dumper)->dump($var);
 	}
 
 
