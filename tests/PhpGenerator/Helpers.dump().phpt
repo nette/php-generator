@@ -137,3 +137,17 @@ Assert::exception(function () {
 	Helpers::dump(new class {
 	});
 }, Nette\InvalidArgumentException::class, 'Cannot dump anonymous class.');
+
+
+Assert::exception(function () {
+	$rec = [];
+	$rec[] = &$rec;
+	Helpers::dump($rec);
+}, Nette\InvalidArgumentException::class, 'Nesting level too deep or recursive dependency.');
+
+
+Assert::exception(function () {
+	$rec = new stdClass;
+	$rec->x = &$rec;
+	Helpers::dump($rec);
+}, Nette\InvalidArgumentException::class, 'Nesting level too deep or recursive dependency.');
