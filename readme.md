@@ -51,6 +51,10 @@ $class
 
 // to generate PHP code simply cast to string or use echo:
 echo $class;
+
+// or use printer:
+$printer = new Nette\PhpGenerator\Printer;
+echo $printer->printClass($class);
 ```
 
 It will render this result:
@@ -82,10 +86,10 @@ $class->addProperty('items', [1, 2, 3])
 It generates:
 
 ```php
-	const ID = 123;
+const ID = 123;
 
-	/** @var int[] */
-	private static $items = [1, 2, 3];
+/** @var int[] */
+private static $items = [1, 2, 3];
 ```
 
 And we can add methods with parameters:
@@ -106,14 +110,14 @@ $method->addParameter('items', []) // $items = []
 It results in:
 
 ```php
-	/**
-	 * Count it.
-	 * @return int
-	 */
-	final protected function count(array &$items = [])
-	{
-		return count($items ?: $this->items);
-	}
+/**
+ * Count it.
+ * @return int
+ */
+final protected function count(array &$items = [])
+{
+	return count($items ?: $this->items);
+}
 ```
 
 If the property, constant, method or parameter already exist, it will be overwritten.
@@ -181,11 +185,10 @@ Tabs versus spaces
 The generated code uses tabs for indentation. If you want to have the output compatible with PSR-2 or PSR-12, use `PsrPrinter`:
 
 ```php
-$printer = new Nette\PhpGenerator\PsrPrinter;
-
 $class = new Nette\PhpGenerator\ClassType('Demo');
 // ...
 
+$printer = new Nette\PhpGenerator\PsrPrinter;
 echo $printer->printClass($class); // 4 spaces indentation
 ```
 
