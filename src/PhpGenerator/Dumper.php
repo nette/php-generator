@@ -85,33 +85,27 @@ final class Dumper
 
 	private function dumpArray(array &$var, array $parents, int $level): string
 	{
-		static $marker;
-		if ($marker === null) {
-			$marker = uniqid("\x00", true);
-		}
 		if (empty($var)) {
 			return '[]';
 
-		} elseif ($level > $this->maxDepth || isset($var[$marker])) {
+		} elseif ($level > $this->maxDepth || in_array($var, $parents ?? [], true)) {
 			throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
 		}
 
 		$space = str_repeat("\t", $level);
 		$outInline = '';
 		$outWrapped = "\n$space";
-		$var[$marker] = true;
+		$parents[] = $var;
 		$counter = 0;
 
 		foreach ($var as $k => &$v) {
-			if ($k !== $marker) {
-				$item = ($k === $counter ? '' : $this->dumpVar($k) . ' => ') . $this->dumpVar($v, $parents, $level + 1);
-				$counter = is_int($k) ? max($k + 1, $counter) : $counter;
-				$outInline .= ($outInline === '' ? '' : ', ') . $item;
-				$outWrapped .= "\t$item,\n$space";
-			}
+			$item = ($k === $counter ? '' : $this->dumpVar($k) . ' => ') . $this->dumpVar($v, $parents, $level + 1);
+			$counter = is_int($k) ? max($k + 1, $counter) : $counter;
+			$outInline .= ($outInline === '' ? '' : ', ') . $item;
+			$outWrapped .= "\t$item,\n$space";
 		}
 
-		unset($var[$marker]);
+		array_pop($parents);
 		$wrap = strpos($outInline, "\n") !== false || strlen($outInline) > $this->wrapLength - $level * self::INDENT_LENGTH;
 		return '[' . ($wrap ? $outWrapped : $outInline) . ']';
 	}
