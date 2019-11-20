@@ -41,12 +41,15 @@ Assert::same('[$s]', $dumper->dump([new PhpLiteral('$s')]));
 
 Assert::same('[1, 2, 3]', $dumper->dump([1, 2, 3]));
 Assert::same("['a', 7 => 'b', 'c', '9a' => 'd', 'e']", $dumper->dump(['a', 7 => 'b', 'c', '9a' => 'd', 9 => 'e']));
+
+$dumper->wrapLength = 100;
 same("[
 	[
 		'a',
 		'loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong',
 	],
 ]", $dumper->dump([['a', 'loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong']]));
+
 Assert::same("['a' => 1, [\"\\r\" => \"\\r\", 2], 3]", $dumper->dump(['a' => 1, ["\r" => "\r", 2], 3]));
 
 Assert::same("(object) [\n\t'a' => 1,\n\t'b' => 2,\n]", $dumper->dump((object) ['a' => 1, 'b' => 2]));

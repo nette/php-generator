@@ -25,8 +25,8 @@ $class->addConstant('FORCE_ARRAY', new PhpLiteral('Nette\Utils\Json::FORCE_ARRAY
 	->setVisibility('private')
 	->addComment('Commented');
 
-$class->addConstant('MULTILINE_LONG', ['aaaaaaa' => 1, 'bbbbbbb' => 2, 'ccccccc' => 3, 'ddddddd' => 4, 'eeeeee' => 5]);
-$class->addConstant('SHORT', ['aaaaaaa' => 1, 'bbbbbbb' => 2, 'ccccccc' => 3, 'ddddddd' => 4, 'eeeeee' => 5]);
+$class->addConstant('MULTILINE_LONG', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5, 'ffffffff' => 6]);
+$class->addConstant('SHORT', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5, 'ffffffff' => 6]);
 
 $class->addProperty('handle')
 	->setVisibility('private')
@@ -35,14 +35,14 @@ $class->addProperty('handle')
 $class->addProperty('order')
 	->setValue(new PhpLiteral('RecursiveIteratorIterator::SELF_FIRST'));
 
-$class->addProperty('multilineLong', ['aaaaaaa' => 1, 'bbbbbbb' => 2, 'ccccccc' => 3, 'ddddddd' => 4, 'eeeeee' => 5]);
-$class->addProperty('short', ['aaaaaaa' => 1, 'bbbbbbb' => 2, 'ccccccc' => 3, 'ddddddd' => 4, 'eeeeee' => 5]);
+$class->addProperty('multilineLong', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5, 'ffffffff' => 6]);
+$class->addProperty('short', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5, 'ffffffff' => 6]);
 
 $class->addMethod('first')
 	->addComment('@return resource')
 	->setFinal(true)
 	->setReturnType('stdClass')
-	->setBody("func();\nreturn ?;", [['aaaaaaaaaaaa' => 1, 'bbbbbbbbbbb' => 2, 'cccccccccccccc' => 3, 'dddddddddddd' => 4, 'eeeeeeeeeeee' => 5]])
+	->setBody("func();\nreturn ?;", [['aaaaaaaaaaaa' => 1, 'bbbbbbbbbbb' => 2, 'cccccccccccccc' => 3, 'dddddddddddd' => 4, 'eeeeeeeeeeee' => 5, 'ffffffff' => 6]])
 	->addParameter('var')
 		->setType('stdClass');
 

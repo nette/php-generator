@@ -23,7 +23,7 @@ final class Dumper
 	public $maxDepth = 50;
 
 	/** @var int */
-	public $wrapLength = 100;
+	public $wrapLength = 120;
 
 
 	/**

@@ -11,7 +11,7 @@ require __DIR__ . '/../bootstrap.php';
 $function = new Closure;
 $function->setBody('return null;');
 
-for ($name = 'abcde'; $name < 'abcdr'; $name++) {
+for ($name = 'abcde'; $name < 'abcdu'; $name++) {
 	$function->addParameter($name);
 	$function->addUse($name);
 }
@@ -30,7 +30,10 @@ same(
 	$abcdn,
 	$abcdo,
 	$abcdp,
-	$abcdq
+	$abcdq,
+	$abcdr,
+	$abcds,
+	$abcdt
 ) use (
 	$abcde,
 	$abcdf,
@@ -44,7 +47,10 @@ same(
 	$abcdn,
 	$abcdo,
 	$abcdp,
-	$abcdq
+	$abcdq,
+	$abcdr,
+	$abcds,
+	$abcdt
 ) {
 	return null;
 }', (string) $function);

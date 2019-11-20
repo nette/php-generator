@@ -10,5 +10,6 @@ final public function first(stdClass $var): stdClass
 		'cccccccccccccc' => 3,
 		'dddddddddddd' => 4,
 		'eeeeeeeeeeee' => 5,
+		'ffffffff' => 6,
 	];
 }
