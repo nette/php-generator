@@ -179,19 +179,13 @@ final class Dumper
 			} elseif (!$args) {
 				throw new Nette\InvalidArgumentException('Insufficient number of arguments.');
 			} elseif ($token === '?') {
-				$res .= $this->dump(array_shift($args));
+				$res .= $this->dump(array_shift($args), strlen($res) - strrpos($res, "\n"));
 			} elseif ($token === '...?' || $token === '?*') {
 				$arg = array_shift($args);
 				if (!is_array($arg)) {
 					throw new Nette\InvalidArgumentException('Argument must be an array.');
 				}
-				$items = [];
-				foreach ($arg as $tmp) {
-					$items[] = $this->dump($tmp);
-				}
-				$res .= strlen($tmp = implode(', ', $items)) > $this->wrapLength && count($items) > 1
-					? "\n" . Nette\Utils\Strings::indent(implode(",\n", $items)) . "\n"
-					: $tmp;
+				$res .= $this->dumpArguments($arg, strlen($res) - strrpos($res, "\n"));
 
 			} else { // $  ->  ::
 				$arg = array_shift($args);
@@ -205,6 +199,22 @@ final class Dumper
 			throw new Nette\InvalidArgumentException('Insufficient number of placeholders.');
 		}
 		return $res;
+	}
+
+
+	private function dumpArguments(array &$var, int $column): string
+	{
+		$outInline = $outWrapped = '';
+
+		foreach ($var as &$v) {
+			$outInline .= $outInline === '' ? '' : ', ';
+			$outInline .= $this->dumpVar($v, [$var], 0, $column + strlen($outInline));
+			$outWrapped .= ($outWrapped === '' ? '' : ',') . "\n\t" . $this->dumpVar($v, [$var], 1);
+		}
+
+		return count($var) > 1 && (strpos($outInline, "\n") !== false || $column + strlen($outInline) > $this->wrapLength)
+			? $outWrapped . "\n"
+			: $outInline;
 	}
 
 
