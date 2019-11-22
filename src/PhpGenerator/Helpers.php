@@ -90,4 +90,11 @@ final class Helpers
 	{
 		return str_replace("\t", str_repeat(' ', $count), $s);
 	}
+
+
+	/** @internal */
+	public static function createObject(string $class, array $props)
+	{
+		return Dumper::createObject($class, $props);
+	}
 }
