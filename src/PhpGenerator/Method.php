@@ -40,7 +40,6 @@ final class Method
 
 	/**
 	 * @param  string|array  $method
-	 * @return static
 	 */
 	public static function from($method): self
 	{
@@ -57,6 +56,7 @@ final class Method
 				throw $e;
 			}
 			trigger_error('Exception in ' . __METHOD__ . "(): {$e->getMessage()} in {$e->getFile()}:{$e->getLine()}", E_USER_ERROR);
+			return '';
 		}
 	}
 

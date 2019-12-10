@@ -69,7 +69,6 @@ final class ClassType
 
 	/**
 	 * @param  string|object  $class
-	 * @return static
 	 */
 	public static function from($class): self
 	{
@@ -93,6 +92,7 @@ final class ClassType
 				throw $e;
 			}
 			trigger_error('Exception in ' . __METHOD__ . "(): {$e->getMessage()} in {$e->getFile()}:{$e->getLine()}", E_USER_ERROR);
+			return '';
 		}
 	}
 

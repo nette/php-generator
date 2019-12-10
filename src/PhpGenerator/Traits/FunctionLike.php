@@ -188,7 +188,7 @@ trait FunctionLike
 	/**
 	 * @deprecated
 	 */
-	public function setNamespace(PhpNamespace $val = null): self
+	public function setNamespace(Nette\PhpGenerator\PhpNamespace $val = null): self
 	{
 		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		return $this;

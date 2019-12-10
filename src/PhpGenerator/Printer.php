@@ -241,7 +241,7 @@ class Printer
 
 
 	/**
-	 * @param Nette\PhpGenerator\Traits\FunctionLike  $function
+	 * @param Closure|GlobalFunction|Method  $function
 	 */
 	protected function printParameters($function, ?PhpNamespace $namespace): string
 	{
@@ -264,7 +264,7 @@ class Printer
 
 
 	/**
-	 * @param Nette\PhpGenerator\Traits\FunctionLike  $function
+	 * @param Closure|GlobalFunction|Method  $function
 	 */
 	protected function printReturnType($function, ?PhpNamespace $namespace): string
 	{
