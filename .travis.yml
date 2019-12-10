@@ -41,12 +41,9 @@ jobs:
 
 
         -   stage: Static Analysis (informative)
-            install:
-                # Install PHPStan
-                - travis_retry composer create-project phpstan/phpstan-shim temp/phpstan --no-progress
-                - travis_retry composer install --no-progress --prefer-dist
+            php: 7.4
             script:
-                - php temp/phpstan/phpstan.phar analyse --autoload-file vendor/autoload.php --level 5 src
+                - composer run-script phpstan
 
 
         -   stage: Code Coverage
