@@ -37,7 +37,7 @@ final class Dumper
 
 	private function dumpVar(&$var, array $parents = [], int $level = 0, int $column = 0): string
 	{
-		if ($var instanceof PhpLiteral) {
+		if ($var instanceof Literal) {
 			return ltrim(Nette\Utils\Strings::indent(trim((string) $var), $level), "\t");
 
 		} elseif ($var === null) {
@@ -189,7 +189,7 @@ final class Dumper
 
 			} else { // $  ->  ::
 				$arg = array_shift($args);
-				if ($arg instanceof PhpLiteral || !Helpers::isIdentifier($arg)) {
+				if ($arg instanceof Literal || !Helpers::isIdentifier($arg)) {
 					$arg = '{' . $this->dumpVar($arg) . '}';
 				}
 				$res .= substr($token, 0, -1) . $arg;

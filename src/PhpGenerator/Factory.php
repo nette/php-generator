@@ -109,7 +109,7 @@ final class Factory
 		$param->setNullable($from->hasType() && $from->getType()->allowsNull());
 		if ($from->isDefaultValueAvailable()) {
 			$param->setDefaultValue($from->isDefaultValueConstant()
-				? new PhpLiteral($from->getDefaultValueConstantName())
+				? new Literal($from->getDefaultValueConstantName())
 				: $from->getDefaultValue());
 			$param->setNullable($param->isNullable() && $param->getDefaultValue() !== null);
 		}

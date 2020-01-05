@@ -207,17 +207,17 @@ It can be used also for functions, closures, namespaces etc.
 Literals
 --------
 
-You can pass any PHP code to property or parameter default values via `PhpLiteral`:
+You can pass any PHP code to property or parameter default values via `Literal`:
 
 ```php
-use Nette\PhpGenerator\PhpLiteral;
+use Nette\PhpGenerator\Literal;
 
 $class = new Nette\PhpGenerator\ClassType('Demo');
 
-$class->addProperty('foo', new PhpLiteral('Iterator::SELF_FIRST'));
+$class->addProperty('foo', new Literal('Iterator::SELF_FIRST'));
 
 $class->addMethod('bar')
-	->addParameter('id', new PhpLiteral('1 + 2'));
+	->addParameter('id', new Literal('1 + 2'));
 
 echo $class;
 ```
