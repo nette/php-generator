@@ -238,8 +238,8 @@ Interface or Trait
 
 ```php
 $class = new Nette\PhpGenerator\ClassType('DemoInterface');
-$class->setType('interface');
-// or $class->setType('trait');
+$class->setInterface();
+// or $class->setTrait();
 ```
 
 Trait Resolutions and Visibility

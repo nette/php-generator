@@ -172,13 +172,13 @@ final class PhpNamespace
 
 	public function addInterface(string $name): ClassType
 	{
-		return $this->addClass($name)->setType(ClassType::TYPE_INTERFACE);
+		return $this->addClass($name)->setInterface();
 	}
 
 
 	public function addTrait(string $name): ClassType
 	{
-		return $this->addClass($name)->setType(ClassType::TYPE_TRAIT);
+		return $this->addClass($name)->setTrait();
 	}
 
 
