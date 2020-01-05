@@ -25,8 +25,8 @@ final class Factory
 			? new ClassType
 			: new ClassType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
 		$class->setType($from->isInterface() ? $class::TYPE_INTERFACE : ($from->isTrait() ? $class::TYPE_TRAIT : $class::TYPE_CLASS));
-		$class->setFinal($from->isFinal() && $class->getType() === $class::TYPE_CLASS);
-		$class->setAbstract($from->isAbstract() && $class->getType() === $class::TYPE_CLASS);
+		$class->setFinal($from->isFinal() && $class->isClass());
+		$class->setAbstract($from->isAbstract() && $class->isClass());
 
 		$ifaces = $from->getInterfaceNames();
 		foreach ($ifaces as $iface) {

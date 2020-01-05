@@ -15,7 +15,7 @@ require __DIR__ . '/../bootstrap.php';
 
 $interface = new ClassType('IExample');
 $interface
-	->setType('interface')
+	->setInterface()
 	->addExtend('IOne')
 	->addExtend('ITwo')
 	->addComment('Description of interface');

@@ -18,6 +18,9 @@ $class = new ClassType('Example');
 
 Assert::false($class->isFinal());
 Assert::false($class->isAbstract());
+Assert::true($class->isClass());
+Assert::false($class->isInterface());
+Assert::false($class->isTrait());
 Assert::same([], $class->getExtends());
 Assert::same([], $class->getTraits());
 Assert::same([], $class->getTraitResolutions());

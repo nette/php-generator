@@ -122,6 +122,48 @@ final class ClassType
 
 
 	/** @return static */
+	public function setClass(): self
+	{
+		$this->type = self::TYPE_CLASS;
+		return $this;
+	}
+
+
+	public function isClass(): bool
+	{
+		return $this->type === self::TYPE_CLASS;
+	}
+
+
+	/** @return static */
+	public function setInterface(): self
+	{
+		$this->type = self::TYPE_INTERFACE;
+		return $this;
+	}
+
+
+	public function isInterface(): bool
+	{
+		return $this->type === self::TYPE_INTERFACE;
+	}
+
+
+	/** @return static */
+	public function setTrait(): self
+	{
+		$this->type = self::TYPE_TRAIT;
+		return $this;
+	}
+
+
+	public function isTrait(): bool
+	{
+		return $this->type === self::TYPE_TRAIT;
+	}
+
+
+	/** @return static */
 	public function setType(string $type): self
 	{
 		if (!in_array($type, [self::TYPE_CLASS, self::TYPE_INTERFACE, self::TYPE_TRAIT], true)) {
@@ -268,7 +310,7 @@ final class ClassType
 	public function addMember($member): self
 	{
 		if ($member instanceof Method) {
-			if ($this->type === self::TYPE_INTERFACE) {
+			if ($this->isInterface()) {
 				$member->setBody(null);
 			}
 			$this->methods[$member->getName()] = $member;
@@ -418,7 +460,7 @@ final class ClassType
 	public function addMethod(string $name): Method
 	{
 		$method = new Method($name);
-		if ($this->type === self::TYPE_INTERFACE) {
+		if ($this->isInterface()) {
 			$method->setBody(null);
 		} else {
 			$method->setPublic();
