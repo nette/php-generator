@@ -23,7 +23,7 @@ $class = (new ClassType('Example'))
 	->addComment("Description of class.\nThis is example\n");
 
 $class->addConstant('FORCE_ARRAY', new PhpLiteral('Nette\Utils\Json::FORCE_ARRAY'))
-	->setVisibility('private')
+	->setPrivate()
 	->addComment('Commented');
 
 $class->addConstant('MULTILINE_LONG', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5, 'ffffffff' => 6]);

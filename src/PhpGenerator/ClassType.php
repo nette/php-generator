@@ -421,7 +421,7 @@ final class ClassType
 		if ($this->type === self::TYPE_INTERFACE) {
 			$method->setBody(null);
 		} else {
-			$method->setVisibility(self::VISIBILITY_PUBLIC);
+			$method->setPublic();
 		}
 		return $this->methods[$name] = $method;
 	}
