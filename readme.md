@@ -127,23 +127,25 @@ Members can be removed using `removeProperty()`, `removeConstant()`, `removeMeth
 PHP Generator supports all new PHP 7.3 and 7.4 features:
 
 ```php
+use Nette\PhpGenerator\Type;
+
 $class = new Nette\PhpGenerator\ClassType('Demo');
 
 $class->addConstant('ID', 123)
 	->setPrivate(); // constant visiblity
 
 $class->addProperty('items')
-	->setType('array') // typed properites
+	->setType(Type::ARRAY) // typed properites
 	->setNullable()
 	->setInitialized();
 
 $method = $class->addMethod('getValue')
-	->setReturnType('int') // method return type
+	->setReturnType(Type::INT) // method return type
 	->setReturnNullable() // nullable return type
 	->setBody('return count($this->items);');
 
 $method->addParameter('id')
-		->setType('int') // scalar type hint
+		->setType(Type::ARRAY) // scalar type hint
 		->setNullable(); // nullable type hint
 
 echo $class;

@@ -37,7 +37,7 @@ jobs:
             install:
                 - travis_retry composer create-project nette/coding-standard temp/coding-standard ^2 --no-progress
             script:
-                - php temp/coding-standard/ecs check src tests --config temp/coding-standard/coding-standard-php71.yml
+                - php temp/coding-standard/ecs check src tests --config tests/coding-standard.yml
 
 
         -   stage: Static Analysis (informative)

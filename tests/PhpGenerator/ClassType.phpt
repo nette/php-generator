@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpLiteral;
+use Nette\PhpGenerator\Type;
 use Tester\Assert;
 
 
@@ -57,10 +58,10 @@ $class->addProperty('order')
 	->setValue(new PhpLiteral('RecursiveIteratorIterator::SELF_FIRST'));
 
 $class->addProperty('typed1')
-	->setType('array');
+	->setType(Type::ARRAY);
 
 $class->addProperty('typed2')
-	->setType('array')
+	->setType(Type::ARRAY)
 	->setNullable()
 	->setInitialized();
 
@@ -120,7 +121,7 @@ $method->addParameter('item');
 
 $method->addParameter('res', null)
 		->setReference(true)
-		->setType('array');
+		->setType(Type::ARRAY);
 
 sameFile(__DIR__ . '/expected/ClassType.expect', (string) $class);
 

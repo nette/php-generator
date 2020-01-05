@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 
 use Nette\PhpGenerator\Method;
+use Nette\PhpGenerator\Type;
 use Tester\Assert;
 
 
@@ -38,8 +39,8 @@ Assert::same('float', $method->getParameters()['d']->getType());
 
 $method = (new Method('create'))
 	->setBody('return null;');
-$method->addParameter('a')->setType('string');
-$method->addParameter('b')->setType('bool');
+$method->addParameter('a')->setType(Type::STRING);
+$method->addParameter('b')->setType(Type::BOOL);
 
 same(
 'function create(string $a, bool $b)
