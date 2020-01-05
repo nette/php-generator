@@ -43,9 +43,9 @@ $class = new Nette\PhpGenerator\ClassType('Demo');
 
 $class
 	->setFinal()
-	->setExtends('ParentClass')
-	->addImplement('Countable')
-	->addTrait('Nette\SmartObject')
+	->setExtends(ParentClass::class)
+	->addImplement(Countable::class)
+	->addTrait(Nette\SmartObject::class)
 	->addComment("Description of class.\nSecond line\n")
 	->addComment('@property-read Nette\Forms\Form $form');
 
@@ -439,8 +439,8 @@ If the class already exists, it will be overwritten.
 You can define use-statements:
 
 ```php
-$namespace->addUse('Http\Request'); // use Http\Request;
-$namespace->addUse('Http\Request', 'HttpReq'); // use Http\Request as HttpReq;
+$namespace->addUse(Http\Request::class); // use Http\Request;
+$namespace->addUse(Http\Request::class, 'HttpReq'); // use Http\Request as HttpReq;
 ```
 
 **IMPORTANT NOTE:** when the class is part of the namespace, it is rendered slightly differently: all types (ie. type hints, return types, parent class name,
