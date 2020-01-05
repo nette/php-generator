@@ -47,7 +47,7 @@ $class->addConstant('FORCE_ARRAY', new PhpLiteral('Nette\Utils\Json::FORCE_ARRAY
 	->addComment('Commented');
 
 $class->addProperty('handle')
-	->setVisibility('private')
+	->setPrivate()
 	->addComment('@var resource  orignal file handle');
 
 $class->addProperty('order')
@@ -69,6 +69,9 @@ Assert::true($class->hasProperty('sections'));
 Assert::false($class->hasProperty('unknown'));
 Assert::true($p->isStatic());
 Assert::null($p->getVisibility());
+Assert::false($p->isPrivate());
+Assert::false($p->isProtected());
+Assert::true($p->isPublic());
 
 $m = $class->addMethod('getHandle')
 	->addComment('Returns file handle.')
@@ -100,6 +103,9 @@ Assert::true($m->getReturnReference());
 Assert::false($m->isReturnNullable());
 Assert::null($m->getReturnType());
 Assert::same('protected', $m->getVisibility());
+Assert::false($m->isPrivate());
+Assert::true($m->isProtected());
+Assert::false($m->isPublic());
 
 $method = $class->addMethod('show')
 	->setAbstract(true);

@@ -78,7 +78,7 @@ We can add constants and properties:
 $class->addConstant('ID', 123);
 
 $class->addProperty('items', [1, 2, 3])
-	->setVisibility('private')
+	->setPrivate()
 	->setStatic()
 	->addComment('@var int[]');
 ```
@@ -99,7 +99,7 @@ $method = $class->addMethod('count')
 	->addComment('Count it.')
 	->addComment('@return int')
 	->setFinal()
-	->setVisibility('protected')
+	->setProtected()
 	->setBody('return count($items ?: $this->items);');
 
 $method->addParameter('items', []) // $items = []
@@ -130,7 +130,7 @@ PHP Generator supports all new PHP 7.3 and 7.4 features:
 $class = new Nette\PhpGenerator\ClassType('Demo');
 
 $class->addConstant('ID', 123)
-	->setVisibility('private'); // constant visiblity
+	->setPrivate(); // constant visiblity
 
 $class->addProperty('items')
 	->setType('array') // typed properites

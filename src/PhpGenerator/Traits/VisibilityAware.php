@@ -40,4 +40,46 @@ trait VisibilityAware
 	{
 		return $this->visibility;
 	}
+
+
+	/** @return static */
+	public function setPublic(): self
+	{
+		$this->visibility = ClassType::VISIBILITY_PUBLIC;
+		return $this;
+	}
+
+
+	public function isPublic(): bool
+	{
+		return $this->visibility === ClassType::VISIBILITY_PUBLIC || $this->visibility === null;
+	}
+
+
+	/** @return static */
+	public function setProtected(): self
+	{
+		$this->visibility = ClassType::VISIBILITY_PROTECTED;
+		return $this;
+	}
+
+
+	public function isProtected(): bool
+	{
+		return $this->visibility === ClassType::VISIBILITY_PROTECTED;
+	}
+
+
+	/** @return static */
+	public function setPrivate(): self
+	{
+		$this->visibility = ClassType::VISIBILITY_PRIVATE;
+		return $this;
+	}
+
+
+	public function isPrivate(): bool
+	{
+		return $this->visibility === ClassType::VISIBILITY_PRIVATE;
+	}
 }
