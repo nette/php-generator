@@ -61,9 +61,7 @@ final class Method
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setBody(?string $code, array $args = null): self
 	{
 		$this->body = $args === null || $code === null ? $code : (new Dumper)->format($code, ...$args);
@@ -77,9 +75,7 @@ final class Method
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setStatic(bool $state = true): self
 	{
 		$this->static = $state;
@@ -93,9 +89,7 @@ final class Method
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setFinal(bool $state = true): self
 	{
 		$this->final = $state;
@@ -109,9 +103,7 @@ final class Method
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setAbstract(bool $state = true): self
 	{
 		$this->abstract = $state;
@@ -125,9 +117,7 @@ final class Method
 	}
 
 
-	/**
-	 * @throws Nette\InvalidStateException
-	 */
+	/** @throws Nette\InvalidStateException */
 	public function validate(): void
 	{
 		if ($this->abstract && ($this->final || $this->visibility === ClassType::VISIBILITY_PRIVATE)) {
