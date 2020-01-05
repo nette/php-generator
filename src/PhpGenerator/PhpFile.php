@@ -68,18 +68,14 @@ final class PhpFile
 	}
 
 
-	/**
-	 * @return PhpNamespace[]
-	 */
+	/** @return PhpNamespace[] */
 	public function getNamespaces(): array
 	{
 		return $this->namespaces;
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function addUse(string $name, string $alias = null): self
 	{
 		$this->addNamespace('')->addUse($name, $alias);

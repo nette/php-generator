@@ -40,9 +40,7 @@ final class Property
 	private $initialized = false;
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setValue($val): self
 	{
 		$this->value = $val;
@@ -56,9 +54,7 @@ final class Property
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setStatic(bool $state = true): self
 	{
 		$this->static = $state;
@@ -72,9 +68,7 @@ final class Property
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setType(?string $val): self
 	{
 		$this->type = $val;
@@ -88,9 +82,7 @@ final class Property
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setNullable(bool $state = true): self
 	{
 		$this->nullable = $state;
@@ -104,9 +96,7 @@ final class Property
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setInitialized(bool $state = true): self
 	{
 		$this->initialized = $state;

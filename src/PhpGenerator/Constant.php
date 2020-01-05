@@ -26,9 +26,7 @@ final class Constant
 	private $value;
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setValue($val): self
 	{
 		$this->value = $val;

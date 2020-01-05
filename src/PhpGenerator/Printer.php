@@ -200,9 +200,7 @@ class Printer
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setTypeResolving(bool $state = true): self
 	{
 		$this->resolveTypes = $state;

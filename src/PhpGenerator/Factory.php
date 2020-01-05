@@ -83,9 +83,7 @@ final class Factory
 	}
 
 
-	/**
-	 * @return GlobalFunction|Closure
-	 */
+	/** @return GlobalFunction|Closure */
 	public function fromFunctionReflection(\ReflectionFunction $from)
 	{
 		$function = $from->isClosure() ? new Closure : new GlobalFunction($from->getName());

@@ -38,9 +38,7 @@ final class Parameter
 	private $defaultValue;
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setReference(bool $state = true): self
 	{
 		$this->reference = $state;
@@ -54,9 +52,7 @@ final class Parameter
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setType(?string $type): self
 	{
 		$this->type = $type;
@@ -97,9 +93,7 @@ final class Parameter
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setNullable(bool $state = true): self
 	{
 		$this->nullable = $state;
@@ -113,9 +107,7 @@ final class Parameter
 	}
 
 
-	/**
-	 * @return static
-	 */
+	/** @return static */
 	public function setDefaultValue($val): self
 	{
 		$this->defaultValue = $val;
