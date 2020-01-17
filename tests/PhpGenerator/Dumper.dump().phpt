@@ -40,6 +40,12 @@ Assert::same('[]', $dumper->dump([]));
 Assert::same('[$s]', $dumper->dump([new PhpLiteral('$s')]));
 
 Assert::same('[1, 2, 3]', $dumper->dump([1, 2, 3]));
+Assert::same("[606990000 => 'foo', 606990006 => 'bar', 606990007 => 'baz', 606990011 => 'Others']", $dumper->dump([
+    606990000 => 'foo',
+    606990006 => 'bar',
+    606990007 => 'baz',
+    606990011 => 'Others'
+]));
 Assert::same("['a', 7 => 'b', 'c', '9a' => 'd', 'e']", $dumper->dump(['a', 7 => 'b', 'c', '9a' => 'd', 9 => 'e']));
 
 $dumper->wrapLength = 100;
