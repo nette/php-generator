@@ -43,7 +43,12 @@ Assert::same('[]', $dumper->dump([]));
 Assert::same('[$s]', $dumper->dump([new PhpLiteral('$s')]));
 
 Assert::same('[1, 2, 3]', $dumper->dump([1, 2, 3]));
-Assert::same("['a', 7 => 'b', 'c', '9a' => 'd', 'e']", $dumper->dump(['a', 7 => 'b', 'c', '9a' => 'd', 9 => 'e']));
+Assert::same("['a']", $dumper->dump(['a']));
+Assert::same("[2 => 'a']", $dumper->dump([2 => 'a']));
+Assert::same("[2 => 'a', 'b']", $dumper->dump([2 => 'a', 'b']));
+Assert::same("[-2 => 'a', -1 => 'b']", $dumper->dump([-2 => 'a', -1 => 'b']));
+Assert::same("[-2 => 'a', 0 => 'b']", $dumper->dump([-2 => 'a', 'b']));
+Assert::same("[0 => 'a', -2 => 'b', 1 => 'c']", $dumper->dump(['a', -2 => 'b', 'c']));
 
 $dumper->wrapLength = 100;
 same("[
@@ -54,7 +59,7 @@ same("[
 ]", $dumper->dump([['a', 'loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong']]));
 
 Assert::same(
-	"['a' => 1, [\"\\r\" => \"\\r\", 2], 3]",
+	"['a' => 1, 0 => [\"\\r\" => \"\\r\", 0 => 2], 1 => 3]",
 	$dumper->dump(['a' => 1, ["\r" => "\r", 2], 3])
 );
 

@@ -97,9 +97,10 @@ final class Dumper
 		$outWrapped = "\n$space";
 		$parents[] = $var;
 		$counter = 0;
+		$hideKeys = ($tmp = array_keys($var)) && is_int($tmp[0]) && $tmp === range($tmp[0], $tmp[0] + count($var) - 1);
 
 		foreach ($var as $k => &$v) {
-			$keyPart = $k === $counter ? '' : $this->dumpVar($k) . ' => ';
+			$keyPart = $hideKeys && $k === $counter ? '' : $this->dumpVar($k) . ' => ';
 			$counter = is_int($k) ? max($k + 1, $counter) : $counter;
 			$outInline .= ($outInline === '' ? '' : ', ') . $keyPart;
 			$outInline .= $this->dumpVar($v, $parents, 0, $column + strlen($outInline));
