@@ -1,0 +1,31 @@
+name: Coding Style
+
+on: [push, pull_request]
+
+jobs:
+    nette_cc:
+        name: Nette Code Checker
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: shivammathur/setup-php@v1
+              with:
+                  php-version: 7.4
+                  coverage: none
+
+            - run: composer create-project nette/code-checker temp/code-checker ^3 --no-progress
+            - run: php temp/code-checker/code-checker --strict-types --no-progress
+
+
+    nette_cs:
+        name: Nette Coding Standard
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: shivammathur/setup-php@v1
+              with:
+                  php-version: 7.4
+                  coverage: none
+
+            - run: composer create-project nette/coding-standard temp/coding-standard ^2 --no-progress
+            - run: php temp/coding-standard/ecs check src tests --config tests/coding-standard.yml

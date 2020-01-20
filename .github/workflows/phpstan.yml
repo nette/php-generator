@@ -1,0 +1,20 @@
+name: PHPStan
+
+on:
+    push:
+        branches:
+          - master
+
+jobs:
+    phpstan:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: shivammathur/setup-php@v1
+              with:
+                  php-version: 7.4
+                  coverage: none
+
+            - run: composer install --no-progress --prefer-dist
+            - run: composer phpstan
+              continue-on-error: true # is only informative
