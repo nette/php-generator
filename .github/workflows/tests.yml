@@ -22,8 +22,10 @@ jobs:
             - run: composer install --no-progress --prefer-dist
             - run: vendor/bin/tester tests -s -C
             - if: failure()
-              run: for i in $(find tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done
-              shell: bash
+              uses: actions/upload-artifact@v1
+              with:
+                  name: output
+                  path: tests/PhpGenerator/output
 
 
     lowest_dependencies:
@@ -51,6 +53,6 @@ jobs:
                   coverage: none
 
             - run: composer install --no-progress --prefer-dist
-            - run: vendor/bin/tester -p phpdbg tests -s -C --coverage ./coverage.xml --coverage-src ./src
             - run: wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
+            - run: vendor/bin/tester -p phpdbg tests -s -C --coverage ./coverage.xml --coverage-src ./src
             - run: php coveralls.phar --verbose --config tests/.coveralls.yml
