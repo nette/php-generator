@@ -28,7 +28,7 @@
 	},
 	"minimum-stability": "dev",
 	"scripts": {
-		"phpstan": "phpstan analyse --level 5 src",
+		"phpstan": "phpstan analyse --level 5 --configuration tests/phpstan.neon src",
 		"tester": "tester tests -s"
 	},
 	"extra": {
