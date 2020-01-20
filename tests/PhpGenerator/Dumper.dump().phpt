@@ -65,7 +65,7 @@ class Test
 	private $c = 3;
 }
 
-Assert::same("Nette\\PhpGenerator\\Dumper::createObject('Test', [\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n\t\"\\x00Test\\x00c\" => 3,\n])", $dumper->dump(new Test));
+Assert::same("\\Nette\\PhpGenerator\\Dumper::createObject('Test', [\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n\t\"\\x00Test\\x00c\" => 3,\n])", $dumper->dump(new Test));
 Assert::equal(new Test, eval('return ' . $dumper->dump(new Test) . ';'));
 
 
@@ -87,7 +87,7 @@ class Test2 extends Test
 	}
 }
 
-Assert::same("Nette\\PhpGenerator\\Dumper::createObject('Test2', [\n\t\"\\x00Test2\\x00c\" => 4,\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n])", $dumper->dump(new Test2));
+Assert::same("\\Nette\\PhpGenerator\\Dumper::createObject('Test2', [\n\t\"\\x00Test2\\x00c\" => 4,\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n])", $dumper->dump(new Test2));
 Assert::equal(new Test2, eval('return ' . $dumper->dump(new Test2) . ';'));
 
 
@@ -122,15 +122,15 @@ class TestDateTime extends DateTime
 }
 
 Assert::same(
-	"new DateTime('2016-06-22 20:52:43.123400', new DateTimeZone('Europe/Prague'))",
+	"new \\DateTime('2016-06-22 20:52:43.123400', new \\DateTimeZone('Europe/Prague'))",
 	$dumper->dump(new DateTime('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague')))
 );
 Assert::same(
-	"new DateTimeImmutable('2016-06-22 20:52:43.123400', new DateTimeZone('Europe/Prague'))",
+	"new \\DateTimeImmutable('2016-06-22 20:52:43.123400', new \\DateTimeZone('Europe/Prague'))",
 	$dumper->dump(new DateTimeImmutable('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague')))
 );
 same(
-	"Nette\\PhpGenerator\\Dumper::createObject('TestDateTime', [
+	"\\Nette\\PhpGenerator\\Dumper::createObject('TestDateTime', [
 	'date' => '2016-06-22 20:52:43.123400',
 	'timezone_type' => 3,
 	'timezone' => 'Europe/Prague',

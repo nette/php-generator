@@ -128,8 +128,8 @@ final class Dumper
 		if ((new \ReflectionObject($var))->isAnonymous()) {
 			throw new Nette\InvalidArgumentException('Cannot dump anonymous class.');
 
-		} elseif (in_array($class, ['DateTime', 'DateTimeImmutable'], true)) {
-			return $this->format("new $class(?, new DateTimeZone(?))", $var->format('Y-m-d H:i:s.u'), $var->getTimeZone()->getName());
+		} elseif (in_array($class, [\DateTime::class, \DateTimeImmutable::class], true)) {
+			return $this->format("new \\$class(?, new \\DateTimeZone(?))", $var->format('Y-m-d H:i:s.u'), $var->getTimeZone()->getName());
 		}
 
 		$arr = (array) $var;
@@ -158,9 +158,9 @@ final class Dumper
 
 		array_pop($parents);
 		$out .= $space;
-		return $class === 'stdClass'
+		return $class === \stdClass::class
 			? "(object) [$out]"
-			: __CLASS__ . "::createObject('$class', [$out])";
+			: '\\' . __CLASS__ . "::createObject('$class', [$out])";
 	}
 
 
