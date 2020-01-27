@@ -241,7 +241,7 @@ class Printer
 	/**
 	 * @param Closure|GlobalFunction|Method  $function
 	 */
-	protected function printParameters($function, ?PhpNamespace $namespace): string
+	public function printParameters($function, PhpNamespace $namespace = null): string
 	{
 		$params = [];
 		$list = $function->getParameters();
