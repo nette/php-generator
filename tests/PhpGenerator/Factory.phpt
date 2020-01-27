@@ -38,3 +38,13 @@ Assert::same('trim', $res->getName());
 
 $res = $factory->fromFunctionReflection(new \ReflectionFunction(function () {}));
 Assert::type(Nette\PhpGenerator\Closure::class, $res);
+
+
+$res = $factory->fromCallable('trim');
+Assert::type(Nette\PhpGenerator\GlobalFunction::class, $res);
+Assert::same('trim', $res->getName());
+
+
+$res = $factory->fromCallable([new ReflectionClass(stdClass::class), 'getName']);
+Assert::type(Nette\PhpGenerator\Method::class, $res);
+Assert::same('getName', $res->getName());

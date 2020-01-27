@@ -101,6 +101,16 @@ final class Factory
 	}
 
 
+	/** @return Method|GlobalFunction|Closure */
+	public function fromCallable(callable $from)
+	{
+		$ref = Nette\Utils\Callback::toReflection($from);
+		return $ref instanceof \ReflectionMethod
+			? self::fromMethodReflection($ref)
+			: self::fromFunctionReflection($ref);
+	}
+
+
 	public function fromParameterReflection(\ReflectionParameter $from): Parameter
 	{
 		$param = new Parameter($from->getName());
