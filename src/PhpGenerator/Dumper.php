@@ -97,7 +97,7 @@ final class Dumper
 		$outWrapped = "\n$space";
 		$parents[] = $var;
 		$counter = 0;
-		$hideKeys = ($tmp = array_keys($var)) && is_int($tmp[0]) && $tmp === range($tmp[0], $tmp[0] + count($var) - 1);
+		$hideKeys = is_int(($tmp = array_keys($var))[0]) && $tmp === range($tmp[0], $tmp[0] + count($var) - 1);
 
 		foreach ($var as $k => &$v) {
 			$keyPart = $hideKeys && $k === $counter ? '' : $this->dumpVar($k) . ' => ';

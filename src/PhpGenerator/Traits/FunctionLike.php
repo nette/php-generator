@@ -22,7 +22,7 @@ trait FunctionLike
 	/** @var string */
 	private $body = '';
 
-	/** @var array of name => Parameter */
+	/** @var Parameter[] */
 	private $parameters = [];
 
 	/** @var bool */
