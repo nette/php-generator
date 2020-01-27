@@ -75,7 +75,7 @@ final class Factory
 		$method->setReturnReference($from->returnsReference());
 		$method->setVariadic($from->isVariadic());
 		$method->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
-		if ($from->hasReturnType()) {
+		if ($from->getReturnType() instanceof \ReflectionNamedType) {
 			$method->setReturnType($from->getReturnType()->getName());
 			$method->setReturnNullable($from->getReturnType()->allowsNull());
 		}
@@ -93,7 +93,7 @@ final class Factory
 		if (!$from->isClosure()) {
 			$function->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		}
-		if ($from->hasReturnType()) {
+		if ($from->getReturnType() instanceof \ReflectionNamedType) {
 			$function->setReturnType($from->getReturnType()->getName());
 			$function->setReturnNullable($from->getReturnType()->allowsNull());
 		}
@@ -105,7 +105,7 @@ final class Factory
 	{
 		$param = new Parameter($from->getName());
 		$param->setReference($from->isPassedByReference());
-		$param->setType($from->hasType() ? $from->getType()->getName() : null);
+		$param->setType($from->getType() instanceof \ReflectionNamedType ? $from->getType()->getName() : null);
 		$param->setNullable($from->hasType() && $from->getType()->allowsNull());
 		if ($from->isDefaultValueAvailable()) {
 			$param->setDefaultValue($from->isDefaultValueConstant()
@@ -127,9 +127,9 @@ final class Factory
 			? ClassType::VISIBILITY_PRIVATE
 			: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
 		);
-		if (PHP_VERSION_ID >= 70400 && ($type = $from->getType())) {
-			$prop->setType($type->getName());
-			$prop->setNullable($type->allowsNull());
+		if (PHP_VERSION_ID >= 70400 && ($from->getType() instanceof \ReflectionNamedType)) {
+			$prop->setType($from->getType()->getName());
+			$prop->setNullable($from->getType()->allowsNull());
 			$prop->setInitialized(array_key_exists($prop->getName(), $defaults));
 		}
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
