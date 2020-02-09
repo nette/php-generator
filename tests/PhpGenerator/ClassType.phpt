@@ -123,6 +123,14 @@ $method->addParameter('res', null)
 		->setReference(true)
 		->setType(Type::ARRAY);
 
+
+$class->addTrait('foo');
+$class->removeTrait('foo');
+
+$class->addImplement('foo');
+$class->removeImplement('foo');
+
+
 sameFile(__DIR__ . '/expected/ClassType.expect', (string) $class);
 
 
