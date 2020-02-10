@@ -13,8 +13,8 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
+Dumper::setWrapLength(100);
 $dumper = new Dumper;
-$dumper->wrapLength = 100;
 
 Assert::same('func([1, 2, 3])', $dumper->format('func(?)', [1, 2, 3]));
 

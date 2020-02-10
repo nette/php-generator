@@ -566,3 +566,13 @@ $var = ['a', 'b', 123];
 
 echo $dumper->dump($var); // prints ['a', 'b', 123]
 ```
+
+The `Dumper`-class uses a default wrap-length which is used to wrap lines. The default value can be overwritten with
+```php
+Dumper::setWrapLength(100);
+```
+
+To fetch the current value the following can be used
+```php
+Dumper::getWrapLength();
+```
