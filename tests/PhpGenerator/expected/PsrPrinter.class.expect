@@ -11,6 +11,7 @@ final class Example extends ParentClass implements IExample
 
     /** Commented */
     private const FORCE_ARRAY = Nette\Utils\Json::FORCE_ARRAY;
+
     const MULTILINE_LONG = [
         'aaaaaaaa' => 1,
         'bbbbbbbb' => 2,
@@ -24,7 +25,6 @@ final class Example extends ParentClass implements IExample
 
     /** @var resource  orignal file handle */
     private $handle;
-
     public $order = RecursiveIteratorIterator::SELF_FIRST;
 
     public $multilineLong = [

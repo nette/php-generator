@@ -34,9 +34,7 @@ class Class2 extends Class1 implements Interface2
 
 	/** @var int */
 	protected $protected = 10;
-
 	private $private = [];
-
 	public static $static;
 
 

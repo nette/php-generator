@@ -1,9 +1,7 @@
 class B extends A implements I3
 {
 	public $d;
-
 	protected $e;
-
 	private $f;
 
 

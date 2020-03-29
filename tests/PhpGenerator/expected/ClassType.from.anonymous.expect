@@ -1,6 +1,5 @@
 {
 	public $a;
-
 	private $b;
 
 
