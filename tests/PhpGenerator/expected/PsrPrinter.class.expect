@@ -19,6 +19,7 @@ final class Example extends ParentClass implements IExample
         'eeeeeeee' => 5,
         'ffffffff' => 6,
     ];
+
     const SHORT = ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5, 'ffffffff' => 6];
 
     /** @var resource  orignal file handle */
