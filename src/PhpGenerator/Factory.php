@@ -38,18 +38,18 @@ final class Factory
 
 		$class->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		if ($from->getParentClass()) {
-			$class->setExtends($from->getParentClass()->getName());
+			$class->setExtends($from->getParentClass()->name);
 			$class->setImplements(array_diff($class->getImplements(), $from->getParentClass()->getInterfaceNames()));
 		}
 		$props = $methods = $consts = [];
 		foreach ($from->getProperties() as $prop) {
-			if ($prop->isDefault() && $prop->getDeclaringClass()->getName() === $from->getName()) {
+			if ($prop->isDefault() && $prop->getDeclaringClass()->name === $from->name) {
 				$props[] = $this->fromPropertyReflection($prop);
 			}
 		}
 		$class->setProperties($props);
 		foreach ($from->getMethods() as $method) {
-			if ($method->getDeclaringClass()->getName() === $from->getName()) {
+			if ($method->getDeclaringClass()->name === $from->name) {
 				$methods[] = $this->fromMethodReflection($method);
 			}
 		}
@@ -68,7 +68,7 @@ final class Factory
 
 	public function fromMethodReflection(\ReflectionMethod $from): Method
 	{
-		$method = new Method($from->getName());
+		$method = new Method($from->name);
 		$method->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
 		$method->setStatic($from->isStatic());
 		$isInterface = $from->getDeclaringClass()->isInterface();
@@ -93,7 +93,7 @@ final class Factory
 	/** @return GlobalFunction|Closure */
 	public function fromFunctionReflection(\ReflectionFunction $from)
 	{
-		$function = $from->isClosure() ? new Closure : new GlobalFunction($from->getName());
+		$function = $from->isClosure() ? new Closure : new GlobalFunction($from->name);
 		$function->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
 		$function->setReturnReference($from->returnsReference());
 		$function->setVariadic($from->isVariadic());
@@ -120,7 +120,7 @@ final class Factory
 
 	public function fromParameterReflection(\ReflectionParameter $from): Parameter
 	{
-		$param = new Parameter($from->getName());
+		$param = new Parameter($from->name);
 		$param->setReference($from->isPassedByReference());
 		$param->setType($from->getType() instanceof \ReflectionNamedType ? $from->getType()->getName() : null);
 		$param->setNullable($from->hasType() && $from->getType()->allowsNull());
@@ -150,7 +150,7 @@ final class Factory
 	public function fromPropertyReflection(\ReflectionProperty $from): Property
 	{
 		$defaults = $from->getDeclaringClass()->getDefaultProperties();
-		$prop = new Property($from->getName());
+		$prop = new Property($from->name);
 		$prop->setValue($defaults[$prop->getName()] ?? null);
 		$prop->setStatic($from->isStatic());
 		$prop->setVisibility($from->isPrivate()
