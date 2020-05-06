@@ -76,6 +76,15 @@ final class ClassType
 	}
 
 
+	/**
+	 * @param  string|object  $class
+	 */
+	public static function withBodiesFrom($class): self
+	{
+		return (new Factory)->fromClassReflection(new \ReflectionClass($class), true);
+	}
+
+
 	public function __construct(string $name = null, PhpNamespace $namespace = null)
 	{
 		$this->setName($name);

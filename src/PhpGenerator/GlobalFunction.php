@@ -30,6 +30,12 @@ final class GlobalFunction
 	}
 
 
+	public static function withBodyFrom(string $function): self
+	{
+		return (new Factory)->fromFunctionReflection(new \ReflectionFunction($function), true);
+	}
+
+
 	public function __toString(): string
 	{
 		try {

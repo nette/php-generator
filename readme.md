@@ -553,6 +553,16 @@ $closure = Nette\PhpGenerator\Closure::from(
 );
 ```
 
+Method bodies are empty by default. If you want to load them as well, use this way
+(it requires `nikic/php-parser` to be installed):
+
+```php
+$class = Nette\PhpGenerator\ClassType::withBodiesFrom(MyClass::class);
+
+$function = Nette\PhpGenerator\GlobalFunction::withBodyFrom('dump');
+```
+
+
 Variables dumper
 ----------------
 

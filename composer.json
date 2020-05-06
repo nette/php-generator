@@ -21,8 +21,12 @@
 	},
 	"require-dev": {
 		"nette/tester": "^2.0",
+		"nikic/php-parser": "^4.4",
 		"tracy/tracy": "^2.3",
 		"phpstan/phpstan": "^0.12"
+	},
+	"suggest": {
+		"nikic/php-parser": "to use ClassType::withBodiesFrom() & GlobalFunction::withBodyFrom()"
 	},
 	"autoload": {
 		"classmap": ["src/"]

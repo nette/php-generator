@@ -1,0 +1,92 @@
+abstract class Class7
+{
+	abstract public function abstractFun();
+
+
+	public function emptyFun()
+	{
+	}
+
+
+	public function emptyFun2()
+	{
+	}
+
+
+	public function simple()
+	{
+		return 1;
+	}
+
+
+	public function simple2()
+	{
+		return 1;
+	}
+
+
+	public function long()
+	{
+		if ($member instanceof Method) {
+			$s = [1, 2, 3];
+		}
+		/*
+		$this->methods[$member->getName()] = $member;
+		*/
+		throw new Nette\InvalidArgumentException('Argument must be Method|Property|Constant.');
+	}
+
+
+	public function complex()
+	{
+		echo 1;
+		// single line comment
+
+		// spaces - indent
+		// spaces - indent
+
+		/* multi
+		line
+		comment */
+		if (
+			$a
+			&&		$b    + $c)
+		{}
+
+		/** multi
+		line
+		comment */
+
+		if ($member instanceof Method) {
+			$s1 = '
+a
+	b
+		c
+';
+			$s2 = "
+a
+	{$b}
+		$c
+";
+
+			$s3 = <<<DOC
+a
+	{$b}
+		$c
+DOC
+		;
+			$s3 = <<<'DOC'
+a
+	b
+		c
+DOC
+		;
+			?>
+a
+	b
+		c
+			<?php
+		}
+		throw new Nette\InvalidArgumentException();
+	}
+}

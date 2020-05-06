@@ -1,0 +1,87 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Abc;
+
+abstract class Class7
+{
+	abstract function abstractFun();
+
+	function emptyFun() {}
+
+	function emptyFun2() {
+	}
+
+	function simple(){return 1;}
+
+	function simple2()
+	{
+		return 1;
+	}
+
+	function long()
+	{
+		// comment
+		if ($member instanceof Method) {
+			$s = [1, 2, 3];
+		}
+		/*
+		$this->methods[$member->getName()] = $member;
+		*/
+		throw new Nette\InvalidArgumentException('Argument must be Method|Property|Constant.');
+	}
+
+	function complex()
+	{
+		echo 1;
+		// single line comment
+
+    // spaces - indent
+        // spaces - indent
+
+		/* multi
+		line
+		comment */
+		if (
+			$a
+			&&		$b    + $c)
+		{}
+
+		/** multi
+		line
+		comment */
+
+		if ($member instanceof Method) {
+			$s1 = '
+a
+	b
+		c
+';
+			$s2 = "
+a
+	{$b}
+		$c
+";
+
+			$s3 = <<<DOC
+a
+	{$b}
+		$c
+DOC
+;
+			$s3 = <<<'DOC'
+a
+	b
+		c
+DOC
+;
+			?>
+a
+	b
+		c
+			<?php
+		}
+		throw new Nette\InvalidArgumentException();
+	}
+}
