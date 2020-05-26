@@ -41,7 +41,7 @@ final class Factory
 			$class->setExtends($from->getParentClass()->getName());
 			$class->setImplements(array_diff($class->getImplements(), $from->getParentClass()->getInterfaceNames()));
 		}
-		$props = $methods = [];
+		$props = $methods = $consts = [];
 		foreach ($from->getProperties() as $prop) {
 			if ($prop->isDefault() && $prop->getDeclaringClass()->getName() === $from->getName()) {
 				$props[] = $this->fromPropertyReflection($prop);
@@ -54,7 +54,14 @@ final class Factory
 			}
 		}
 		$class->setMethods($methods);
-		$class->setConstants($from->getConstants());
+
+		foreach ($from->getReflectionConstants() as $const) {
+			if ($const->getDeclaringClass()->name === $from->name) {
+				$consts[] = $this->fromConstantReflection($const);
+			}
+		}
+		$class->setConstants($consts);
+
 		return $class;
 	}
 
@@ -124,6 +131,19 @@ final class Factory
 			$param->setNullable($param->isNullable() && $param->getDefaultValue() !== null);
 		}
 		return $param;
+	}
+
+
+	public function fromConstantReflection(\ReflectionClassConstant $from): Constant
+	{
+		$const = new Constant($from->name);
+		$const->setValue($from->getValue());
+		$const->setVisibility($from->isPrivate()
+			? ClassType::VISIBILITY_PRIVATE
+			: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
+		);
+		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
+		return $const;
 	}
 
 
