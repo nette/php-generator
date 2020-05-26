@@ -8,6 +8,7 @@ trait Trait1
 
 	public function f1()
 	{
+		echo 'Trait1::f1';
 	}
 }
 
@@ -19,6 +20,7 @@ trait Trait2
 
 	public function f2()
 	{
+		echo 'Trait2::f2';
 	}
 
 
@@ -50,6 +52,7 @@ class Class2 extends ParentClass
 
 	public function f1()
 	{
+		echo 'Class2::f1';
 	}
 
 
@@ -66,6 +69,7 @@ class Class3 extends ParentClass
 
 	public function f1()
 	{
+		echo 'Class3::f1';
 	}
 
 
