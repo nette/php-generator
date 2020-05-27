@@ -17,6 +17,9 @@ Assert::exception(function () {
 
 Assert::exception(function () {
 	ClassType::withBodiesFrom(new class {
+		public function f()
+		{
+		}
 	});
 }, Nette\NotSupportedException::class, 'Anonymous classes are not supported.');
 
