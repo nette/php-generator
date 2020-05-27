@@ -78,3 +78,33 @@ class Class3 extends ParentClass
 	{
 	}
 }
+
+class Class4 extends ParentClass
+{
+	protected $x2;
+
+
+	public function aliased()
+	{
+	}
+
+
+	public function f1()
+	{
+	}
+
+
+	public function f2()
+	{
+	}
+}
+
+class Class5
+{
+	public $x1;
+
+
+	public function f1()
+	{
+	}
+}

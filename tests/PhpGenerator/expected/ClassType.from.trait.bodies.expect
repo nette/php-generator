@@ -26,6 +26,7 @@ trait Trait2
 
 	public function f1()
 	{
+		echo 'Trait1::f1';
 	}
 }
 
@@ -36,11 +37,13 @@ class Class1 extends ParentClass
 
 	public function f1()
 	{
+		echo 'Trait1::f1';
 	}
 
 
 	public function f2()
 	{
+		echo 'Trait2::f2';
 	}
 }
 
@@ -58,6 +61,7 @@ class Class2 extends ParentClass
 
 	public function f2()
 	{
+		echo 'Trait2::f2';
 	}
 }
 
@@ -75,10 +79,46 @@ class Class3 extends ParentClass
 
 	public function f2()
 	{
+		echo 'Trait2::f2';
 	}
 
 
 	public function aliased()
 	{
+		echo 'Trait1::f1';
+	}
+}
+
+class Class4 extends ParentClass
+{
+	protected $x2;
+
+
+	public function aliased()
+	{
+		echo 'Class4::aliased';
+	}
+
+
+	public function f1()
+	{
+		echo 'Trait1::f1';
+	}
+
+
+	public function f2()
+	{
+		echo 'Trait2::f2';
+	}
+}
+
+class Class5
+{
+	public $x1;
+
+
+	public function f1()
+	{
+		echo 'Trait1b::f1';
 	}
 }

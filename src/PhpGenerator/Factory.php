@@ -52,12 +52,17 @@ final class Factory
 		}
 		$class->setProperties($props);
 
-		$bodies = $withBodies ? $this->loadMethodBodies($from) : [];
+		$bodies = [];
 		foreach ($from->getMethods() as $method) {
 			if ($method->getDeclaringClass()->name === $from->name) {
 				$methods[] = $m = $this->fromMethodReflection($method);
-				if (isset($bodies[$method->name])) {
-					$m->setBody($bodies[$method->name]);
+				if ($withBodies) {
+					$srcMethod = Nette\Utils\Reflection::getMethodDeclaringMethod($method);
+					$srcClass = $srcMethod->getDeclaringClass()->name;
+					$b = $bodies[$srcClass] = $bodies[$srcClass] ?? $this->loadMethodBodies($srcMethod->getDeclaringClass());
+					if (isset($b[$srcMethod->name])) {
+						$m->setBody($b[$srcMethod->name]);
+					}
 				}
 			}
 		}
