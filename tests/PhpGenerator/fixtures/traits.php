@@ -77,3 +77,34 @@ class Class3 extends ParentClass
 		echo 'Class3::f1';
 	}
 }
+
+
+class Class4 extends ParentClass
+{
+	use Trait2 {
+		Trait2::f1 as aliased;
+	}
+
+
+	public function aliased()
+	{
+		echo 'Class4::aliased';
+	}
+}
+
+
+trait Trait1b
+{
+	public function f1()
+	{
+		echo 'Trait1b::f1';
+	}
+}
+
+
+class Class5
+{
+	use Trait1, Trait1b {
+		Trait1b::f1 insteadof Trait1;
+	}
+}
