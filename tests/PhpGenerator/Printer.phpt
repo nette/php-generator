@@ -54,6 +54,14 @@ sameFile(__DIR__ . '/expected/Printer.class.expect', $printer->printClass($class
 sameFile(__DIR__ . '/expected/Printer.method.expect', $printer->printMethod($class->getMethod('first')));
 
 
+Assert::with($printer, function () {
+	$this->linesBetweenProperties = 1;
+	$this->linesBetweenMethods = 3;
+});
+sameFile(__DIR__ . '/expected/Printer.class-alt.expect', $printer->printClass($class));
+
+
+
 $function = new Nette\PhpGenerator\GlobalFunction('func');
 $function
 	->setReturnType('stdClass')

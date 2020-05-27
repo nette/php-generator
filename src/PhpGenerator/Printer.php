@@ -24,6 +24,9 @@ class Printer
 	protected $indentation = "\t";
 
 	/** @var int */
+	protected $linesBetweenProperties = 0;
+
+	/** @var int */
 	protected $linesBetweenMethods = 2;
 
 	/** @var bool */
@@ -138,8 +141,8 @@ class Printer
 
 		$members = array_filter([
 			implode('', $traits),
-			preg_replace('#^(\w.*\n)\n(?=\w.*;)#m', '$1', implode("\n", $consts)),
-			preg_replace('#^(\w.*\n)\n(?=\w.*;)#m', '$1', implode("\n", $properties)),
+			$this->joinProperties($consts),
+			$this->joinProperties($properties),
 			($methods && $properties ? str_repeat("\n", $this->linesBetweenMethods - 1) : '')
 			. implode(str_repeat("\n", $this->linesBetweenMethods), $methods),
 		]);
@@ -277,5 +280,13 @@ class Printer
 		return ($tmp = $this->printType($function->getReturnType(), $function->isReturnNullable(), $namespace))
 			? ': ' . $tmp
 			: '';
+	}
+
+
+	private function joinProperties(array $props)
+	{
+		return $this->linesBetweenProperties
+			? implode(str_repeat("\n", $this->linesBetweenProperties), $props)
+			: preg_replace('#^(\w.*\n)\n(?=\w.*;)#m', '$1', implode("\n", $props));
 	}
 }
