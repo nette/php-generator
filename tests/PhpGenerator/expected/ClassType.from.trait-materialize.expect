@@ -97,7 +97,7 @@ class Class3 extends ParentClass
 	}
 
 
-	public function aliased()
+	protected function aliased()
 	{
 	}
 }
@@ -129,7 +129,7 @@ class Class5
 	public $x1;
 
 
-	public function f1()
+	private function f1()
 	{
 	}
 }

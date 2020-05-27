@@ -57,7 +57,9 @@ class Class2 extends ParentClass
 
 class Class3 extends ParentClass
 {
-	use Trait2;
+	use Trait2 {
+		f1 as protected aliased;
+	}
 
 	/** info */
 	public $x1;
@@ -79,6 +81,8 @@ class Class4 extends ParentClass
 
 class Class5
 {
-	use Trait1;
+	use Trait1 {
+		f1 as private;
+	}
 	use Trait1b;
 }

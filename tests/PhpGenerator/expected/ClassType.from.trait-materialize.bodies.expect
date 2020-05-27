@@ -108,7 +108,7 @@ class Class3 extends ParentClass
 	}
 
 
-	public function aliased()
+	protected function aliased()
 	{
 		echo 'Trait1::f1';
 	}
@@ -144,7 +144,7 @@ class Class5
 	public $x1;
 
 
-	public function f1()
+	private function f1()
 	{
 		echo 'Trait1b::f1';
 	}

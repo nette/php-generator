@@ -67,7 +67,8 @@ class Class2 extends ParentClass
 class Class3 extends ParentClass
 {
 	use Trait2 {
-		Trait2::f1 as aliased;
+		f1 as protected aliased;
+		f1 as private; // ignored because Class3::f1() exists
 	}
 
 	/** info */
@@ -84,7 +85,7 @@ class Class3 extends ParentClass
 class Class4 extends ParentClass
 {
 	use Trait2 {
-		Trait2::f1 as aliased;
+		f1 as protected aliased; // ignored because Class4::aliased() exists
 	}
 
 
@@ -107,6 +108,7 @@ trait Trait1b
 class Class5
 {
 	use Trait1, Trait1b {
-		Trait1b::f1 insteadof Trait1;
+		Trait1b::f1 insteadof Trait1; // not yet supported
+		Trait1b::f1 as private;
 	}
 }

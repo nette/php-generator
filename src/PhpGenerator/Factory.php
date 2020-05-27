@@ -84,7 +84,7 @@ final class Factory
 		}
 		$class->setProperties($props);
 
-		$methods = [];
+		$methods = $resolutions = [];
 		foreach ($from->getMethods() as $method) {
 			$realMethod = Reflection::getMethodDeclaringMethod($method);
 			$declaringClass = ($materializeTraits ? $method : $realMethod)->getDeclaringClass();
@@ -103,12 +103,21 @@ final class Factory
 					}
 				}
 			}
+
+			$modifier = $realMethod->getModifiers() !== $method->getModifiers()
+				? ' ' . $this->getVisibility($method)
+				: null;
+			$alias = $realMethod->name !== $method->name ? ' ' . $method->name : '';
+			if ($modifier || $alias) {
+				$resolutions[] = $realMethod->name . ' as' . $modifier . $alias;
+			}
 		}
 		$class->setMethods($methods);
 
 		if (!$materializeTraits) {
 			foreach ($from->getTraitNames() as $trait) {
-				$class->addTrait($trait);
+				$class->addTrait($trait, $resolutions);
+				$resolutions = [];
 			}
 		}
 
