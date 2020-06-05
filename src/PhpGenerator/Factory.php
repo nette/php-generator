@@ -225,6 +225,7 @@ final class Factory
 		return Helpers::indentPhp($body, -1);
 	}
 
+
 	/**
 	 * @param PhpParser\NodeFinder $nodeFinder
 	 * @param string $originalCode
@@ -267,6 +268,7 @@ final class Factory
 		}
 		return $body;
 	}
+
 
 	private function parse($from): array
 	{
