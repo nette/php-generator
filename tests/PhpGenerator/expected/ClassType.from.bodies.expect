@@ -27,13 +27,13 @@ abstract class Class7
 
 	public function long()
 	{
-		if ($member instanceof Method) {
+		if ($member instanceof \Abc\Method) {
 			$s = [1, 2, 3];
 		}
 		/*
 		$this->methods[$member->getName()] = $member;
 		*/
-		throw new Nette\InvalidArgumentException('Argument must be Method|Property|Constant.');
+		throw new \Nette\InvalidArgumentException('Argument must be Method|Property|Constant.');
 	}
 
 
@@ -56,8 +56,8 @@ abstract class Class7
 		/** multi
 		line
 		comment */
-
-		if ($member instanceof Method) {
+		// Alias Method will not be resolved in comment
+		if ($member instanceof \Abc\Method) {
 			$s1 = '
 a
 	b
@@ -87,6 +87,6 @@ a
 		c
 			<?php
 		}
-		throw new Nette\InvalidArgumentException();
+		throw new \Nette\InvalidArgumentException();
 	}
 }

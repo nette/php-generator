@@ -11,7 +11,7 @@ require __DIR__ . '/../bootstrap.php';
 /** global */
 function func(stdClass $a, $b = null)
 {
-	echo 'hello';
+	echo sprintf('hello, %s', 'world');
 	return 1;
 }
 
@@ -28,13 +28,15 @@ function func(stdClass $a, $b = null)
 
 
 $function = GlobalFunction::withBodyFrom('func');
-same(
-'/**
+same(<<<'XX'
+/**
  * global
  */
 function func(stdClass $a, $b = null)
 {
-	echo \'hello\';
+	echo \sprintf('hello, %s', 'world');
 	return 1;
 }
-', (string) $function);
+
+XX
+, (string) $function);
