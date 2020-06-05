@@ -11,7 +11,7 @@ require __DIR__ . '/../bootstrap.php';
 /** global */
 function func(stdClass $a, $b = null)
 {
-	echo 'hello';
+	echo sprintf('hello, %s', 'world');
 	return 1;
 }
 
@@ -34,7 +34,7 @@ same(
  */
 function func(stdClass $a, $b = null)
 {
-	echo \'hello\';
+	echo \\sprintf(\'hello, %s\', \'world\');
 	return 1;
 }
 ', (string) $function);

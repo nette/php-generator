@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Abc;
 
+use Nette;
+
 abstract class Class7
 {
 	abstract function abstractFun();
@@ -51,7 +53,7 @@ abstract class Class7
 		/** multi
 		line
 		comment */
-
+		// Alias Method will not be resolved in comment
 		if ($member instanceof Method) {
 			$s1 = '
 a
