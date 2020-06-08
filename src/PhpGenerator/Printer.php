@@ -29,6 +29,9 @@ class Printer
 	/** @var int */
 	protected $linesBetweenMethods = 2;
 
+	/** @var string */
+	protected $returnTypeColon = ': ';
+
 	/** @var bool */
 	private $resolveTypes = true;
 
@@ -278,7 +281,7 @@ class Printer
 	private function printReturnType($function, ?PhpNamespace $namespace): string
 	{
 		return ($tmp = $this->printType($function->getReturnType(), $function->isReturnNullable(), $namespace))
-			? ': ' . $tmp
+			? $this->returnTypeColon . $tmp
 			: '';
 	}
 
