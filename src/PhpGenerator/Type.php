@@ -25,9 +25,12 @@ class Type
 		CALLABLE = 'callable',
 		ITERABLE = 'iterable',
 		VOID = 'void',
+		MIXED = 'mixed',
+		FALSE = 'false',
 		NULL = 'null',
 		SELF = 'self',
-		PARENT = 'parent';
+		PARENT = 'parent',
+		STATIC = 'static';
 
 
 	public static function nullable(string $type, bool $state = true): string
