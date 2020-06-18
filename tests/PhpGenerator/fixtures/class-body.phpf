@@ -78,6 +78,7 @@ a
 		c
 DOC
 ;
+		// inline HTML is not supported
 			?>
 a
 	b

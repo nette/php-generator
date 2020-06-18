@@ -65,9 +65,10 @@ abstract class Class7
 		;
 			$s3 = "a\n\tb\n\t\tc"
 		;
+		// inline HTML is not supported
 			?>
-a
-	b
+		a
+		b
 		c
 			<?php
 		}

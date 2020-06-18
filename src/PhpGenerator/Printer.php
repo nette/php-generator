@@ -217,7 +217,7 @@ class Printer
 	protected function indent(string $s): string
 	{
 		$s = str_replace("\t", $this->indentation, $s);
-		return Helpers::indentPhp($s, 1, $this->indentation);
+		return Strings::indent($s, 1, $this->indentation);
 	}
 
 

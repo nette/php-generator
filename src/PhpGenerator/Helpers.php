@@ -61,32 +61,9 @@ final class Helpers
 	}
 
 
-	public static function indentPhp(string $s, int $level = 1, string $chars = "\t"): string
+	public static function unindent(string $s, int $level = 1): string
 	{
-		$tbl = [];
-		$s = str_replace("\r\n", "\n", $s);
-
-		if ($level && strpos($s, "\n") !== false && preg_match('#\?>|<<<|"|\'#', $s)) {
-			static $save = [T_CONSTANT_ENCAPSED_STRING => 1, T_ENCAPSED_AND_WHITESPACE => 1, T_INLINE_HTML => 1, T_START_HEREDOC => 1, T_CLOSE_TAG => 1];
-			$tokens = token_get_all("<?php\n" . $s);
-			unset($tokens[0]);
-			$s = '';
-			foreach ($tokens as $token) {
-				if (isset($save[$token[0]]) && strpos($token[1], "\n") !== false) {
-					$s .= $id = "\00" . count($tbl) . "\00";
-					$tbl[$id] = $token[1];
-				} else {
-					$s .= is_array($token) ? $token[1] : $token;
-				}
-			}
-		}
-
-		if ($level > 0) {
-			$s = Nette\Utils\Strings::indent($s, $level, $chars);
-		} elseif ($level < 0) {
-			$s = preg_replace('#^(\t|\ \ \ \ ){1,' . (-$level) . '}#m', '', $s);
-		}
-		return strtr($s, $tbl);
+		return preg_replace('#^(\t|\ \ \ \ ){1,' . $level . '}#m', '', $s);
 	}
 
 

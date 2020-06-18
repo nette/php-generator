@@ -16,7 +16,6 @@
 	],
 	"require": {
 		"php": ">=7.1",
-		"ext-tokenizer": "*",
 		"nette/utils": "^2.4.2 || ^3.0"
 	},
 	"require-dev": {

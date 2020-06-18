@@ -193,7 +193,7 @@ final class Factory
 			/** @var Node\Stmt\ClassMethod $method */
 			if ($method->stmts) {
 				$body = $this->extractBody($nodeFinder, $code, $method->stmts);
-				$bodies[$method->name->toString()] = Helpers::indentPhp($body, -2);
+				$bodies[$method->name->toString()] = Helpers::unindent($body, 2);
 			}
 		}
 		return $bodies;
@@ -215,7 +215,7 @@ final class Factory
 		});
 
 		$body = $this->extractBody($nodeFinder, $code, $function->stmts);
-		return Helpers::indentPhp($body, -1);
+		return Helpers::unindent($body, 1);
 	}
 
 

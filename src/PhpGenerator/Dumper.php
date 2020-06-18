@@ -38,7 +38,7 @@ final class Dumper
 	private function dumpVar(&$var, array $parents = [], int $level = 0, int $column = 0): string
 	{
 		if ($var instanceof Literal) {
-			return ltrim(Helpers::indentPhp(trim((string) $var), $level), "\t");
+			return ltrim(Nette\Utils\Strings::indent(trim((string) $var), $level), "\t");
 
 		} elseif ($var === null) {
 			return 'null';
