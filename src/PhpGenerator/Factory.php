@@ -241,6 +241,38 @@ final class Factory
 			}
 		}
 
+		// multi-line strings => singleline
+		foreach (array_merge(
+			$nodeFinder->findInstanceOf($statements, Node\Scalar\String_::class),
+			$nodeFinder->findInstanceOf($statements, Node\Scalar\EncapsedStringPart::class)
+		) as $node) {
+			$token = substr($body, $node->getStartFilePos() - $start, $node->getEndFilePos() - $node->getStartFilePos() + 1);
+			if (strpos($token, "\n") !== false) {
+				$quote = $node instanceof Node\Scalar\String_ ? '"' : '';
+				$replacements[] = [
+					$node->getStartFilePos(),
+					$node->getEndFilePos(),
+					$quote . addcslashes($node->value, "\x00..\x1F") . $quote,
+				];
+			}
+		}
+
+		// HEREDOC => "string"
+		foreach ($nodeFinder->findInstanceOf($statements, Node\Scalar\Encapsed::class) as $node) {
+			if ($node->getAttribute('kind') === Node\Scalar\String_::KIND_HEREDOC) {
+				$replacements[] = [
+					$node->getStartFilePos(),
+					$node->parts[0]->getStartFilePos() - 1,
+					'"',
+				];
+				$replacements[] = [
+					end($node->parts)->getEndFilePos() + 1,
+					$node->getEndFilePos(),
+					'"',
+				];
+			}
+		}
+
 		//sort collected resolved names by position in file
 		usort($replacements, function ($a, $b) {
 			return $a[0] <=> $b[0];
