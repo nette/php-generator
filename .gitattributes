@@ -4,3 +4,6 @@
 .travis.yml export-ignore
 tests/ export-ignore
 *.sh eol=lf
+
+*.phpf  linguist-language=PHP
+*.php74  linguist-language=PHP
