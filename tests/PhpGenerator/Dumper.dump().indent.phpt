@@ -15,26 +15,26 @@ require __DIR__ . '/../bootstrap.php';
 
 $dumper = new Dumper;
 
-Assert::same('[1, 2, 3]', $dumper->dump([1, 2, 3], $dumper->wrapLength - 10));
+Assert::same('[1, 2, 3]', $dumper->dump([1, 2, 3], Dumper::getWrapLength() - 10));
 
 same('[
 	1,
 	2,
 	3,
-]', $dumper->dump([1, 2, 3], $dumper->wrapLength - 8));
+]', $dumper->dump([1, 2, 3], Dumper::getWrapLength() - 8));
 
 
 // ignore indent after new line
 same('[
 	[1, 2, 3],
-]', $dumper->dump([[1, 2, 3]], $dumper->wrapLength - 8));
+]', $dumper->dump([[1, 2, 3]], Dumper::getWrapLength() - 8));
 
 
 // counts with length of key
-Assert::same('[8 => 1, 2, 3]', $dumper->dump([8 => 1, 2, 3], $dumper->wrapLength - 15));
+Assert::same('[8 => 1, 2, 3]', $dumper->dump([8 => 1, 2, 3], Dumper::getWrapLength() - 15));
 
 same('[
 	8 => 1,
 	2,
 	3,
-]', $dumper->dump([8 => 1, 2, 3], $dumper->wrapLength - 13));
+]', $dumper->dump([8 => 1, 2, 3], Dumper::getWrapLength() - 13));

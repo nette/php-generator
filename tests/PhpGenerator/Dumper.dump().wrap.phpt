@@ -13,8 +13,8 @@ use Nette\PhpGenerator\PhpLiteral;
 require __DIR__ . '/../bootstrap.php';
 
 
+Dumper::setWrapLength(21);
 $dumper = new Dumper;
-$dumper->wrapLength = 21;
 same("[
 	'a' => [1, 2, 3],
 	'aaaaaaaaa' => [
@@ -56,8 +56,8 @@ same("(object) [
 );
 
 
+Dumper::setWrapLength(100);
 $dumper = new Dumper;
-$dumper->wrapLength = 100;
 same("[
 	[
 		'a',

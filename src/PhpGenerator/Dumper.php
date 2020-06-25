@@ -23,7 +23,7 @@ final class Dumper
 	public $maxDepth = 50;
 
 	/** @var int */
-	public $wrapLength = 120;
+	protected static $wrapLength = 120;
 
 
 	/**
@@ -111,7 +111,7 @@ final class Dumper
 		}
 
 		array_pop($parents);
-		$wrap = strpos($outInline, "\n") !== false || $level * self::INDENT_LENGTH + $column + strlen($outInline) + 3 > $this->wrapLength; // 3 = [],
+		$wrap = strpos($outInline, "\n") !== false || $level * self::INDENT_LENGTH + $column + strlen($outInline) + 3 > self::getWrapLength(); // 3 = [],
 		return '[' . ($wrap ? $outWrapped : $outInline) . ']';
 	}
 
@@ -213,7 +213,7 @@ final class Dumper
 			$outWrapped .= ($outWrapped === '' ? '' : ',') . "\n\t" . $this->dumpVar($v, [$var], 1);
 		}
 
-		return count($var) > 1 && (strpos($outInline, "\n") !== false || $column + strlen($outInline) > $this->wrapLength)
+		return count($var) > 1 && (strpos($outInline, "\n") !== false || $column + strlen($outInline) > self::getWrapLength())
 			? $outWrapped . "\n"
 			: $outInline;
 	}
@@ -226,5 +226,17 @@ final class Dumper
 	public static function createObject(string $class, array $props)
 	{
 		return unserialize('O' . substr(serialize($class), 1, -1) . substr(serialize($props), 1));
+	}
+
+
+	public static function getWrapLength(): int
+	{
+		return self::$wrapLength;
+	}
+
+
+	public static function setWrapLength(int $wrapLength): void
+	{
+		self::$wrapLength = $wrapLength;
 	}
 }

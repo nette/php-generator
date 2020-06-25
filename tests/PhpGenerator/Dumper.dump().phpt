@@ -15,6 +15,8 @@ require __DIR__ . '/../bootstrap.php';
 
 ini_set('serialize_precision', '14');
 
+Dumper::setWrapLength(100);
+
 $dumper = new Dumper;
 Assert::same('0', $dumper->dump(0));
 Assert::same('1', $dumper->dump(1));
@@ -50,7 +52,6 @@ Assert::same("[-2 => 'a', -1 => 'b']", $dumper->dump([-2 => 'a', -1 => 'b']));
 Assert::same("[-2 => 'a', 0 => 'b']", $dumper->dump([-2 => 'a', 'b']));
 Assert::same("[0 => 'a', -2 => 'b', 1 => 'c']", $dumper->dump(['a', -2 => 'b', 'c']));
 
-$dumper->wrapLength = 100;
 same("[
 	[
 		'a',
