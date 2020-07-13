@@ -11,19 +11,13 @@ Nette PHP Generator
 Introduction
 ------------
 
-Generate PHP code, classes, namespaces etc. with a simple programmatical API.
+Do you need to generate PHP code of classes, functions, namespaces, etc.? This library with a friendly API will help you.
 
-Documentation can be found on the [website](https://doc.nette.org/php-generator).
+Documentation can be found on the [website](https://doc.nette.org/php-generator). If you like it, **[please make a donation now](https://github.com/sponsors/dg)**. Thank you!
 
-If you like Nette, **[please make a donation now](https://nette.org/donate)**. Thank you!
+Installation:
 
-
-Installation
-------------
-
-The recommended way to install is via Composer:
-
-```
+```shell
 composer require nette/php-generator
 ```
 
@@ -33,10 +27,11 @@ composer require nette/php-generator
 - PhpGenerator 2.6 is compatible with PHP 5.6 to 7.3
 
 
-Usage
------
 
-Usage is very easy. Let's start with a straightforward example of generating class:
+Classes
+-------
+
+Let's start with a straightforward example of generating class using [ClassType](https://api.nette.org/3.0/Nette/PhpGenerator/ClassType.html):
 
 ```php
 $class = new Nette\PhpGenerator\ClassType('Demo');
@@ -51,10 +46,6 @@ $class
 
 // to generate PHP code simply cast to string or use echo:
 echo $class;
-
-// or use printer:
-$printer = new Nette\PhpGenerator\Printer;
-echo $printer->printClass($class);
 ```
 
 It will render this result:
@@ -72,24 +63,39 @@ final class Demo extends ParentClass implements Countable
 }
 ```
 
-We can add constants and properties:
+We can also use a printer to generate the code, which, unlike `echo $class`, we will be able to further configure:
 
 ```php
-$class->addConstant('ID', 123);
+$printer = new Nette\PhpGenerator\Printer;
+echo $printer->printClass($class);
+```
+
+We can add constants ([Constant](https://api.nette.org/3.0/Nette/PhpGenerator/Constant.html)) and properties ([Property](https://api.nette.org/3.0/Nette/PhpGenerator/Property.html)):
+
+```php
+$class->addConstant('ID', 123)
+	->setPrivate(); // constant visiblity
 
 $class->addProperty('items', [1, 2, 3])
-	->setPrivate()
+	->setPrivate() // or setVisibility('private')
 	->setStatic()
 	->addComment('@var int[]');
+
+$class->addProperty('list')
+	->setType('array') // or setType(Type::ARRAY)
+	->setNullable()
+	->setInitialized(); // prints '= null'
 ```
 
 It generates:
 
 ```php
-const ID = 123;
+private const ID = 123;
 
 /** @var int[] */
 private static $items = [1, 2, 3];
+
+public ?array $list = null;
 ```
 
 And we can add methods with parameters:
@@ -100,11 +106,13 @@ $method = $class->addMethod('count')
 	->addComment('@return int')
 	->setFinal()
 	->setProtected()
+	->setReturnType('int') // method return type
+	->setReturnNullable() // nullable return type
 	->setBody('return count($items ?: $this->items);');
 
 $method->addParameter('items', []) // $items = []
-		->setReference() // &$items = []
-		->setType('array'); // array &$items = []
+		->setReference()           // &$items = []
+		->setType('array');        // array &$items = []
 ```
 
 It results in:
@@ -114,7 +122,7 @@ It results in:
  * Count it.
  * @return int
  */
-final protected function count(array &$items = [])
+final protected function count(array &$items = []): ?int
 {
 	return count($items ?: $this->items);
 }
@@ -123,49 +131,6 @@ final protected function count(array &$items = [])
 If the property, constant, method or parameter already exist, it will be overwritten.
 
 Members can be removed using `removeProperty()`, `removeConstant()`, `removeMethod()` or `removeParameter()`.
-
-PHP Generator supports all new PHP 7.3 and 7.4 features:
-
-```php
-use Nette\PhpGenerator\Type;
-
-$class = new Nette\PhpGenerator\ClassType('Demo');
-
-$class->addConstant('ID', 123)
-	->setPrivate(); // constant visiblity
-
-$class->addProperty('items')
-	->setType(Type::ARRAY) // typed properites
-	->setNullable()
-	->setInitialized();
-
-$method = $class->addMethod('getValue')
-	->setReturnType(Type::INT) // method return type
-	->setReturnNullable() // nullable return type
-	->setBody('return count($this->items);');
-
-$method->addParameter('id')
-		->setType(Type::ARRAY) // scalar type hint
-		->setNullable(); // nullable type hint
-
-echo $class;
-```
-
-Result:
-
-```php
-class Demo
-{
-	private const ID = 123;
-
-	public ?array $items = null;
-
-	public function getValue(?int $id): ?int
-	{
-		return count($this->items);
-	}
-}
-```
 
 You can also add existing `Method`, `Property` or `Constant` objects to the class:
 
@@ -188,7 +153,7 @@ $methodRecount = $methodCount->cloneWithName('recount');
 $class->addMember($methodRecount);
 ```
 
-Tabs versus spaces
+Tabs versus Spaces
 ------------------
 
 The generated code uses tabs for indentation. If you want to have the output compatible with PSR-2 or PSR-12, use `PsrPrinter`:
@@ -201,8 +166,17 @@ $printer = new Nette\PhpGenerator\PsrPrinter;
 echo $printer->printClass($class); // 4 spaces indentation
 ```
 
-It can be used also for functions, closures, namespaces etc.
 
+Interface or Trait
+------------------
+
+You can create interfaces and traits in a similar way, just change the type:
+
+```php
+$class = new Nette\PhpGenerator\ClassType('DemoInterface');
+$class->setInterface();
+// or $class->setTrait();
+```
 
 Literals
 --------
@@ -235,21 +209,13 @@ class Demo
 }
 ```
 
-Interface or Trait
-------------------
-
-```php
-$class = new Nette\PhpGenerator\ClassType('DemoInterface');
-$class->setInterface();
-// or $class->setTrait();
-```
-
-Trait Resolutions and Visibility
---------------------------------
+Using Traits
+------------
 
 ```php
 $class = new Nette\PhpGenerator\ClassType('Demo');
-$class->addTrait('SmartObject', ['sayHello as protected']);
+$class->addTrait('SmartObject');
+$class->addTrait('MyTrait', ['sayHello as protected']);
 echo $class;
 ```
 
@@ -258,7 +224,8 @@ Result:
 ```php
 class Demo
 {
-	use SmartObject {
+	use SmartObject;
+	use MyTrait {
 		sayHello as protected;
 	}
 }
@@ -266,6 +233,8 @@ class Demo
 
 Anonymous Class
 ---------------
+
+Give `null` as the name and you have an anonymous class:
 
 ```php
 $class = new Nette\PhpGenerator\ClassType(null);
@@ -289,7 +258,7 @@ $obj = new class ($val) {
 Global Function
 ---------------
 
-Code of function:
+Code of functions will generate class [GlobalFunction](https://api.nette.org/3.0/Nette/PhpGenerator/GlobalFunction.html):
 
 ```php
 $function = new Nette\PhpGenerator\GlobalFunction('foo');
@@ -314,7 +283,7 @@ function foo($a, $b)
 Closure
 -------
 
-Code of closure:
+Code of closures will generate class [Closure](https://api.nette.org/3.0/Nette/PhpGenerator/Closure.html):
 
 ```php
 $closure = new Nette\PhpGenerator\Closure;
@@ -337,7 +306,7 @@ function ($a, $b) use (&$c) {
 }
 ```
 
-Arrow function
+Arrow Function
 --------------
 
 You can also print closure as arrow function using printer:
@@ -355,13 +324,32 @@ echo (new Nette\PhpGenerator\Printer)->printArrowFunction($closure);
 Result:
 
 ```php
-fn ($a, $b) => $a + $b;
+fn ($a, $b) => $a + $b
 ```
 
 Method and Function Body Generator
 ----------------------------------
 
-You can use special placeholders for handy way to generate method or function body.
+The body can be passed to the `setBody()` method at once or sequentially (line by line) by repeatedly calling `addBody()`:
+
+```php
+$function = new Nette\PhpGenerator\GlobalFunction('foo');
+$function->addBody('$a = rand(10, 20);');
+$function->addBody('return $a;');
+echo $function;
+```
+
+Result
+
+```php
+function foo()
+{
+	$a = rand(10, 20);
+	return $a;
+}
+```
+
+You can use special placeholders for handy way to inject variables.
 
 Simple placeholders:
 
@@ -422,16 +410,17 @@ function foo($a)
 Namespace
 ---------
 
-Classes, traits and interfaces (hereinafter classes) can be grouped into namespaces:
+Classes, traits and interfaces (hereinafter classes) can be grouped into namespaces ([PhpNamespace](https://api.nette.org/3.0/Nette/PhpGenerator/PhpNamespace.html)):
 
 ```php
 $namespace = new Nette\PhpGenerator\PhpNamespace('Foo');
 
+// create new classes in the namespace
 $class = $namespace->addClass('Task');
 $interface = $namespace->addInterface('Countable');
 $trait = $namespace->addTrait('NameAware');
 
-// or
+// or insert an existing class into the namespace
 $class = new Nette\PhpGenerator\ClassType('Task');
 $namespace->add($class);
 ```
@@ -441,11 +430,16 @@ If the class already exists, it will be overwritten.
 You can define use-statements:
 
 ```php
-$namespace->addUse(Http\Request::class); // use Http\Request;
-$namespace->addUse(Http\Request::class, 'HttpReq'); // use Http\Request as HttpReq;
+// use Http\Request;
+$namespace->addUse(Http\Request::class);
+// use Http\Request as HttpReq;
+$namespace->addUse(Http\Request::class, 'HttpReq');
 ```
 
-**IMPORTANT NOTE:** when the class is part of the namespace, it is rendered slightly differently: all types (ie. type hints, return types, parent class name,
+Class Names Resolving
+---------------------
+
+**When the class is part of the namespace, it is rendered slightly differently**: all types (ie. type hints, return types, parent class name,
 implemented interfaces and used traits) are automatically *resolved* (unless you turn it off, see below).
 It means that you have to **use full class names** in definitions and they will be replaced
 with aliases (according to the use-statements) or fully qualified names in the resulting code:
@@ -500,7 +494,7 @@ echo $printer->printNamespace($namespace);
 PHP Files
 ---------
 
-PHP files can contains multiple classes, namespaces and comments:
+Classes and namespaces can be grouped into PHP files represented by the class [PhpFile](https://api.nette.org/3.0/Nette/PhpGenerator/PhpFile.html):
 
 ```php
 $file = new Nette\PhpGenerator\PhpFile;
@@ -563,11 +557,10 @@ $function = Nette\PhpGenerator\GlobalFunction::withBodyFrom('dump');
 ```
 
 
-Variables dumper
+Variables Dumper
 ----------------
 
-The Dumper returns a parsable PHP string representation of a variable. It provides a better function that you can use instead of `var_export()`
-with more readable output.
+The Dumper returns a parsable PHP string representation of a variable. Provides better and clearer output that native functon `var_export()`.
 
 ```php
 $dumper = new Nette\PhpGenerator\Dumper;
@@ -575,4 +568,19 @@ $dumper = new Nette\PhpGenerator\Dumper;
 $var = ['a', 'b', 123];
 
 echo $dumper->dump($var); // prints ['a', 'b', 123]
+```
+
+Custom Printer
+--------------
+
+Need to customize printer behavior? Create your own by inheriting the `Printer` class. You can reconfigure these variables:
+
+```php
+class MyPrinter extends Nette\PhpGenerator\Printer
+{
+	protected $indentation = "\t";
+	protected $linesBetweenProperties = 0;
+	protected $linesBetweenMethods = 1;
+	protected $returnTypeColon = ': ';
+}
 ```
