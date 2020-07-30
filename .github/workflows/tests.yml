@@ -7,14 +7,14 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php: ['7.1', '7.2', '7.3', '7.4']
+                php: ['7.1', '7.2', '7.3', '7.4', '8.0']
 
             fail-fast: false
 
         name: PHP ${{ matrix.php }} tests
         steps:
             - uses: actions/checkout@v2
-            - uses: shivammathur/setup-php@v1
+            - uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
                   coverage: none
@@ -22,10 +22,10 @@ jobs:
             - run: composer install --no-progress --prefer-dist
             - run: vendor/bin/tester tests -s -C
             - if: failure()
-              uses: actions/upload-artifact@v1
+              uses: actions/upload-artifact@v2
               with:
                   name: output
-                  path: tests/PhpGenerator/output
+                  path: tests/**/output
 
 
     lowest_dependencies:
@@ -33,7 +33,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - uses: shivammathur/setup-php@v1
+            - uses: shivammathur/setup-php@v2
               with:
                   php-version: 7.1
                   coverage: none
@@ -47,7 +47,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - uses: shivammathur/setup-php@v1
+            - uses: shivammathur/setup-php@v2
               with:
                   php-version: 7.4
                   coverage: none
