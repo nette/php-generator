@@ -49,6 +49,8 @@ Assert::same("[2 => 'a', 'b']", $dumper->dump([2 => 'a', 'b']));
 Assert::same("[-2 => 'a', -1 => 'b']", $dumper->dump([-2 => 'a', -1 => 'b']));
 Assert::same("[-2 => 'a', -1 => 'b']", $dumper->dump([-2 => 'a', 'b']));
 Assert::same("[0 => 'a', -2 => 'b', 1 => 'c']", $dumper->dump(['a', -2 => 'b', 'c']));
+Assert::same("[-2 => 'a', 0 => 'b']", $dumper->dump([-2 => 'a', 0 => 'b']));
+Assert::same("[0 => 'a', -2 => 'b', 1 => 'c']", $dumper->dump(['a', -2 => 'b', 1 => 'c']));
 
 $dumper->wrapLength = 100;
 same("[
