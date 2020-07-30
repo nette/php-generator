@@ -11,7 +11,7 @@ use Nette\PhpGenerator\Factory;
 
 
 require __DIR__ . '/../bootstrap.php';
-require __DIR__ . '/fixtures/classes.php';
+@require __DIR__ . '/fixtures/classes.php'; // triggers error 'Required parameter $c follows optional parameter $a'
 
 $res[] = ClassType::from(Abc\Interface1::class);
 $res[] = ClassType::from(Abc\Interface2::class);
