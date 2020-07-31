@@ -13,17 +13,11 @@ Introduction
 
 Do you need to generate PHP code of classes, functions, namespaces, etc.? This library with a friendly API will help you.
 
-Documentation can be found on the [website](https://doc.nette.org/php-generator).
+Documentation can be found on the [website](https://doc.nette.org/php-generator). If you like it, **[please make a donation now](https://github.com/sponsors/dg)**. Thank you!
 
-If you like Nette, **[please make a donation now](https://nette.org/donate)**. Thank you!
+Installation:
 
-
-Installation
-------------
-
-The recommended way to install is via Composer:
-
-```
+```shell
 composer require nette/php-generator
 ```
 
@@ -33,8 +27,9 @@ composer require nette/php-generator
 - PhpGenerator 2.6 is compatible with PHP 5.6 to 7.3
 
 
-Usage
------
+
+Classes
+-------
 
 Let's start with a straightforward example of generating class using [ClassType](https://api.nette.org/3.0/Nette/PhpGenerator/ClassType.html):
 
