@@ -99,16 +99,18 @@ class Printer
 			. ($method->isAbstract() || $method->getBody() === null
 				? ";\n"
 				: (strpos($params, "\n") === false ? "\n" : ' ')
-					. "{\n"
-					. $this->indent(ltrim(rtrim($method->getBody()) . "\n"))
-					. "}\n");
+				. "{\n"
+				. $this->indent(ltrim(rtrim($method->getBody()) . "\n"))
+				. "}\n");
 	}
 
 
 	public function printClass(ClassType $class, PhpNamespace $namespace = null): string
 	{
 		$class->validate();
-		$resolver = $this->resolveTypes && $namespace ? [$namespace, 'unresolveName'] : function ($s) { return $s; };
+		$resolver = $this->resolveTypes && $namespace ? [$namespace, 'unresolveName'] : function ($s) {
+			return $s;
+		};
 
 		$traits = [];
 		foreach ($class->getTraitResolutions() as $trait => $resolutions) {
@@ -245,7 +247,7 @@ class Printer
 
 
 	/**
-	 * @param Closure|GlobalFunction|Method  $function
+	 * @param Closure|GlobalFunction|Method $function
 	 */
 	public function printParameters($function, PhpNamespace $namespace = null): string
 	{
@@ -266,21 +268,30 @@ class Printer
 			: "($tmp)";
 	}
 
-
-	public function printType(?string $type, bool $nullable = false, PhpNamespace $namespace = null): string
+	/** @param string|string[]|null $type */
+	public function printType($type, bool $nullable = false, PhpNamespace $namespace = null): string
 	{
-		return $type
-			? ($nullable ? '?' : '') . ($this->resolveTypes && $namespace ? $namespace->unresolveName($type) : $type)
-			: '';
+		if ($type === null) {
+			return '';
+		}
+		$types = $type;
+		if (is_string($type)) {
+			$types = [$type];
+		}
+		$result = [];
+		foreach ($types as $currenType) {
+			$result[] = $this->resolveTypes && $namespace ? $namespace->unresolveName($currenType) : $currenType;
+		}
+		return ($nullable ? '?' : '') . implode('|', $result);
 	}
 
 
 	/**
-	 * @param Closure|GlobalFunction|Method  $function
+	 * @param Closure|GlobalFunction|Method $function
 	 */
 	private function printReturnType($function, ?PhpNamespace $namespace): string
 	{
-		return ($tmp = $this->printType($function->getReturnType(), $function->isReturnNullable(), $namespace))
+		return ($tmp = $this->printType($function->getReturnUnionType(), $function->isReturnNullable(), $namespace))
 			? $this->returnTypeColon . $tmp
 			: '';
 	}

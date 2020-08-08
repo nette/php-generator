@@ -99,6 +99,12 @@ final class Factory
 			$method->setReturnType($from->getReturnType()->getName());
 			$method->setReturnNullable($from->getReturnType()->allowsNull());
 		}
+		if ($from->getReturnType() instanceof \ReflectionUnionType) {
+		    $method->setReturnUnionType(...array_map(function (\ReflectionNamedType $type) {
+		        return $type->getName();
+            }, $from->getReturnType()->getTypes()));
+            $method->setReturnNullable($from->getReturnType()->allowsNull());
+        }
 		return $method;
 	}
 
@@ -117,6 +123,12 @@ final class Factory
 			$function->setReturnType($from->getReturnType()->getName());
 			$function->setReturnNullable($from->getReturnType()->allowsNull());
 		}
+        if ($from->getReturnType() instanceof \ReflectionUnionType) {
+            $function->setReturnUnionType(...array_map(function (\ReflectionNamedType $type) {
+                return $type->getName();
+            }, $from->getReturnType()->getTypes()));
+            $function->setReturnNullable($from->getReturnType()->allowsNull());
+        }
 		$function->setBody($withBody ? $this->loadFunctionBody($from) : '');
 		return $function;
 	}

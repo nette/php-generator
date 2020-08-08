@@ -28,7 +28,7 @@ trait FunctionLike
 	/** @var bool */
 	private $variadic = false;
 
-	/** @var string|null */
+	/** @var array|null */
 	private $returnType;
 
 	/** @var bool */
@@ -125,15 +125,38 @@ trait FunctionLike
 	/** @return static */
 	public function setReturnType(?string $val): self
 	{
-		$this->returnType = $val;
+		$this->returnType = [$val];
 		return $this;
 	}
 
 
 	public function getReturnType(): ?string
 	{
-		return $this->returnType;
+	    if ($this->isReturnTypeUnionType()) {
+	        throw new \Exception('Returntype is a union type, can\'t be used as single return type');
+        }
+	    if (is_array($this->returnType) && !empty($this->returnType)) {
+	        return $this->returnType[0];
+        }
+		return null;
 	}
+
+	public function setReturnUnionType(string ...$types): self
+    {
+        $this->returnType = $types;
+        return $this;
+    }
+
+    /** @return null|string[] */
+    public function getReturnUnionType(): ?array
+    {
+        return $this->returnType;
+    }
+
+    public function isReturnTypeUnionType(): bool
+    {
+        return is_array($this->returnType) ? count($this->returnType) > 1 : false;
+    }
 
 
 	/** @return static */

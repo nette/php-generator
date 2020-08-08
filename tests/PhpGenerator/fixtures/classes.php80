@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Abc;
+
+class Class8
+{
+	public function test(): string|int
+	{
+	}
+
+
+	public function test2(): \A|\A\B
+	{
+	}
+}

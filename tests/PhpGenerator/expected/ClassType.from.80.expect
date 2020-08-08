@@ -1,0 +1,11 @@
+class Class8
+{
+	public function test(): string|int
+	{
+	}
+
+
+	public function test2(): \A|\A\B
+	{
+	}
+}
