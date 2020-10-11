@@ -504,6 +504,10 @@ $file->setStrictTypes(); // adds declare(strict_types=1)
 $namespace = $file->addNamespace('Foo');
 $class = $namespace->addClass('A');
 $class->addMethod('hello');
+// or
+$namespace = new Nette\PhpGenerator\PhpNamespace('Foo');
+$namespace->addClass('A')->addMethod('hello');
+$file->add($namespace);
 
 echo $file;
 
