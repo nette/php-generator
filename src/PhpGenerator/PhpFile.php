@@ -11,7 +11,6 @@ namespace Nette\PhpGenerator;
 
 use Nette;
 
-
 /**
  * Instance of PHP file.
  *
@@ -59,12 +58,25 @@ final class PhpFile
 	public function addNamespace(string $name): PhpNamespace
 	{
 		if (!isset($this->namespaces[$name])) {
-			$this->namespaces[$name] = new PhpNamespace($name);
+			$this->add(new PhpNamespace($name));
+		}
+
+		return $this->namespaces[$name];
+	}
+
+
+	/** @return static */
+	public function add(PhpNamespace $namespace): self
+	{
+		$name = $namespace->getName();
+		if (!isset($this->namespaces[$name])) {
+			$this->namespaces[$name] = $namespace;
 			foreach ($this->namespaces as $namespace) {
 				$namespace->setBracketedSyntax(count($this->namespaces) > 1 && isset($this->namespaces['']));
 			}
 		}
-		return $this->namespaces[$name];
+
+		return $this;
 	}
 
 
