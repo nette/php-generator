@@ -505,6 +505,9 @@ $namespace = $file->addNamespace('Foo');
 $class = $namespace->addClass('A');
 $class->addMethod('hello');
 
+// or insert an existing namespace into the file
+// $file->addNamespace(new Nette\PhpGenerator\PhpNamespace('Foo'));
+
 echo $file;
 
 // or use PsrPrinter for output compatible with PSR-2 / PSR-12
