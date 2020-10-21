@@ -280,7 +280,7 @@ class Printer
 		$line = implode(', ', $params);
 
 		return count($params) > 1 && ($special || strlen($line) > (new Dumper)->wrapLength)
-			? "(\n" . $this->indent(implode(",\n", $params)) . "\n)"
+			? "(\n" . $this->indent(implode(",\n", $params)) . ($special ? ',' : '') . "\n)"
 			: "($line)";
 	}
 
