@@ -40,6 +40,7 @@ final class Factory
 		$class->setImplements($ifaces);
 
 		$class->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
+		$class->setAttributes(self::getAttributes($from));
 		if ($from->getParentClass()) {
 			$class->setExtends($from->getParentClass()->name);
 			$class->setImplements(array_diff($class->getImplements(), $from->getParentClass()->getInterfaceNames()));
@@ -99,6 +100,7 @@ final class Factory
 		$method->setReturnReference($from->returnsReference());
 		$method->setVariadic($from->isVariadic());
 		$method->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
+		$method->setAttributes(self::getAttributes($from));
 		if ($from->getReturnType() instanceof \ReflectionNamedType) {
 			$method->setReturnType($from->getReturnType()->getName());
 			$method->setReturnNullable($from->getReturnType()->allowsNull());
@@ -117,6 +119,7 @@ final class Factory
 		if (!$from->isClosure()) {
 			$function->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		}
+		$function->setAttributes(self::getAttributes($from));
 		if ($from->getReturnType() instanceof \ReflectionNamedType) {
 			$function->setReturnType($from->getReturnType()->getName());
 			$function->setReturnNullable($from->getReturnType()->allowsNull());
@@ -150,6 +153,7 @@ final class Factory
 				: $from->getDefaultValue());
 			$param->setNullable($param->isNullable() && $param->getDefaultValue() !== null);
 		}
+		$param->setAttributes(self::getAttributes($from));
 		return $param;
 	}
 
@@ -164,6 +168,7 @@ final class Factory
 				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
 		);
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
+		$const->setAttributes(self::getAttributes($from));
 		return $const;
 	}
 
@@ -185,6 +190,7 @@ final class Factory
 			$prop->setInitialized(array_key_exists($prop->getName(), $defaults));
 		}
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
+		$prop->setAttributes(self::getAttributes($from));
 		return $prop;
 	}
 
@@ -326,5 +332,18 @@ final class Factory
 		$stmts = $traverser->traverse($stmts);
 
 		return [$code, $stmts];
+	}
+
+
+	private function getAttributes($from): array
+	{
+		if (PHP_VERSION_ID < 80000) {
+			return [];
+		}
+		$res = [];
+		foreach ($from->getAttributes() as $attr) {
+			$res[] = new Attribute($attr->getName(), $attr->getArguments());
+		}
+		return $res;
 	}
 }

@@ -13,5 +13,6 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/fixtures/classes.php80';
 
 $res[] = ClassType::from(new Abc\Class8(null));
+$res[] = ClassType::from(new Abc\Class9);
 
 sameFile(__DIR__ . '/expected/ClassType.from.80.expect', implode("\n", $res));
