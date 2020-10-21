@@ -388,6 +388,15 @@ function foo()
 }
 ```
 
+You can also use PHP 8 named parameters:
+
+```php
+$items = ['foo' => 1, 'bar' => true];
+$function->setBody('myfunc(...?);', [$items]);
+
+// myfunc(foo: 1, bar: true);
+```
+
 Escape placeholder using slash:
 
 ```php

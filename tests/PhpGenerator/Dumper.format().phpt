@@ -19,6 +19,7 @@ Assert::same('func(1)', $dumper->format('func(?)', 1));
 Assert::same('func(1 ? 2 : 3)', $dumper->format('func(1 \? 2 : 3)'));
 Assert::same('func([1, 2])', $dumper->format('func(?)', [1, 2]));
 Assert::same('func(1, 2)', $dumper->format('func(...?)', [1, 2]));
+Assert::same('func(1, a: 2)', $dumper->format('func(...?)', [1, 'a' => 2]));
 Assert::same('func(1, 2)', $dumper->format('func(?*)', [1, 2])); // old way
 
 $dumper->wrapLength = 100;

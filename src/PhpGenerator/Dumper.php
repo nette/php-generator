@@ -209,10 +209,11 @@ final class Dumper
 	{
 		$outInline = $outWrapped = '';
 
-		foreach ($var as &$v) {
+		foreach ($var as $k => &$v) {
+			$k = is_int($k) ? '' : $k . ': ';
 			$outInline .= $outInline === '' ? '' : ', ';
-			$outInline .= $this->dumpVar($v, [$var], 0, $column + strlen($outInline));
-			$outWrapped .= ($outWrapped === '' ? '' : ',') . "\n\t" . $this->dumpVar($v, [$var], 1);
+			$outInline .= $k . $this->dumpVar($v, [$var], 0, $column + strlen($outInline));
+			$outWrapped .= ($outWrapped === '' ? '' : ',') . "\n\t" . $k . $this->dumpVar($v, [$var], 1);
 		}
 
 		return count($var) > 1 && (strpos($outInline, "\n") !== false || $column + strlen($outInline) > $this->wrapLength)
