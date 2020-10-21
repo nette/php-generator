@@ -121,7 +121,7 @@ $method->addParameter('item');
 
 $method->addParameter('res', null)
 		->setReference(true)
-		->setType(Type::ARRAY);
+		->setType(Type::union(Type::ARRAY, 'null'));
 
 
 $class->addTrait('foo');

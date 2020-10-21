@@ -113,7 +113,7 @@ class Printer
 	{
 		$class->validate();
 		$resolver = $this->resolveTypes && $namespace
-			? [$namespace, 'unresolveName']
+			? [$namespace, 'unresolveUnionType']
 			: function ($s) { return $s; };
 
 		$traits = [];
@@ -288,7 +288,7 @@ class Printer
 	public function printType(?string $type, bool $nullable = false, PhpNamespace $namespace = null): string
 	{
 		return $type
-			? ($nullable ? '?' : '') . ($this->resolveTypes && $namespace ? $namespace->unresolveName($type) : $type)
+			? ($nullable ? '?' : '') . ($this->resolveTypes && $namespace ? $namespace->unresolveUnionType($type) : $type)
 			: '';
 	}
 

@@ -104,6 +104,8 @@ final class Factory
 		if ($from->getReturnType() instanceof \ReflectionNamedType) {
 			$method->setReturnType($from->getReturnType()->getName());
 			$method->setReturnNullable($from->getReturnType()->allowsNull());
+		} elseif ($from->getReturnType() instanceof \ReflectionUnionType) {
+			$method->setReturnType((string) $from->getReturnType());
 		}
 		return $method;
 	}
@@ -123,6 +125,8 @@ final class Factory
 		if ($from->getReturnType() instanceof \ReflectionNamedType) {
 			$function->setReturnType($from->getReturnType()->getName());
 			$function->setReturnNullable($from->getReturnType()->allowsNull());
+		} elseif ($from->getReturnType() instanceof \ReflectionUnionType) {
+			$function->setReturnType((string) $from->getReturnType());
 		}
 		$function->setBody($withBody ? $this->loadFunctionBody($from) : '');
 		return $function;
@@ -145,8 +149,12 @@ final class Factory
 			? new PromotedParameter($from->name)
 			: new Parameter($from->name);
 		$param->setReference($from->isPassedByReference());
-		$param->setType($from->getType() instanceof \ReflectionNamedType ? $from->getType()->getName() : null);
-		$param->setNullable($from->hasType() && $from->getType()->allowsNull());
+		if ($from->getType() instanceof \ReflectionNamedType) {
+			$param->setType($from->getType()->getName());
+			$param->setNullable($from->getType()->allowsNull());
+		} elseif ($from->getType() instanceof \ReflectionUnionType) {
+			$param->setType((string) $from->getType());
+		}
 		if ($from->isDefaultValueAvailable()) {
 			$param->setDefaultValue($from->isDefaultValueConstant()
 				? new Literal($from->getDefaultValueConstantName())
@@ -184,10 +192,14 @@ final class Factory
 				? ClassType::VISIBILITY_PRIVATE
 				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
 		);
-		if (PHP_VERSION_ID >= 70400 && ($from->getType() instanceof \ReflectionNamedType)) {
-			$prop->setType($from->getType()->getName());
-			$prop->setNullable($from->getType()->allowsNull());
-			$prop->setInitialized(array_key_exists($prop->getName(), $defaults));
+		if (PHP_VERSION_ID >= 70400) {
+			if ($from->getType() instanceof \ReflectionNamedType) {
+				$prop->setType($from->getType()->getName());
+				$prop->setNullable($from->getType()->allowsNull());
+			} elseif ($from->getType() instanceof \ReflectionUnionType) {
+				$prop->setType((string) $from->getType());
+			}
+			$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
 		}
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$prop->setAttributes(self::getAttributes($from));

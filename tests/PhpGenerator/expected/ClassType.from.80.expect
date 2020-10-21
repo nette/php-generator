@@ -2,7 +2,7 @@ class Class8
 {
 	public function __construct(
 		public $a,
-		public int $b = 10,
+		public string|int $b = 10,
 		$c = null,
 	) {
 	}
@@ -30,6 +30,16 @@ class Class9
 	 */
 	#[ExampleAttribute]
 	public function getHandle(#[WithArguments(123)] $mode)
+	{
+	}
+}
+
+class Class10
+{
+	public string|int $prop;
+
+
+	public function test(string|int $param): string|int
 	{
 	}
 }

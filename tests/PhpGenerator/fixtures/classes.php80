@@ -8,7 +8,7 @@ class Class8
 {
 	public function __construct(
 		public $a, 
-		private int $b = 10, 
+		private int|string $b = 10, 
 		$c = null,
 	) {
 	}
@@ -35,6 +35,16 @@ class Class9
 	/** Returns file handle */
 	#[ExampleAttribute]
 	public function getHandle(#[WithArguments(123)] $mode)
+	{
+	}
+}
+
+
+class Class10
+{
+	public string|int $prop;
+
+	function test(string|int $param): string|int
 	{
 	}
 }

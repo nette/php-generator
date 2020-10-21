@@ -82,7 +82,7 @@ $class->addProperty('items', [1, 2, 3])
 	->addComment('@var int[]');
 
 $class->addProperty('list')
-	->setType('array') // or setType(Type::ARRAY)
+	->setType('array')
 	->setNullable()
 	->setInitialized(); // prints '= null'
 ```
@@ -171,6 +171,23 @@ $methodCount = $class->getMethod('count');
 $methodRecount = $methodCount->cloneWithName('recount');
 $class->addMember($methodRecount);
 ```
+
+Types
+-----
+
+Each type or union type can be passed as a string, you can also use predefined constants for native types:
+
+```php
+use Nette\PhpGenerator\Type;
+
+$member->setType('array');
+$member->setType(Type::ARRAY);
+$member->setType('array|string');
+$member->setType(null); // removes type
+```
+
+The same applies to the method `setReturnType()`.
+
 
 Tabs versus Spaces
 ------------------
