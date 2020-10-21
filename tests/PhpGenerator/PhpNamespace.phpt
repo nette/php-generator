@@ -66,10 +66,13 @@ Assert::exception(function () use ($namespace) {
 $classA
 	->addImplement('Foo\\A')
 	->addImplement('Bar\\C')
-	->addTrait('Bar\\D');
+	->addTrait('Bar\\D')
+	->addAttribute('Foo\\A');
 
 $method = $classA->addMethod('test');
-$method->addParameter('a')->setType('Bar\C');
+$method->addAttribute('Foo\\A');
+
+$method->addParameter('a')->setType('Bar\C')->addAttribute('Bar\\D');
 $method->addParameter('b')->setType('self');
 $method->addParameter('c')->setType('parent');
 $method->addParameter('d')->setType('array');

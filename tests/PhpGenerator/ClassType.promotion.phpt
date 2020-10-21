@@ -15,6 +15,7 @@ $method->addPromotedParameter('b');
 $method->addPromotedParameter('c')
 	->setPrivate()
 	->setType('string')
-	->addComment('promo');
+	->addComment('promo')
+	->addAttribute('Example');
 
 sameFile(__DIR__ . '/expected/ClassType.promotion.expect', (string) $class);

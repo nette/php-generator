@@ -21,6 +21,7 @@ class Parameter
 {
 	use Nette\SmartObject;
 	use Traits\NameAware;
+	use Traits\AttributeAware;
 
 	/** @var bool */
 	private $reference = false;

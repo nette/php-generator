@@ -22,6 +22,7 @@ final class ClassType
 {
 	use Nette\SmartObject;
 	use Traits\CommentAware;
+	use Traits\AttributeAware;
 
 	public const
 		TYPE_CLASS = 'class',

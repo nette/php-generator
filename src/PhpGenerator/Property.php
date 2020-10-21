@@ -23,6 +23,7 @@ final class Property
 	use Traits\NameAware;
 	use Traits\VisibilityAware;
 	use Traits\CommentAware;
+	use Traits\AttributeAware;
 
 	/** @var mixed */
 	private $value;

@@ -8,6 +8,25 @@ use Nette\PhpGenerator\GlobalFunction;
 require __DIR__ . '/../bootstrap.php';
 
 
+$function = new GlobalFunction('test');
+$function->setBody('return $a + $b;');
+$function->addAttribute('ExampleAttribute');
+$function->addComment('My Function');
+
+same(
+	'/**
+ * My Function
+ */
+#[ExampleAttribute]
+function test()
+{
+	return $a + $b;
+}
+',
+	(string) $function
+);
+
+
 /** global */
 function func(stdClass $a, $b = null)
 {

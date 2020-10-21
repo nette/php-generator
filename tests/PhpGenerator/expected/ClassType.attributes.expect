@@ -1,0 +1,26 @@
+/**
+ * Description of class.
+ */
+#[ExampleAttribute]
+#[WithArgument(Foo::BAR)]
+#[NamedArguments(foo: 'bar', bar: [1, 2, 3])]
+class Example
+{
+	/** Commented */
+	#[ExampleAttribute]
+	#[WithArguments(true)]
+	const FOO = 123;
+
+	/** @var resource */
+	#[ExampleAttribute]
+	public $handle;
+
+
+	/**
+	 * Returns file handle.
+	 */
+	#[ExampleAttribute]
+	public function getHandle(#[ExampleAttribute, WithArguments(123)] $mode)
+	{
+	}
+}

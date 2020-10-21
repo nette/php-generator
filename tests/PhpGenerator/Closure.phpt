@@ -66,6 +66,19 @@ same(
 
 
 
+$function = new Closure;
+$function->setBody('return $a + $b;');
+$function->addAttribute('ExampleAttribute');
+
+same(
+	'#[ExampleAttribute] function () {
+	return $a + $b;
+}',
+	(string) $function
+);
+
+
+
 $closure = function (stdClass $a, $b = null) {};
 $function = Closure::from($closure);
 same(

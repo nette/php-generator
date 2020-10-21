@@ -2,12 +2,19 @@ namespace Foo;
 
 use Bar\C;
 
+#[A]
 class A implements A, C
 {
 	use \Bar\D;
 
-	public function test(C $a, self $b, parent $c, array $d, callable $e)
-	{
+	#[A]
+	public function test(
+		#[\Bar\D] C $a,
+		self $b,
+		parent $c,
+		array $d,
+		callable $e
+	) {
 	}
 }
 

@@ -24,6 +24,7 @@ final class Method
 	use Traits\NameAware;
 	use Traits\VisibilityAware;
 	use Traits\CommentAware;
+	use Traits\AttributeAware;
 
 	/** @var string|null */
 	private $body = '';

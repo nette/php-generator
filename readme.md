@@ -346,6 +346,44 @@ Result:
 fn ($a, $b) => $a + $b
 ```
 
+Attributes
+----------
+
+You can add PHP 8 attributes to all classes, methods, properties, constants, functions, closures and parameters.
+
+```php
+$class = new Nette\PhpGenerator\ClassType('Demo');
+$class->addAttribute('Deprecated');
+
+$class->addProperty('list')
+	->addAttribute('WithArguments', [1, 2]);
+
+$method = $class->addMethod('count')
+	->addAttribute('Foo\Cached', ['mode' => true]);
+
+$method->addParameter('items')
+	->addAttribute('Bar');
+
+echo $class;
+```
+
+Result:
+
+```php
+#[Deprecated]
+class Demo
+{
+	#[WithArguments(1, 2)]
+	public $list;
+
+
+	#[Foo\Cached(mode: true)]
+	public function count(#[Bar] $items)
+	{
+	}
+}
+```
+
 Method and Function Body Generator
 ----------------------------------
 
@@ -468,7 +506,7 @@ Class Names Resolving
 ---------------------
 
 **When the class is part of the namespace, it is rendered slightly differently**: all types (ie. type hints, return types, parent class name,
-implemented interfaces and used traits) are automatically *resolved* (unless you turn it off, see below).
+implemented interfaces, used traits and attributes) are automatically *resolved* (unless you turn it off, see below).
 It means that you have to **use full class names** in definitions and they will be replaced
 with aliases (according to the use-statements) or fully qualified names in the resulting code:
 

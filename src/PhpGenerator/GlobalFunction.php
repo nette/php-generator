@@ -23,6 +23,7 @@ final class GlobalFunction
 	use Traits\FunctionLike;
 	use Traits\NameAware;
 	use Traits\CommentAware;
+	use Traits\AttributeAware;
 
 	public static function from(string $function): self
 	{
