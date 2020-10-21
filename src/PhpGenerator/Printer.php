@@ -251,19 +251,29 @@ class Printer
 	{
 		$params = [];
 		$list = $function->getParameters();
+		$special = false;
+
 		foreach ($list as $param) {
 			$variadic = $function->isVariadic() && $param === end($list);
 			$type = $param->getType();
-			$params[] = ltrim($this->printType($type, $param->isNullable(), $namespace) . ' ')
+			$promoted = $param instanceof PromotedParameter ? $param : null;
+			$params[] =
+				($promoted ? Helpers::formatDocComment((string) $promoted->getComment()) : '')
+				. ($promoted ? ($promoted->getVisibility() ?: 'public') . ' ' : '')
+				. ltrim($this->printType($type, $param->isNullable(), $namespace) . ' ')
 				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')
 				. '$' . $param->getName()
 				. ($param->hasDefaultValue() && !$variadic ? ' = ' . $this->dump($param->getDefaultValue()) : '');
+
+			$special = $special || $promoted;
 		}
 
-		return strlen($tmp = implode(', ', $params)) > (new Dumper)->wrapLength && count($params) > 1
-			? "(\n" . $this->indentation . implode(",\n" . $this->indentation, $params) . "\n)"
-			: "($tmp)";
+		$line = implode(', ', $params);
+
+		return count($params) > 1 && ($special || strlen($line) > (new Dumper)->wrapLength)
+			? "(\n" . $this->indent(implode(",\n", $params)) . "\n)"
+			: "($line)";
 	}
 
 

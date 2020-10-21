@@ -1,0 +1,15 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Abc;
+
+class Class8
+{
+	public function __construct(
+		public $a, 
+		private int $b = 10, 
+		$c = null,
+	) {
+	}
+}

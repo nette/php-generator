@@ -128,6 +128,25 @@ final protected function count(array &$items = []): ?int
 }
 ```
 
+Promoted parameters introduced by PHP 8.0 can be passed to the constructor:
+
+```php
+$method = $class->addMethod('__construct');
+$method->addPromotedParameter('name');
+$method->addPromotedParameter('args', [])
+		->setPrivate();
+```
+
+It results in:
+
+```php
+public function __construct(
+	public $name,
+	private $args = [],
+) {
+}
+```
+
 If the property, constant, method or parameter already exist, it will be overwritten.
 
 Members can be removed using `removeProperty()`, `removeConstant()`, `removeMethod()` or `removeParameter()`.

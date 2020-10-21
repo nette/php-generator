@@ -46,7 +46,10 @@ final class Factory
 		}
 		$props = $methods = $consts = [];
 		foreach ($from->getProperties() as $prop) {
-			if ($prop->isDefault() && $prop->getDeclaringClass()->name === $from->name) {
+			if ($prop->isDefault()
+				&& $prop->getDeclaringClass()->name === $from->name
+				&& (PHP_VERSION_ID < 80000 || !$prop->isPromoted())
+			) {
 				$props[] = $this->fromPropertyReflection($prop);
 			}
 		}
@@ -135,7 +138,9 @@ final class Factory
 
 	public function fromParameterReflection(\ReflectionParameter $from): Parameter
 	{
-		$param = new Parameter($from->name);
+		$param = PHP_VERSION_ID >= 80000 && $from->isPromoted()
+			? new PromotedParameter($from->name)
+			: new Parameter($from->name);
 		$param->setReference($from->isPassedByReference());
 		$param->setType($from->getType() instanceof \ReflectionNamedType ? $from->getType()->getName() : null);
 		$param->setNullable($from->hasType() && $from->getType()->allowsNull());

@@ -1,0 +1,9 @@
+class Class8
+{
+	public function __construct(
+		public $a,
+		public int $b = 10,
+		$c = null
+	) {
+	}
+}

@@ -119,6 +119,19 @@ final class Method
 	}
 
 
+	/**
+	 * @param  string  $name without $
+	 */
+	public function addPromotedParameter(string $name, $defaultValue = null): PromotedParameter
+	{
+		$param = new PromotedParameter($name);
+		if (func_num_args() > 1) {
+			$param->setDefaultValue($defaultValue);
+		}
+		return $this->parameters[$name] = $param;
+	}
+
+
 	/** @throws Nette\InvalidStateException */
 	public function validate(): void
 	{

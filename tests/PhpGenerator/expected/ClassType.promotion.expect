@@ -1,0 +1,10 @@
+class Example
+{
+	public function __construct(
+		$a,
+		public $b,
+		/** promo */
+		private string $c
+	) {
+	}
+}
