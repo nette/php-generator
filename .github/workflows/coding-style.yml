@@ -10,7 +10,7 @@ jobs:
             - uses: actions/checkout@v2
             - uses: shivammathur/setup-php@v1
               with:
-                  php-version: 7.4
+                  php-version: 7.1
                   coverage: none
 
             - run: composer create-project nette/code-checker temp/code-checker ^3 --no-progress
@@ -24,8 +24,8 @@ jobs:
             - uses: actions/checkout@v2
             - uses: shivammathur/setup-php@v1
               with:
-                  php-version: 7.4
+                  php-version: 8.0
                   coverage: none
 
-            - run: composer create-project nette/coding-standard temp/coding-standard ^2 --no-progress
-            - run: php temp/coding-standard/ecs check src tests --config tests/coding-standard.yml
+            - run: composer create-project nette/coding-standard temp/coding-standard ^3 --no-progress --ignore-platform-reqs
+            - run: php temp/coding-standard/ecs check

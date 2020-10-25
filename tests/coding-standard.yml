@@ -1,7 +1,0 @@
-imports:
-    - { resource: '../temp/coding-standard/coding-standard-php71.yml' }
-
-parameters:
-    skip:
-        PhpCsFixer\Fixer\Casing\LowercaseConstantsFixer:
-            - src/PhpGenerator/Type.php  # constant NULL
