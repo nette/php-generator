@@ -40,11 +40,13 @@ $method = (new Method('variadic'))
 	->setBody('return 42;');
 
 same(
-'function variadic()
+	'function variadic()
 {
 	return 42;
 }
-', (string) $method);
+',
+	(string) $method
+);
 
 
 // variadic method with one parameter
@@ -54,11 +56,13 @@ $method = (new Method('variadic'))
 $method->addParameter('foo');
 
 same(
-'function variadic(...$foo)
+	'function variadic(...$foo)
 {
 	return 42;
 }
-', (string) $method);
+',
+	(string) $method
+);
 
 
 // variadic method with multiple parameters
@@ -70,11 +74,13 @@ $method->addParameter('bar');
 $method->addParameter('baz', []);
 
 same(
-'function variadic($foo, $bar, ...$baz)
+	'function variadic($foo, $bar, ...$baz)
 {
 	return 42;
 }
-', (string) $method);
+',
+	(string) $method
+);
 
 
 // method with typehinted variadic param
@@ -84,11 +90,13 @@ $method = (new Method('variadic'))
 $method->addParameter('foo')->setType('array');
 
 same(
-'function variadic(array ...$foo)
+	'function variadic(array ...$foo)
 {
 	return 42;
 }
-', (string) $method);
+',
+	(string) $method
+);
 
 
 // method with typrhinted by-value variadic param
@@ -98,8 +106,10 @@ $method = (new Method('variadic'))
 $method->addParameter('foo')->setType('array')->setReference(true);
 
 same(
-'function variadic(array &...$foo)
+	'function variadic(array &...$foo)
 {
 	return 42;
 }
-', (string) $method);
+',
+	(string) $method
+);

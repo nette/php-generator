@@ -23,7 +23,7 @@ Assert::same('func(1, 2)', $dumper->format('func(?*)', [1, 2])); // old way
 
 $dumper->wrapLength = 100;
 same(
-'func(
+	'func(
 	10,
 	11,
 	12,

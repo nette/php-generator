@@ -18,13 +18,15 @@ function func(stdClass $a, $b = null)
 
 $function = GlobalFunction::from('func');
 same(
-'/**
+	'/**
  * global
  */
 function func(stdClass $a, $b = null)
 {
 }
-', (string) $function);
+',
+	(string) $function
+);
 
 
 $function = GlobalFunction::withBodyFrom('func');

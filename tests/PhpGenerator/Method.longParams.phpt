@@ -15,7 +15,7 @@ for ($name = 'a'; $name < 'm'; $name++) {
 }
 
 same(
-'function create(
+	'function create(
 	string $a,
 	string $b,
 	string $c,
@@ -31,4 +31,6 @@ same(
 ) {
 	return null;
 }
-', (string) $method);
+',
+	(string) $method
+);

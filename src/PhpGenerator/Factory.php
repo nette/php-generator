@@ -80,9 +80,10 @@ final class Factory
 		$method->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
 		$method->setStatic($from->isStatic());
 		$isInterface = $from->getDeclaringClass()->isInterface();
-		$method->setVisibility($from->isPrivate()
-			? ClassType::VISIBILITY_PRIVATE
-			: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ($isInterface ? null : ClassType::VISIBILITY_PUBLIC))
+		$method->setVisibility(
+			$from->isPrivate()
+				? ClassType::VISIBILITY_PRIVATE
+				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ($isInterface ? null : ClassType::VISIBILITY_PUBLIC))
 		);
 		$method->setFinal($from->isFinal());
 		$method->setAbstract($from->isAbstract() && !$isInterface);
@@ -147,9 +148,10 @@ final class Factory
 	{
 		$const = new Constant($from->name);
 		$const->setValue($from->getValue());
-		$const->setVisibility($from->isPrivate()
-			? ClassType::VISIBILITY_PRIVATE
-			: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
+		$const->setVisibility(
+			$from->isPrivate()
+				? ClassType::VISIBILITY_PRIVATE
+				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
 		);
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		return $const;
@@ -162,9 +164,10 @@ final class Factory
 		$prop = new Property($from->name);
 		$prop->setValue($defaults[$prop->getName()] ?? null);
 		$prop->setStatic($from->isStatic());
-		$prop->setVisibility($from->isPrivate()
-			? ClassType::VISIBILITY_PRIVATE
-			: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
+		$prop->setVisibility(
+			$from->isPrivate()
+				? ClassType::VISIBILITY_PRIVATE
+				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
 		);
 		if (PHP_VERSION_ID >= 70400 && ($from->getType() instanceof \ReflectionNamedType)) {
 			$prop->setType($from->getType()->getName());

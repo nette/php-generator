@@ -108,7 +108,9 @@ class Printer
 	public function printClass(ClassType $class, PhpNamespace $namespace = null): string
 	{
 		$class->validate();
-		$resolver = $this->resolveTypes && $namespace ? [$namespace, 'unresolveName'] : function ($s) { return $s; };
+		$resolver = $this->resolveTypes && $namespace
+			? [$namespace, 'unresolveName']
+			: function ($s) { return $s; };
 
 		$traits = [];
 		foreach ($class->getTraitResolutions() as $trait => $resolutions) {
@@ -233,11 +235,9 @@ class Printer
 		$uses = [];
 		foreach ($namespace->getUses() as $alias => $original) {
 			if ($original !== ($name ? $name . '\\' . $alias : $alias)) {
-				if ($alias === $original || substr($original, -(strlen($alias) + 1)) === '\\' . $alias) {
-					$uses[] = "use $original;";
-				} else {
-					$uses[] = "use $original as $alias;";
-				}
+				$uses[] = $alias === $original || substr($original, -(strlen($alias) + 1)) === '\\' . $alias
+					? "use $original;"
+					: "use $original as $alias;";
 			}
 		}
 		return implode("\n", $uses);

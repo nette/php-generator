@@ -21,9 +21,11 @@ $function->addUse('vars')
 	->setReference(true);
 
 same(
-'function &($a, $b) use ($this, &$vars) {
+	'function &($a, $b) use ($this, &$vars) {
 	return $a + $b;
-}', (string) $function);
+}',
+	(string) $function
+);
 
 
 $uses = $function->getUses();
@@ -34,9 +36,11 @@ Assert::type(Nette\PhpGenerator\Parameter::class, $uses[1]);
 $uses = $function->setUses([$uses[0]]);
 
 same(
-'function &($a, $b) use ($this) {
+	'function &($a, $b) use ($this) {
 	return $a + $b;
-}', (string) $function);
+}',
+	(string) $function
+);
 
 
 
@@ -54,14 +58,18 @@ $function
 	->addUse('this');
 
 same(
-'function () use ($this): array {
+	'function () use ($this): array {
 	return [];
-}', (string) $function);
+}',
+	(string) $function
+);
 
 
 
 $closure = function (stdClass $a, $b = null) {};
 $function = Closure::from($closure);
 same(
-'function (stdClass $a, $b = null) {
-}', (string) $function);
+	'function (stdClass $a, $b = null) {
+}',
+	(string) $function
+);

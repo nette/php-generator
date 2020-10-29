@@ -100,7 +100,9 @@ final class Dumper
 		$hideKeys = is_int(($tmp = array_keys($var))[0]) && $tmp === range($tmp[0], $tmp[0] + count($var) - 1);
 
 		foreach ($var as $k => &$v) {
-			$keyPart = $hideKeys && $k === $counter ? '' : $this->dumpVar($k) . ' => ';
+			$keyPart = $hideKeys && $k === $counter
+				? ''
+				: $this->dumpVar($k) . ' => ';
 			$counter = is_int($k) ? max($k + 1, $counter) : $counter;
 			$outInline .= ($outInline === '' ? '' : ', ') . $keyPart;
 			$outInline .= $this->dumpVar($v, $parents, 0, $column + strlen($outInline));
@@ -161,7 +163,7 @@ final class Dumper
 		$out .= $space;
 		return $class === \stdClass::class
 			? "(object) [$out]"
-			: '\\' . __CLASS__ . "::createObject('$class', [$out])";
+			: '\\' . self::class . "::createObject('$class', [$out])";
 	}
 
 

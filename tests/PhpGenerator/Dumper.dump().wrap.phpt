@@ -15,7 +15,8 @@ require __DIR__ . '/../bootstrap.php';
 
 $dumper = new Dumper;
 $dumper->wrapLength = 21;
-same("[
+same(
+	"[
 	'a' => [1, 2, 3],
 	'aaaaaaaaa' => [
 		1,
@@ -29,7 +30,8 @@ same("[
 	])
 );
 
-same("[
+same(
+	"[
 	'single' => 1 + 2,
 	'multi' => [
 		1,
@@ -41,7 +43,8 @@ same("[
 	])
 );
 
-same("(object) [
+same(
+	"(object) [
 	'a' => [1, 2, 3],
 	'aaaaaaaaa' => [
 		1,

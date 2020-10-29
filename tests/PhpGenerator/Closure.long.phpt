@@ -17,7 +17,7 @@ for ($name = 'abcde'; $name < 'abcdu'; $name++) {
 }
 
 same(
-'function (
+	'function (
 	$abcde,
 	$abcdf,
 	$abcdg,
@@ -53,4 +53,6 @@ same(
 	$abcdt
 ) {
 	return null;
-}', (string) $function);
+}',
+	(string) $function
+);

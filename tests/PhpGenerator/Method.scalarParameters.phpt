@@ -43,8 +43,10 @@ $method->addParameter('a')->setType(Type::STRING);
 $method->addParameter('b')->setType(Type::BOOL);
 
 same(
-'function create(string $a, bool $b)
+	'function create(string $a, bool $b)
 {
 	return null;
 }
-', (string) $method);
+',
+	(string) $method
+);

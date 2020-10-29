@@ -365,7 +365,9 @@ final class ClassType
 	{
 		$this->consts = [];
 		foreach ($consts as $k => $v) {
-			$const = $v instanceof Constant ? $v : (new Constant($k))->setValue($v);
+			$const = $v instanceof Constant
+				? $v
+				: (new Constant($k))->setValue($v);
 			$this->consts[$const->getName()] = $const;
 		}
 		return $this;
