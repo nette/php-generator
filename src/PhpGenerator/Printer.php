@@ -267,7 +267,7 @@ class Printer
 			$params[] =
 				($promoted ? Helpers::formatDocComment((string) $promoted->getComment()) : '')
 				. ($attrs = self::printAttributes($param->getAttributes(), $namespace, true))
-				. ($promoted ? ($param->getVisibility() ?: 'public') . ' ' : '')
+				. ($promoted ? ($promoted->getVisibility() ?: 'public') . ' ' : '')
 				. ltrim($this->printType($type, $param->isNullable(), $namespace) . ' ')
 				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')

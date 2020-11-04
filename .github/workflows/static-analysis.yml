@@ -11,11 +11,11 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - uses: shivammathur/setup-php@v1
+            - uses: shivammathur/setup-php@v2
               with:
                   php-version: 7.4
                   coverage: none
 
             - run: composer install --no-progress --prefer-dist
-            - run: composer phpstan
+            - run: composer phpstan -- --no-progress
               continue-on-error: true # is only informative

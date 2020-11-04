@@ -277,6 +277,7 @@ final class Factory
 			$nodeFinder->findInstanceOf($statements, Node\Scalar\String_::class),
 			$nodeFinder->findInstanceOf($statements, Node\Scalar\EncapsedStringPart::class)
 		) as $node) {
+			/** @var Node\Scalar\String_|Node\Scalar\EncapsedStringPart $node */
 			$token = substr($body, $node->getStartFilePos() - $start, $node->getEndFilePos() - $node->getStartFilePos() + 1);
 			if (strpos($token, "\n") !== false) {
 				$quote = $node instanceof Node\Scalar\String_ ? '"' : '';
@@ -290,6 +291,7 @@ final class Factory
 
 		// HEREDOC => "string"
 		foreach ($nodeFinder->findInstanceOf($statements, Node\Scalar\Encapsed::class) as $node) {
+			/** @var Node\Scalar\Encapsed $node */
 			if ($node->getAttribute('kind') === Node\Scalar\String_::KIND_HEREDOC) {
 				$replacements[] = [
 					$node->getStartFilePos(),

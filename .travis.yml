@@ -45,7 +45,7 @@ jobs:
         -   stage: Static Analysis (informative)
             php: 7.4
             script:
-                - composer run-script phpstan
+                - composer phpstan -- --no-progress
 
 
         -   stage: Code Coverage
