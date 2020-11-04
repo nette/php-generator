@@ -172,7 +172,7 @@ final class Dumper
 	 */
 	public function format(string $statement, ...$args): string
 	{
-		$tokens = preg_split('#(\.\.\.\?|\$\?|->\?|::\?|\\\\\?|\?\*|\?)#', $statement, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$tokens = preg_split('#(\.\.\.\?:?|\$\?|->\?|::\?|\\\\\?|\?\*|\?)#', $statement, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$res = '';
 		foreach ($tokens as $n => $token) {
 			if ($n % 2 === 0) {
@@ -183,12 +183,12 @@ final class Dumper
 				throw new Nette\InvalidArgumentException('Insufficient number of arguments.');
 			} elseif ($token === '?') {
 				$res .= $this->dump(array_shift($args), strlen($res) - strrpos($res, "\n"));
-			} elseif ($token === '...?' || $token === '?*') {
+			} elseif ($token === '...?' || $token === '...?:' || $token === '?*') {
 				$arg = array_shift($args);
 				if (!is_array($arg)) {
 					throw new Nette\InvalidArgumentException('Argument must be an array.');
 				}
-				$res .= $this->dumpArguments($arg, strlen($res) - strrpos($res, "\n"));
+				$res .= $this->dumpArguments($arg, strlen($res) - strrpos($res, "\n"), $token === '...?:');
 
 			} else { // $  ->  ::
 				$arg = array_shift($args);
@@ -205,12 +205,12 @@ final class Dumper
 	}
 
 
-	private function dumpArguments(array &$var, int $column): string
+	private function dumpArguments(array &$var, int $column, bool $named): string
 	{
 		$outInline = $outWrapped = '';
 
 		foreach ($var as $k => &$v) {
-			$k = is_int($k) ? '' : $k . ': ';
+			$k = !$named || is_int($k) ? '' : $k . ': ';
 			$outInline .= $outInline === '' ? '' : ', ';
 			$outInline .= $k . $this->dumpVar($v, [$var], 0, $column + strlen($outInline));
 			$outWrapped .= ($outWrapped === '' ? '' : ',') . "\n\t" . $k . $this->dumpVar($v, [$var], 1);

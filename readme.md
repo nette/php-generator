@@ -425,7 +425,7 @@ function foo()
 
 You can use special placeholders for handy way to inject variables.
 
-Simple placeholders:
+Simple placeholders `?`
 
 ```php
 $str = 'any string';
@@ -444,7 +444,7 @@ function foo()
 }
 ```
 
-Variadic placeholder:
+Variadic placeholder `...?`
 
 ```php
 $items = [1, 2, 3];
@@ -462,16 +462,16 @@ function foo()
 }
 ```
 
-You can also use PHP 8 named parameters:
+You can also use PHP 8 named parameters using placeholder `...?:`
 
 ```php
 $items = ['foo' => 1, 'bar' => true];
-$function->setBody('myfunc(...?);', [$items]);
+$function->setBody('myfunc(...?:);', [$items]);
 
 // myfunc(foo: 1, bar: true);
 ```
 
-Escape placeholder using slash:
+Escape placeholder using slash `\?`
 
 ```php
 $num = 3;
