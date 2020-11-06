@@ -200,6 +200,8 @@ final class Factory
 				$prop->setType((string) $from->getType());
 			}
 			$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
+		} else {
+			$prop->setInitialized(false);
 		}
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$prop->setAttributes(self::getAttributes($from));

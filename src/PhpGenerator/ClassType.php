@@ -434,7 +434,9 @@ final class ClassType
 	 */
 	public function addProperty(string $name, $value = null): Property
 	{
-		return $this->properties[$name] = (new Property($name))->setValue($value);
+		return $this->properties[$name] = func_num_args() > 1
+			? (new Property($name))->setValue($value)
+			: new Property($name);
 	}
 
 

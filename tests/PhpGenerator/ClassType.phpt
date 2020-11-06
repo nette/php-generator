@@ -65,6 +65,10 @@ $class->addProperty('typed2')
 	->setNullable()
 	->setInitialized();
 
+$class->addProperty('typed3')
+	->setType(Type::ARRAY)
+	->setValue(null);
+
 $p = $class->addProperty('sections', ['first' => true])
 	->setStatic(true);
 
@@ -141,7 +145,7 @@ $class->setMethods(array_values($methods));
 Assert::same($methods, $class->getMethods());
 
 $properties = $class->getProperties();
-Assert::count(5, $properties);
+Assert::count(6, $properties);
 $class->setProperties(array_values($properties));
 Assert::same($properties, $class->getProperties());
 
