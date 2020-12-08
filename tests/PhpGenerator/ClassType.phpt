@@ -127,6 +127,9 @@ $method->addParameter('res', null)
 		->setReference(true)
 		->setType(Type::union(Type::ARRAY, 'null'));
 
+$method->addParameter('bar', null)
+		->setType('stdClass|string')
+		->setNullable(true);
 
 $class->addTrait('foo');
 $class->removeTrait('foo');
@@ -150,7 +153,7 @@ $class->setProperties(array_values($properties));
 Assert::same($properties, $class->getProperties());
 
 $parameters = $method->getParameters();
-Assert::count(2, $parameters);
+Assert::count(3, $parameters);
 $method->setParameters(array_values($parameters));
 Assert::same($parameters, $method->getParameters());
 
