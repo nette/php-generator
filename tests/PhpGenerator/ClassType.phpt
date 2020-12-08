@@ -127,6 +127,9 @@ $method->addParameter('res', null)
 		->setReference(true)
 		->setType(Type::union(Type::ARRAY, 'null'));
 
+$method->addParameter('bar', null)
+		->setType('stdClass|string')
+		->setNullable(true);
 
 $class->addTrait('foo');
 $class->removeTrait('foo');
