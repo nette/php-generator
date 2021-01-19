@@ -150,8 +150,9 @@ final class Factory
 			: new Parameter($from->name);
 		$param->setReference($from->isPassedByReference());
 		if ($from->getType() instanceof \ReflectionNamedType) {
-			$param->setType($from->getType()->getName());
-			$param->setNullable($from->getType()->allowsNull());
+			$type = $from->getType()->getName();
+			$param->setType($type);
+			$param->setNullable($type === 'mixed' ? false : $from->getType()->allowsNull());
 		} elseif ($from->getType() instanceof \ReflectionUnionType) {
 			$param->setType((string) $from->getType());
 		}
