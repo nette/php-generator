@@ -293,7 +293,7 @@ class Printer
 		if ($this->resolveTypes && $namespace) {
 			$type = $namespace->unresolveUnionType($type);
 		}
-		if ($nullable) {
+		if ($nullable && strcasecmp($type, 'mixed')) {
 			$type = strpos('|', $type) === false
 				? '?' . $type
 				: $type . '|null';

@@ -39,7 +39,7 @@ class Class10
 	public string|int $prop;
 
 
-	public function test(string|int $param): string|int
+	public function test(mixed $param): string|int
 	{
 	}
 }
