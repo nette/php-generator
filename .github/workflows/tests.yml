@@ -53,6 +53,8 @@ jobs:
                   coverage: none
 
             - run: composer install --no-progress --prefer-dist
-            - run: wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
             - run: vendor/bin/tester -p phpdbg tests -s -C --coverage ./coverage.xml --coverage-src ./src
-            - run: php coveralls.phar --verbose --config tests/.coveralls.yml
+            - run: wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.4.3/php-coveralls.phar
+            - env:
+                  COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: php php-coveralls.phar --verbose --config tests/.coveralls.yml
