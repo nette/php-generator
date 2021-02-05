@@ -13,9 +13,21 @@ Introduction
 
 Do you need to generate PHP code of classes, functions, namespaces, etc.? This library with a friendly API will help you.
 
-Documentation can be found on the [website](https://doc.nette.org/php-generator). If you like it, **[please make a donation now](https://github.com/sponsors/dg)**. Thank you!
+Documentation can be found on the [website](https://doc.nette.org/php-generator).
 
-Installation:
+
+[Support Me](https://github.com/sponsors/dg)
+--------------------------------------------
+
+Do you like PHP Generator? Are you looking forward to the new features?
+
+[![Buy me a coffee](https://files.nette.org/icons/donation-3.svg)](https://github.com/sponsors/dg)
+
+Thank you!
+
+
+Installation
+------------
 
 ```shell
 composer require nette/php-generator
