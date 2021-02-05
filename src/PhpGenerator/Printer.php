@@ -38,13 +38,16 @@ class Printer
 
 	public function printFunction(GlobalFunction $function, PhpNamespace $namespace = null): string
 	{
+		$line = 'function '
+			. ($function->getReturnReference() ? '&' : '')
+			. $function->getName();
+		$returnType = $this->printReturnType($function, $namespace);
+
 		return Helpers::formatDocComment($function->getComment() . "\n")
 			. self::printAttributes($function->getAttributes(), $namespace)
-			. 'function '
-			. ($function->getReturnReference() ? '&' : '')
-			. $function->getName()
-			. $this->printParameters($function, $namespace)
-			. $this->printReturnType($function, $namespace)
+			. $line
+			. $this->printParameters($function, $namespace, strlen($line) + strlen($returnType) + 2) // 2 = parentheses
+			. $returnType
 			. "\n{\n" . $this->indent(ltrim(rtrim($function->getBody()) . "\n")) . "}\n";
 	}
 
@@ -89,17 +92,20 @@ class Printer
 	public function printMethod(Method $method, PhpNamespace $namespace = null): string
 	{
 		$method->validate();
-		return Helpers::formatDocComment($method->getComment() . "\n")
-			. self::printAttributes($method->getAttributes(), $namespace)
-			. ($method->isAbstract() ? 'abstract ' : '')
+		$line = ($method->isAbstract() ? 'abstract ' : '')
 			. ($method->isFinal() ? 'final ' : '')
 			. ($method->getVisibility() ? $method->getVisibility() . ' ' : '')
 			. ($method->isStatic() ? 'static ' : '')
 			. 'function '
 			. ($method->getReturnReference() ? '&' : '')
-			. $method->getName()
-			. ($params = $this->printParameters($method, $namespace))
-			. $this->printReturnType($method, $namespace)
+			. $method->getName();
+		$returnType = $this->printReturnType($method, $namespace);
+
+		return Helpers::formatDocComment($method->getComment() . "\n")
+			. self::printAttributes($method->getAttributes(), $namespace)
+			. $line
+			. ($params = $this->printParameters($method, $namespace, strlen($line) + strlen($returnType) + strlen($this->indentation) + 2)) // 2 = parentheses
+			. $returnType
 			. ($method->isAbstract() || $method->getBody() === null
 				? ";\n"
 				: (strpos($params, "\n") === false ? "\n" : ' ')
@@ -254,7 +260,7 @@ class Printer
 	/**
 	 * @param Closure|GlobalFunction|Method  $function
 	 */
-	public function printParameters($function, PhpNamespace $namespace = null): string
+	public function printParameters($function, PhpNamespace $namespace = null, int $column = 0): string
 	{
 		$params = [];
 		$list = $function->getParameters();
@@ -279,7 +285,7 @@ class Printer
 
 		$line = implode(', ', $params);
 
-		return count($params) > 1 && ($special || strlen($line) > (new Dumper)->wrapLength)
+		return count($params) > 1 && ($special || strlen($line) + $column > (new Dumper)->wrapLength)
 			? "(\n" . $this->indent(implode(",\n", $params)) . ($special ? ',' : '') . "\n)"
 			: "($line)";
 	}
