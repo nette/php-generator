@@ -43,5 +43,5 @@ abstract class Example extends ParentClass implements IExample, IOne
 	}
 
 
-	abstract public function show($item, array|null &$res = null, ?stdClass|string $bar = null);
+	abstract public function show($item, array|null &$res = null, stdClass|string|null $bar = null);
 }
