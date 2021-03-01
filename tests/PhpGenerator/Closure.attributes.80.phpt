@@ -18,5 +18,5 @@ $function = Closure::from($closure);
 same(
 	'#[ExampleAttribute] function (stdClass $a, $b = null) {
 }',
-	(string) $function
+	(string) $function,
 );

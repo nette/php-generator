@@ -24,7 +24,7 @@ same(
 	'function &($a, $b) use ($this, &$vars) {
 	return $a + $b;
 }',
-	(string) $function
+	(string) $function,
 );
 
 
@@ -39,7 +39,7 @@ same(
 	'function &($a, $b) use ($this) {
 	return $a + $b;
 }',
-	(string) $function
+	(string) $function,
 );
 
 
@@ -61,7 +61,7 @@ same(
 	'function () use ($this): array {
 	return [];
 }',
-	(string) $function
+	(string) $function,
 );
 
 
@@ -74,7 +74,7 @@ same(
 	'#[ExampleAttribute] function () {
 	return $a + $b;
 }',
-	(string) $function
+	(string) $function,
 );
 
 
@@ -84,5 +84,5 @@ $function = Closure::from($closure);
 same(
 	'function (stdClass $a, $b = null) {
 }',
-	(string) $function
+	(string) $function,
 );
