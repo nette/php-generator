@@ -15,8 +15,7 @@ namespace Nette\PhpGenerator;
  */
 class Literal
 {
-	/** @var string */
-	private $value;
+	private string $value;
 
 
 	public function __construct(string $value)

@@ -32,17 +32,15 @@ final class PhpNamespace
 		'mixed' => 1, 'null' => 1, 'false' => 1,
 	];
 
-	/** @var string */
-	private $name;
+	private string $name;
 
-	/** @var bool */
-	private $bracketedSyntax = false;
+	private bool $bracketedSyntax = false;
 
 	/** @var string[] */
-	private $uses = [];
+	private array $uses = [];
 
 	/** @var ClassType[] */
-	private $classes = [];
+	private array $classes = [];
 
 
 	public function __construct(string $name)
