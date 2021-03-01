@@ -26,9 +26,6 @@ final class Method
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 
-	/** @var string|null */
-	private $body = '';
-
 	/** @var bool */
 	private $static = false;
 
@@ -37,6 +34,8 @@ final class Method
 
 	/** @var bool */
 	private $abstract = false;
+
+	private bool $interface = false;
 
 
 	/**
@@ -57,16 +56,19 @@ final class Method
 	/** @return static */
 	public function setBody(?string $code, array $args = null): self
 	{
-		$this->body = $args === null || $code === null
-			? $code
-			: (new Dumper)->format($code, ...$args);
+		$this->interface = $code === null;
+		if ($code !== null) {
+			$this->body = $args === null
+				? $code
+				: (new Dumper)->format($code, ...$args);
+		}
 		return $this;
 	}
 
 
 	public function getBody(): ?string
 	{
-		return $this->body;
+		return $this->interface ? null : $this->body;
 	}
 
 
