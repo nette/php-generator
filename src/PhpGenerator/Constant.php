@@ -23,8 +23,7 @@ final class Constant
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 
-	/** @var mixed */
-	private $value;
+	private mixed $value;
 
 
 	/** @return static */

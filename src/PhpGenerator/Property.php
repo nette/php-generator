@@ -25,20 +25,15 @@ final class Property
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 
-	/** @var mixed */
-	private $value;
+	private mixed $value;
 
-	/** @var bool */
-	private $static = false;
+	private bool $static = false;
 
-	/** @var string|null */
-	private $type;
+	private ?string $type = null;
 
-	/** @var bool */
-	private $nullable = false;
+	private bool $nullable = false;
 
-	/** @var bool */
-	private $initialized = false;
+	private bool $initialized = false;
 
 
 	/** @return static */

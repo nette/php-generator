@@ -15,8 +15,7 @@ namespace Nette\PhpGenerator\Traits;
  */
 trait CommentAware
 {
-	/** @var string|null */
-	private $comment;
+	private ?string $comment = null;
 
 
 	/** @return static */
