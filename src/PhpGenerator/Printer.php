@@ -112,11 +112,11 @@ class Printer
 	}
 
 
-	public function printMethod(Method $method, ?PhpNamespace $namespace = null): string
+	public function printMethod(Method $method, ?PhpNamespace $namespace = null, bool $isInterface = false): string
 	{
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		$method->validate();
-		$line = ($method->isAbstract() ? 'abstract ' : '')
+		$line = ($method->isAbstract() && !$isInterface ? 'abstract ' : '')
 			. ($method->isFinal() ? 'final ' : '')
 			. ($method->getVisibility() ? $method->getVisibility() . ' ' : '')
 			. ($method->isStatic() ? 'static ' : '')
@@ -132,7 +132,7 @@ class Printer
 			. $line
 			. $params
 			. $returnType
-			. ($method->isAbstract() || $method->getBody() === null
+			. ($method->isAbstract() || $isInterface
 				? ";\n"
 				: (strpos($params, "\n") === false ? "\n" : ' ')
 					. "{\n"
@@ -206,7 +206,7 @@ class Printer
 
 		$methods = [];
 		foreach ($class->getMethods() as $method) {
-			$methods[] = $this->printMethod($method, $namespace);
+			$methods[] = $this->printMethod($method, $namespace, $class->isInterface());
 		}
 
 		$members = array_filter([

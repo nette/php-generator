@@ -26,9 +26,6 @@ final class Method
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 
-	/** @var string|null */
-	private $body = '';
-
 	/** @var bool */
 	private $static = false;
 
@@ -51,22 +48,6 @@ final class Method
 	public function __toString(): string
 	{
 		return (new Printer)->printMethod($this);
-	}
-
-
-	/** @return static */
-	public function setBody(?string $code, ?array $args = null): self
-	{
-		$this->body = $args === null || $code === null
-			? $code
-			: (new Dumper)->format($code, ...$args);
-		return $this;
-	}
-
-
-	public function getBody(): ?string
-	{
-		return $this->body;
 	}
 
 
