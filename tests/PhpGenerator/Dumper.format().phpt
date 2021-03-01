@@ -54,7 +54,7 @@ same(
 	35,
 	36
 )',
-	$dumper->format('func(?*)', range(10, 36))
+	$dumper->format('func(?*)', range(10, 36)),
 );
 
 Assert::exception(function () {

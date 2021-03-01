@@ -120,7 +120,7 @@ class Printer
 		$class->validate();
 		$resolver = $this->resolveTypes && $namespace
 			? [$namespace, 'unresolveUnionType']
-			: function ($s) { return $s; };
+			: fn($s) => $s;
 
 		$traits = [];
 		foreach ($class->getTraitResolutions() as $trait => $resolutions) {
@@ -174,7 +174,7 @@ class Printer
 			. ($class->getImplements() ? 'implements ' . implode(', ', array_map($resolver, $class->getImplements())) . ' ' : '')
 			. ($class->getName() ? "\n" : '') . "{\n"
 			. ($members ? $this->indent(implode("\n", $members)) : '')
-			. '}'
+			. '}',
 		) . ($class->getName() ? "\n" : '');
 	}
 
@@ -216,7 +216,7 @@ class Printer
 			. ($file->getComment() ? "\n" . Helpers::formatDocComment($file->getComment() . "\n") : '')
 			. "\n"
 			. ($file->hasStrictTypes() ? "declare(strict_types=1);\n\n" : '')
-			. implode("\n\n", $namespaces)
+			. implode("\n\n", $namespaces),
 		) . "\n";
 	}
 

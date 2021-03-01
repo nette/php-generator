@@ -26,8 +26,8 @@ class Type
 		ITERABLE = 'iterable',
 		VOID = 'void',
 		MIXED = 'mixed',
-		FALSE = 'false',
-		NULL = 'null',
+		false = 'false',
+		null = 'null',
 		SELF = 'self',
 		PARENT = 'parent',
 		STATIC = 'static';
@@ -48,7 +48,7 @@ class Type
 	public static function getType($value): ?string
 	{
 		if (is_object($value)) {
-			return get_class($value);
+			return $value::class;
 		} elseif (is_int($value)) {
 			return self::INT;
 		} elseif (is_float($value)) {

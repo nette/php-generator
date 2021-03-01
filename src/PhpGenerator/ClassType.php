@@ -540,7 +540,7 @@ final class ClassType
 
 	public function __clone()
 	{
-		$clone = function ($item) { return clone $item; };
+		$clone = fn($item) => clone $item;
 		$this->consts = array_map($clone, $this->consts);
 		$this->properties = array_map($clone, $this->properties);
 		$this->methods = array_map($clone, $this->methods);

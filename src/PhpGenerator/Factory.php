@@ -33,9 +33,7 @@ final class Factory
 
 		$ifaces = $from->getInterfaceNames();
 		foreach ($ifaces as $iface) {
-			$ifaces = array_filter($ifaces, function (string $item) use ($iface): bool {
-				return !is_subclass_of($iface, $item);
-			});
+			$ifaces = array_filter($ifaces, fn(string $item): bool => !is_subclass_of($iface, $item));
 		}
 		$class->setImplements($ifaces);
 
@@ -63,7 +61,7 @@ final class Factory
 				if ($withBodies) {
 					$srcMethod = Nette\Utils\Reflection::getMethodDeclaringMethod($method);
 					$srcClass = $srcMethod->getDeclaringClass()->name;
-					$b = $bodies[$srcClass] = $bodies[$srcClass] ?? $this->loadMethodBodies($srcMethod->getDeclaringClass());
+					$b = $bodies[$srcClass] ??= $this->loadMethodBodies($srcMethod->getDeclaringClass());
 					if (isset($b[$srcMethod->name])) {
 						$m->setBody($b[$srcMethod->name]);
 					}
@@ -92,7 +90,7 @@ final class Factory
 		$method->setVisibility(
 			$from->isPrivate()
 				? ClassType::VISIBILITY_PRIVATE
-				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ($isInterface ? null : ClassType::VISIBILITY_PUBLIC))
+				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ($isInterface ? null : ClassType::VISIBILITY_PUBLIC)),
 		);
 		$method->setFinal($from->isFinal());
 		$method->setAbstract($from->isAbstract() && !$isInterface);
@@ -173,7 +171,7 @@ final class Factory
 		$const->setVisibility(
 			$from->isPrivate()
 				? ClassType::VISIBILITY_PRIVATE
-				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
+				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC),
 		);
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$const->setAttributes(self::getAttributes($from));
@@ -190,7 +188,7 @@ final class Factory
 		$prop->setVisibility(
 			$from->isPrivate()
 				? ClassType::VISIBILITY_PRIVATE
-				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
+				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC),
 		);
 		if (PHP_VERSION_ID >= 70400) {
 			if ($from->getType() instanceof \ReflectionNamedType) {
@@ -217,9 +215,11 @@ final class Factory
 
 		[$code, $stmts] = $this->parse($from);
 		$nodeFinder = new PhpParser\NodeFinder;
-		$class = $nodeFinder->findFirst($stmts, function (Node $node) use ($from) {
-			return ($node instanceof Node\Stmt\Class_ || $node instanceof Node\Stmt\Trait_) && $node->namespacedName->toString() === $from->name;
-		});
+		$class = $nodeFinder->findFirst(
+			$stmts,
+			fn(Node $node) => ($node instanceof Node\Stmt\Class_ || $node instanceof Node\Stmt\Trait_)
+				&& $node->namespacedName->toString() === $from->name
+		);
 
 		$bodies = [];
 		foreach ($nodeFinder->findInstanceOf($class, Node\Stmt\ClassMethod::class) as $method) {
@@ -243,9 +243,10 @@ final class Factory
 
 		$nodeFinder = new PhpParser\NodeFinder;
 		/** @var Node\Stmt\Function_ $function */
-		$function = $nodeFinder->findFirst($stmts, function (Node $node) use ($from) {
-			return $node instanceof Node\Stmt\Function_ && $node->namespacedName->toString() === $from->name;
-		});
+		$function = $nodeFinder->findFirst(
+			$stmts,
+			fn(Node $node) => $node instanceof Node\Stmt\Function_ && $node->namespacedName->toString() === $from->name
+		);
 
 		$body = $this->extractBody($nodeFinder, $code, $function->stmts);
 		return Helpers::unindent($body, 1);
@@ -277,7 +278,7 @@ final class Factory
 		// multi-line strings => singleline
 		foreach (array_merge(
 			$nodeFinder->findInstanceOf($statements, Node\Scalar\String_::class),
-			$nodeFinder->findInstanceOf($statements, Node\Scalar\EncapsedStringPart::class)
+			$nodeFinder->findInstanceOf($statements, Node\Scalar\EncapsedStringPart::class),
 		) as $node) {
 			/** @var Node\Scalar\String_|Node\Scalar\EncapsedStringPart $node */
 			$token = substr($body, $node->getStartFilePos() - $start, $node->getEndFilePos() - $node->getStartFilePos() + 1);
@@ -309,9 +310,7 @@ final class Factory
 		}
 
 		//sort collected resolved names by position in file
-		usort($replacements, function ($a, $b) {
-			return $a[0] <=> $b[0];
-		});
+		usort($replacements, fn($a, $b) => $a[0] <=> $b[0]);
 		$correctiveOffset = -$start;
 		//replace changes body length so we need correct offset
 		foreach ($replacements as [$startPos, $endPos, $replacement]) {
@@ -320,7 +319,7 @@ final class Factory
 				$body,
 				$replacement,
 				$correctiveOffset + $startPos,
-				$replacingStringLength
+				$replacingStringLength,
 			);
 			$correctiveOffset += strlen($replacement) - $replacingStringLength;
 		}

@@ -127,7 +127,7 @@ final class Dumper
 			throw new Nette\InvalidArgumentException('Cannot dump closure.');
 		}
 
-		$class = get_class($var);
+		$class = $var::class;
 		if ((new \ReflectionObject($var))->isAnonymous()) {
 			throw new Nette\InvalidArgumentException('Cannot dump anonymous class.');
 
