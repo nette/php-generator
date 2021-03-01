@@ -618,7 +618,7 @@ final class ClassType
 
 	public function __clone()
 	{
-		$clone = function ($item) { return clone $item; };
+		$clone = fn($item) => clone $item;
 		$this->cases = array_map($clone, $this->cases);
 		$this->consts = array_map($clone, $this->consts);
 		$this->properties = array_map($clone, $this->properties);

@@ -28,5 +28,5 @@ function func(stdClass $a, $b = null)
 {
 }
 ',
-	(string) $function
+	(string) $function,
 );
