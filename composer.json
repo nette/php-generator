@@ -16,12 +16,12 @@
 	],
 	"require": {
 		"php": ">=8.0 <8.1",
-		"nette/utils": "^3.1.2"
+		"nette/utils": "^3.1.2 || ^4.0"
 	},
 	"require-dev": {
-		"nette/tester": "^2.0",
-		"nikic/php-parser": "^4.4",
-		"tracy/tracy": "^2.3",
+		"nette/tester": "^2.4",
+		"nikic/php-parser": "^4.10",
+		"tracy/tracy": "^2.8",
 		"phpstan/phpstan": "^0.12"
 	},
 	"suggest": {
