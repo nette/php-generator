@@ -19,11 +19,9 @@ final class Dumper
 {
 	private const INDENT_LENGTH = 4;
 
-	/** @var int */
-	public $maxDepth = 50;
+	public int $maxDepth = 50;
 
-	/** @var int */
-	public $wrapLength = 120;
+	public int $wrapLength = 120;
 
 
 	/**

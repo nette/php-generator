@@ -26,14 +26,11 @@ final class Method
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 
-	/** @var bool */
-	private $static = false;
+	private bool $static = false;
 
-	/** @var bool */
-	private $final = false;
+	private bool $final = false;
 
-	/** @var bool */
-	private $abstract = false;
+	private bool $abstract = false;
 
 	private bool $interface = false;
 

@@ -20,20 +20,15 @@ class Printer
 {
 	use Nette\SmartObject;
 
-	/** @var string */
-	protected $indentation = "\t";
+	protected string $indentation = "\t";
 
-	/** @var int */
-	protected $linesBetweenProperties = 0;
+	protected int $linesBetweenProperties = 0;
 
-	/** @var int */
-	protected $linesBetweenMethods = 2;
+	protected int $linesBetweenMethods = 2;
 
-	/** @var string */
-	protected $returnTypeColon = ': ';
+	protected string $returnTypeColon = ': ';
 
-	/** @var bool */
-	private $resolveTypes = true;
+	private bool $resolveTypes = true;
 
 
 	public function printFunction(GlobalFunction $function, PhpNamespace $namespace = null): string
