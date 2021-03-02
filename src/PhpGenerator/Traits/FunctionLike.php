@@ -157,12 +157,4 @@ trait FunctionLike
 	{
 		return $this->returnNullable;
 	}
-
-
-	/** @deprecated */
-	public function setNamespace(?Nette\PhpGenerator\PhpNamespace $val = null): static
-	{
-		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
-		return $this;
-	}
 }

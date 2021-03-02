@@ -73,17 +73,6 @@ class Parameter
 	}
 
 
-	/**
-	 * @deprecated  just use setDefaultValue()
-	 */
-	public function setOptional(bool $state = true): static
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use setDefaultValue()', E_USER_DEPRECATED);
-		$this->hasDefaultValue = $state;
-		return $this;
-	}
-
-
 	public function setNullable(bool $state = true): static
 	{
 		$this->nullable = $state;
