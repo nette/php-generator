@@ -81,7 +81,7 @@ class Printer
 		}
 
 		return self::printAttributes($closure->getAttributes(), null)
-			. 'fn '
+			. 'fn'
 			. ($closure->getReturnReference() ? '&' : '')
 			. $this->printParameters($closure, null)
 			. $this->printReturnType($closure, null)

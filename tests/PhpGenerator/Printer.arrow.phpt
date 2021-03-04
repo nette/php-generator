@@ -18,7 +18,7 @@ $function
 $function->addParameter('a');
 $function->addParameter('b');
 
-Assert::same('fn &($a, $b) => $a + $b;', (new Printer)->printArrowFunction($function));
+Assert::same('fn&($a, $b) => $a + $b;', (new Printer)->printArrowFunction($function));
 
 
 
@@ -27,7 +27,7 @@ $function
 	->setReturnType('array')
 	->setBody('[]');
 
-Assert::same('fn (): array => [];', (new Printer)->printArrowFunction($function));
+Assert::same('fn(): array => [];', (new Printer)->printArrowFunction($function));
 
 
 Assert::exception(function () {

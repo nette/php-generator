@@ -372,7 +372,7 @@ echo (new Nette\PhpGenerator\Printer)->printArrowFunction($closure);
 Result:
 
 ```php
-fn ($a, $b) => $a + $b
+fn($a, $b) => $a + $b
 ```
 
 Attributes
