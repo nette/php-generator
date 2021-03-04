@@ -14,6 +14,8 @@ return function (Symfony\Component\DependencyInjection\Loader\Configurator\Conta
 	$parameters = $containerConfigurator->parameters();
 
 	$parameters->set('skip', [
+		'fixtures*/*',
+
 		// constant NULL, FALSE
 		PhpCsFixer\Fixer\Casing\LowercaseConstantsFixer::class => [
 			'src/PhpGenerator/Type.php',
