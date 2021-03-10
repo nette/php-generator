@@ -9,12 +9,6 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-Assert::exception(function () {
-	(new ClassType('Example'))
-		->addMember(new stdClass);
-}, Nette\InvalidArgumentException::class, 'Argument must be Method|Property|Constant.');
-
-
 $class = (new ClassType('Example'))
 	->addMember($method = new Nette\PhpGenerator\Method('getHandle'))
 	->addMember($property = new Nette\PhpGenerator\Property('handle'))

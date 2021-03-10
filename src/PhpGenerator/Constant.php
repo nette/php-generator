@@ -26,15 +26,14 @@ final class Constant
 	private mixed $value;
 
 
-	/** @return static */
-	public function setValue($val): self
+	public function setValue($val): static
 	{
 		$this->value = $val;
 		return $this;
 	}
 
 
-	public function getValue()
+	public function getValue(): mixed
 	{
 		return $this->value;
 	}
