@@ -125,9 +125,13 @@ trait FunctionLike
 
 
 	/** @return static */
-	public function setReturnType(?string $val): self
+	public function setReturnType(?string $type): self
 	{
-		$this->returnType = $val;
+		if ($type && $type[0] === '?') {
+			$type = substr($type, 1);
+			$this->returnNullable = true;
+		}
+		$this->returnType = $type;
 		return $this;
 	}
 

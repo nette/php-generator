@@ -13,7 +13,7 @@ class A implements A, C
 		self $b,
 		parent $c,
 		array $d,
-		callable $e,
+		?callable $e,
 		C|string $f,
 	): static|A {
 	}

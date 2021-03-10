@@ -81,7 +81,7 @@ $method->addParameter('a')->setType('Bar\C')->addAttribute('Bar\\D');
 $method->addParameter('b')->setType('self');
 $method->addParameter('c')->setType('parent');
 $method->addParameter('d')->setType('array');
-$method->addParameter('e')->setType('callable');
+$method->addParameter('e')->setType('?callable');
 $method->addParameter('f')->setType('Bar\C|string');
 
 sameFile(__DIR__ . '/expected/PhpNamespace.expect', (string) $namespace);
