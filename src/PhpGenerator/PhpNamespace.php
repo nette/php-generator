@@ -59,10 +59,9 @@ final class PhpNamespace
 
 
 	/**
-	 * @return static
 	 * @internal
 	 */
-	public function setBracketedSyntax(bool $state = true): self
+	public function setBracketedSyntax(bool $state = true): static
 	{
 		$this->bracketedSyntax = $state;
 		return $this;
@@ -84,9 +83,8 @@ final class PhpNamespace
 
 	/**
 	 * @throws InvalidStateException
-	 * @return static
 	 */
-	public function addUse(string $name, string $alias = null, string &$aliasOut = null): self
+	public function addUse(string $name, string $alias = null, string &$aliasOut = null): static
 	{
 		$name = ltrim($name, '\\');
 		if ($alias === null && $this->name === Helpers::extractNamespace($name)) {
@@ -155,8 +153,7 @@ final class PhpNamespace
 	}
 
 
-	/** @return static */
-	public function add(ClassType $class): self
+	public function add(ClassType $class): static
 	{
 		$name = $class->getName();
 		if ($name === null) {

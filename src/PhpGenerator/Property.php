@@ -38,8 +38,7 @@ final class Property
 	private bool $readOnly = false;
 
 
-	/** @return static */
-	public function setValue($val): self
+	public function setValue($val): static
 	{
 		$this->value = $val;
 		$this->initialized = true;
@@ -47,14 +46,13 @@ final class Property
 	}
 
 
-	public function &getValue()
+	public function &getValue(): mixed
 	{
 		return $this->value;
 	}
 
 
-	/** @return static */
-	public function setStatic(bool $state = true): self
+	public function setStatic(bool $state = true): static
 	{
 		$this->static = $state;
 		return $this;
@@ -67,8 +65,7 @@ final class Property
 	}
 
 
-	/** @return static */
-	public function setType(?string $type): self
+	public function setType(?string $type): static
 	{
 		if ($type && $type[0] === '?') {
 			$type = substr($type, 1);
@@ -85,8 +82,7 @@ final class Property
 	}
 
 
-	/** @return static */
-	public function setNullable(bool $state = true): self
+	public function setNullable(bool $state = true): static
 	{
 		$this->nullable = $state;
 		return $this;
@@ -99,8 +95,7 @@ final class Property
 	}
 
 
-	/** @return static */
-	public function setInitialized(bool $state = true): self
+	public function setInitialized(bool $state = true): static
 	{
 		$this->initialized = $state;
 		return $this;
@@ -113,8 +108,7 @@ final class Property
 	}
 
 
-	/** @return static */
-	public function setReadOnly(bool $state = true): self
+	public function setReadOnly(bool $state = true): static
 	{
 		$this->readOnly = $state;
 		return $this;

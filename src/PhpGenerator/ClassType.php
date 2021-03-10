@@ -92,19 +92,13 @@ final class ClassType
 	}
 
 
-	/**
-	 * @param  string|object  $class
-	 */
-	public static function from($class): self
+	public static function from(string|object $class): self
 	{
 		return (new Factory)->fromClassReflection(new \ReflectionClass($class));
 	}
 
 
-	/**
-	 * @param  string|object  $class
-	 */
-	public static function withBodiesFrom($class): self
+	public static function withBodiesFrom(string|object $class): self
 	{
 		return (new Factory)->fromClassReflection(new \ReflectionClass($class), true);
 	}
@@ -130,8 +124,7 @@ final class ClassType
 	}
 
 
-	/** @return static */
-	public function setName(?string $name): self
+	public function setName(?string $name): static
 	{
 		if ($name !== null && !Helpers::isIdentifier($name)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid class name.");
@@ -148,7 +141,7 @@ final class ClassType
 
 
 	/** @deprecated */
-	public function setClass(): self
+	public function setClass(): static
 	{
 		$this->type = self::TYPE_CLASS;
 		return $this;
@@ -161,8 +154,7 @@ final class ClassType
 	}
 
 
-	/** @return static */
-	public function setInterface(): self
+	public function setInterface(): static
 	{
 		$this->type = self::TYPE_INTERFACE;
 		return $this;
@@ -175,8 +167,7 @@ final class ClassType
 	}
 
 
-	/** @return static */
-	public function setTrait(): self
+	public function setTrait(): static
 	{
 		$this->type = self::TYPE_TRAIT;
 		return $this;
@@ -195,8 +186,7 @@ final class ClassType
 	}
 
 
-	/** @return static */
-	public function setType(string $type): self
+	public function setType(string $type): static
 	{
 		if (!in_array($type, [self::TYPE_CLASS, self::TYPE_INTERFACE, self::TYPE_TRAIT, self::TYPE_ENUM], true)) {
 			throw new Nette\InvalidArgumentException('Argument must be class|interface|trait|enum.');
@@ -212,8 +202,7 @@ final class ClassType
 	}
 
 
-	/** @return static */
-	public function setFinal(bool $state = true): self
+	public function setFinal(bool $state = true): static
 	{
 		$this->final = $state;
 		return $this;
@@ -226,8 +215,7 @@ final class ClassType
 	}
 
 
-	/** @return static */
-	public function setAbstract(bool $state = true): self
+	public function setAbstract(bool $state = true): static
 	{
 		$this->abstract = $state;
 		return $this;
@@ -242,13 +230,9 @@ final class ClassType
 
 	/**
 	 * @param  string|string[]  $names
-	 * @return static
 	 */
-	public function setExtends($names): self
+	public function setExtends(string|array $names): static
 	{
-		if (!is_string($names) && !is_array($names)) {
-			throw new Nette\InvalidArgumentException('Argument must be string or string[].');
-		}
 		$this->validateNames((array) $names);
 		$this->extends = $names;
 		return $this;
@@ -256,14 +240,13 @@ final class ClassType
 
 
 	/** @return string|string[] */
-	public function getExtends()
+	public function getExtends(): string|array
 	{
 		return $this->extends;
 	}
 
 
-	/** @return static */
-	public function addExtend(string $name): self
+	public function addExtend(string $name): static
 	{
 		$this->validateNames([$name]);
 		$this->extends = (array) $this->extends;
@@ -274,9 +257,8 @@ final class ClassType
 
 	/**
 	 * @param  string[]  $names
-	 * @return static
 	 */
-	public function setImplements(array $names): self
+	public function setImplements(array $names): static
 	{
 		$this->validateNames($names);
 		$this->implements = $names;
@@ -291,8 +273,7 @@ final class ClassType
 	}
 
 
-	/** @return static */
-	public function addImplement(string $name): self
+	public function addImplement(string $name): static
 	{
 		$this->validateNames([$name]);
 		$this->implements[] = $name;
@@ -300,8 +281,7 @@ final class ClassType
 	}
 
 
-	/** @return static */
-	public function removeImplement(string $name): self
+	public function removeImplement(string $name): static
 	{
 		$key = array_search($name, $this->implements, true);
 		if ($key !== false) {
@@ -313,9 +293,8 @@ final class ClassType
 
 	/**
 	 * @param  string[]  $names
-	 * @return static
 	 */
-	public function setTraits(array $names): self
+	public function setTraits(array $names): static
 	{
 		$this->validateNames($names);
 		$this->traits = array_fill_keys($names, []);
@@ -337,8 +316,7 @@ final class ClassType
 	}
 
 
-	/** @return static */
-	public function addTrait(string $name, array $resolutions = []): self
+	public function addTrait(string $name, array $resolutions = []): static
 	{
 		$this->validateNames([$name]);
 		$this->traits[$name] = $resolutions;
@@ -346,19 +324,14 @@ final class ClassType
 	}
 
 
-	/** @return static */
-	public function removeTrait(string $name): self
+	public function removeTrait(string $name): static
 	{
 		unset($this->traits[$name]);
 		return $this;
 	}
 
 
-	/**
-	 * @param  Method|Property|Constant|EnumCase  $member
-	 * @return static
-	 */
-	public function addMember($member): self
+	public function addMember(Method|Property|Constant|EnumCase $member): static
 	{
 		if ($member instanceof Method) {
 			if ($this->isInterface()) {
@@ -374,9 +347,6 @@ final class ClassType
 
 		} elseif ($member instanceof EnumCase) {
 			$this->cases[$member->getName()] = $member;
-
-		} else {
-			throw new Nette\InvalidArgumentException('Argument must be Method|Property|Constant|EnumCase.');
 		}
 
 		return $this;
@@ -385,9 +355,8 @@ final class ClassType
 
 	/**
 	 * @param  Constant[]|mixed[]  $consts
-	 * @return static
 	 */
-	public function setConstants(array $consts): self
+	public function setConstants(array $consts): static
 	{
 		$this->consts = [];
 		foreach ($consts as $k => $v) {
@@ -413,8 +382,7 @@ final class ClassType
 	}
 
 
-	/** @return static */
-	public function removeConstant(string $name): self
+	public function removeConstant(string $name): static
 	{
 		unset($this->consts[$name]);
 		return $this;
@@ -424,9 +392,8 @@ final class ClassType
 	/**
 	 * Sets cases to enum
 	 * @param  EnumCase[]  $consts
-	 * @return static
 	 */
-	public function setCases(array $cases): self
+	public function setCases(array $cases): static
 	{
 		(function (EnumCase ...$cases) {})(...$cases);
 		$this->cases = [];
@@ -445,14 +412,13 @@ final class ClassType
 
 
 	/** Adds case to enum */
-	public function addCase(string $name, $value = null): EnumCase
+	public function addCase(string $name, string|int $value = null): EnumCase
 	{
 		return $this->cases[$name] = (new EnumCase($name))->setValue($value);
 	}
 
 
-	/** @return static */
-	public function removeCase(string $name): self
+	public function removeCase(string $name): static
 	{
 		unset($this->cases[$name]);
 		return $this;
@@ -461,9 +427,8 @@ final class ClassType
 
 	/**
 	 * @param  Property[]  $props
-	 * @return static
 	 */
-	public function setProperties(array $props): self
+	public function setProperties(array $props): static
 	{
 		$this->properties = [];
 		foreach ($props as $v) {
@@ -505,9 +470,8 @@ final class ClassType
 
 	/**
 	 * @param  string  $name without $
-	 * @return static
 	 */
-	public function removeProperty(string $name): self
+	public function removeProperty(string $name): static
 	{
 		unset($this->properties[$name]);
 		return $this;
@@ -522,9 +486,8 @@ final class ClassType
 
 	/**
 	 * @param  Method[]  $methods
-	 * @return static
 	 */
-	public function setMethods(array $methods): self
+	public function setMethods(array $methods): static
 	{
 		$this->methods = [];
 		foreach ($methods as $v) {
@@ -565,8 +528,7 @@ final class ClassType
 	}
 
 
-	/** @return static */
-	public function removeMethod(string $name): self
+	public function removeMethod(string $name): static
 	{
 		unset($this->methods[$name]);
 		return $this;

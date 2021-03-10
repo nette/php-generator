@@ -235,8 +235,7 @@ class Printer
 	}
 
 
-	/** @return static */
-	public function setTypeResolving(bool $state = true): self
+	public function setTypeResolving(bool $state = true): static
 	{
 		$this->resolveTypes = $state;
 		return $this;
@@ -271,11 +270,11 @@ class Printer
 	}
 
 
-	/**
-	 * @param Closure|GlobalFunction|Method  $function
-	 */
-	public function printParameters($function, PhpNamespace $namespace = null, int $column = 0): string
-	{
+	public function printParameters(
+		Closure|GlobalFunction|Method $function,
+		PhpNamespace $namespace = null,
+		int $column = 0,
+	): string {
 		$params = [];
 		$list = $function->getParameters();
 		$special = false;
@@ -325,10 +324,7 @@ class Printer
 	}
 
 
-	/**
-	 * @param Closure|GlobalFunction|Method  $function
-	 */
-	private function printReturnType($function, ?PhpNamespace $namespace): string
+	private function printReturnType(Closure|GlobalFunction|Method $function, ?PhpNamespace $namespace): string
 	{
 		return ($tmp = $this->printType($function->getReturnType(), $function->isReturnNullable(), $namespace))
 			? $this->returnTypeColon . $tmp

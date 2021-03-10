@@ -25,8 +25,7 @@ final class EnumCase
 	private mixed $value = null;
 
 
-	/** @return static */
-	public function setValue($val): self
+	public function setValue($val): static
 	{
 		$this->value = $val;
 		return $this;
