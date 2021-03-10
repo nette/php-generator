@@ -41,9 +41,8 @@ final class Closure
 
 	/**
 	 * @param  Parameter[]  $uses
-	 * @return static
 	 */
-	public function setUses(array $uses): self
+	public function setUses(array $uses): static
 	{
 		(function (Parameter ...$uses) {})(...$uses);
 		$this->uses = $uses;

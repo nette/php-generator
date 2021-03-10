@@ -109,8 +109,7 @@ final class Factory
 	}
 
 
-	/** @return GlobalFunction|Closure */
-	public function fromFunctionReflection(\ReflectionFunction $from, bool $withBody = false)
+	public function fromFunctionReflection(\ReflectionFunction $from, bool $withBody = false): GlobalFunction|Closure
 	{
 		$function = $from->isClosure() ? new Closure : new GlobalFunction($from->name);
 		$function->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
@@ -131,8 +130,7 @@ final class Factory
 	}
 
 
-	/** @return Method|GlobalFunction|Closure */
-	public function fromCallable(callable $from)
+	public function fromCallable(callable $from): Method|GlobalFunction|Closure
 	{
 		$ref = Nette\Utils\Callback::toReflection($from);
 		return $ref instanceof \ReflectionMethod
