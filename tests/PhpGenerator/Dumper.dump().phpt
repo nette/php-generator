@@ -40,7 +40,13 @@ Assert::same("'He\\llo'", $dumper->dump('He\llo'));
 Assert::same('\'He\ll\\\\\o \\\'wor\\\\\\\'ld\\\\\'', $dumper->dump('He\ll\\\o \'wor\\\'ld\\'));
 Assert::same('[]', $dumper->dump([]));
 
+// internal classes
 Assert::same('[$s]', $dumper->dump([new PhpLiteral('$s')]));
+same('[
+	function () {
+		return 1;
+	},
+]', $dumper->dump([(new Nette\PhpGenerator\Closure)->setBody('return 1;')]));
 
 Assert::same('[1, 2, 3]', $dumper->dump([1, 2, 3]));
 Assert::same("['a']", $dumper->dump(['a']));

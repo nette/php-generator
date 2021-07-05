@@ -37,10 +37,7 @@ final class Dumper
 
 	private function dumpVar(&$var, array $parents = [], int $level = 0, int $column = 0): string
 	{
-		if ($var instanceof Literal) {
-			return ltrim(Nette\Utils\Strings::indent(trim((string) $var), $level), "\t");
-
-		} elseif ($var === null) {
+		if ($var === null) {
 			return 'null';
 
 		} elseif (is_string($var)) {
@@ -50,6 +47,9 @@ final class Dumper
 			return $this->dumpArray($var, $parents, $level, $column);
 
 		} elseif (is_object($var)) {
+			if ($var instanceof Literal || $var instanceof Closure) {
+				return ltrim(Nette\Utils\Strings::indent(trim((string) $var), $level), "\t");
+			}
 			return $this->dumpObject($var, $parents, $level);
 
 		} elseif (is_resource($var)) {
