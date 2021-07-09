@@ -26,3 +26,6 @@ Assert::exception(function () {
 
 $res = ClassType::withBodiesFrom(Abc\Class7::class);
 sameFile(__DIR__ . '/expected/ClassType.from.bodies.expect', (string) $res);
+
+$res = ClassType::withBodiesFrom(Abc\Class7::class, false);
+sameFile(__DIR__ . '/expected/ClassType.from.bodies.unresolved.expect', (string) $res);

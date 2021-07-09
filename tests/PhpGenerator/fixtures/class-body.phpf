@@ -87,4 +87,17 @@ a
 		}
 		throw new Nette\InvalidArgumentException();
 	}
+
+
+	function resolving()
+	{
+		$x = new MyClass;
+		$y = new \stdClass;
+		$z = Nette\Utils\ArrayHash::class;
+	}
+}
+
+
+class MyClass
+{
 }

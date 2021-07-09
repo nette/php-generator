@@ -22,6 +22,10 @@ final class Factory
 {
 	use Nette\SmartObject;
 
+	/** @var bool */
+	private $resolveTypes;
+
+
 	public function fromClassReflection(\ReflectionClass $from, bool $withBodies = false): ClassType
 	{
 		$class = $from->isAnonymous()
@@ -307,18 +311,20 @@ final class Factory
 		$body = substr($originalCode, $start, end($statements)->getAttribute('endFilePos') - $start + 1);
 
 		$replacements = [];
-		// name-nodes => resolved fully-qualified name
-		foreach ($nodeFinder->findInstanceOf($statements, Node\Name::class) as $node) {
-			if ($node->hasAttribute('resolvedName')
-				&& $node->getAttribute('resolvedName') instanceof Node\Name\FullyQualified
-			) {
-				$replacements[] = [
-					$node->getStartFilePos(),
-					$node->getEndFilePos(),
-					$node->getAttribute('resolvedName')->toCodeString(),
-				];
-			}
-		}
+		if ($this->resolveTypes) {
+            // name-nodes => resolved fully-qualified name
+            foreach ($nodeFinder->findInstanceOf($statements, Node\Name::class) as $node) {
+                if ($node->hasAttribute('resolvedName')
+                    && $node->getAttribute('resolvedName') instanceof Node\Name\FullyQualified
+                ) {
+                    $replacements[] = [
+                        $node->getStartFilePos(),
+                        $node->getEndFilePos(),
+                        $node->getAttribute('resolvedName')->toCodeString(),
+                    ];
+                }
+            }
+        }
 
 		// multi-line strings => singleline
 		foreach (array_merge(
@@ -407,5 +413,13 @@ final class Factory
 			$res[] = new Attribute($attr->getName(), $attr->getArguments());
 		}
 		return $res;
+	}
+
+
+	/** @return static */
+	public function setTypeResolving(bool $state = true): self
+	{
+		$this->resolveTypes = $state;
+		return $this;
 	}
 }

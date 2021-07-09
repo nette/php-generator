@@ -27,13 +27,13 @@ abstract class Class7
 
 	public function long()
 	{
-		if ($member instanceof \Abc\Method) {
+		if ($member instanceof Method) {
 			$s = [1, 2, 3];
 		}
 		/*
 		$this->methods[$member->getName()] = $member;
 		*/
-		throw new \Nette\InvalidArgumentException('Argument must be Method|Property|Constant.');
+		throw new Nette\InvalidArgumentException('Argument must be Method|Property|Constant.');
 	}
 
 
@@ -57,7 +57,7 @@ abstract class Class7
 		line
 		comment */
 		// Alias Method will not be resolved in comment
-		if ($member instanceof \Abc\Method) {
+		if ($member instanceof Method) {
 			$s1 = "\na\n\tb\n\t\tc\n";
 			$s2 = "\na\n\t{$b}\n\t\t$c\n";
 
@@ -72,14 +72,14 @@ abstract class Class7
 		c
 			<?php
 		}
-		throw new \Nette\InvalidArgumentException();
+		throw new Nette\InvalidArgumentException();
 	}
 
 
 	public function resolving()
 	{
-		$x = new \Abc\MyClass;
+		$x = new MyClass;
 		$y = new \stdClass;
-		$z = \Nette\Utils\ArrayHash::class;
+		$z = Nette\Utils\ArrayHash::class;
 	}
 }
