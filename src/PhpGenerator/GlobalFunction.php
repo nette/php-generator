@@ -31,9 +31,9 @@ final class GlobalFunction
 	}
 
 
-	public static function withBodyFrom(string $function): self
+	public static function withBodyFrom(string $function, bool $resolveClassNames = true): self
 	{
-		return (new Factory)->fromFunctionReflection(new \ReflectionFunction($function), true);
+		return (new Factory)->fromFunctionReflection(new \ReflectionFunction($function), true, $resolveClassNames);
 	}
 
 

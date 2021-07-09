@@ -22,7 +22,7 @@ final class Factory
 {
 	use Nette\SmartObject;
 
-	public function fromClassReflection(\ReflectionClass $from, bool $withBodies = false): ClassType
+	public function fromClassReflection(\ReflectionClass $from, bool $withBodies = false, bool $resolveClassNames = true): ClassType
 	{
 		$class = $from->isAnonymous()
 			? new ClassType
@@ -63,7 +63,7 @@ final class Factory
 				if ($withBodies) {
 					$srcMethod = Nette\Utils\Reflection::getMethodDeclaringMethod($method);
 					$srcClass = $srcMethod->getDeclaringClass()->name;
-					$b = $bodies[$srcClass] = $bodies[$srcClass] ?? $this->loadMethodBodies($srcMethod->getDeclaringClass());
+					$b = $bodies[$srcClass] = $bodies[$srcClass] ?? $this->loadMethodBodies($srcMethod->getDeclaringClass(), $resolveClassNames);
 					if (isset($b[$srcMethod->name])) {
 						$m->setBody($b[$srcMethod->name]);
 					}
@@ -112,7 +112,7 @@ final class Factory
 
 
 	/** @return GlobalFunction|Closure */
-	public function fromFunctionReflection(\ReflectionFunction $from, bool $withBody = false)
+	public function fromFunctionReflection(\ReflectionFunction $from, bool $withBody = false, bool $resolveClassNames = true)
 	{
 		$function = $from->isClosure() ? new Closure : new GlobalFunction($from->name);
 		$function->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
@@ -128,7 +128,7 @@ final class Factory
 		} elseif ($from->getReturnType() instanceof \ReflectionUnionType) {
 			$function->setReturnType((string) $from->getReturnType());
 		}
-		$function->setBody($withBody ? $this->loadFunctionBody($from) : '');
+		$function->setBody($withBody ? $this->loadFunctionBody($from, $resolveClassNames) : '');
 		return $function;
 	}
 
@@ -209,7 +209,7 @@ final class Factory
 	}
 
 
-	private function loadMethodBodies(\ReflectionClass $from): array
+	private function loadMethodBodies(\ReflectionClass $from, bool $resolveClassNames = true): array
 	{
 		if ($from->isAnonymous()) {
 			throw new Nette\NotSupportedException('Anonymous classes are not supported.');
@@ -225,7 +225,7 @@ final class Factory
 		foreach ($nodeFinder->findInstanceOf($class, Node\Stmt\ClassMethod::class) as $method) {
 			/** @var Node\Stmt\ClassMethod $method */
 			if ($method->stmts) {
-				$body = $this->extractBody($nodeFinder, $code, $method->stmts);
+				$body = $this->extractBody($nodeFinder, $code, $method->stmts, $resolveClassNames);
 				$bodies[$method->name->toString()] = Helpers::unindent($body, 2);
 			}
 		}
@@ -233,7 +233,7 @@ final class Factory
 	}
 
 
-	private function loadFunctionBody(\ReflectionFunction $from): string
+	private function loadFunctionBody(\ReflectionFunction $from, bool $resolveClassNames = true): string
 	{
 		if ($from->isClosure()) {
 			throw new Nette\NotSupportedException('Closures are not supported.');
@@ -247,7 +247,7 @@ final class Factory
 			return $node instanceof Node\Stmt\Function_ && $node->namespacedName->toString() === $from->name;
 		});
 
-		$body = $this->extractBody($nodeFinder, $code, $function->stmts);
+		$body = $this->extractBody($nodeFinder, $code, $function->stmts, $resolveClassNames);
 		return Helpers::unindent($body, 1);
 	}
 
@@ -255,24 +255,26 @@ final class Factory
 	/**
 	 * @param  Node[]  $statements
 	 */
-	private function extractBody(PhpParser\NodeFinder $nodeFinder, string $originalCode, array $statements): string
+	private function extractBody(PhpParser\NodeFinder $nodeFinder, string $originalCode, array $statements, bool $resolveClassNames = true): string
 	{
 		$start = $statements[0]->getAttribute('startFilePos');
 		$body = substr($originalCode, $start, end($statements)->getAttribute('endFilePos') - $start + 1);
 
 		$replacements = [];
-		// name-nodes => resolved fully-qualified name
-		foreach ($nodeFinder->findInstanceOf($statements, Node\Name::class) as $node) {
-			if ($node->hasAttribute('resolvedName')
-				&& $node->getAttribute('resolvedName') instanceof Node\Name\FullyQualified
-			) {
-				$replacements[] = [
-					$node->getStartFilePos(),
-					$node->getEndFilePos(),
-					$node->getAttribute('resolvedName')->toCodeString(),
-				];
-			}
-		}
+		if ($resolveClassNames) {
+            // name-nodes => resolved fully-qualified name
+            foreach ($nodeFinder->findInstanceOf($statements, Node\Name::class) as $node) {
+                if ($node->hasAttribute('resolvedName')
+                    && $node->getAttribute('resolvedName') instanceof Node\Name\FullyQualified
+                ) {
+                    $replacements[] = [
+                        $node->getStartFilePos(),
+                        $node->getEndFilePos(),
+                        $node->getAttribute('resolvedName')->toCodeString(),
+                    ];
+                }
+            }
+        }
 
 		// multi-line strings => singleline
 		foreach (array_merge(
