@@ -42,7 +42,7 @@ final class Factory
 		$class->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$class->setAttributes(self::getAttributes($from));
 		if ($from->getParentClass()) {
-			$class->setExtends($from->getParentClass()->name);
+			$class->setExtends($resolveClassNames ? $from->getParentClass()->name : $from->getParentClass()->getShortName());
 			$class->setImplements(array_diff($class->getImplements(), $from->getParentClass()->getInterfaceNames()));
 		}
 		$props = $methods = $consts = [];
@@ -51,7 +51,7 @@ final class Factory
 				&& $prop->getDeclaringClass()->name === $from->name
 				&& (PHP_VERSION_ID < 80000 || !$prop->isPromoted())
 			) {
-				$props[] = $this->fromPropertyReflection($prop);
+				$props[] = $this->fromPropertyReflection($prop, $resolveClassNames);
 			}
 		}
 		$class->setProperties($props);
@@ -59,7 +59,7 @@ final class Factory
 		$bodies = [];
 		foreach ($from->getMethods() as $method) {
 			if ($method->getDeclaringClass()->name === $from->name) {
-				$methods[] = $m = $this->fromMethodReflection($method);
+				$methods[] = $m = $this->fromMethodReflection($method, $resolveClassNames);
 				if ($withBodies) {
 					$srcMethod = Nette\Utils\Reflection::getMethodDeclaringMethod($method);
 					$srcClass = $srcMethod->getDeclaringClass()->name;
@@ -83,10 +83,17 @@ final class Factory
 	}
 
 
-	public function fromMethodReflection(\ReflectionMethod $from): Method
+	public function fromMethodReflection(\ReflectionMethod $from, bool $resolveClassNames = true): Method
 	{
 		$method = new Method($from->name);
-		$method->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
+
+		$parameters = [];
+
+		foreach ($from->getParameters() as $reflectionParameter) {
+		    $parameters[] = $this->fromParameterReflection($reflectionParameter, $resolveClassNames);
+        }
+
+		$method->setParameters($parameters);
 		$method->setStatic($from->isStatic());
 		$isInterface = $from->getDeclaringClass()->isInterface();
 		$method->setVisibility(
@@ -143,14 +150,15 @@ final class Factory
 	}
 
 
-	public function fromParameterReflection(\ReflectionParameter $from): Parameter
+	public function fromParameterReflection(\ReflectionParameter $from, bool $resolveClassNames = true): Parameter
 	{
 		$param = PHP_VERSION_ID >= 80000 && $from->isPromoted()
 			? new PromotedParameter($from->name)
 			: new Parameter($from->name);
 		$param->setReference($from->isPassedByReference());
 		if ($from->getType() instanceof \ReflectionNamedType) {
-			$param->setType($from->getType()->getName());
+            $typeParts = explode('\\', $from->getType()->getName());
+            $param->setType($resolveClassNames ? implode('\\', $typeParts) : end($typeParts));
 			$param->setNullable($from->getType()->allowsNull());
 		} elseif ($from->getType() instanceof \ReflectionUnionType) {
 			$param->setType((string) $from->getType());
@@ -181,7 +189,7 @@ final class Factory
 	}
 
 
-	public function fromPropertyReflection(\ReflectionProperty $from): Property
+	public function fromPropertyReflection(\ReflectionProperty $from, bool $resolveClassNames = true): Property
 	{
 		$defaults = $from->getDeclaringClass()->getDefaultProperties();
 		$prop = new Property($from->name);
@@ -194,7 +202,8 @@ final class Factory
 		);
 		if (PHP_VERSION_ID >= 70400) {
 			if ($from->getType() instanceof \ReflectionNamedType) {
-				$prop->setType($from->getType()->getName());
+			    $typeParts = explode('\\', $from->getType()->getName());
+				$prop->setType($resolveClassNames ? implode('\\', $typeParts) : end($typeParts));
 				$prop->setNullable($from->getType()->allowsNull());
 			} elseif ($from->getType() instanceof \ReflectionUnionType) {
 				$prop->setType((string) $from->getType());
