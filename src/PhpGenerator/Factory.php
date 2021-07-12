@@ -22,7 +22,7 @@ final class Factory
 {
 	use Nette\SmartObject;
 
-	public function fromClassReflection(\ReflectionClass $from, bool $withBodies = false): ClassType
+	public function fromClassReflection(\ReflectionClass $from, bool $withBodies = false, bool $resolveClassNames = true): ClassType
 	{
 		$class = $from->isAnonymous()
 			? new ClassType
@@ -42,7 +42,7 @@ final class Factory
 		$class->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$class->setAttributes(self::getAttributes($from));
 		if ($from->getParentClass()) {
-			$class->setExtends($from->getParentClass()->name);
+			$class->setExtends($resolveClassNames ? $from->getParentClass()->name : $from->getParentClass()->getShortName());
 			$class->setImplements(array_diff($class->getImplements(), $from->getParentClass()->getInterfaceNames()));
 		}
 		$props = $methods = $consts = [];
@@ -51,7 +51,7 @@ final class Factory
 				&& $prop->getDeclaringClass()->name === $from->name
 				&& (PHP_VERSION_ID < 80000 || !$prop->isPromoted())
 			) {
-				$props[] = $this->fromPropertyReflection($prop);
+				$props[] = $this->fromPropertyReflection($prop, $resolveClassNames);
 			}
 		}
 		$class->setProperties($props);
@@ -59,11 +59,11 @@ final class Factory
 		$bodies = [];
 		foreach ($from->getMethods() as $method) {
 			if ($method->getDeclaringClass()->name === $from->name) {
-				$methods[] = $m = $this->fromMethodReflection($method);
+				$methods[] = $m = $this->fromMethodReflection($method, $resolveClassNames);
 				if ($withBodies) {
 					$srcMethod = Nette\Utils\Reflection::getMethodDeclaringMethod($method);
 					$srcClass = $srcMethod->getDeclaringClass()->name;
-					$b = $bodies[$srcClass] = $bodies[$srcClass] ?? $this->loadMethodBodies($srcMethod->getDeclaringClass());
+					$b = $bodies[$srcClass] = $bodies[$srcClass] ?? $this->loadMethodBodies($srcMethod->getDeclaringClass(), $resolveClassNames);
 					if (isset($b[$srcMethod->name])) {
 						$m->setBody($b[$srcMethod->name]);
 					}
@@ -83,10 +83,17 @@ final class Factory
 	}
 
 
-	public function fromMethodReflection(\ReflectionMethod $from): Method
+	public function fromMethodReflection(\ReflectionMethod $from, bool $resolveClassNames = true): Method
 	{
 		$method = new Method($from->name);
-		$method->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
+
+		$parameters = [];
+
+		foreach ($from->getParameters() as $reflectionParameter) {
+		    $parameters[] = $this->fromParameterReflection($reflectionParameter, $resolveClassNames);
+        }
+
+		$method->setParameters($parameters);
 		$method->setStatic($from->isStatic());
 		$isInterface = $from->getDeclaringClass()->isInterface();
 		$method->setVisibility(
@@ -112,7 +119,7 @@ final class Factory
 
 
 	/** @return GlobalFunction|Closure */
-	public function fromFunctionReflection(\ReflectionFunction $from, bool $withBody = false)
+	public function fromFunctionReflection(\ReflectionFunction $from, bool $withBody = false, bool $resolveClassNames = true)
 	{
 		$function = $from->isClosure() ? new Closure : new GlobalFunction($from->name);
 		$function->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
@@ -128,7 +135,7 @@ final class Factory
 		} elseif ($from->getReturnType() instanceof \ReflectionUnionType) {
 			$function->setReturnType((string) $from->getReturnType());
 		}
-		$function->setBody($withBody ? $this->loadFunctionBody($from) : '');
+		$function->setBody($withBody ? $this->loadFunctionBody($from, $resolveClassNames) : '');
 		return $function;
 	}
 
@@ -143,14 +150,15 @@ final class Factory
 	}
 
 
-	public function fromParameterReflection(\ReflectionParameter $from): Parameter
+	public function fromParameterReflection(\ReflectionParameter $from, bool $resolveClassNames = true): Parameter
 	{
 		$param = PHP_VERSION_ID >= 80000 && $from->isPromoted()
 			? new PromotedParameter($from->name)
 			: new Parameter($from->name);
 		$param->setReference($from->isPassedByReference());
 		if ($from->getType() instanceof \ReflectionNamedType) {
-			$param->setType($from->getType()->getName());
+            $typeParts = explode('\\', $from->getType()->getName());
+            $param->setType($resolveClassNames ? implode('\\', $typeParts) : end($typeParts));
 			$param->setNullable($from->getType()->allowsNull());
 		} elseif ($from->getType() instanceof \ReflectionUnionType) {
 			$param->setType((string) $from->getType());
@@ -181,7 +189,7 @@ final class Factory
 	}
 
 
-	public function fromPropertyReflection(\ReflectionProperty $from): Property
+	public function fromPropertyReflection(\ReflectionProperty $from, bool $resolveClassNames = true): Property
 	{
 		$defaults = $from->getDeclaringClass()->getDefaultProperties();
 		$prop = new Property($from->name);
@@ -194,7 +202,8 @@ final class Factory
 		);
 		if (PHP_VERSION_ID >= 70400) {
 			if ($from->getType() instanceof \ReflectionNamedType) {
-				$prop->setType($from->getType()->getName());
+			    $typeParts = explode('\\', $from->getType()->getName());
+				$prop->setType($resolveClassNames ? implode('\\', $typeParts) : end($typeParts));
 				$prop->setNullable($from->getType()->allowsNull());
 			} elseif ($from->getType() instanceof \ReflectionUnionType) {
 				$prop->setType((string) $from->getType());
@@ -209,7 +218,7 @@ final class Factory
 	}
 
 
-	private function loadMethodBodies(\ReflectionClass $from): array
+	private function loadMethodBodies(\ReflectionClass $from, bool $resolveClassNames = true): array
 	{
 		if ($from->isAnonymous()) {
 			throw new Nette\NotSupportedException('Anonymous classes are not supported.');
@@ -225,7 +234,7 @@ final class Factory
 		foreach ($nodeFinder->findInstanceOf($class, Node\Stmt\ClassMethod::class) as $method) {
 			/** @var Node\Stmt\ClassMethod $method */
 			if ($method->stmts) {
-				$body = $this->extractBody($nodeFinder, $code, $method->stmts);
+				$body = $this->extractBody($nodeFinder, $code, $method->stmts, $resolveClassNames);
 				$bodies[$method->name->toString()] = Helpers::unindent($body, 2);
 			}
 		}
@@ -233,7 +242,7 @@ final class Factory
 	}
 
 
-	private function loadFunctionBody(\ReflectionFunction $from): string
+	private function loadFunctionBody(\ReflectionFunction $from, bool $resolveClassNames = true): string
 	{
 		if ($from->isClosure()) {
 			throw new Nette\NotSupportedException('Closures are not supported.');
@@ -247,7 +256,7 @@ final class Factory
 			return $node instanceof Node\Stmt\Function_ && $node->namespacedName->toString() === $from->name;
 		});
 
-		$body = $this->extractBody($nodeFinder, $code, $function->stmts);
+		$body = $this->extractBody($nodeFinder, $code, $function->stmts, $resolveClassNames);
 		return Helpers::unindent($body, 1);
 	}
 
@@ -255,24 +264,26 @@ final class Factory
 	/**
 	 * @param  Node[]  $statements
 	 */
-	private function extractBody(PhpParser\NodeFinder $nodeFinder, string $originalCode, array $statements): string
+	private function extractBody(PhpParser\NodeFinder $nodeFinder, string $originalCode, array $statements, bool $resolveClassNames = true): string
 	{
 		$start = $statements[0]->getAttribute('startFilePos');
 		$body = substr($originalCode, $start, end($statements)->getAttribute('endFilePos') - $start + 1);
 
 		$replacements = [];
-		// name-nodes => resolved fully-qualified name
-		foreach ($nodeFinder->findInstanceOf($statements, Node\Name::class) as $node) {
-			if ($node->hasAttribute('resolvedName')
-				&& $node->getAttribute('resolvedName') instanceof Node\Name\FullyQualified
-			) {
-				$replacements[] = [
-					$node->getStartFilePos(),
-					$node->getEndFilePos(),
-					$node->getAttribute('resolvedName')->toCodeString(),
-				];
-			}
-		}
+		if ($resolveClassNames) {
+            // name-nodes => resolved fully-qualified name
+            foreach ($nodeFinder->findInstanceOf($statements, Node\Name::class) as $node) {
+                if ($node->hasAttribute('resolvedName')
+                    && $node->getAttribute('resolvedName') instanceof Node\Name\FullyQualified
+                ) {
+                    $replacements[] = [
+                        $node->getStartFilePos(),
+                        $node->getEndFilePos(),
+                        $node->getAttribute('resolvedName')->toCodeString(),
+                    ];
+                }
+            }
+        }
 
 		// multi-line strings => singleline
 		foreach (array_merge(

@@ -80,9 +80,9 @@ final class ClassType
 	/**
 	 * @param  string|object  $class
 	 */
-	public static function withBodiesFrom($class): self
+	public static function withBodiesFrom($class, bool $resolveClassNames = true): self
 	{
-		return (new Factory)->fromClassReflection(new \ReflectionClass($class), true);
+		return (new Factory)->fromClassReflection(new \ReflectionClass($class), true, $resolveClassNames);
 	}
 
 
