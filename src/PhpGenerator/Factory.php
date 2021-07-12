@@ -59,7 +59,7 @@ final class Factory
 		$class->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$class->setAttributes(self::getAttributes($from));
 		if ($from->getParentClass()) {
-			$class->setExtends($from->getParentClass()->name);
+			$class->setExtends($this->resolveTypes ? $from->getParentClass()->name : $from->getParentClass()->getShortName());
 			$class->setImplements(array_diff($class->getImplements(), $from->getParentClass()->getInterfaceNames()));
 		}
 
@@ -182,7 +182,8 @@ final class Factory
 			: new Parameter($from->name);
 		$param->setReference($from->isPassedByReference());
 		if ($from->getType() instanceof \ReflectionNamedType) {
-			$param->setType($from->getType()->getName());
+            $typeParts = explode('\\', $from->getType()->getName());
+            $param->setType($this->resolveTypes ? implode('\\', $typeParts) : end($typeParts));
 			$param->setNullable($from->getType()->allowsNull());
 		} elseif (
 			$from->getType() instanceof \ReflectionUnionType
@@ -240,7 +241,8 @@ final class Factory
 		);
 		if (PHP_VERSION_ID >= 70400) {
 			if ($from->getType() instanceof \ReflectionNamedType) {
-				$prop->setType($from->getType()->getName());
+			    $typeParts = explode('\\', $from->getType()->getName());
+				$prop->setType($this->resolveTypes ? implode('\\', $typeParts) : end($typeParts));
 				$prop->setNullable($from->getType()->allowsNull());
 			} elseif (
 				$from->getType() instanceof \ReflectionUnionType

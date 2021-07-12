@@ -1,5 +1,10 @@
-abstract class Class7
+abstract class Class7 extends MyClass implements MyInterface
 {
+	public MyClass $foo1;
+	public \stdClass $foo2;
+	public \Nette\Utils\ArrayHash $foo3;
+
+
 	abstract public function abstractFun();
 
 
@@ -76,10 +81,29 @@ abstract class Class7
 	}
 
 
-	public function resolving()
+	public function resolving(MyClass $foo1, \stdClass $foo2, \Nette\Utils\ArrayHash $foo3): MyClass
 	{
 		$x = new \Abc\MyClass;
 		$y = new \stdClass;
 		$z = \Nette\Utils\ArrayHash::class;
+	}
+
+
+	/**
+	 * @throws \Error
+	 */
+	final public function __construct()
+	{
+		throw new \Error('Class ' . static::class . ' is static and cannot be instantiated.');
+	}
+
+
+	/**
+	 * Call to undefined static method.
+	 * @throws MemberAccessException
+	 */
+	public static function __callStatic(string $name, array $args): void
+	{
+		\Nette\Utils\ObjectHelpers::strictStaticCall(static::class, $name);
 	}
 }

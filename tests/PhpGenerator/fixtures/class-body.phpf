@@ -6,8 +6,14 @@ namespace Abc;
 
 use Nette;
 
-abstract class Class7
+abstract class Class7 extends MyClass implements MyInterface
 {
+	use Nette\StaticClass;
+
+	public MyClass $foo1;
+	public \stdClass $foo2;
+	public Nette\Utils\ArrayHash $foo3;
+
 	abstract function abstractFun();
 
 	function emptyFun() {}
@@ -89,7 +95,7 @@ a
 	}
 
 
-	function resolving()
+	function resolving(MyClass $foo1, \stdClass $foo2, Nette\Utils\ArrayHash $foo3): MyClass
 	{
 		$x = new MyClass;
 		$y = new \stdClass;
@@ -99,5 +105,9 @@ a
 
 
 class MyClass
+{
+}
+
+interface MyInterface
 {
 }
