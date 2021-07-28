@@ -11,7 +11,6 @@ namespace Nette\PhpGenerator;
 
 use Nette;
 use Nette\InvalidStateException;
-use Nette\Utils\Strings;
 
 
 /**
@@ -137,7 +136,7 @@ final class PhpNamespace
 		$res = null;
 		$lower = strtolower($name);
 		foreach ($this->uses as $alias => $original) {
-			if (Strings::startsWith($lower . '\\', strtolower($original) . '\\')) {
+			if (str_starts_with($lower . '\\', strtolower($original) . '\\')) {
 				$short = $alias . substr($name, strlen($original));
 				if (!isset($res) || strlen($res) > strlen($short)) {
 					$res = $short;
@@ -145,7 +144,7 @@ final class PhpNamespace
 			}
 		}
 
-		if (!$res && Strings::startsWith($lower, strtolower($this->name) . '\\')) {
+		if (!$res && str_starts_with($lower, strtolower($this->name) . '\\')) {
 			return substr($name, strlen($this->name) + 1);
 		} else {
 			return $res ?: ($this->name ? '\\' : '') . $name;

@@ -322,7 +322,7 @@ final class Factory
 		) as $node) {
 			/** @var Node\Scalar\String_|Node\Scalar\EncapsedStringPart $node */
 			$token = substr($body, $node->getStartFilePos() - $start, $node->getEndFilePos() - $node->getStartFilePos() + 1);
-			if (strpos($token, "\n") !== false) {
+			if (str_contains($token, "\n")) {
 				$quote = $node instanceof Node\Scalar\String_ ? '"' : '';
 				$replacements[] = [
 					$node->getStartFilePos(),
