@@ -46,6 +46,12 @@ class Type
 	}
 
 
+	public static function intersection(string ...$types): string
+	{
+		return implode('&', $types);
+	}
+
+
 	public static function getType($value): ?string
 	{
 		if (is_object($value)) {

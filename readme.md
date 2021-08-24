@@ -188,14 +188,14 @@ $class->addMember($methodRecount);
 Types
 -----
 
-Each type or union type can be passed as a string, you can also use predefined constants for native types:
+Each type or union/intersection type can be passed as a string, you can also use predefined constants for native types:
 
 ```php
 use Nette\PhpGenerator\Type;
 
-$member->setType('array');
-$member->setType(Type::ARRAY);
-$member->setType('array|string');
+$member->setType('array'); // or Type::ARRAY;
+$member->setType('array|string'); // or Type::union('array', 'string')
+$member->setType('Foo&Bar'); // or Type::intersection(Foo::class, Bar::class)
 $member->setType(null); // removes type
 ```
 

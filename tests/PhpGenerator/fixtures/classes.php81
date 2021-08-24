@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Abc;
+
+class Class11
+{
+	public Foo&Bar $foo;
+
+	public function foo(Foo&Bar $c): Foo&Bar {
+	}
+}

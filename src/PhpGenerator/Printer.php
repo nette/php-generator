@@ -119,7 +119,7 @@ class Printer
 	{
 		$class->validate();
 		$resolver = $this->resolveTypes && $namespace
-			? [$namespace, 'unresolveUnionType']
+			? [$namespace, 'unresolveType']
 			: function ($s) { return $s; };
 
 		$traits = [];
@@ -310,7 +310,7 @@ class Printer
 			return '';
 		}
 		if ($this->resolveTypes && $namespace) {
-			$type = $namespace->unresolveUnionType($type);
+			$type = $namespace->unresolveType($type);
 		}
 		if ($nullable && strcasecmp($type, 'mixed')) {
 			$type = strpos($type, '|') === false

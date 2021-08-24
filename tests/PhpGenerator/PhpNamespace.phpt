@@ -36,9 +36,11 @@ Assert::same('\A', $namespace->unresolveName('\A'));
 Assert::same('\A', $namespace->unresolveName('A'));
 Assert::same('A', $namespace->unresolveName('foo\A'));
 
-Assert::same('A', $namespace->unresolveUnionType('foo\A'));
-Assert::same('null|A', $namespace->unresolveUnionType('null|foo\A'));
-Assert::same('', $namespace->unresolveUnionType(''));
+Assert::same('A', $namespace->unresolveType('foo\A'));
+Assert::same('null|A', $namespace->unresolveType('null|foo\A'));
+Assert::same('?A', $namespace->unresolveType('?foo\A'));
+Assert::same('A&\Countable', $namespace->unresolveType('foo\A&Countable'));
+Assert::same('', $namespace->unresolveType(''));
 
 $namespace->addUse('Bar\C');
 Assert::same(['C' => 'Bar\\C'], $namespace->getUses());

@@ -1,0 +1,9 @@
+class Class11
+{
+	public Foo&Bar $foo;
+
+
+	public function foo(Foo&Bar $c): Foo&Bar
+	{
+	}
+}
