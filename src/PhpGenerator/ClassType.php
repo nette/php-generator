@@ -143,6 +143,7 @@ final class ClassType
 	/** @deprecated */
 	public function setClass(): static
 	{
+		trigger_error(__METHOD__ . "() is deprecated, use setType('class').", E_USER_DEPRECATED);
 		$this->type = self::TYPE_CLASS;
 		return $this;
 	}
@@ -154,6 +155,7 @@ final class ClassType
 	}
 
 
+	/** @deprecated  use setType('interface') or create using ClassType::interface() */
 	public function setInterface(): static
 	{
 		$this->type = self::TYPE_INTERFACE;
@@ -167,6 +169,7 @@ final class ClassType
 	}
 
 
+	/** @deprecated  use setType('trait') or create using ClassType::trait() */
 	public function setTrait(): static
 	{
 		$this->type = self::TYPE_TRAIT;

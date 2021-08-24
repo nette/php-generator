@@ -25,6 +25,7 @@ final class Helpers
 	/** @deprecated  use Nette\PhpGenerator\Dumper::dump() */
 	public static function dump($var): string
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use (new Dumper)->dump().', E_USER_DEPRECATED);
 		return (new Dumper)->dump($var);
 	}
 
@@ -32,6 +33,7 @@ final class Helpers
 	/** @deprecated  use Nette\PhpGenerator\Dumper::format() */
 	public static function format(string $statement, ...$args): string
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use (new Dumper)->format().', E_USER_DEPRECATED);
 		return (new Dumper)->format($statement, ...$args);
 	}
 
@@ -39,6 +41,7 @@ final class Helpers
 	/** @deprecated  use Nette\PhpGenerator\Dumper::format() */
 	public static function formatArgs(string $statement, array $args): string
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use (new Dumper)->format().', E_USER_DEPRECATED);
 		return (new Dumper)->format($statement, ...$args);
 	}
 
