@@ -219,12 +219,12 @@ echo $printer->printClass($class); // 4 spaces indentation
 Interface or Trait
 ------------------
 
-You can create interfaces and traits in a similar way, just change the type:
+You can create interfaces and traits:
 
 ```php
-$class = new Nette\PhpGenerator\ClassType('DemoInterface');
-$class->setInterface();
-// or $class->setTrait();
+$interface = Nette\PhpGenerator\ClassType::interface('MyInterface');
+$trait = Nette\PhpGenerator\ClassType::trait('MyTrait');
+// in a similar way $class = Nette\PhpGenerator\ClassType::class('MyClass');
 ```
 
 Literals

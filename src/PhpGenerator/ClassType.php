@@ -68,6 +68,24 @@ final class ClassType
 	private $methods = [];
 
 
+	public static function class(string $name = null, PhpNamespace $namespace = null): self
+	{
+		return new self($name, $namespace);
+	}
+
+
+	public static function interface(string $name = null, PhpNamespace $namespace = null): self
+	{
+		return (new self($name, $namespace))->setType(self::TYPE_INTERFACE);
+	}
+
+
+	public static function trait(string $name = null, PhpNamespace $namespace = null): self
+	{
+		return (new self($name, $namespace))->setType(self::TYPE_TRAIT);
+	}
+
+
 	/**
 	 * @param  string|object  $class
 	 */
@@ -131,7 +149,7 @@ final class ClassType
 	}
 
 
-	/** @return static */
+	/** @deprecated */
 	public function setClass(): self
 	{
 		$this->type = self::TYPE_CLASS;
