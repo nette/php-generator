@@ -126,9 +126,9 @@ final class PhpNamespace
 	}
 
 
-	public function unresolveUnionType(string $type): string
+	public function unresolveType(string $type): string
 	{
-		return implode('|', array_map([$this, 'unresolveName'], explode('|', $type)));
+		return preg_replace_callback('~[^|&?]+~', function ($m) { return $this->unresolveName($m[0]); }, $type);
 	}
 
 

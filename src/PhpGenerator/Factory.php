@@ -126,7 +126,10 @@ final class Factory
 		if ($from->getReturnType() instanceof \ReflectionNamedType) {
 			$method->setReturnType($from->getReturnType()->getName());
 			$method->setReturnNullable($from->getReturnType()->allowsNull());
-		} elseif ($from->getReturnType() instanceof \ReflectionUnionType) {
+		} elseif (
+			$from->getReturnType() instanceof \ReflectionUnionType
+			|| $from->getReturnType() instanceof \ReflectionIntersectionType
+		) {
 			$method->setReturnType((string) $from->getReturnType());
 		}
 		return $method;
@@ -147,7 +150,10 @@ final class Factory
 		if ($from->getReturnType() instanceof \ReflectionNamedType) {
 			$function->setReturnType($from->getReturnType()->getName());
 			$function->setReturnNullable($from->getReturnType()->allowsNull());
-		} elseif ($from->getReturnType() instanceof \ReflectionUnionType) {
+		} elseif (
+			$from->getReturnType() instanceof \ReflectionUnionType
+			|| $from->getReturnType() instanceof \ReflectionIntersectionType
+		) {
 			$function->setReturnType((string) $from->getReturnType());
 		}
 		$function->setBody($withBody ? $this->loadFunctionBody($from) : '');
@@ -174,7 +180,10 @@ final class Factory
 		if ($from->getType() instanceof \ReflectionNamedType) {
 			$param->setType($from->getType()->getName());
 			$param->setNullable($from->getType()->allowsNull());
-		} elseif ($from->getType() instanceof \ReflectionUnionType) {
+		} elseif (
+			$from->getType() instanceof \ReflectionUnionType
+			|| $from->getType() instanceof \ReflectionIntersectionType
+		) {
 			$param->setType((string) $from->getType());
 		}
 		if ($from->isDefaultValueAvailable()) {
@@ -228,7 +237,10 @@ final class Factory
 			if ($from->getType() instanceof \ReflectionNamedType) {
 				$prop->setType($from->getType()->getName());
 				$prop->setNullable($from->getType()->allowsNull());
-			} elseif ($from->getType() instanceof \ReflectionUnionType) {
+			} elseif (
+				$from->getType() instanceof \ReflectionUnionType
+				|| $from->getType() instanceof \ReflectionIntersectionType
+			) {
 				$prop->setType((string) $from->getType());
 			}
 			$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
