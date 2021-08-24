@@ -12,7 +12,7 @@ require __DIR__ . '/../bootstrap.php';
 Assert::exception(function () {
 	(new ClassType('Example'))
 		->addMember(new stdClass);
-}, Nette\InvalidArgumentException::class, 'Argument must be Method|Property|Constant.');
+}, Nette\InvalidArgumentException::class, 'Argument must be Method|Property|Constant|EnumCase.');
 
 
 $class = (new ClassType('Example'))

@@ -15,6 +15,7 @@ return function (Symfony\Component\DependencyInjection\Loader\Configurator\Conta
 
 	$parameters->set('skip', [
 		'fixtures*/*',
+		'tests/PhpGenerator/Dumper.dump().enum.phpt', // enum
 
 		// constant NULL, FALSE
 		PhpCsFixer\Fixer\Casing\LowercaseConstantsFixer::class => [

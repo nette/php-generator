@@ -27,9 +27,17 @@ final class Factory
 		$class = $from->isAnonymous()
 			? new ClassType
 			: new ClassType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
-		$class->setType($from->isInterface() ? $class::TYPE_INTERFACE : ($from->isTrait() ? $class::TYPE_TRAIT : $class::TYPE_CLASS));
-		$class->setFinal($from->isFinal() && $class->isClass());
-		$class->setAbstract($from->isAbstract() && $class->isClass());
+
+		if (PHP_VERSION_ID >= 80100 && $from->isEnum()) {
+			$class->setType($class::TYPE_ENUM);
+			$from = new \ReflectionEnum($from->getName());
+			$enumIface = $from->isBacked() ? \BackedEnum::class : \UnitEnum::class;
+		} else {
+			$class->setType($from->isInterface() ? $class::TYPE_INTERFACE : ($from->isTrait() ? $class::TYPE_TRAIT : $class::TYPE_CLASS));
+			$class->setFinal($from->isFinal() && $class->isClass());
+			$class->setAbstract($from->isAbstract() && $class->isClass());
+			$enumIface = null;
+		}
 
 		$ifaces = $from->getInterfaceNames();
 		foreach ($ifaces as $iface) {
@@ -40,6 +48,7 @@ final class Factory
 		if ($from->isInterface()) {
 			$class->setExtends($ifaces);
 		} else {
+			$ifaces = array_diff($ifaces, [$enumIface]);
 			$class->setImplements($ifaces);
 		}
 
@@ -49,20 +58,25 @@ final class Factory
 			$class->setExtends($from->getParentClass()->name);
 			$class->setImplements(array_diff($class->getImplements(), $from->getParentClass()->getInterfaceNames()));
 		}
-		$props = $methods = $consts = [];
+
+		$props = [];
 		foreach ($from->getProperties() as $prop) {
 			if ($prop->isDefault()
 				&& $prop->getDeclaringClass()->name === $from->name
 				&& (PHP_VERSION_ID < 80000 || !$prop->isPromoted())
+				&& !$class->isEnum()
 			) {
 				$props[] = $this->fromPropertyReflection($prop);
 			}
 		}
 		$class->setProperties($props);
 
-		$bodies = [];
+		$methods = $bodies = [];
 		foreach ($from->getMethods() as $method) {
-			if ($method->getDeclaringClass()->name === $from->name) {
+			if (
+				$method->getDeclaringClass()->name === $from->name
+				&& (!$enumIface || !method_exists($enumIface, $method->name))
+			) {
 				$methods[] = $m = $this->fromMethodReflection($method);
 				if ($withBodies) {
 					$srcMethod = Nette\Utils\Reflection::getMethodDeclaringMethod($method);
@@ -76,12 +90,16 @@ final class Factory
 		}
 		$class->setMethods($methods);
 
+		$consts = $cases = [];
 		foreach ($from->getReflectionConstants() as $const) {
-			if ($const->getDeclaringClass()->name === $from->name) {
+			if ($class->isEnum() && $from->hasCase($const->name)) {
+				$cases[] = $this->fromCaseReflection($const);
+			} elseif ($const->getDeclaringClass()->name === $from->name) {
 				$consts[] = $this->fromConstantReflection($const);
 			}
 		}
 		$class->setConstants($consts);
+		$class->setCases($cases);
 
 		return $class;
 	}
@@ -179,6 +197,16 @@ final class Factory
 				? ClassType::VISIBILITY_PRIVATE
 				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
 		);
+		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
+		$const->setAttributes(self::getAttributes($from));
+		return $const;
+	}
+
+
+	public function fromCaseReflection(\ReflectionClassConstant $from): EnumCase
+	{
+		$const = new EnumCase($from->name);
+		$const->setValue($from->getValue()->value ?? null);
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$const->setAttributes(self::getAttributes($from));
 		return $const;

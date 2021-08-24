@@ -37,6 +37,10 @@ trait D
 {
 }
 
+enum EN
+{
+}
+
 
 namespace Baz;
 

@@ -128,6 +128,18 @@ class Printer
 				. ($resolutions ? " {\n" . $this->indentation . implode(";\n" . $this->indentation, $resolutions) . ";\n}\n" : ";\n");
 		}
 
+		$cases = [];
+		foreach ($class->getCases() as $case) {
+			$cases[] = Helpers::formatDocComment((string) $case->getComment())
+				. self::printAttributes($case->getAttributes(), $namespace)
+				. 'case ' . $case->getName()
+				. ($case->getValue() === null ? '' : ' = ' . $this->dump($case->getValue()))
+				. ";\n";
+		}
+		$enumType = isset($case) && $case->getValue() !== null
+			? $this->returnTypeColon . Type::getType($case->getValue())
+			: '';
+
 		$consts = [];
 		foreach ($class->getConstants() as $const) {
 			$def = ($const->getVisibility() ? $const->getVisibility() . ' ' : '') . 'const ' . $const->getName() . ' = ';
@@ -158,6 +170,7 @@ class Printer
 
 		$members = array_filter([
 			implode('', $traits),
+			$this->joinProperties($cases),
 			$this->joinProperties($consts),
 			$this->joinProperties($properties),
 			($methods && $properties ? str_repeat("\n", $this->linesBetweenMethods - 1) : '')
@@ -169,7 +182,7 @@ class Printer
 			. self::printAttributes($class->getAttributes(), $namespace)
 			. ($class->isAbstract() ? 'abstract ' : '')
 			. ($class->isFinal() ? 'final ' : '')
-			. ($class->getName() ? $class->getType() . ' ' . $class->getName() . ' ' : '')
+			. ($class->getName() ? $class->getType() . ' ' . $class->getName() . $enumType . ' ' : '')
 			. ($class->getExtends() ? 'extends ' . implode(', ', array_map($resolver, (array) $class->getExtends())) . ' ' : '')
 			. ($class->getImplements() ? 'implements ' . implode(', ', array_map($resolver, $class->getImplements())) . ' ' : '')
 			. ($class->getName() ? "\n" : '') . "{\n"

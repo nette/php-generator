@@ -227,6 +227,43 @@ $trait = Nette\PhpGenerator\ClassType::trait('MyTrait');
 // in a similar way $class = Nette\PhpGenerator\ClassType::class('MyClass');
 ```
 
+Enums
+-----
+
+You can easily create the enums that PHP 8.1 brings:
+
+```php
+$enum = Nette\PhpGenerator\ClassType::enum('Suit');
+$enum->addCase('Clubs');
+$enum->addCase('Diamonds');
+$enum->addCase('Hearts');
+$enum->addCase('Spades');
+
+echo $enum;
+```
+
+Result:
+
+```php
+enum Suit
+{
+        case Clubs;
+        case Diamonds;
+        case Hearts;
+        case Spades;
+}
+```
+
+You can also define scalar equivalents for cases to create a backed enum:
+
+```php
+$enum->addCase('Clubs', '♣');
+$enum->addCase('Diamonds', '♦');
+```
+
+It is possible to add a comment or [attributes](#attributes) to each case using `addComment()` or `addAttribute()`.
+
+
 Literals
 --------
 
