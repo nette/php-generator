@@ -16,6 +16,8 @@ require __DIR__ . '/../bootstrap.php';
 ini_set('serialize_precision', '14');
 
 $dumper = new Dumper;
+
+// scalars
 Assert::same('0', $dumper->dump(0));
 Assert::same('1', $dumper->dump(1));
 Assert::same('0.0', $dumper->dump(0.0));
@@ -38,9 +40,9 @@ Assert::same(
 Assert::same('"\rHello \$"', $dumper->dump("\rHello $"));
 Assert::same("'He\\llo'", $dumper->dump('He\llo'));
 Assert::same('\'He\ll\\\\\o \\\'wor\\\\\\\'ld\\\\\'', $dumper->dump('He\ll\\\o \'wor\\\'ld\\'));
-Assert::same('[]', $dumper->dump([]));
 
-// internal classes
+
+// literal
 Assert::same('[$s]', $dumper->dump([new PhpLiteral('$s')]));
 same('[
 	function () {
@@ -48,6 +50,9 @@ same('[
 	},
 ]', $dumper->dump([(new Nette\PhpGenerator\Closure)->setBody('return 1;')]));
 
+
+// arrays
+Assert::same('[]', $dumper->dump([]));
 Assert::same('[1, 2, 3]', $dumper->dump([1, 2, 3]));
 Assert::same("['a']", $dumper->dump(['a']));
 Assert::same("[2 => 'a']", $dumper->dump([2 => 'a']));
@@ -56,19 +61,8 @@ Assert::same("[-2 => 'a', -1 => 'b']", $dumper->dump([-2 => 'a', -1 => 'b']));
 Assert::same("[-2 => 'a', 0 => 'b']", $dumper->dump([-2 => 'a', 0 => 'b']));
 Assert::same("[0 => 'a', -2 => 'b', 1 => 'c']", $dumper->dump(['a', -2 => 'b', 1 => 'c']));
 
-$dumper->wrapLength = 100;
-same("[
-	[
-		'a',
-		'loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong',
-	],
-]", $dumper->dump([['a', 'loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong']]));
 
-Assert::same(
-	"['a' => 1, 0 => [\"\\r\" => \"\\r\", 0 => 2], 1 => 3]",
-	$dumper->dump(['a' => 1, ["\r" => "\r", 2], 3])
-);
-
+// stdClass
 Assert::same(
 	"(object) [\n\t'a' => 1,\n\t'b' => 2,\n]",
 	$dumper->dump((object) ['a' => 1, 'b' => 2])
@@ -80,6 +74,7 @@ Assert::same(
 );
 
 
+// objects
 class Test
 {
 	public $a = 1;
@@ -121,6 +116,23 @@ Assert::same(
 Assert::equal(new Test2, eval('return ' . $dumper->dump(new Test2) . ';'));
 
 
+Assert::exception(function () {
+	$dumper = new Dumper;
+	$dumper->dump(new class {
+	});
+}, Nette\InvalidArgumentException::class, 'Cannot dump anonymous class.');
+
+
+
+// closures
+Assert::exception(function () {
+	$dumper = new Dumper;
+	$dumper->dump(function () {});
+}, Nette\InvalidArgumentException::class, 'Cannot dump closure.');
+
+
+
+// serializable
 class Test3 implements Serializable
 {
 	private $a;
@@ -140,13 +152,9 @@ class Test3 implements Serializable
 Assert::same('unserialize(\'C:5:"Test3":0:{}\')', $dumper->dump(new Test3));
 Assert::equal(new Test3, eval('return ' . $dumper->dump(new Test3) . ';'));
 
-Assert::exception(function () {
-	$dumper = new Dumper;
-	$dumper->dump(function () {});
-}, Nette\InvalidArgumentException::class, 'Cannot dump closure.');
 
 
-
+// datetime
 class TestDateTime extends DateTime
 {
 }
@@ -167,25 +175,3 @@ same(
 ])",
 	$dumper->dump(new TestDateTime('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague')))
 );
-
-Assert::exception(function () {
-	$dumper = new Dumper;
-	$dumper->dump(new class {
-	});
-}, Nette\InvalidArgumentException::class, 'Cannot dump anonymous class.');
-
-
-Assert::exception(function () {
-	$rec = [];
-	$rec[] = &$rec;
-	$dumper = new Dumper;
-	$dumper->dump($rec);
-}, Nette\InvalidArgumentException::class, 'Nesting level too deep or recursive dependency.');
-
-
-Assert::exception(function () {
-	$rec = new stdClass;
-	$rec->x = &$rec;
-	$dumper = new Dumper;
-	$dumper->dump($rec);
-}, Nette\InvalidArgumentException::class, 'Nesting level too deep or recursive dependency.');
