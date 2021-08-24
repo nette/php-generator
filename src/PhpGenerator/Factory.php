@@ -37,7 +37,11 @@ final class Factory
 				return !is_subclass_of($iface, $item);
 			});
 		}
-		$class->setImplements($ifaces);
+		if ($from->isInterface()) {
+			$class->setExtends($ifaces);
+		} else {
+			$class->setImplements($ifaces);
+		}
 
 		$class->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$class->setAttributes(self::getAttributes($from));

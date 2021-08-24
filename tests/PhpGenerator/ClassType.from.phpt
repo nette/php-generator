@@ -15,6 +15,8 @@ require __DIR__ . '/../bootstrap.php';
 
 $res[] = ClassType::from(Abc\Interface1::class);
 $res[] = ClassType::from(Abc\Interface2::class);
+$res[] = ClassType::from(Abc\Interface3::class);
+$res[] = ClassType::from(Abc\Interface4::class);
 $res[] = ClassType::from(Abc\Class1::class);
 $res[] = ClassType::from(new Abc\Class2);
 $obj = new Abc\Class3;
