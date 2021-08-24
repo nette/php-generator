@@ -35,7 +35,11 @@ final class Factory
 		foreach ($ifaces as $iface) {
 			$ifaces = array_filter($ifaces, fn(string $item): bool => !is_subclass_of($iface, $item));
 		}
-		$class->setImplements($ifaces);
+		if ($from->isInterface()) {
+			$class->setExtends($ifaces);
+		} else {
+			$class->setImplements($ifaces);
+		}
 
 		$class->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$class->setAttributes(self::getAttributes($from));
@@ -276,7 +280,7 @@ final class Factory
 		) as $node) {
 			/** @var Node\Scalar\String_|Node\Scalar\EncapsedStringPart $node */
 			$token = substr($body, $node->getStartFilePos() - $start, $node->getEndFilePos() - $node->getStartFilePos() + 1);
-			if (strpos($token, "\n") !== false) {
+			if (str_contains($token, "\n")) {
 				$quote = $node instanceof Node\Scalar\String_ ? '"' : '';
 				$replacements[] = [
 					$node->getStartFilePos(),

@@ -103,7 +103,7 @@ class Printer
 			. $returnType
 			. ($method->isAbstract() || $method->getBody() === null
 				? ";\n"
-				: (strpos($params, "\n") === false ? "\n" : ' ')
+				: (str_contains($params, "\n") ? ' ' : "\n")
 					. "{\n"
 					. $this->indent(ltrim(rtrim($method->getBody()) . "\n"))
 					. "}\n");
@@ -294,9 +294,9 @@ class Printer
 			$type = $namespace->unresolveUnionType($type);
 		}
 		if ($nullable && strcasecmp($type, 'mixed')) {
-			$type = strpos($type, '|') === false
-				? '?' . $type
-				: $type . '|null';
+			$type = str_contains($type, '|')
+				? $type . '|null'
+				: '?' . $type;
 		}
 		return $type;
 	}
