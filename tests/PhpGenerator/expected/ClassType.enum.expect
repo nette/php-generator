@@ -1,0 +1,31 @@
+/**
+ * Description of class.
+ * This is example
+ */
+#[ExampleAttribute]
+enum Suit
+{
+	use ObjectTrait;
+
+	/** ♣ */
+	#[ValueAttribute]
+	case Clubs;
+
+	/** ♦ */
+	case Diamonds;
+	case Hearts;
+	case Spades;
+
+	const ACTIVE = false;
+
+	public function foo()
+	{
+		return 10;
+	}
+}
+
+enum Method: string implements IOne
+{
+	case GET = 'get';
+	case POST = 'post';
+}

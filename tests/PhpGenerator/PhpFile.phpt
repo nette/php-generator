@@ -48,6 +48,9 @@ Assert::same($interfaceC->getNamespace(), $namespaceBar);
 $traitD = $namespaceBar->addTrait('D');
 Assert::same($traitD->getNamespace(), $namespaceBar);
 
+$enumEN = $namespaceBar->addEnum('EN');
+Assert::same($enumEN->getNamespace(), $namespaceBar);
+
 $classB
 	->addExtend('Foo\\A')
 	->addImplement('Foo\\B')

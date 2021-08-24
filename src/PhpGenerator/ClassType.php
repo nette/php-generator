@@ -13,7 +13,7 @@ use Nette;
 
 
 /**
- * Class/Interface/Trait description.
+ * Class/Interface/Trait/Enum description.
  *
  * @property Method[] $methods
  * @property Property[] $properties
@@ -27,7 +27,8 @@ final class ClassType
 	public const
 		TYPE_CLASS = 'class',
 		TYPE_INTERFACE = 'interface',
-		TYPE_TRAIT = 'trait';
+		TYPE_TRAIT = 'trait',
+		TYPE_ENUM = 'enum';
 
 	public const
 		VISIBILITY_PUBLIC = 'public',
@@ -67,6 +68,9 @@ final class ClassType
 	/** @var Method[] name => Method */
 	private $methods = [];
 
+	/** @var EnumCase[] name => EnumCase */
+	private $cases = [];
+
 
 	public static function class(string $name = null, PhpNamespace $namespace = null): self
 	{
@@ -83,6 +87,12 @@ final class ClassType
 	public static function trait(string $name = null, PhpNamespace $namespace = null): self
 	{
 		return (new self($name, $namespace))->setType(self::TYPE_TRAIT);
+	}
+
+
+	public static function enum(string $name = null, PhpNamespace $namespace = null): self
+	{
+		return (new self($name, $namespace))->setType(self::TYPE_ENUM);
 	}
 
 
@@ -191,11 +201,17 @@ final class ClassType
 	}
 
 
+	public function isEnum(): bool
+	{
+		return $this->type === self::TYPE_ENUM;
+	}
+
+
 	/** @return static */
 	public function setType(string $type): self
 	{
-		if (!in_array($type, [self::TYPE_CLASS, self::TYPE_INTERFACE, self::TYPE_TRAIT], true)) {
-			throw new Nette\InvalidArgumentException('Argument must be class|interface|trait.');
+		if (!in_array($type, [self::TYPE_CLASS, self::TYPE_INTERFACE, self::TYPE_TRAIT, self::TYPE_ENUM], true)) {
+			throw new Nette\InvalidArgumentException('Argument must be class|interface|trait|enum.');
 		}
 		$this->type = $type;
 		return $this;
@@ -351,7 +367,7 @@ final class ClassType
 
 
 	/**
-	 * @param  Method|Property|Constant  $member
+	 * @param  Method|Property|Constant|EnumCase  $member
 	 * @return static
 	 */
 	public function addMember($member): self
@@ -368,8 +384,11 @@ final class ClassType
 		} elseif ($member instanceof Constant) {
 			$this->consts[$member->getName()] = $member;
 
+		} elseif ($member instanceof EnumCase) {
+			$this->cases[$member->getName()] = $member;
+
 		} else {
-			throw new Nette\InvalidArgumentException('Argument must be Method|Property|Constant.');
+			throw new Nette\InvalidArgumentException('Argument must be Method|Property|Constant|EnumCase.');
 		}
 
 		return $this;
@@ -410,6 +429,44 @@ final class ClassType
 	public function removeConstant(string $name): self
 	{
 		unset($this->consts[$name]);
+		return $this;
+	}
+
+
+	/**
+	 * Sets cases to enum
+	 * @param  EnumCase[]  $consts
+	 * @return static
+	 */
+	public function setCases(array $cases): self
+	{
+		(function (EnumCase ...$cases) {})(...$cases);
+		$this->cases = [];
+		foreach ($cases as $case) {
+			$this->cases[$case->getName()] = $case;
+		}
+		return $this;
+	}
+
+
+	/** @return EnumCase[] */
+	public function getCases(): array
+	{
+		return $this->cases;
+	}
+
+
+	/** Adds case to enum */
+	public function addCase(string $name, $value = null): EnumCase
+	{
+		return $this->cases[$name] = (new EnumCase($name))->setValue($value);
+	}
+
+
+	/** @return static */
+	public function removeCase(string $name): self
+	{
+		unset($this->cases[$name]);
 		return $this;
 	}
 
@@ -540,6 +597,9 @@ final class ClassType
 		if ($this->abstract && $this->final) {
 			throw new Nette\InvalidStateException('Class cannot be abstract and final.');
 
+		} elseif ($this->isEnum() && ($this->abstract || $this->final || $this->extends || $this->properties)) {
+			throw new Nette\InvalidStateException('Enum cannot be abstract or final or extends class or have properties.');
+
 		} elseif (!$this->name && ($this->abstract || $this->final)) {
 			throw new Nette\InvalidStateException('Anonymous class cannot be abstract or final.');
 		}
@@ -559,6 +619,7 @@ final class ClassType
 	public function __clone()
 	{
 		$clone = function ($item) { return clone $item; };
+		$this->cases = array_map($clone, $this->cases);
 		$this->consts = array_map($clone, $this->consts);
 		$this->properties = array_map($clone, $this->properties);
 		$this->methods = array_map($clone, $this->methods);

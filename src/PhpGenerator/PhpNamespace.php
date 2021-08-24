@@ -189,6 +189,12 @@ final class PhpNamespace
 	}
 
 
+	public function addEnum(string $name): ClassType
+	{
+		return $this->addClass($name)->setType(ClassType::TYPE_ENUM);
+	}
+
+
 	/** @return ClassType[] */
 	public function getClasses(): array
 	{

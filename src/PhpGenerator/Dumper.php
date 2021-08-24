@@ -123,6 +123,9 @@ final class Dumper
 		if ($var instanceof \Serializable) {
 			return 'unserialize(' . $this->dumpString(serialize($var)) . ')';
 
+		} elseif ($var instanceof \UnitEnum) {
+			return '\\' . get_class($var) . '::' . $var->name;
+
 		} elseif ($var instanceof \Closure) {
 			throw new Nette\InvalidArgumentException('Cannot dump closure.');
 		}

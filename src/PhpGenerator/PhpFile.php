@@ -56,6 +56,14 @@ final class PhpFile
 	}
 
 
+	public function addEnum(string $name): ClassType
+	{
+		return $this
+			->addNamespace(Helpers::extractNamespace($name))
+			->addEnum(Helpers::extractShortName($name));
+	}
+
+
 	/** @param  string|PhpNamespace  $namespace */
 	public function addNamespace($namespace): PhpNamespace
 	{

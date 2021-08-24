@@ -37,6 +37,10 @@ namespace Bar
 	trait D
 	{
 	}
+
+	enum EN
+	{
+	}
 }
 
 
