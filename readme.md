@@ -33,7 +33,8 @@ Installation
 composer require nette/php-generator
 ```
 
-- PhpGenerator 3.2 – 3.5 is compatible with PHP 7.1 to 8.0
+- PhpGenerator 3.5 is compatible with PHP 7.1 to 8.1
+- PhpGenerator 3.2 – 3.4 is compatible with PHP 7.1 to 8.0
 - PhpGenerator 3.1 is compatible with PHP 7.1 to 7.3
 - PhpGenerator 3.0 is compatible with PHP 7.0 to 7.3
 - PhpGenerator 2.6 is compatible with PHP 5.6 to 7.3
