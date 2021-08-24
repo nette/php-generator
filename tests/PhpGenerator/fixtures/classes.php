@@ -19,6 +19,14 @@ interface Interface2
 }
 
 
+interface Interface3 extends Interface1
+{
+}
+
+interface Interface4 extends Interface3, Interface2
+{
+}
+
 abstract class Class1 implements Interface1
 {
 	/** @return Class1 */
