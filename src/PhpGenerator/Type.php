@@ -25,6 +25,7 @@ class Type
 		CALLABLE = 'callable',
 		ITERABLE = 'iterable',
 		VOID = 'void',
+		NEVER = 'never',
 		MIXED = 'mixed',
 		FALSE = 'false',
 		NULL = 'null',
