@@ -61,7 +61,7 @@ final class Factory
 		foreach ($from->getProperties() as $prop) {
 			if ($prop->isDefault()
 				&& $prop->getDeclaringClass()->name === $from->name
-				&& (PHP_VERSION_ID < 80000 || !$prop->isPromoted())
+				&& !$prop->isPromoted()
 				&& !$class->isEnum()
 			) {
 				$props[] = $this->fromPropertyReflection($prop);
@@ -171,7 +171,7 @@ final class Factory
 
 	public function fromParameterReflection(\ReflectionParameter $from): Parameter
 	{
-		$param = PHP_VERSION_ID >= 80000 && $from->isPromoted()
+		$param = $from->isPromoted()
 			? new PromotedParameter($from->name)
 			: new Parameter($from->name);
 		$param->setReference($from->isPassedByReference());
@@ -232,21 +232,17 @@ final class Factory
 				? ClassType::VISIBILITY_PRIVATE
 				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC),
 		);
-		if (PHP_VERSION_ID >= 70400) {
-			if ($from->getType() instanceof \ReflectionNamedType) {
-				$prop->setType($from->getType()->getName());
-				$prop->setNullable($from->getType()->allowsNull());
-			} elseif (
-				$from->getType() instanceof \ReflectionUnionType
-				|| $from->getType() instanceof \ReflectionIntersectionType
-			) {
-				$prop->setType((string) $from->getType());
-			}
-			$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
-			$prop->setReadOnly(PHP_VERSION_ID >= 80100 ? $from->isReadOnly() : false);
-		} else {
-			$prop->setInitialized(false);
+		if ($from->getType() instanceof \ReflectionNamedType) {
+			$prop->setType($from->getType()->getName());
+			$prop->setNullable($from->getType()->allowsNull());
+		} elseif (
+			$from->getType() instanceof \ReflectionUnionType
+			|| $from->getType() instanceof \ReflectionIntersectionType
+		) {
+			$prop->setType((string) $from->getType());
 		}
+		$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
+		$prop->setReadOnly(PHP_VERSION_ID >= 80100 ? $from->isReadOnly() : false);
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$prop->setAttributes(self::getAttributes($from));
 		return $prop;
@@ -398,9 +394,6 @@ final class Factory
 
 	private function getAttributes($from): array
 	{
-		if (PHP_VERSION_ID < 80000) {
-			return [];
-		}
 		$res = [];
 		foreach ($from->getAttributes() as $attr) {
 			$res[] = new Attribute($attr->getName(), $attr->getArguments());
