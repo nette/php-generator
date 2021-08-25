@@ -160,7 +160,11 @@ public function __construct(
 }
 ```
 
-If the property, constant, method or parameter already exist, it will be overwritten.
+Readonly properties introduced by PHP 8.1 can be marked via `setReadOnly()`.
+
+------
+
+If the added property, constant, method or parameter already exist, it will be overwritten.
 
 Members can be removed using `removeProperty()`, `removeConstant()`, `removeMethod()` or `removeParameter()`.
 

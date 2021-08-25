@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\Literal;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -17,5 +18,9 @@ $method->addPromotedParameter('c')
 	->setType('string')
 	->addComment('promo')
 	->addAttribute('Example');
+
+$method->addPromotedParameter('d', new Literal('new Draft'))
+	->setType('Draft')
+	->setReadOnly();
 
 sameFile(__DIR__ . '/expected/ClassType.promotion.expect', (string) $class);
