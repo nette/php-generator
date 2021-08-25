@@ -12,7 +12,7 @@ abstract class Example extends ParentClass implements IExample, IOne
 	}
 
 	const ROLE = 'admin';
-	const ACTIVE = false;
+	final const ACTIVE = false;
 
 	/** Commented */
 	private const FORCE_ARRAY = Nette\Utils\Json::FORCE_ARRAY;
