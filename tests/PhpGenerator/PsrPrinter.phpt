@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\PhpLiteral;
+use Nette\PhpGenerator\Literal;
 use Nette\PhpGenerator\PsrPrinter;
 
 
@@ -21,7 +21,7 @@ $class = (new ClassType('Example'))
 	->addTrait('AnotherTrait', ['sayHello as protected'])
 	->addComment("Description of class.\nThis is example\n");
 
-$class->addConstant('FORCE_ARRAY', new PhpLiteral('Nette\Utils\Json::FORCE_ARRAY'))
+$class->addConstant('FORCE_ARRAY', new Literal('Nette\Utils\Json::FORCE_ARRAY'))
 	->setVisibility('private')
 	->addComment('Commented');
 
@@ -33,7 +33,7 @@ $class->addProperty('handle')
 	->addComment('@var resource  orignal file handle');
 
 $class->addProperty('order')
-	->setValue(new PhpLiteral('RecursiveIteratorIterator::SELF_FIRST'));
+	->setValue(new Literal('RecursiveIteratorIterator::SELF_FIRST'));
 
 $class->addProperty('multilineLong', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5, 'ffffffff' => 6]);
 $class->addProperty('short', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5, 'ffffffff' => 6]);

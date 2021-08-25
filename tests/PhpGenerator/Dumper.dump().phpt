@@ -7,7 +7,7 @@
 declare(strict_types=1);
 
 use Nette\PhpGenerator\Dumper;
-use Nette\PhpGenerator\PhpLiteral;
+use Nette\PhpGenerator\Literal;
 use Tester\Assert;
 
 
@@ -43,7 +43,7 @@ Assert::same('\'He\ll\\\\\o \\\'wor\\\\\\\'ld\\\\\'', $dumper->dump('He\ll\\\o \
 
 
 // literal
-Assert::same('[$s]', $dumper->dump([new PhpLiteral('$s')]));
+Assert::same('[$s]', $dumper->dump([new Literal('$s')]));
 same('[
 	function () {
 		return 1;

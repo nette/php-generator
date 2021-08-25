@@ -7,7 +7,7 @@
 declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\PhpLiteral;
+use Nette\PhpGenerator\Literal;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -18,7 +18,7 @@ $class = new ClassType('Example');
 $class
 	->addComment('Description of class.')
 	->addAttribute('ExampleAttribute')
-	->addAttribute('WithArgument', [new PhpLiteral('Foo::BAR')])
+	->addAttribute('WithArgument', [new Literal('Foo::BAR')])
 	->addAttribute('NamedArguments', ['foo' => 'bar', 'bar' => [1, 2, 3]]);
 
 $class->addConstant('FOO', 123)

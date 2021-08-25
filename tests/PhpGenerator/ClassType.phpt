@@ -7,7 +7,7 @@
 declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\PhpLiteral;
+use Nette\PhpGenerator\Literal;
 use Nette\PhpGenerator\Type;
 use Tester\Assert;
 
@@ -46,7 +46,7 @@ Assert::same(['ObjectTrait' => [], 'AnotherTrait' => ['sayHello as protected']],
 Assert::count(2, $class->getConstants());
 Assert::type(Nette\PhpGenerator\Constant::class, $class->getConstants()['ROLE']);
 
-$class->addConstant('FORCE_ARRAY', new PhpLiteral('Nette\Utils\Json::FORCE_ARRAY'))
+$class->addConstant('FORCE_ARRAY', new Literal('Nette\Utils\Json::FORCE_ARRAY'))
 	->setVisibility('private')
 	->addComment('Commented');
 
@@ -55,7 +55,7 @@ $class->addProperty('handle')
 	->addComment('@var resource  orignal file handle');
 
 $class->addProperty('order')
-	->setValue(new PhpLiteral('RecursiveIteratorIterator::SELF_FIRST'));
+	->setValue(new Literal('RecursiveIteratorIterator::SELF_FIRST'));
 
 $class->addProperty('typed1')
 	->setType(Type::ARRAY);
@@ -103,7 +103,7 @@ $m = $class->addMethod('getSections')
 	->setReturnReference(true)
 	->addBody('$mode = ?;', [123])
 	->addBody('return self::$sections;');
-$m->addParameter('mode', new PhpLiteral('self::ORDER'));
+$m->addParameter('mode', new Literal('self::ORDER'));
 
 Assert::false($m->isFinal());
 Assert::true($m->isStatic());

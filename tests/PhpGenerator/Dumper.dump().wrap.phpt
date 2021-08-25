@@ -7,7 +7,7 @@
 declare(strict_types=1);
 
 use Nette\PhpGenerator\Dumper;
-use Nette\PhpGenerator\PhpLiteral;
+use Nette\PhpGenerator\Literal;
 
 
 require __DIR__ . '/../bootstrap.php';
@@ -38,8 +38,8 @@ same(
 	],
 ]",
 	$dumper->dump([
-		'single' => new PhpLiteral('1 + 2'),
-		'multi' => new PhpLiteral("[\n\t1,\n]\n"),
+		'single' => new Literal('1 + 2'),
+		'multi' => new Literal("[\n\t1,\n]\n"),
 	])
 );
 
