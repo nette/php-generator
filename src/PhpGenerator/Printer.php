@@ -142,7 +142,10 @@ class Printer
 
 		$consts = [];
 		foreach ($class->getConstants() as $const) {
-			$def = ($const->getVisibility() ? $const->getVisibility() . ' ' : '') . 'const ' . $const->getName() . ' = ';
+			$def = ($const->isFinal() ? 'final ' : '')
+				. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
+				. 'const ' . $const->getName() . ' = ';
+
 			$consts[] = Helpers::formatDocComment((string) $const->getComment())
 				. self::printAttributes($const->getAttributes(), $namespace)
 				. $def

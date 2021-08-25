@@ -206,6 +206,7 @@ final class Factory
 				? ClassType::VISIBILITY_PRIVATE
 				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
 		);
+		$const->setFinal(PHP_VERSION_ID >= 80100 ? $from->isFinal() : false);
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$const->setAttributes(self::getAttributes($from));
 		return $const;

@@ -36,7 +36,8 @@ $class
 	->addComment("Description of class.\nThis is example\n")
 	->addComment('@property-read Nette\Forms\Form $form')
 	->setConstants(['ROLE' => 'admin'])
-	->addConstant('ACTIVE', false);
+	->addConstant('ACTIVE', false)
+		->setFinal();
 
 Assert::false($class->isFinal());
 Assert::true($class->isAbstract());

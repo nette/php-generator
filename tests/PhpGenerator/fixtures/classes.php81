@@ -6,6 +6,8 @@ namespace Abc;
 
 class Class11
 {
+	final public const FOO = 10;
+
 	public Foo&Bar $foo;
 
 	public readonly array $ro;
