@@ -110,7 +110,9 @@ class Test2 extends Test
 }
 
 Assert::same(
-	"\\Nette\\PhpGenerator\\Dumper::createObject('Test2', [\n\t\"\\x00Test2\\x00c\" => 4,\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n])",
+	PHP_VERSION_ID < 80100
+		? "\\Nette\\PhpGenerator\\Dumper::createObject('Test2', [\n\t\"\\x00Test2\\x00c\" => 4,\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n])"
+		: "\\Nette\\PhpGenerator\\Dumper::createObject('Test2', [\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n\t\"\\x00Test2\\x00c\" => 4,\n])",
 	$dumper->dump(new Test2)
 );
 Assert::equal(new Test2, eval('return ' . $dumper->dump(new Test2) . ';'));
@@ -133,24 +135,26 @@ Assert::exception(function () {
 
 
 // serializable
-class Test3 implements Serializable
-{
-	private $a;
-
-
-	public function serialize()
+if (PHP_VERSION_ID < 80100) {
+	class Test3 implements Serializable
 	{
-		return '';
+		private $a;
+
+
+		public function serialize()
+		{
+			return '';
+		}
+
+
+		public function unserialize($s)
+		{
+		}
 	}
 
-
-	public function unserialize($s)
-	{
-	}
+	Assert::same('unserialize(\'C:5:"Test3":0:{}\')', $dumper->dump(new Test3));
+	Assert::equal(new Test3, eval('return ' . $dumper->dump(new Test3) . ';'));
 }
-
-Assert::same('unserialize(\'C:5:"Test3":0:{}\')', $dumper->dump(new Test3));
-Assert::equal(new Test3, eval('return ' . $dumper->dump(new Test3) . ';'));
 
 
 
