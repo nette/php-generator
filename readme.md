@@ -272,7 +272,7 @@ It is possible to add a comment or [attributes](#attributes) to each case using 
 Literals
 --------
 
-You can pass any PHP code to property or parameter default values via `Literal`:
+With `Literal` you can pass arbitrary PHP code to, for example, default property or parameter values etc:
 
 ```php
 use Nette\PhpGenerator\Literal;
@@ -299,6 +299,15 @@ class Demo
 	}
 }
 ```
+
+You can also pass parameters to `Literal` and have it formatted into valid PHP code using [special placeholders](#method-and-function-body-generator):
+
+```php
+new Literal('substr(?, ?)', [$a, $b]);
+// generates, for example: substr('hello', 5);
+```
+
+
 
 Using Traits
 ------------
