@@ -17,4 +17,21 @@ final class PromotedParameter extends Parameter
 {
 	use Traits\VisibilityAware;
 	use Traits\CommentAware;
+
+	/** @var bool */
+	private $readOnly = false;
+
+
+	/** @return static */
+	public function setReadOnly(bool $state = true): self
+	{
+		$this->readOnly = $state;
+		return $this;
+	}
+
+
+	public function isReadOnly(): bool
+	{
+		return $this->readOnly;
+	}
 }

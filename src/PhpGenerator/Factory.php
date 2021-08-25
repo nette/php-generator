@@ -244,6 +244,7 @@ final class Factory
 				$prop->setType((string) $from->getType());
 			}
 			$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
+			$prop->setReadOnly(PHP_VERSION_ID >= 80100 ? $from->isReadOnly() : false);
 		} else {
 			$prop->setInitialized(false);
 		}

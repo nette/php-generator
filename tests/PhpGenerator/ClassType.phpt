@@ -58,7 +58,8 @@ $class->addProperty('order')
 	->setValue(new Literal('RecursiveIteratorIterator::SELF_FIRST'));
 
 $class->addProperty('typed1')
-	->setType(Type::ARRAY);
+	->setType(Type::ARRAY)
+	->setReadOnly();
 
 $class->addProperty('typed2')
 	->setType(Type::ARRAY)

@@ -40,6 +40,9 @@ final class Property
 	/** @var bool */
 	private $initialized = false;
 
+	/** @var bool */
+	private $readOnly = false;
+
 
 	/** @return static */
 	public function setValue($val): self
@@ -113,5 +116,19 @@ final class Property
 	public function isInitialized(): bool
 	{
 		return $this->initialized || $this->value !== null;
+	}
+
+
+	/** @return static */
+	public function setReadOnly(bool $state = true): self
+	{
+		$this->readOnly = $state;
+		return $this;
+	}
+
+
+	public function isReadOnly(): bool
+	{
+		return $this->readOnly;
 	}
 }

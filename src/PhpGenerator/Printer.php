@@ -152,7 +152,10 @@ class Printer
 		$properties = [];
 		foreach ($class->getProperties() as $property) {
 			$type = $property->getType();
-			$def = (($property->getVisibility() ?: 'public') . ($property->isStatic() ? ' static' : '') . ' '
+			$def = (($property->getVisibility() ?: 'public')
+				. ($property->isStatic() ? ' static' : '')
+				. ($property->isReadOnly() && $type ? ' readonly' : '')
+				. ' '
 				. ltrim($this->printType($type, $property->isNullable(), $namespace) . ' ')
 				. '$' . $property->getName());
 
@@ -286,7 +289,10 @@ class Printer
 			$params[] =
 				($promoted ? Helpers::formatDocComment((string) $promoted->getComment()) : '')
 				. ($attrs = self::printAttributes($param->getAttributes(), $namespace, true))
-				. ($promoted ? ($promoted->getVisibility() ?: 'public') . ' ' : '')
+				. ($promoted ?
+					($promoted->getVisibility() ?: 'public')
+					. ($promoted->isReadOnly() && $type ? ' readonly' : '')
+					. ' ' : '')
 				. ltrim($this->printType($type, $param->isNullable(), $namespace) . ' ')
 				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')
