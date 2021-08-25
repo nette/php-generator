@@ -5,7 +5,7 @@ class Example
 		public $b,
 		/** promo */
 		#[Example] private string $c,
-		public readonly Draft $d = new Draft,
+		public readonly Draft $d = new Draft(10),
 	) {
 	}
 }

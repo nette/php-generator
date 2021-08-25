@@ -19,9 +19,11 @@ class Literal
 	private $value;
 
 
-	public function __construct(string $value)
+	public function __construct(string $value, array $args = null)
 	{
-		$this->value = $value;
+		$this->value = $args === null
+			? $value
+			: (new Dumper)->format($value, ...$args);
 	}
 
 
