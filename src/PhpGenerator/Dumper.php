@@ -127,6 +127,10 @@ final class Dumper
 			return '\\' . get_class($var) . '::' . $var->name;
 
 		} elseif ($var instanceof \Closure) {
+			$inner = Nette\Utils\Callback::unwrap($var);
+			if (Nette\Utils\Callback::isStatic($inner)) {
+				return '\Closure::fromCallable(' . $this->dump($inner) . ')';
+			}
 			throw new Nette\InvalidArgumentException('Cannot dump closure.');
 		}
 

@@ -127,6 +127,16 @@ Assert::exception(function () {
 
 
 // closures
+Assert::same(
+	"\\Closure::fromCallable('strlen')",
+	$dumper->dump(Closure::fromCallable('strlen'))
+);
+
+Assert::same(
+	"\\Closure::fromCallable(['Nette\\PhpGenerator\\ClassType', 'from'])",
+	$dumper->dump(Closure::fromCallable([Nette\PhpGenerator\ClassType::class, 'from']))
+);
+
 Assert::exception(function () {
 	$dumper = new Dumper;
 	$dumper->dump(function () {});
