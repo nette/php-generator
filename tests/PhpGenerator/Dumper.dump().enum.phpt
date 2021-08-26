@@ -29,9 +29,9 @@ Assert::same('\\ns1\\Suit::Clubs', $dumper->dump(Suit::Clubs));
 #[\Attribute]
 class MyAttr
 {
-    public function __construct(public Suit $suit)
-    {
-    }
+	public function __construct(public Suit $suit)
+	{
+	}
 }
 
 $ns = new PhpNamespace("ns2");
