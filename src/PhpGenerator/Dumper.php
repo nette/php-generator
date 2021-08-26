@@ -122,7 +122,7 @@ final class Dumper
 			return 'unserialize(' . $this->dumpString(serialize($var)) . ')';
 
 		} elseif ($var instanceof \UnitEnum) {
-			return $var::class . '::' . $var->name;
+			return '\\' . $var::class . '::' . $var->name;
 
 		} elseif ($var instanceof \Closure) {
 			$inner = Nette\Utils\Callback::unwrap($var);

@@ -13,7 +13,7 @@ enum Enum1
 	case Spades;
 
 	public const FOO = 123;
-	public const BAR = Abc\Enum1::Clubs;
+	public const BAR = \Abc\Enum1::Clubs;
 
 	public function foo($x = self::Diamonds)
 	{
