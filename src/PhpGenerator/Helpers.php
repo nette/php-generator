@@ -22,21 +22,21 @@ final class Helpers
 	public const PHP_IDENT = '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*';
 
 
-	/** @deprecated  use Nette\PhpGenerator\Dumper::dump() */
+	/** @deprecated  use (new Nette\PhpGenerator\Dumper)->dump() */
 	public static function dump($var): string
 	{
 		return (new Dumper)->dump($var);
 	}
 
 
-	/** @deprecated  use Nette\PhpGenerator\Dumper::format() */
+	/** @deprecated  use (new Nette\PhpGenerator\Dumper)->format() */
 	public static function format(string $statement, ...$args): string
 	{
 		return (new Dumper)->format($statement, ...$args);
 	}
 
 
-	/** @deprecated  use Nette\PhpGenerator\Dumper::format() */
+	/** @deprecated  use (new Nette\PhpGenerator\Dumper)->format() */
 	public static function formatArgs(string $statement, array $args): string
 	{
 		return (new Dumper)->format($statement, ...$args);
