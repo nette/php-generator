@@ -25,9 +25,9 @@ final class GlobalFunction
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 
-	public static function from(string $function): self
+	public static function from(string $function, bool $withBody = false): self
 	{
-		return (new Factory)->fromFunctionReflection(new \ReflectionFunction($function));
+		return (new Factory)->fromFunctionReflection(new \ReflectionFunction($function), $withBody);
 	}
 
 
