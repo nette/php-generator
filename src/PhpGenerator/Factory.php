@@ -111,11 +111,7 @@ final class Factory
 		$method->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
 		$method->setStatic($from->isStatic());
 		$isInterface = $from->getDeclaringClass()->isInterface();
-		$method->setVisibility(
-			$from->isPrivate()
-				? ClassType::VISIBILITY_PRIVATE
-				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ($isInterface ? null : ClassType::VISIBILITY_PUBLIC))
-		);
+		$method->setVisibility($isInterface ? null : $this->getVisibility($from));
 		$method->setFinal($from->isFinal());
 		$method->setAbstract($from->isAbstract() && !$isInterface);
 		$method->setBody($from->isAbstract() ? null : '');
@@ -201,11 +197,7 @@ final class Factory
 	{
 		$const = new Constant($from->name);
 		$const->setValue($from->getValue());
-		$const->setVisibility(
-			$from->isPrivate()
-				? ClassType::VISIBILITY_PRIVATE
-				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
-		);
+		$const->setVisibility($this->getVisibility($from));
 		$const->setFinal(PHP_VERSION_ID >= 80100 ? $from->isFinal() : false);
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$const->setAttributes(self::getAttributes($from));
@@ -229,11 +221,7 @@ final class Factory
 		$prop = new Property($from->name);
 		$prop->setValue($defaults[$prop->getName()] ?? null);
 		$prop->setStatic($from->isStatic());
-		$prop->setVisibility(
-			$from->isPrivate()
-				? ClassType::VISIBILITY_PRIVATE
-				: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC)
-		);
+		$prop->setVisibility($this->getVisibility($from));
 		if (PHP_VERSION_ID >= 70400) {
 			if ($from->getType() instanceof \ReflectionNamedType) {
 				$prop->setType($from->getType()->getName());
@@ -252,6 +240,25 @@ final class Factory
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$prop->setAttributes(self::getAttributes($from));
 		return $prop;
+	}
+
+
+	private function getAttributes($from): array
+	{
+		if (PHP_VERSION_ID < 80000) {
+			return [];
+		}
+		return array_map(function ($attr) {
+			return new Attribute($attr->getName(), $attr->getArguments());
+		}, $from->getAttributes());
+	}
+
+
+	private function getVisibility($from): string
+	{
+		return $from->isPrivate()
+			? ClassType::VISIBILITY_PRIVATE
+			: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC);
 	}
 
 
@@ -394,18 +401,5 @@ final class Factory
 		$stmts = $traverser->traverse($stmts);
 
 		return [$code, $stmts];
-	}
-
-
-	private function getAttributes($from): array
-	{
-		if (PHP_VERSION_ID < 80000) {
-			return [];
-		}
-		$res = [];
-		foreach ($from->getAttributes() as $attr) {
-			$res[] = new Attribute($attr->getName(), $attr->getArguments());
-		}
-		return $res;
 	}
 }
