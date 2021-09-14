@@ -77,13 +77,16 @@ final class Factory
 
 		$methods = $bodies = [];
 		foreach ($from->getMethods() as $method) {
+			$srcMethod = Nette\Utils\Reflection::getMethodDeclaringMethod($method);
+			if($srcMethod->getDeclaringClass()->name !== $method->getDeclaringClass()->name){
+				continue;  // Don't add methods defined in used Traits
+			}
 			if (
 				$method->getDeclaringClass()->name === $from->name
 				&& (!$enumIface || !method_exists($enumIface, $method->name))
 			) {
 				$methods[] = $m = $this->fromMethodReflection($method);
 				if ($withBodies) {
-					$srcMethod = Nette\Utils\Reflection::getMethodDeclaringMethod($method);
 					$srcClass = $srcMethod->getDeclaringClass()->name;
 					$b = $bodies[$srcClass] = $bodies[$srcClass] ?? $this->loadMethodBodies($srcMethod->getDeclaringClass());
 					if (isset($b[$srcMethod->name])) {
@@ -104,6 +107,10 @@ final class Factory
 		}
 		$class->setConstants($consts);
 		$class->setCases($cases);
+
+		foreach ($from->getTraits() as $trait) {
+			$class->addTrait($trait->name);
+		}
 
 		return $class;
 	}
