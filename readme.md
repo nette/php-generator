@@ -413,7 +413,7 @@ You can also print closure as arrow function using printer:
 
 ```php
 $closure = new Nette\PhpGenerator\Closure;
-$closure->setBody('return $a + $b;');
+$closure->setBody('$a + $b');
 $closure->addParameter('a');
 $closure->addParameter('b');
 
@@ -430,7 +430,7 @@ fn($a, $b) => $a + $b
 Attributes
 ----------
 
-You can add PHP 8 attributes to all classes, methods, properties, constants, functions, closures and parameters.
+You can add PHP 8 attributes to all classes, methods, properties, constants, enum cases, functions, closures and parameters.
 
 ```php
 $class = new Nette\PhpGenerator\ClassType('Demo');
@@ -495,7 +495,7 @@ Simple placeholders `?`
 $str = 'any string';
 $num = 3;
 $function = new Nette\PhpGenerator\GlobalFunction('foo');
-$function->addBody('return strlen(?, ?);', [$str, $num]);
+$function->addBody('return substr(?, ?);', [$str, $num]);
 echo $function;
 ```
 
@@ -504,7 +504,7 @@ Result:
 ```php
 function foo()
 {
-	return strlen('any string', 3);
+	return substr('any string', 3);
 }
 ```
 
@@ -557,7 +557,7 @@ function foo($a)
 Namespace
 ---------
 
-Classes, traits and interfaces (hereinafter classes) can be grouped into namespaces ([PhpNamespace](https://api.nette.org/php-generator/Nette/PhpGenerator/PhpNamespace.html)):
+Classes, traits, interfaces and enums (hereinafter classes) can be grouped into namespaces ([PhpNamespace](https://api.nette.org/php-generator/Nette/PhpGenerator/PhpNamespace.html)):
 
 ```php
 $namespace = new Nette\PhpGenerator\PhpNamespace('Foo');
@@ -685,7 +685,7 @@ class A
 Generate using Reflection
 -------------------------
 
-Another common use case is to create class or method based on existing ones:
+Another common use case is to create class or function based on existing one:
 
 ```php
 $class = Nette\PhpGenerator\ClassType::from(PDO::class);
@@ -697,7 +697,7 @@ $closure = Nette\PhpGenerator\Closure::from(
 );
 ```
 
-Method bodies are empty by default. If you want to load them as well, use this way
+Function and method bodies are empty by default. If you want to load them as well, use this way
 (it requires `nikic/php-parser` to be installed):
 
 ```php
