@@ -27,8 +27,11 @@ final class Factory
 	public function fromClassReflection(
 		\ReflectionClass $from,
 		bool $withBodies = false,
-		bool $materializeTraits = true,
+		?bool $materializeTraits = null,
 	): ClassType {
+		if ($materializeTraits !== null) {
+			trigger_error(__METHOD__ . '() parameter $materializeTraits has been removed (is always false).', E_USER_DEPRECATED);
+		}
 		if ($withBodies && $from->isAnonymous()) {
 			throw new Nette\NotSupportedException('The $withBodies parameter cannot be used for anonymous functions.');
 		}
@@ -69,9 +72,7 @@ final class Factory
 
 		$props = [];
 		foreach ($from->getProperties() as $prop) {
-			$declaringClass = $materializeTraits
-				? $prop->getDeclaringClass()
-				: Reflection::getPropertyDeclaringClass($prop);
+			$declaringClass = Reflection::getPropertyDeclaringClass($prop);
 
 			if ($prop->isDefault()
 				&& $declaringClass->name === $from->name
@@ -86,8 +87,8 @@ final class Factory
 
 		$methods = $resolutions = [];
 		foreach ($from->getMethods() as $method) {
-			$realMethod = Reflection::getMethodDeclaringMethod($method);
-			$declaringClass = ($materializeTraits ? $method : $realMethod)->getDeclaringClass();
+			$declaringMethod = Reflection::getMethodDeclaringMethod($method);
+			$declaringClass = $declaringMethod->getDeclaringClass();
 
 			if (
 				$declaringClass->name === $from->name
@@ -95,31 +96,28 @@ final class Factory
 			) {
 				$methods[] = $m = $this->fromMethodReflection($method);
 				if ($withBodies) {
-					$realMethodClass = $realMethod->getDeclaringClass();
-					$bodies = &$this->bodyCache[$realMethodClass->name];
-					$bodies ??= $this->getExtractor($realMethodClass)->extractMethodBodies($realMethodClass->name);
-					if (isset($bodies[$realMethod->name])) {
-						$m->setBody($bodies[$realMethod->name]);
+					$bodies = &$this->bodyCache[$declaringClass->name];
+					$bodies ??= $this->getExtractor($declaringClass)->extractMethodBodies($declaringClass->name);
+					if (isset($bodies[$declaringMethod->name])) {
+						$m->setBody($bodies[$declaringMethod->name]);
 					}
 				}
 			}
 
-			$modifier = $realMethod->getModifiers() !== $method->getModifiers()
+			$modifier = $declaringMethod->getModifiers() !== $method->getModifiers()
 				? ' ' . $this->getVisibility($method)
 				: null;
-			$alias = $realMethod->name !== $method->name ? ' ' . $method->name : '';
+			$alias = $declaringMethod->name !== $method->name ? ' ' . $method->name : '';
 			if ($modifier || $alias) {
-				$resolutions[] = $realMethod->name . ' as' . $modifier . $alias;
+				$resolutions[] = $declaringMethod->name . ' as' . $modifier . $alias;
 			}
 		}
 
 		$class->setMethods($methods);
 
-		if (!$materializeTraits) {
-			foreach ($from->getTraitNames() as $trait) {
-				$class->addTrait($trait, $resolutions);
-				$resolutions = [];
-			}
+		foreach ($from->getTraitNames() as $trait) {
+			$class->addTrait($trait, $resolutions);
+			$resolutions = [];
 		}
 
 		$consts = $cases = [];

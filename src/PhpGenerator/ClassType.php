@@ -92,10 +92,13 @@ final class ClassType
 	}
 
 
-	public static function from(string|object $class, bool $withBodies = false, bool $materializeTraits = true): self
+	public static function from(string|object $class, bool $withBodies = false, ?bool $materializeTraits = null): self
 	{
+		if ($materializeTraits !== null) {
+			trigger_error(__METHOD__ . '() parameter $materializeTraits has been removed (is always false).', E_USER_DEPRECATED);
+		}
 		return (new Factory)
-			->fromClassReflection(new \ReflectionClass($class), $withBodies, $materializeTraits);
+			->fromClassReflection(new \ReflectionClass($class), $withBodies);
 	}
 
 
