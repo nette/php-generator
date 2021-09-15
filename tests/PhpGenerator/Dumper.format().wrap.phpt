@@ -39,12 +39,12 @@ Assert::same('func(1, 2, 3)', $dumper->format('func(...?)', [1, 2, 3]));
 same('loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong(
 	1,
 	2,
-	3
+	3,
 )', $dumper->format('loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong(...?)', [1, 2, 3]));
 
 
 same('looooooooooooooooooooooooooooooooooooooooo(1, 2, 3) + ooooooooooooooooooooooooooooooooooooooooooooooong(
 	1,
 	2,
-	3
+	3,
 )', $dumper->format('looooooooooooooooooooooooooooooooooooooooo(...?) + ooooooooooooooooooooooooooooooooooooooooooooooong(...?)', [1, 2, 3], [1, 2, 3]));
