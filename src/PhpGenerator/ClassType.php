@@ -72,27 +72,27 @@ final class ClassType
 	private $cases = [];
 
 
-	public static function class(string $name = null, PhpNamespace $namespace = null): self
+	public static function class(?string $name): self
 	{
-		return new self($name, $namespace);
+		return new self($name);
 	}
 
 
-	public static function interface(string $name = null, PhpNamespace $namespace = null): self
+	public static function interface(string $name): self
 	{
-		return (new self($name, $namespace))->setType(self::TYPE_INTERFACE);
+		return (new self($name))->setType(self::TYPE_INTERFACE);
 	}
 
 
-	public static function trait(string $name = null, PhpNamespace $namespace = null): self
+	public static function trait(string $name): self
 	{
-		return (new self($name, $namespace))->setType(self::TYPE_TRAIT);
+		return (new self($name))->setType(self::TYPE_TRAIT);
 	}
 
 
-	public static function enum(string $name = null, PhpNamespace $namespace = null): self
+	public static function enum(string $name): self
 	{
-		return (new self($name, $namespace))->setType(self::TYPE_ENUM);
+		return (new self($name))->setType(self::TYPE_ENUM);
 	}
 
 
