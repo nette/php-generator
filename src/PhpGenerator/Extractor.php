@@ -62,8 +62,7 @@ final class Extractor
 		foreach ($nodeFinder->findInstanceOf($classNode, Node\Stmt\ClassMethod::class) as $methodNode) {
 			/** @var Node\Stmt\ClassMethod $methodNode */
 			if ($methodNode->stmts) {
-				$body = $this->extractBody($nodeFinder, $methodNode->stmts);
-				$res[$methodNode->name->toString()] = Helpers::unindent($body, 2);
+				$res[$methodNode->name->toString()] = $this->getReformattedBody($methodNode->stmts, 2);
 			}
 		}
 		return $res;
@@ -72,34 +71,38 @@ final class Extractor
 
 	public function extractFunctionBody(string $name): ?string
 	{
-		$nodeFinder = new NodeFinder;
-		/** @var Node\Stmt\Function_ $functionNode */
-		$functionNode = $nodeFinder->findFirst($this->statements, function (Node $node) use ($name) {
+		$functionNode = (new NodeFinder)->findFirst($this->statements, function (Node $node) use ($name) {
 			return $node instanceof Node\Stmt\Function_ && $node->namespacedName->toString() === $name;
 		});
 
-		$body = $this->extractBody($nodeFinder, $functionNode->stmts);
-		return Helpers::unindent($body, 1);
+		return $this->getReformattedBody($functionNode->stmts, 1);
 	}
 
 
-	/**
-	 * @param  Node[]  $statements
-	 */
-	private function extractBody(NodeFinder $nodeFinder, array $statements): string
+	/** @param  Node[]  $statements */
+	private function getReformattedBody(array $statements, int $level): string
 	{
-		$start = $statements[0]->getAttribute('startFilePos');
-		$body = substr($this->code, $start, end($statements)->getAttribute('endFilePos') - $start + 1);
+		$replacements = $this->prepareReplacements($statements);
+		$body = $this->getNodeContents(...$statements);
+		$body = $this->performReplacements($body, $replacements);
+		return Helpers::unindent($body, $level);
+	}
 
+
+	private function prepareReplacements(array $statements): array
+	{
+		$start = $statements[0]->getStartFilePos();
 		$replacements = [];
+		$nodeFinder = new NodeFinder;
+
 		// name-nodes => resolved fully-qualified name
 		foreach ($nodeFinder->findInstanceOf($statements, Node\Name::class) as $node) {
 			if ($node->hasAttribute('resolvedName')
 				&& $node->getAttribute('resolvedName') instanceof Node\Name\FullyQualified
 			) {
 				$replacements[] = [
-					$node->getStartFilePos(),
-					$node->getEndFilePos(),
+					$node->getStartFilePos() - $start,
+					$node->getEndFilePos() - $start,
 					$node->getAttribute('resolvedName')->toCodeString(),
 				];
 			}
@@ -111,12 +114,12 @@ final class Extractor
 			$nodeFinder->findInstanceOf($statements, Node\Scalar\EncapsedStringPart::class)
 		) as $node) {
 			/** @var Node\Scalar\String_|Node\Scalar\EncapsedStringPart $node */
-			$token = substr($body, $node->getStartFilePos() - $start, $node->getEndFilePos() - $node->getStartFilePos() + 1);
+			$token = $this->getNodeContents($node);
 			if (strpos($token, "\n") !== false) {
 				$quote = $node instanceof Node\Scalar\String_ ? '"' : '';
 				$replacements[] = [
-					$node->getStartFilePos(),
-					$node->getEndFilePos(),
+					$node->getStartFilePos() - $start,
+					$node->getEndFilePos() - $start,
 					$quote . addcslashes($node->value, "\x00..\x1F") . $quote,
 				];
 			}
@@ -127,34 +130,46 @@ final class Extractor
 			/** @var Node\Scalar\Encapsed $node */
 			if ($node->getAttribute('kind') === Node\Scalar\String_::KIND_HEREDOC) {
 				$replacements[] = [
-					$node->getStartFilePos(),
-					$node->parts[0]->getStartFilePos() - 1,
+					$node->getStartFilePos() - $start,
+					$node->parts[0]->getStartFilePos() - $start - 1,
 					'"',
 				];
 				$replacements[] = [
-					end($node->parts)->getEndFilePos() + 1,
-					$node->getEndFilePos(),
+					end($node->parts)->getEndFilePos() - $start + 1,
+					$node->getEndFilePos() - $start,
 					'"',
 				];
 			}
 		}
 
-		//sort collected resolved names by position in file
-		usort($replacements, function ($a, $b) {
+		return $replacements;
+	}
+
+
+	private function performReplacements(string $s, array $replacements): string
+	{
+		usort($replacements, function ($a, $b) { // sort by position in file
 			return $a[0] <=> $b[0];
 		});
-		$correctiveOffset = -$start;
-		//replace changes body length so we need correct offset
-		foreach ($replacements as [$startPos, $endPos, $replacement]) {
-			$replacingStringLength = $endPos - $startPos + 1;
-			$body = substr_replace(
-				$body,
+
+		$correctiveOffset = 0;
+		foreach ($replacements as [$start, $end, $replacement]) {
+			$replacingStringLength = $end - $start + 1;
+			$s = substr_replace(
+				$s,
 				$replacement,
-				$correctiveOffset + $startPos,
+				$correctiveOffset + $start,
 				$replacingStringLength
 			);
 			$correctiveOffset += strlen($replacement) - $replacingStringLength;
 		}
-		return $body;
+		return $s;
+	}
+
+
+	private function getNodeContents(Node ...$nodes): string
+	{
+		$start = $nodes[0]->getStartFilePos();
+		return substr($this->code, $start, end($nodes)->getEndFilePos() - $start + 1);
 	}
 }
