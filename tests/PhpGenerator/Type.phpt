@@ -16,10 +16,3 @@ Assert::same('A', Type::nullable(A::class, false));
 
 Assert::same('?A', Type::nullable('?A', true));
 Assert::same('A', Type::nullable('?A', false));
-
-Assert::same(stdClass::class, Type::getType(new stdClass));
-Assert::same(Type::STRING, Type::getType(''));
-Assert::same(Type::INT, Type::getType(1));
-Assert::same(Type::FLOAT, Type::getType(1.0));
-Assert::same(Type::ARRAY, Type::getType([]));
-Assert::same(null, Type::getType(fopen(__FILE__, 'r')));

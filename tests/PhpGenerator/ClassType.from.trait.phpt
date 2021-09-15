@@ -25,7 +25,7 @@ $res = array_map(fn($class) => ClassType::from($class), $classes);
 sameFile(__DIR__ . '/expected/ClassType.from.trait-materialize.expect', implode("\n", $res));
 
 
-$res = array_map(fn($class) => ClassType::withBodiesFrom($class), $classes);
+$res = array_map(fn($class) => ClassType::from($class, withBodies: true), $classes);
 
 sameFile(__DIR__ . '/expected/ClassType.from.trait-materialize.bodies.expect', implode("\n", $res));
 

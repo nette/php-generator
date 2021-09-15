@@ -65,6 +65,7 @@ class Parameter
 	/** @deprecated  use setType() */
 	public function setTypeHint(?string $type): static
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use setType().', E_USER_DEPRECATED);
 		return $this->setType($type);
 	}
 
@@ -72,6 +73,7 @@ class Parameter
 	/** @deprecated  use getType() */
 	public function getTypeHint(): ?string
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use getType().', E_USER_DEPRECATED);
 		return $this->getType();
 	}
 
