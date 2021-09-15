@@ -54,7 +54,7 @@ same(
 	33,
 	34,
 	35,
-	36
+	36,
 )',
 	$dumper->format('func(?*)', range(10, 36)),
 );

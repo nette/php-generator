@@ -247,8 +247,7 @@ final class Dumper
 			$k = !$named || is_int($k) ? '' : $k . ': ';
 			$outInline .= $outInline === '' ? '' : ', ';
 			$outInline .= $k . $this->dumpVar($v, [$var], 0, $column + strlen($outInline));
-			$outWrapped .= ($outWrapped === '' ? '' : ',') . "\n"
-				. $this->indentation . $k . $this->dumpVar($v, [$var], 1);
+			$outWrapped .= "\n" . $this->indentation . $k . $this->dumpVar($v, [$var], 1) . ',';
 		}
 
 		return count($var) > 1 && (str_contains($outInline, "\n") || $column + strlen($outInline) > $this->wrapLength)
