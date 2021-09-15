@@ -83,6 +83,7 @@ final class PhpNamespace
 	/** @deprecated  use hasBracketedSyntax() */
 	public function getBracketedSyntax(): bool
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use hasBracketedSyntax().', E_USER_DEPRECATED);
 		return $this->bracketedSyntax;
 	}
 
@@ -157,6 +158,7 @@ final class PhpNamespace
 	/** @deprecated  use simplifyName() */
 	public function unresolveName(string $name): string
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use simplifyName()', E_USER_DEPRECATED);
 		return $this->simplifyName($name);
 	}
 

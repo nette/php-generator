@@ -99,8 +99,10 @@ final class ClassType
 	}
 
 
+	/** @deprecated  use ClassType::from(..., withBodies: true) */
 	public static function withBodiesFrom(string|object $class): self
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use ClassType::from(..., withBodies: true)', E_USER_DEPRECATED);
 		return (new Factory)
 			->fromClassReflection(new \ReflectionClass($class), withBodies: true);
 	}
@@ -150,9 +152,10 @@ final class ClassType
 	}
 
 
-	/** @deprecated */
+	/** @deprecated  use setType('class') or create using ClassType::class() */
 	public function setClass(): static
 	{
+		trigger_error(__METHOD__ . "() is deprecated, use setType('class').", E_USER_DEPRECATED);
 		$this->type = self::TYPE_CLASS;
 		return $this;
 	}
@@ -164,8 +167,10 @@ final class ClassType
 	}
 
 
+	/** @deprecated  use setType('interface') or create using ClassType::interface() */
 	public function setInterface(): static
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use $class->setType($class::TYPE_INTERFACE) or create object using ClassType::interface()', E_USER_DEPRECATED);
 		$this->type = self::TYPE_INTERFACE;
 		return $this;
 	}
@@ -177,8 +182,10 @@ final class ClassType
 	}
 
 
+	/** @deprecated  use setType('trait') or create using ClassType::trait() */
 	public function setTrait(): static
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use $class->setType($class::TYPE_TRAIT) or create object using ClassType::trait()', E_USER_DEPRECATED);
 		$this->type = self::TYPE_TRAIT;
 		return $this;
 	}

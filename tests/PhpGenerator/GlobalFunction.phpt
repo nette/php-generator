@@ -48,7 +48,7 @@ function func(stdClass $a, $b = null)
 );
 
 
-$function = GlobalFunction::withBodyFrom('func');
+$function = GlobalFunction::from('func', withBody: true);
 same(<<<'XX'
 	/**
 	 * global

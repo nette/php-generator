@@ -25,7 +25,7 @@
 		"phpstan/phpstan": "^1.0"
 	},
 	"suggest": {
-		"nikic/php-parser": "to use ClassType::withBodiesFrom() & GlobalFunction::withBodyFrom()"
+		"nikic/php-parser": "to use ClassType::from(withBodies: true) & ClassType::fromCode()"
 	},
 	"autoload": {
 		"classmap": ["src/"]
