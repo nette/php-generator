@@ -21,7 +21,7 @@ Assert::exception(function () {
 		{
 		}
 	});
-}, Nette\NotSupportedException::class, 'Anonymous classes are not supported.');
+}, Nette\NotSupportedException::class, 'The $withBodies parameter cannot be used for anonymous functions.');
 
 
 $res = ClassType::withBodiesFrom(Abc\Class7::class);
