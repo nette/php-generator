@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Test: Nette\PhpGenerator generator.
- */
-
 declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
@@ -12,25 +8,27 @@ use Nette\PhpGenerator\ClassType;
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/fixtures/traits.php';
 
+$classes = [
+	Trait1::class,
+	Trait1b::class,
+	Trait2::class,
+	ParentClass::class,
+	Class1::class,
+	Class2::class,
+	Class3::class,
+	Class4::class,
+	Class5::class,
+];
 
-$res[] = ClassType::from('Trait1');
-$res[] = ClassType::from('Trait2');
-$res[] = ClassType::from('Class1');
-$res[] = ClassType::from('Class2');
-$res[] = ClassType::from('Class3');
-$res[] = ClassType::from('Class4');
-$res[] = ClassType::from('Class5');
+$res = array_map(function ($class) {
+	return ClassType::from($class);
+}, $classes);
 
 sameFile(__DIR__ . '/expected/ClassType.from.trait.expect', implode("\n", $res));
 
 
-$res = [];
-$res[] = ClassType::withBodiesFrom('Trait1');
-$res[] = ClassType::withBodiesFrom('Trait2');
-$res[] = ClassType::withBodiesFrom('Class1');
-$res[] = ClassType::withBodiesFrom('Class2');
-$res[] = ClassType::withBodiesFrom('Class3');
-$res[] = ClassType::withBodiesFrom('Class4');
-$res[] = ClassType::withBodiesFrom('Class5');
+$res = array_map(function ($class) {
+	return ClassType::withBodiesFrom($class);
+}, $classes);
 
 sameFile(__DIR__ . '/expected/ClassType.from.trait.bodies.expect', implode("\n", $res));

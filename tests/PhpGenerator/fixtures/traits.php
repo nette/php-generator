@@ -7,6 +7,7 @@ declare(strict_types=1);
  */
 trait Trait1
 {
+	public static $s1;
 	public $x1;
 
 
@@ -69,6 +70,7 @@ class Class3 extends ParentClass
 		Trait2::f1 as aliased;
 	}
 
+	/** info */
 	public $x1;
 
 

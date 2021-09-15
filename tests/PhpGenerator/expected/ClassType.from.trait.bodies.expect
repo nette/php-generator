@@ -3,6 +3,7 @@
  */
 trait Trait1
 {
+	public static $s1;
 	public $x1;
 
 
@@ -12,9 +13,18 @@ trait Trait1
 	}
 }
 
+trait Trait1b
+{
+	public function f1()
+	{
+		echo 'Trait1b::f1';
+	}
+}
+
 trait Trait2
 {
 	protected $x2;
+	public static $s1;
 	public $x1;
 
 
@@ -30,9 +40,21 @@ trait Trait2
 	}
 }
 
+class ParentClass
+{
+	public $x1;
+
+
+	public function f1()
+	{
+		echo 'ParentClass::f1';
+	}
+}
+
 class Class1 extends ParentClass
 {
 	protected $x2;
+	public static $s1;
 
 
 	public function f1()
@@ -51,6 +73,7 @@ class Class2 extends ParentClass
 {
 	public $x1;
 	protected $x2;
+	public static $s1;
 
 
 	public function f1()
@@ -67,8 +90,10 @@ class Class2 extends ParentClass
 
 class Class3 extends ParentClass
 {
+	/** info */
 	public $x1;
 	protected $x2;
+	public static $s1;
 
 
 	public function f1()
@@ -92,6 +117,7 @@ class Class3 extends ParentClass
 class Class4 extends ParentClass
 {
 	protected $x2;
+	public static $s1;
 
 
 	public function aliased()
@@ -114,6 +140,7 @@ class Class4 extends ParentClass
 
 class Class5
 {
+	public static $s1;
 	public $x1;
 
 

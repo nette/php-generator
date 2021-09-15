@@ -7,7 +7,7 @@ use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
-require __DIR__ . '/fixtures/class-body.phpf';
+require __DIR__ . '/fixtures/bodies.php';
 
 
 Assert::exception(function () {

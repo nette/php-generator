@@ -7,8 +7,8 @@ namespace Abc;
 class Class8
 {
 	public function __construct(
-		public $a, 
-		private int|string $b = 10, 
+		public $a,
+		private int|string $b = 10,
 		$c = null,
 	) {
 	}

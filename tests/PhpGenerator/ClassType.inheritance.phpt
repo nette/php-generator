@@ -54,4 +54,4 @@ class B extends A implements I3
 }
 
 
-sameFile(__DIR__ . '/expected/ClassType.inheritance.expect', (string) ClassType::from('B'));
+sameFile(__DIR__ . '/expected/ClassType.inheritance.expect', (string) ClassType::from(B::class));

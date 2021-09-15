@@ -10,7 +10,7 @@ use Nette\PhpGenerator\ClassType;
 
 
 require __DIR__ . '/../bootstrap.php';
-require __DIR__ . '/fixtures/classes.php80';
+require __DIR__ . '/fixtures/classes.80.php';
 
 $res[] = ClassType::from(new Abc\Class8(null));
 $res[] = ClassType::from(new Abc\Class9);

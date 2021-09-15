@@ -22,16 +22,16 @@ interface Foo
 	function scalars(string $a, bool $b, int $c, float $d);
 }
 
-$method = Method::from(Foo::class . '::scalars');
+$method = Method::from([Foo::class, 'scalars']);
 Assert::same('string', $method->getParameters()['a']->getType());
 
-$method = Method::from(Foo::class . '::scalars');
+$method = Method::from([Foo::class, 'scalars']);
 Assert::same('bool', $method->getParameters()['b']->getType());
 
-$method = Method::from(Foo::class . '::scalars');
+$method = Method::from([Foo::class, 'scalars']);
 Assert::same('int', $method->getParameters()['c']->getType());
 
-$method = Method::from(Foo::class . '::scalars');
+$method = Method::from([Foo::class, 'scalars']);
 Assert::same('float', $method->getParameters()['d']->getType());
 
 

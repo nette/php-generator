@@ -43,7 +43,7 @@ Assert::same('A&\Countable', $namespace->unresolveType('foo\A&Countable'));
 Assert::same('', $namespace->unresolveType(''));
 
 $namespace->addUse('Bar\C');
-Assert::same(['C' => 'Bar\\C'], $namespace->getUses());
+Assert::same(['C' => 'Bar\C'], $namespace->getUses());
 
 Assert::same('\Bar', $namespace->unresolveName('Bar'));
 Assert::same('C', $namespace->unresolveName('\bar\C'));
@@ -70,16 +70,16 @@ Assert::exception(function () use ($namespace) {
 }, Nette\InvalidStateException::class, "Alias 'C' used already for 'Bar\\C', cannot use for 'Foo\\C'.");
 
 $classA
-	->addImplement('Foo\\A')
-	->addImplement('Bar\\C')
-	->addTrait('Bar\\D')
-	->addAttribute('Foo\\A');
+	->addImplement('Foo\A')
+	->addImplement('Bar\C')
+	->addTrait('Bar\D')
+	->addAttribute('Foo\A');
 
 $method = $classA->addMethod('test');
-$method->addAttribute('Foo\\A');
-$method->setReturnType('static|Foo\\A');
+$method->addAttribute('Foo\A');
+$method->setReturnType('static|Foo\A');
 
-$method->addParameter('a')->setType('Bar\C')->addAttribute('Bar\\D');
+$method->addParameter('a')->setType('Bar\C')->addAttribute('Bar\D');
 $method->addParameter('b')->setType('self');
 $method->addParameter('c')->setType('parent');
 $method->addParameter('d')->setType('array');

@@ -33,7 +33,7 @@ Assert::exception(function () {
 }, Nette\InvalidArgumentException::class);
 
 Assert::exception(function () {
-	new Nette\PhpGenerator\PhpNamespace('\\abc');
+	new Nette\PhpGenerator\PhpNamespace('\abc');
 }, Nette\InvalidArgumentException::class);
 
 
@@ -55,11 +55,11 @@ Assert::exception(function () {
 }, Nette\InvalidArgumentException::class);
 
 Assert::exception(function () {
-	new Nette\PhpGenerator\ClassType('abc\\abc');
+	new Nette\PhpGenerator\ClassType('abc\abc');
 }, Nette\InvalidArgumentException::class);
 
 Assert::exception(function () {
-	new Nette\PhpGenerator\ClassType('\\abc');
+	new Nette\PhpGenerator\ClassType('\abc');
 }, Nette\InvalidArgumentException::class);
 
 

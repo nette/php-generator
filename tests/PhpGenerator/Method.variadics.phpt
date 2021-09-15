@@ -22,10 +22,10 @@ interface Variadics
 	function bar($foo, array &...$bar);
 }
 
-$method = Method::from(Variadics::class . '::foo');
+$method = Method::from([Variadics::class, 'foo']);
 Assert::true($method->isVariadic());
 
-$method = Method::from(Variadics::class . '::bar');
+$method = Method::from([Variadics::class, 'bar']);
 Assert::true($method->isVariadic());
 Assert::true($method->getParameters()['bar']->isReference());
 Assert::same('array', $method->getParameters()['bar']->getType());

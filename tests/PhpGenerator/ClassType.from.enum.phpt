@@ -10,7 +10,7 @@ use Nette\PhpGenerator\ClassType;
 
 
 require __DIR__ . '/../bootstrap.php';
-require __DIR__ . '/fixtures/enum.php81';
+require __DIR__ . '/fixtures/enum.php';
 
 $res[] = ClassType::from(Abc\Enum1::class);
 $res[] = ClassType::from(Abc\Enum2::class);
