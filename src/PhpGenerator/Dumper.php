@@ -129,7 +129,9 @@ final class Dumper
 		} elseif ($var instanceof \Closure) {
 			$inner = Nette\Utils\Callback::unwrap($var);
 			if (Nette\Utils\Callback::isStatic($inner)) {
-				return '\Closure::fromCallable(' . $this->dump($inner) . ')';
+				return PHP_VERSION_ID < 80100
+					? '\Closure::fromCallable(' . $this->dump($inner) . ')'
+					: implode('::', (array) $inner) . '(...)';
 			}
 			throw new Nette\InvalidArgumentException('Cannot dump closure.');
 		}

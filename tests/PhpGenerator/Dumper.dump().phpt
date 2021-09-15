@@ -129,12 +129,16 @@ Assert::exception(function () {
 
 // closures
 Assert::same(
-	"\\Closure::fromCallable('strlen')",
+	PHP_VERSION_ID < 80100
+		? "\\Closure::fromCallable('strlen')"
+		: 'strlen(...)',
 	$dumper->dump(Closure::fromCallable('strlen'))
 );
 
 Assert::same(
-	"\\Closure::fromCallable(['Nette\\PhpGenerator\\ClassType', 'from'])",
+	PHP_VERSION_ID < 80100
+		? "\\Closure::fromCallable(['Nette\\PhpGenerator\\ClassType', 'from'])"
+		: 'Nette\PhpGenerator\ClassType::from(...)',
 	$dumper->dump(Closure::fromCallable([Nette\PhpGenerator\ClassType::class, 'from']))
 );
 
