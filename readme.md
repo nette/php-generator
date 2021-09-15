@@ -721,9 +721,9 @@ Function and method bodies are empty by default. If you want to load them as wel
 (it requires `nikic/php-parser` to be installed):
 
 ```php
-$class = Nette\PhpGenerator\ClassType::withBodiesFrom(MyClass::class);
+$class = Nette\PhpGenerator\ClassType::from(PDO::class, withBodies: true);
 
-$function = Nette\PhpGenerator\GlobalFunction::withBodyFrom('dump');
+$function = Nette\PhpGenerator\GlobalFunction::from('dump', withBody: true);
 ```
 
 Load class from file

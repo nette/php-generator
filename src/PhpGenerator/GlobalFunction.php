@@ -31,8 +31,10 @@ final class GlobalFunction
 	}
 
 
+	/** @deprecated  use GlobalFunction::from(..., withBody: true) */
 	public static function withBodyFrom(string $function): self
 	{
+		trigger_error(__METHOD__ . '() is deprecated, use GlobalFunction::from(..., withBody: true)', E_USER_DEPRECATED);
 		return (new Factory)->fromFunctionReflection(new \ReflectionFunction($function), withBody: true);
 	}
 
