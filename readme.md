@@ -708,6 +708,30 @@ $class = Nette\PhpGenerator\ClassType::withBodiesFrom(MyClass::class);
 $function = Nette\PhpGenerator\GlobalFunction::withBodyFrom('dump');
 ```
 
+Load class from file
+--------------------
+
+You can also load classes directly from a PHP file that is not already loaded or string of PHP code:
+
+```php
+$class = Nette\PhpGenerator\ClassType::fromCode(<<<XX
+	<?php
+
+	class Demo
+	{
+		public $foo;
+	}
+    XX);
+```
+
+Loading the entire PHP file, which may contain multiple classes or even multiple namespaces:
+
+```php
+$file = Nette\PhpGenerator\PhpFile::fromCode(file_get_contents('classes.php'));
+```
+
+This requires `nikic/php-parser` to be installed.
+
 
 Variables Dumper
 ----------------

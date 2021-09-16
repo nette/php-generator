@@ -114,6 +114,12 @@ final class ClassType
 	}
 
 
+	public static function fromCode(string $code): self
+	{
+		return (new Factory)->fromClassCode($code);
+	}
+
+
 	public function __construct(string $name = null, PhpNamespace $namespace = null)
 	{
 		$this->setName($name);

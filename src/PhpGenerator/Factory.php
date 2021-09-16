@@ -279,6 +279,23 @@ final class Factory
 	}
 
 
+	public function fromClassCode(string $code): ClassType
+	{
+		$classes = $this->fromCode($code)->getClasses();
+		if (!$classes) {
+			throw new Nette\InvalidStateException('The code does not contain any class.');
+		}
+		return reset($classes);
+	}
+
+
+	public function fromCode(string $code): PhpFile
+	{
+		$reader = new Extractor($code);
+		return $reader->extractAll();
+	}
+
+
 	private function getAttributes($from): array
 	{
 		if (PHP_VERSION_ID < 80000) {

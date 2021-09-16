@@ -19,8 +19,8 @@
 		"nette/utils": "^3.1.2"
 	},
 	"require-dev": {
-		"nette/tester": "^2.0",
-		"nikic/php-parser": "^4.4",
+		"nette/tester": "^2.4",
+		"nikic/php-parser": "^4.11",
 		"tracy/tracy": "^2.3",
 		"phpstan/phpstan": "^0.12"
 	},

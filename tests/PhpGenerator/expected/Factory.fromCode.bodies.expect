@@ -1,0 +1,85 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Abc;
+
+use Nette;
+
+abstract class Class7
+{
+	abstract public function abstractFun();
+
+
+	public function emptyFun()
+	{
+	}
+
+
+	public function emptyFun2()
+	{
+	}
+
+
+	public function simple()
+	{
+		return 1;
+	}
+
+
+	public function simple2()
+	{
+		return 1;
+	}
+
+
+	public function long()
+	{
+		if ($member instanceof \Abc\Method) {
+			$s = [1, 2, 3];
+		}
+		/*
+		$this->methods[$member->getName()] = $member;
+		*/
+		throw new \Nette\InvalidArgumentException('Argument must be Method|Property|Constant.');
+	}
+
+
+	public function complex()
+	{
+		echo 1;
+		// single line comment
+
+		// spaces - indent
+		// spaces - indent
+
+		/* multi
+		line
+		comment */
+		if (
+			$a
+			&&		$b    + $c)
+		{}
+
+		/** multi
+		line
+		comment */
+		// Alias Method will not be resolved in comment
+		if ($member instanceof \Abc\Method) {
+			$s1 = "\na\n\tb\n\t\tc\n";
+			$s2 = "\na\n\t{$b}\n\t\t$c\n";
+
+			$s3 = "a\n\t{$b}\n\t\t$c"
+		;
+			$s3 = "a\n\tb\n\t\tc"
+		;
+		// inline HTML is not supported
+			?>
+		a
+		b
+		c
+			<?php
+		}
+		throw new \Nette\InvalidArgumentException();
+	}
+}

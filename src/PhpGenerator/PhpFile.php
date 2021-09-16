@@ -32,6 +32,12 @@ final class PhpFile
 	private $strictTypes = false;
 
 
+	public static function fromCode(string $code): self
+	{
+		return (new Factory)->fromCode($code);
+	}
+
+
 	public function addClass(string $name): ClassType
 	{
 		return $this

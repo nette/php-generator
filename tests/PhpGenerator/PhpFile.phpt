@@ -128,3 +128,9 @@ $file->setStrictTypes();
 $file->addClass('A');
 
 sameFile(__DIR__ . '/expected/PhpFile.strictTypes.expect', (string) $file);
+
+
+
+$file = PhpFile::fromCode(file_get_contents(__DIR__ . '/fixtures/classes.php'));
+Assert::type(PhpFile::class, $file);
+sameFile(__DIR__ . '/expected/Factory.fromCode.expect', (string) $file);

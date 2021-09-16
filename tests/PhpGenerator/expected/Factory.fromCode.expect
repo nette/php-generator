@@ -1,0 +1,106 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Abc;
+
+/**
+ * Interface
+ * @author John Doe
+ */
+interface Interface1
+{
+	function func1();
+}
+
+interface Interface2
+{
+}
+
+interface Interface3 extends Interface1
+{
+}
+
+interface Interface4 extends Interface3, Interface2
+{
+}
+
+abstract class Class1 implements Interface1
+{
+	/**
+	 * @return Class1
+	 */
+	public function func1()
+	{
+	}
+
+
+	abstract protected function func2();
+}
+
+class Class2 extends Class1 implements Interface2
+{
+	/**
+	 * Public
+	 * @var int
+	 */
+	public $public;
+
+	/** @var int */
+	protected $protected = 10;
+	private $private = [];
+	public static $static;
+
+
+	/**
+	 * Func3
+	 * @return Class1
+	 */
+	private function &func3(array $a, Class2 $b, Unknown $c, \Xyz\Unknown $d, ?callable $e, $f)
+	{
+	}
+
+
+	private function func4(array $a = [], Class2 $b = null, $c = \Abc\Unknown::ABC)
+	{
+	}
+
+
+	final public function func2()
+	{
+	}
+}
+
+class Class3
+{
+	public $prop1;
+}
+
+class Class4
+{
+	public const THE_CONSTANT = 9;
+}
+
+class Class5
+{
+	public function func1(\A $a, ?\B $b, ?\C $c = null, \D $d = null, ?int $i = 1, ?array $arr = [])
+	{
+	}
+
+
+	public function func2(): ?\stdClass
+	{
+	}
+
+
+	public function func3(): void
+	{
+	}
+}
+
+class Class6 extends Class4
+{
+	/** const doc */
+	private const THE_PRIVATE_CONSTANT = 9;
+	public const THE_PUBLIC_CONSTANT = 9;
+}

@@ -1,0 +1,37 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Abc;
+
+/**
+ * Description of enum.
+ */
+#[\ExampleAttribute]
+enum Enum1
+{
+	/** Commented */
+	case Clubs;
+
+	#[ExampleAttribute]
+	case Diamonds;
+	case Hearts;
+	case Spades;
+
+	public const FOO = 123;
+	public const BAR = self::Clubs;
+
+	public function foo($x = self::Diamonds)
+	{
+	}
+}
+
+enum Enum2: string implements \Countable
+{
+	case GET = 'get';
+	case POST = 'post';
+
+	public function count(): int
+	{
+	}
+}

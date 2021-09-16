@@ -26,21 +26,26 @@ final class Extractor
 
 	private $code;
 	private $statements;
+	private $printer;
 
 
 	public function __construct(string $code)
 	{
 		if (!class_exists(ParserFactory::class)) {
-			throw new Nette\NotSupportedException("PHP-Parser is required to load method bodies, install package 'nikic/php-parser'.");
+			throw new Nette\NotSupportedException("PHP-Parser is required to load method bodies, install package 'nikic/php-parser' 4.7 or newer.");
 		}
+		$this->printer = new PhpParser\PrettyPrinter\Standard;
 		$this->parseCode($code);
 	}
 
 
 	private function parseCode(string $code): void
 	{
+		if (substr($code, 0, 5) !== '<?php') {
+			throw new Nette\InvalidStateException('The input string is not a PHP code.');
+		}
 		$this->code = str_replace("\r\n", "\n", $code);
-		$lexer = new PhpParser\Lexer(['usedAttributes' => ['startFilePos', 'endFilePos']]);
+		$lexer = new PhpParser\Lexer\Emulative(['usedAttributes' => ['startFilePos', 'endFilePos', 'comments']]);
 		$parser = (new ParserFactory)->create(ParserFactory::ONLY_PHP7, $lexer);
 		$stmts = $parser->parse($this->code);
 
@@ -164,6 +169,248 @@ final class Extractor
 			$correctiveOffset += strlen($replacement) - $replacingStringLength;
 		}
 		return $s;
+	}
+
+
+	public function extractAll(): PhpFile
+	{
+		$phpFile = new PhpFile;
+		$namespace = '';
+		$visitor = new class extends PhpParser\NodeVisitorAbstract {
+			public function enterNode(Node $node)
+			{
+				return ($this->callback)($node);
+			}
+		};
+
+		$visitor->callback = function (Node $node) use (&$class, &$namespace, $phpFile) {
+			if ($node instanceof Node\Stmt\DeclareDeclare && $node->key->name === 'strict_types') {
+				$phpFile->setStrictTypes((bool) $node->value->value);
+			} elseif ($node instanceof Node\Stmt\Namespace_) {
+				$namespace = $node->name ? $node->name->toString() : '';
+			} elseif ($node instanceof Node\Stmt\Use_) {
+				$this->addUseToNamespace($node, $phpFile->addNamespace($namespace));
+			} elseif ($node instanceof Node\Stmt\Class_) {
+				if (!$node->name) {
+					return PhpParser\NodeTraverser::DONT_TRAVERSE_CHILDREN;
+				}
+				$class = $this->addClassToFile($phpFile, $node);
+			} elseif ($node instanceof Node\Stmt\Interface_) {
+				$class = $this->addInterfaceToFile($phpFile, $node);
+			} elseif ($node instanceof Node\Stmt\Trait_) {
+				$class = $this->addTraitToFile($phpFile, $node);
+			} elseif ($node instanceof Node\Stmt\Enum_) {
+				$class = $this->addEnumToFile($phpFile, $node);
+			} elseif ($node instanceof Node\Stmt\Function_) {
+				$this->addFunctionToFile($phpFile, $node);
+			} elseif ($node instanceof Node\Stmt\TraitUse) {
+				$this->addTraitToClass($class, $node);
+			} elseif ($node instanceof Node\Stmt\Property) {
+				$this->addPropertyToClass($class, $node);
+			} elseif ($node instanceof Node\Stmt\ClassMethod) {
+				$this->addMethodToClass($class, $node);
+			} elseif ($node instanceof Node\Stmt\ClassConst) {
+				$this->addConstantToClass($class, $node);
+			} elseif ($node instanceof Node\Stmt\EnumCase) {
+				$this->addEnumCaseToClass($class, $node);
+			}
+			if ($node instanceof Node\FunctionLike) {
+				return PhpParser\NodeTraverser::DONT_TRAVERSE_CHILDREN;
+			}
+		};
+
+		$traverser = new PhpParser\NodeTraverser;
+		$traverser->addVisitor($visitor);
+		$traverser->traverse($this->statements);
+		return $phpFile;
+	}
+
+
+	private function addUseToNamespace(Node\Stmt\Use_ $node, PhpNamespace $namespace): void
+	{
+		if ($node->type === $node::TYPE_NORMAL) {
+			foreach ($node->uses as $use) {
+				$namespace->addUse($use->name->toString(), $use->alias ? $use->alias->toString() : null);
+			}
+		}
+	}
+
+
+	private function addClassToFile(PhpFile $phpFile, Node\Stmt\Class_ $node): ClassType
+	{
+		$class = $phpFile->addClass($node->namespacedName->toString());
+		if ($node->extends) {
+			$class->setExtends($node->extends->toString());
+		}
+		foreach ($node->implements as $item) {
+			$class->addImplement($item->toString());
+		}
+		$class->setFinal($node->isFinal());
+		$class->setAbstract($node->isAbstract());
+		$this->addCommentAndAttributes($class, $node);
+		return $class;
+	}
+
+
+	private function addInterfaceToFile(PhpFile $phpFile, Node\Stmt\Interface_ $node): ClassType
+	{
+		$class = $phpFile->addInterface($node->namespacedName->toString());
+		foreach ($node->extends as $item) {
+			$class->addExtend($item->toString());
+		}
+		$this->addCommentAndAttributes($class, $node);
+		return $class;
+	}
+
+
+	private function addTraitToFile(PhpFile $phpFile, Node\Stmt\Trait_ $node): ClassType
+	{
+		$class = $phpFile->addTrait($node->namespacedName->toString());
+		$this->addCommentAndAttributes($class, $node);
+		return $class;
+	}
+
+
+	private function addEnumToFile(PhpFile $phpFile, Node\Stmt\Enum_ $node): ClassType
+	{
+		$class = $phpFile->addEnum($node->namespacedName->toString());
+		foreach ($node->implements as $item) {
+			$class->addImplement($item->toString());
+		}
+		$this->addCommentAndAttributes($class, $node);
+		return $class;
+	}
+
+
+	private function addFunctionToFile(PhpFile $phpFile, Node\Stmt\Function_ $node): void
+	{
+		$function = $phpFile->addFunction($node->namespacedName->toString());
+		$this->setupFunction($function, $node);
+	}
+
+
+	private function addTraitToClass(ClassType $class, Node\Stmt\TraitUse $node): void
+	{
+		$res = [];
+		foreach ($node->adaptations as $item) {
+			$res[] = trim($this->toPhp($item), ';');
+		}
+		foreach ($node->traits as $trait) {
+			$class->addTrait($trait->toString(), $res);
+			$res = [];
+		}
+	}
+
+
+	private function addPropertyToClass(ClassType $class, Node\Stmt\Property $node): void
+	{
+		foreach ($node->props as $item) {
+			$prop = $class->addProperty($item->name->toString());
+			$prop->setStatic($node->isStatic());
+			if ($node->isPrivate()) {
+				$prop->setPrivate();
+			} elseif ($node->isProtected()) {
+				$prop->setProtected();
+			}
+			$prop->setType($node->type ? $this->toPhp($node->type) : null);
+			if ($item->default) {
+				$prop->setValue(new Literal($this->toPhp($item->default)));
+			}
+			$prop->setReadOnly(method_exists($node, 'isReadonly') && $node->isReadonly());
+			$this->addCommentAndAttributes($prop, $node);
+		}
+	}
+
+
+	private function addMethodToClass(ClassType $class, Node\Stmt\ClassMethod $node): void
+	{
+		$method = $class->addMethod($node->name->toString());
+		$method->setAbstract($node->isAbstract());
+		$method->setFinal($node->isFinal());
+		$method->setStatic($node->isStatic());
+		if ($node->isPrivate()) {
+			$method->setPrivate();
+		} elseif ($node->isProtected()) {
+			$method->setProtected();
+		}
+		$this->setupFunction($method, $node);
+	}
+
+
+	private function addConstantToClass(ClassType $class, Node\Stmt\ClassConst $node): void
+	{
+		foreach ($node->consts as $item) {
+			$const = $class->addConstant($item->name->toString(), new Literal($this->toPhp($item->value)));
+			if ($node->isPrivate()) {
+				$const->setPrivate();
+			} elseif ($node->isProtected()) {
+				$const->setProtected();
+			}
+			$const->setFinal(method_exists($node, 'isFinal') && $node->isFinal());
+			$this->addCommentAndAttributes($const, $node);
+		}
+	}
+
+
+	private function addEnumCaseToClass(ClassType $class, Node\Stmt\EnumCase $node)
+	{
+		$case = $class->addCase($node->name->toString(), $node->expr ? $node->expr->value : null);
+		$this->addCommentAndAttributes($case, $node);
+	}
+
+
+	private function addCommentAndAttributes($element, Node $node): void
+	{
+		if ($node->getDocComment()) {
+			$comment = $node->getDocComment()->getReformattedText();
+			$comment = Helpers::unformatDocComment($comment);
+			$element->setComment($comment);
+		}
+
+		foreach ($node->attrGroups ?? [] as $group) {
+			foreach ($group->attrs as $attribute) {
+				$args = [];
+				foreach ($attribute->args as $arg) {
+					$value = new Literal($this->toPhp($arg));
+					if ($arg->name) {
+						$args[$arg->name->toString()] = $value;
+					} else {
+						$args[] = $value;
+					}
+				}
+				$element->addAttribute($attribute->name->toString(), $args);
+			}
+		}
+	}
+
+
+	/**
+	 * @param  GlobalFunction|Method  $function
+	 */
+	private function setupFunction($function, Node\FunctionLike $node): void
+	{
+		$function->setReturnReference($node->returnsByRef());
+		$function->setReturnType($node->getReturnType() ? $this->toPhp($node->getReturnType()) : null);
+		foreach ($node->params as $item) {
+			$param = $function->addParameter($item->var->name);
+			$param->setType($item->type ? $this->toPhp($item->type) : null);
+			$param->setReference($item->byRef);
+			$function->setVariadic($item->variadic);
+			if ($item->default) {
+				$param->setDefaultValue(new Literal($this->toPhp($item->default)));
+			}
+			$this->addCommentAndAttributes($param, $item);
+		}
+		$this->addCommentAndAttributes($function, $node);
+		if ($node->stmts) {
+			$function->setBody($this->getReformattedBody($node->stmts, 2));
+		}
+	}
+
+
+	private function toPhp($value): string
+	{
+		return $this->printer->prettyPrint([$value]);
 	}
 
 
