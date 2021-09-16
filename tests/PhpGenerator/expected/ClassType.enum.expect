@@ -16,7 +16,7 @@ enum Suit
 	case Hearts;
 	case Spades;
 
-	const ACTIVE = false;
+	public const ACTIVE = false;
 
 	public function foo()
 	{

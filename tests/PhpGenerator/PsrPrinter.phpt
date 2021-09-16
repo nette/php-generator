@@ -26,7 +26,7 @@ $class->addConstant('FORCE_ARRAY', new Literal('Nette\Utils\Json::FORCE_ARRAY'))
 	->addComment('Commented');
 
 $class->addConstant('MULTILINE_LONG', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5, 'ffffffff' => 6]);
-$class->addConstant('SHORT', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5, 'ffffffff' => 6]);
+$class->addConstant('SHORT', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5]);
 
 $class->addProperty('handle')
 	->setVisibility('private')

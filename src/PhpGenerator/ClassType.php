@@ -421,7 +421,7 @@ final class ClassType
 
 	public function addConstant(string $name, $value): Constant
 	{
-		return $this->consts[$name] = (new Constant($name))->setValue($value);
+		return $this->consts[$name] = (new Constant($name))->setValue($value)->setPublic();
 	}
 
 
