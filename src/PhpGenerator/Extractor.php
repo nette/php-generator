@@ -45,7 +45,7 @@ final class Extractor
 		$stmts = $parser->parse($this->code);
 
 		$traverser = new PhpParser\NodeTraverser;
-		$traverser->addVisitor(new PhpParser\NodeVisitor\NameResolver(null, ['replaceNodes' => false]));
+		$traverser->addVisitor(new PhpParser\NodeVisitor\NameResolver(null, ['preserveOriginalNames' => true]));
 		$this->statements = $traverser->traverse($stmts);
 	}
 
@@ -96,14 +96,14 @@ final class Extractor
 		$nodeFinder = new NodeFinder;
 
 		// name-nodes => resolved fully-qualified name
-		foreach ($nodeFinder->findInstanceOf($statements, Node\Name::class) as $node) {
-			if ($node->hasAttribute('resolvedName')
-				&& $node->getAttribute('resolvedName') instanceof Node\Name\FullyQualified
+		foreach ($nodeFinder->findInstanceOf($statements, Node\Name\FullyQualified::class) as $node) {
+			if ($node->hasAttribute('originalName')
+				&& $node->getAttribute('originalName') instanceof Node\Name
 			) {
 				$replacements[] = [
 					$node->getStartFilePos() - $start,
 					$node->getEndFilePos() - $start,
-					$node->getAttribute('resolvedName')->toCodeString(),
+					$node->toCodeString(),
 				];
 			}
 		}
