@@ -91,6 +91,20 @@ final class PhpFile
 	}
 
 
+	/** @return ClassType[] */
+	public function getClasses(): array
+	{
+		$classes = [];
+		foreach ($this->namespaces as $n => $namespace) {
+			$n .= $n ? '\\' : '';
+			foreach ($namespace->getClasses() as $c => $class) {
+				$classes[$n . $c] = $class;
+			}
+		}
+		return $classes;
+	}
+
+
 	/** @return static */
 	public function addUse(string $name, string $alias = null): self
 	{

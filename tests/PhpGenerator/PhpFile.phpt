@@ -79,12 +79,39 @@ $file->addClass('FooBar\I');
 
 sameFile(__DIR__ . '/expected/PhpFile.bracketed.expect', (string) $file);
 
+Assert::same([
+	'Foo',
+	'Bar',
+	'Baz',
+	'',
+	'FooBar',
+], array_keys($file->getNamespaces()));
+
+Assert::same([
+	'Foo\A',
+	'Foo\B',
+	'Foo\C',
+	'Bar\B',
+	'Bar\C',
+	'Bar\D',
+	'Bar\EN',
+	'Baz\E',
+	'Baz\F',
+	'Baz\G',
+	'H',
+	'FooBar\I',
+], array_keys($file->getClasses()));
+
+
+
 $file = new PhpFile;
 $file->addClass('A');
 $file->addUse('A')
 	->addUse('B', 'C');
 
 sameFile(__DIR__ . '/expected/PhpFile.globalNamespace.expect', (string) $file);
+
+
 
 $file = new PhpFile;
 $file->addComment('This file is auto-generated. DO NOT EDIT!');
