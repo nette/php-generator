@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\PhpGenerator;
 
 use Nette;
+use Nette\Utils\Reflection;
 
 
 /**
@@ -23,8 +24,11 @@ final class Factory
 	private $extractorCache = [];
 
 
-	public function fromClassReflection(\ReflectionClass $from, bool $withBodies = false): ClassType
-	{
+	public function fromClassReflection(
+		\ReflectionClass $from,
+		bool $withBodies = false,
+		bool $materializeTraits = true
+	): ClassType {
 		if ($withBodies && $from->isAnonymous()) {
 			throw new Nette\NotSupportedException('The $withBodies parameter cannot be used for anonymous functions.');
 		}
@@ -66,8 +70,12 @@ final class Factory
 
 		$props = [];
 		foreach ($from->getProperties() as $prop) {
+			$declaringClass = $materializeTraits
+				? $prop->getDeclaringClass()
+				: Reflection::getPropertyDeclaringClass($prop);
+
 			if ($prop->isDefault()
-				&& $prop->getDeclaringClass()->name === $from->name
+				&& $declaringClass->name === $from->name
 				&& (PHP_VERSION_ID < 80000 || !$prop->isPromoted())
 				&& !$class->isEnum()
 			) {
@@ -78,23 +86,31 @@ final class Factory
 
 		$methods = [];
 		foreach ($from->getMethods() as $method) {
+			$realMethod = Reflection::getMethodDeclaringMethod($method);
+			$declaringClass = ($materializeTraits ? $method : $realMethod)->getDeclaringClass();
+
 			if (
-				$method->getDeclaringClass()->name === $from->name
+				$declaringClass->name === $from->name
 				&& (!$enumIface || !method_exists($enumIface, $method->name))
 			) {
 				$methods[] = $m = $this->fromMethodReflection($method);
 				if ($withBodies) {
-					$srcMethod = Nette\Utils\Reflection::getMethodDeclaringMethod($method);
-					$srcClass = $srcMethod->getDeclaringClass();
-					$bodies = &$this->bodyCache[$srcClass->name];
-					$bodies = $bodies ?? $this->getExtractor($srcClass)->extractMethodBodies($srcClass->name);
-					if (isset($bodies[$srcMethod->name])) {
-						$m->setBody($bodies[$srcMethod->name]);
+					$realMethodClass = $realMethod->getDeclaringClass();
+					$bodies = &$this->bodyCache[$realMethodClass->name];
+					$bodies = $bodies ?? $this->getExtractor($realMethodClass)->extractMethodBodies($realMethodClass->name);
+					if (isset($bodies[$realMethod->name])) {
+						$m->setBody($bodies[$realMethod->name]);
 					}
 				}
 			}
 		}
 		$class->setMethods($methods);
+
+		if (!$materializeTraits) {
+			foreach ($from->getTraitNames() as $trait) {
+				$class->addTrait($trait);
+			}
+		}
 
 		$consts = $cases = [];
 		foreach ($from->getReflectionConstants() as $const) {

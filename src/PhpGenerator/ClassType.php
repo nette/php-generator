@@ -99,9 +99,9 @@ final class ClassType
 	/**
 	 * @param  string|object  $class
 	 */
-	public static function from($class): self
+	public static function from($class, bool $withBodies = false, bool $materializeTraits = true): self
 	{
-		return (new Factory)->fromClassReflection(new \ReflectionClass($class));
+		return (new Factory)->fromClassReflection(new \ReflectionClass($class), $withBodies, $materializeTraits);
 	}
 
 

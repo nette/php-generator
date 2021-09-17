@@ -24,11 +24,25 @@ $res = array_map(function ($class) {
 	return ClassType::from($class);
 }, $classes);
 
-sameFile(__DIR__ . '/expected/ClassType.from.trait.expect', implode("\n", $res));
+sameFile(__DIR__ . '/expected/ClassType.from.trait-materialize.expect', implode("\n", $res));
 
 
 $res = array_map(function ($class) {
 	return ClassType::withBodiesFrom($class);
 }, $classes);
 
-sameFile(__DIR__ . '/expected/ClassType.from.trait.bodies.expect', implode("\n", $res));
+sameFile(__DIR__ . '/expected/ClassType.from.trait-materialize.bodies.expect', implode("\n", $res));
+
+
+$res = array_map(function ($class) {
+	return ClassType::from($class, /*withBodies:*/ false, /*materializeTraits:*/ false);
+}, $classes);
+
+sameFile(__DIR__ . '/expected/ClassType.from.trait-use.expect', implode("\n", $res));
+
+
+$res = array_map(function ($class) {
+	return ClassType::from($class, /*withBodies:*/ true, /*materializeTraits:*/ false);
+}, $classes);
+
+sameFile(__DIR__ . '/expected/ClassType.from.trait-use.bodies.expect', implode("\n", $res));
