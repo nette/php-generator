@@ -19,6 +19,10 @@ final class Factory
 {
 	use Nette\SmartObject;
 
+	private $bodyCache = [];
+	private $extractorCache = [];
+
+
 	public function fromClassReflection(\ReflectionClass $from, bool $withBodies = false): ClassType
 	{
 		if ($withBodies && $from->isAnonymous()) {
@@ -72,7 +76,7 @@ final class Factory
 		}
 		$class->setProperties($props);
 
-		$methods = $bodies = [];
+		$methods = [];
 		foreach ($from->getMethods() as $method) {
 			if (
 				$method->getDeclaringClass()->name === $from->name
@@ -82,9 +86,10 @@ final class Factory
 				if ($withBodies) {
 					$srcMethod = Nette\Utils\Reflection::getMethodDeclaringMethod($method);
 					$srcClass = $srcMethod->getDeclaringClass();
-					$b = $bodies[$srcClass->name] = $bodies[$srcClass->name] ?? $this->getExtractor($srcClass)->extractMethodBodies($srcClass->name);
-					if (isset($b[$srcMethod->name])) {
-						$m->setBody($b[$srcMethod->name]);
+					$bodies = &$this->bodyCache[$srcClass->name];
+					$bodies = $bodies ?? $this->getExtractor($srcClass)->extractMethodBodies($srcClass->name);
+					if (isset($bodies[$srcMethod->name])) {
+						$m->setBody($bodies[$srcMethod->name]);
 					}
 				}
 			}
@@ -271,7 +276,10 @@ final class Factory
 	private function getExtractor($from): Extractor
 	{
 		$file = $from->getFileName();
-		if (!$file) {
+		$cache = &$this->extractorCache[$file];
+		if ($cache !== null) {
+			return $cache;
+		} elseif (!$file) {
 			throw new Nette\InvalidStateException("Source code of $from->name not found.");
 		}
 		return new Extractor(file_get_contents($file));
