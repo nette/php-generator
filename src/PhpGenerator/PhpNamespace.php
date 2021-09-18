@@ -141,8 +141,11 @@ final class PhpNamespace
 			return $name;
 		}
 		$name = ltrim($name, '\\');
-		$res = null;
 		$lower = strtolower($name);
+		$res = Strings::startsWith($lower, strtolower($this->name) . '\\')
+			? substr($name, strlen($this->name) + 1)
+			: null;
+
 		foreach ($this->uses as $alias => $original) {
 			if (Strings::startsWith($lower . '\\', strtolower($original) . '\\')) {
 				$short = $alias . substr($name, strlen($original));
@@ -152,11 +155,7 @@ final class PhpNamespace
 			}
 		}
 
-		if (!$res && Strings::startsWith($lower, strtolower($this->name) . '\\')) {
-			return substr($name, strlen($this->name) + 1);
-		} else {
-			return $res ?: ($this->name ? '\\' : '') . $name;
-		}
+		return $res ?: ($this->name ? '\\' : '') . $name;
 	}
 
 

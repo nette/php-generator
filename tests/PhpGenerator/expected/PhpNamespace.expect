@@ -1,6 +1,7 @@
 namespace Foo;
 
 use Bar\C;
+use Foo;
 
 #[A]
 class A implements A, C
