@@ -54,20 +54,6 @@ class Type
 
 	public static function getType($value): ?string
 	{
-		if (is_object($value)) {
-			return $value::class;
-		} elseif (is_int($value)) {
-			return self::INT;
-		} elseif (is_float($value)) {
-			return self::FLOAT;
-		} elseif (is_string($value)) {
-			return self::STRING;
-		} elseif (is_bool($value)) {
-			return self::BOOL;
-		} elseif (is_array($value)) {
-			return self::ARRAY;
-		} else {
-			return null;
-		}
+		return is_resource($value) ? null : get_debug_type($value);
 	}
 }
