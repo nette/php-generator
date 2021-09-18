@@ -119,7 +119,7 @@ class Printer
 			. $returnType
 			. ($method->isAbstract() || $isInterface
 				? ";\n"
-				: (strpos($params, "\n") === false ? "\n" : ' ')
+				: (str_contains($params, "\n") ? ' ' : "\n")
 					. "{\n"
 					. $this->indent(ltrim(rtrim($body) . "\n"))
 					. "}\n");
@@ -154,7 +154,7 @@ class Printer
 		}
 
 		$enumType = isset($case) && $case->getValue() !== null
-			? $this->returnTypeColon . Type::getType($case->getValue())
+			? $this->returnTypeColon . get_debug_type($case->getValue())
 			: '';
 
 		$consts = [];
@@ -332,9 +332,9 @@ class Printer
 		}
 
 		if ($nullable && strcasecmp($type, 'mixed')) {
-			$type = strpos($type, '|') === false
-				? '?' . $type
-				: $type . '|null';
+			$type = str_contains($type, '|')
+				? $type . '|null'
+				: '?' . $type;
 		}
 
 		return $type;

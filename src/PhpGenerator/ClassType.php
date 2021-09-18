@@ -410,7 +410,7 @@ final class ClassType
 	 */
 	public function setCases(array $cases): static
 	{
-		(function (EnumCase ...$cases) {})(...array_values($cases));
+		(function (EnumCase ...$cases) {})(...$cases);
 		$this->cases = [];
 		foreach ($cases as $case) {
 			$this->cases[$case->getName()] = $case;
@@ -447,7 +447,7 @@ final class ClassType
 	 */
 	public function setProperties(array $props): static
 	{
-		(function (Property ...$props) {})(...array_values($props));
+		(function (Property ...$props) {})(...$props);
 		$this->properties = [];
 		foreach ($props as $v) {
 			$this->properties[$v->getName()] = $v;
@@ -506,7 +506,7 @@ final class ClassType
 	 */
 	public function setMethods(array $methods): static
 	{
-		(function (Method ...$methods) {})(...array_values($methods));
+		(function (Method ...$methods) {})(...$methods);
 		$this->methods = [];
 		foreach ($methods as $m) {
 			$this->methods[strtolower($m->getName())] = $m;

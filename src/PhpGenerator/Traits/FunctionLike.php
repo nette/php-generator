@@ -57,7 +57,7 @@ trait FunctionLike
 	 */
 	public function setParameters(array $val): static
 	{
-		(function (Parameter ...$val) {})(...array_values($val));
+		(function (Parameter ...$val) {})(...$val);
 		$this->parameters = [];
 		foreach ($val as $v) {
 			$this->parameters[$v->getName()] = $v;

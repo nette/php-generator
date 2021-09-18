@@ -42,7 +42,7 @@ final class Extractor
 
 	private function parseCode(string $code): void
 	{
-		if (substr($code, 0, 5) !== '<?php') {
+		if (!str_starts_with($code, '<?php')) {
 			throw new Nette\InvalidStateException('The input string is not a PHP code.');
 		}
 
