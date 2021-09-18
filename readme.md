@@ -44,7 +44,7 @@ composer require nette/php-generator
 Classes
 -------
 
-Let's start with a straightforward example of generating class using [ClassType](https://api.nette.org/3.0/Nette/PhpGenerator/ClassType.html):
+Let's start with a straightforward example of generating class using [ClassType](https://api.nette.org/php-generator/Nette/PhpGenerator/ClassType.html):
 
 ```php
 $class = new Nette\PhpGenerator\ClassType('Demo');
@@ -83,7 +83,7 @@ $printer = new Nette\PhpGenerator\Printer;
 echo $printer->printClass($class);
 ```
 
-We can add constants ([Constant](https://api.nette.org/3.0/Nette/PhpGenerator/Constant.html)) and properties ([Property](https://api.nette.org/3.0/Nette/PhpGenerator/Property.html)):
+We can add constants ([Constant](https://api.nette.org/php-generator/Nette/PhpGenerator/Constant.html)) and properties ([Property](https://api.nette.org/php-generator/Nette/PhpGenerator/Property.html)):
 
 ```php
 $class->addConstant('ID', 123)
@@ -358,7 +358,7 @@ $obj = new class ($val) {
 Global Function
 ---------------
 
-Code of functions will generate class [GlobalFunction](https://api.nette.org/3.0/Nette/PhpGenerator/GlobalFunction.html):
+Code of functions will generate class [GlobalFunction](https://api.nette.org/php-generator/Nette/PhpGenerator/GlobalFunction.html):
 
 ```php
 $function = new Nette\PhpGenerator\GlobalFunction('foo');
@@ -383,7 +383,7 @@ function foo($a, $b)
 Closure
 -------
 
-Code of closures will generate class [Closure](https://api.nette.org/3.0/Nette/PhpGenerator/Closure.html):
+Code of closures will generate class [Closure](https://api.nette.org/php-generator/Nette/PhpGenerator/Closure.html):
 
 ```php
 $closure = new Nette\PhpGenerator\Closure;
@@ -557,7 +557,7 @@ function foo($a)
 Namespace
 ---------
 
-Classes, traits and interfaces (hereinafter classes) can be grouped into namespaces ([PhpNamespace](https://api.nette.org/3.0/Nette/PhpGenerator/PhpNamespace.html)):
+Classes, traits and interfaces (hereinafter classes) can be grouped into namespaces ([PhpNamespace](https://api.nette.org/php-generator/Nette/PhpGenerator/PhpNamespace.html)):
 
 ```php
 $namespace = new Nette\PhpGenerator\PhpNamespace('Foo');
@@ -641,7 +641,7 @@ echo $printer->printNamespace($namespace);
 PHP Files
 ---------
 
-Classes and namespaces can be grouped into PHP files represented by the class [PhpFile](https://api.nette.org/3.0/Nette/PhpGenerator/PhpFile.html):
+Classes and namespaces can be grouped into PHP files represented by the class [PhpFile](https://api.nette.org/php-generator/Nette/PhpGenerator/PhpFile.html):
 
 ```php
 $file = new Nette\PhpGenerator\PhpFile;
