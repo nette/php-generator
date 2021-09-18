@@ -75,10 +75,10 @@ final class Helpers
 		$s = str_replace('*/', '* /', $s);
 		if ($s === '') {
 			return '';
-		} elseif (strpos($content, "\n") === false) {
-			return "/** $s */\n";
-		} else {
+		} elseif (str_contains($content, "\n")) {
 			return str_replace("\n", "\n * ", "/**\n$s") . "\n */\n";
+		} else {
+			return "/** $s */\n";
 		}
 	}
 

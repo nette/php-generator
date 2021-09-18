@@ -111,7 +111,7 @@ final class Dumper
 		}
 
 		array_pop($parents);
-		$wrap = strpos($outInline, "\n") !== false || $level * self::INDENT_LENGTH + $column + strlen($outInline) + 3 > $this->wrapLength; // 3 = [],
+		$wrap = str_contains($outInline, "\n") || $level * self::INDENT_LENGTH + $column + strlen($outInline) + 3 > $this->wrapLength; // 3 = [],
 		return '[' . ($wrap ? $outWrapped : $outInline) . ']';
 	}
 
@@ -232,7 +232,7 @@ final class Dumper
 				. $this->indentation . $k . $this->dumpVar($v, [$var], 1);
 		}
 
-		return count($var) > 1 && (strpos($outInline, "\n") !== false || $column + strlen($outInline) > $this->wrapLength)
+		return count($var) > 1 && (str_contains($outInline, "\n") || $column + strlen($outInline) > $this->wrapLength)
 			? $outWrapped . "\n"
 			: $outInline;
 	}
