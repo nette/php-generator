@@ -44,6 +44,9 @@ final class PhpNamespace
 	/** @var ClassType[] */
 	private $classes = [];
 
+	/** @var GlobalFunction[] */
+	private $functions = [];
+
 
 	public function __construct(string $name)
 	{
@@ -195,10 +198,23 @@ final class PhpNamespace
 	}
 
 
+	public function addFunction(string $name): GlobalFunction
+	{
+		return $this->functions[$name] = new GlobalFunction($name);
+	}
+
+
 	/** @return ClassType[] */
 	public function getClasses(): array
 	{
 		return $this->classes;
+	}
+
+
+	/** @return GlobalFunction[] */
+	public function getFunctions(): array
+	{
+		return $this->functions;
 	}
 
 

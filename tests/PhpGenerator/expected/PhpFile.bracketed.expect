@@ -57,6 +57,10 @@ namespace Baz
 	trait G
 	{
 	}
+
+	function f2(): \Foo\B
+	{
+	}
 }
 
 
@@ -64,6 +68,11 @@ namespace
 {
 	class H
 	{
+	}
+
+	function f1()
+	{
+		return 1;
 	}
 }
 

@@ -203,13 +203,16 @@ class Printer
 		$name = $namespace->getName();
 		$uses = $this->printUses($namespace);
 
-		$classes = [];
+		$items = [];
 		foreach ($namespace->getClasses() as $class) {
-			$classes[] = $this->printClass($class, $namespace);
+			$items[] = $this->printClass($class, $namespace);
+		}
+		foreach ($namespace->getFunctions() as $function) {
+			$items[] = $this->printFunction($function, $namespace);
 		}
 
 		$body = ($uses ? $uses . "\n\n" : '')
-			. implode("\n", $classes);
+			. implode("\n", $items);
 
 		if ($namespace->hasBracketedSyntax()) {
 			return 'namespace' . ($name ? " $name" : '') . "\n{\n"

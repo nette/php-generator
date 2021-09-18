@@ -55,3 +55,7 @@ interface F extends \Foo\B, \Bar\C
 trait G
 {
 }
+
+function f2(): \Foo\B
+{
+}

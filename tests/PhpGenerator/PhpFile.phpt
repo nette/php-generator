@@ -70,12 +70,18 @@ $interfaceF
 $traitG = $file->addTrait('Baz\G');
 Assert::same($file->addNamespace('Baz'), $traitG->getNamespace());
 
+$file->addFunction('Baz\\f2')
+	->setReturnType('Foo\B');
+
 
 sameFile(__DIR__ . '/expected/PhpFile.regular.expect', (string) $file);
 
 $file->addClass('H');
 
 $file->addClass('FooBar\I');
+
+$file->addFunction('f1')
+	->setBody('return 1;');
 
 sameFile(__DIR__ . '/expected/PhpFile.bracketed.expect', (string) $file);
 
@@ -101,6 +107,9 @@ Assert::same([
 	'H',
 	'FooBar\I',
 ], array_keys($file->getClasses()));
+
+Assert::same(['Baz\\f2', 'f1'], array_keys($file->getFunctions()));
+
 
 
 

@@ -641,19 +641,20 @@ echo $printer->printNamespace($namespace);
 PHP Files
 ---------
 
-Classes and namespaces can be grouped into PHP files represented by the class [PhpFile](https://api.nette.org/php-generator/Nette/PhpGenerator/PhpFile.html):
+Classes, functions and namespaces can be grouped into PHP files represented by the class [PhpFile](https://api.nette.org/php-generator/Nette/PhpGenerator/PhpFile.html):
 
 ```php
 $file = new Nette\PhpGenerator\PhpFile;
 $file->addComment('This file is auto-generated.');
 $file->setStrictTypes(); // adds declare(strict_types=1)
 
-$namespace = $file->addNamespace('Foo');
-$class = $namespace->addClass('A');
-$class->addMethod('hello');
+$class = $file->addClass('Foo\A');
+$function = $file->addFunction('Foo\foo');
 
-// or insert an existing namespace into the file
-// $file->addNamespace(new Nette\PhpGenerator\PhpNamespace('Foo'));
+// or
+// $namespace = $file->addNamespace('Foo');
+// $class = $namespace->addClass('A');
+// $function = $namespace->addFunction('foo');
 
 echo $file;
 
@@ -676,9 +677,10 @@ namespace Foo;
 
 class A
 {
-	public function hello()
-	{
-	}
+}
+
+function foo()
+{
 }
 ```
 

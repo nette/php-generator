@@ -84,6 +84,14 @@ final class PhpFile
 	}
 
 
+	public function addFunction(string $name): GlobalFunction
+	{
+		return $this
+			->addNamespace(Helpers::extractNamespace($name))
+			->addFunction(Helpers::extractShortName($name));
+	}
+
+
 	/** @return PhpNamespace[] */
 	public function getNamespaces(): array
 	{
@@ -102,6 +110,20 @@ final class PhpFile
 			}
 		}
 		return $classes;
+	}
+
+
+	/** @return GlobalFunction[] */
+	public function getFunctions(): array
+	{
+		$functions = [];
+		foreach ($this->namespaces as $n => $namespace) {
+			$n .= $n ? '\\' : '';
+			foreach ($namespace->getFunctions() as $c => $class) {
+				$functions[$n . $c] = $class;
+			}
+		}
+		return $functions;
 	}
 
 
