@@ -13,13 +13,13 @@ Assert::exception(function () {
 	$class = new ClassType('A');
 	$class->setFinal(true)->setAbstract(true);
 	$class->validate();
-}, Nette\InvalidStateException::class, 'Class cannot be abstract and final.');
+}, Nette\InvalidStateException::class, "Class 'A' cannot be abstract and final at the same time.");
 
 Assert::exception(function () {
 	$class = new ClassType('A');
 	$class->setAbstract(true)->setFinal(true);
 	$class->validate();
-}, Nette\InvalidStateException::class, 'Class cannot be abstract and final.');
+}, Nette\InvalidStateException::class, "Class 'A' cannot be abstract and final at the same time.");
 
 Assert::exception(function () {
 	$class = new ClassType;

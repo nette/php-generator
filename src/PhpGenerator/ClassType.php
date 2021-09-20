@@ -600,14 +600,14 @@ final class ClassType
 	/** @throws Nette\InvalidStateException */
 	public function validate(): void
 	{
-		if ($this->abstract && $this->final) {
-			throw new Nette\InvalidStateException('Class cannot be abstract and final.');
-
-		} elseif ($this->isEnum() && ($this->abstract || $this->final || $this->extends || $this->properties)) {
-			throw new Nette\InvalidStateException('Enum cannot be abstract or final or extends class or have properties.');
+		if ($this->isEnum() && ($this->abstract || $this->final || $this->extends || $this->properties)) {
+			throw new Nette\InvalidStateException("Enum '$this->name' cannot be abstract or final or extends class or have properties.");
 
 		} elseif (!$this->name && ($this->abstract || $this->final)) {
 			throw new Nette\InvalidStateException('Anonymous class cannot be abstract or final.');
+
+		} elseif ($this->abstract && $this->final) {
+			throw new Nette\InvalidStateException("Class '$this->name' cannot be abstract and final at the same time.");
 		}
 	}
 

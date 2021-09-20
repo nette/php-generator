@@ -87,4 +87,4 @@ Assert::exception(function () {
 	$class = new ClassType;
 	$class->setFinal(true)->setAbstract(true);
 	(new Printer)->printClass($class);
-}, Nette\InvalidStateException::class, 'Class cannot be abstract and final.');
+}, Nette\InvalidStateException::class, 'Anonymous class cannot be abstract or final.');

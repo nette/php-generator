@@ -137,7 +137,7 @@ final class Method
 	public function validate(): void
 	{
 		if ($this->abstract && ($this->final || $this->visibility === ClassType::VISIBILITY_PRIVATE)) {
-			throw new Nette\InvalidStateException('Method cannot be abstract and final or private.');
+			throw new Nette\InvalidStateException("Method $this->name() cannot be abstract and final or private at the same time.");
 		}
 	}
 }
