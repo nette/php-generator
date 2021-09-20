@@ -154,6 +154,7 @@ class Printer
 
 		$properties = [];
 		foreach ($class->getProperties() as $property) {
+			$property->validate();
 			$type = $property->getType();
 			$def = (($property->getVisibility() ?: 'public')
 				. ($property->isStatic() ? ' static' : '')
@@ -289,6 +290,7 @@ class Printer
 		$special = false;
 
 		foreach ($list as $param) {
+			$param->validate();
 			$variadic = $function->isVariadic() && $param === end($list);
 			$type = $param->getType();
 			$promoted = $param instanceof PromotedParameter ? $param : null;

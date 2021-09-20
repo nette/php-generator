@@ -131,4 +131,9 @@ class Parameter
 	{
 		return $this->hasDefaultValue;
 	}
+
+
+	public function validate(): void
+	{
+	}
 }

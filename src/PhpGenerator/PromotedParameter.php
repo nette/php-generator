@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Nette\PhpGenerator;
 
+use Nette;
+
 
 /**
  * Promoted parameter in constructor.
@@ -33,5 +35,14 @@ final class PromotedParameter extends Parameter
 	public function isReadOnly(): bool
 	{
 		return $this->readOnly;
+	}
+
+
+	/** @throws Nette\InvalidStateException */
+	public function validate(): void
+	{
+		if ($this->readOnly && !$this->getType()) {
+			throw new Nette\InvalidStateException("Property \${$this->getName()}: Read-only properties are only supported on typed property.");
+		}
 	}
 }

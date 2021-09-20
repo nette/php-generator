@@ -131,4 +131,13 @@ final class Property
 	{
 		return $this->readOnly;
 	}
+
+
+	/** @throws Nette\InvalidStateException */
+	public function validate(): void
+	{
+		if ($this->readOnly && !$this->type) {
+			throw new Nette\InvalidStateException("Property \$$this->name: Read-only properties are only supported on typed property.");
+		}
+	}
 }
