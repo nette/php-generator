@@ -219,9 +219,15 @@ final class Factory
 			$param->setType((string) $from->getType());
 		}
 		if ($from->isDefaultValueAvailable()) {
-			$param->setDefaultValue($from->isDefaultValueConstant()
-				? new Literal($from->getDefaultValueConstantName())
-				: $from->getDefaultValue());
+			if ($from->isDefaultValueConstant()) {
+				$parts = explode('::', $from->getDefaultValueConstantName());
+				if (count($parts) > 1) {
+					$parts[0] = Helpers::tagName($parts[0]);
+				}
+				$param->setDefaultValue(new Literal(implode('::', $parts)));
+			} else {
+				$param->setDefaultValue($from->getDefaultValue());
+			}
 			$param->setNullable($param->isNullable() && $param->getDefaultValue() !== null);
 		}
 		$param->setAttributes(self::getAttributes($from));

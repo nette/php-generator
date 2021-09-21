@@ -85,7 +85,9 @@ final class Helpers
 
 	public static function tagName(string $name, string $type = PhpNamespace::NAME_NORMAL): string
 	{
-		return "/*($type*/$name";
+		return isset(self::KEYWORDS[strtolower($name)])
+			? $name
+			: "/*($type*/$name";
 	}
 
 

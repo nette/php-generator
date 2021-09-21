@@ -55,7 +55,7 @@ class Class2 extends Class1 implements Interface2
 	}
 
 
-	private function func4(array $a = [], Class2 $b = null, $c = Abc\Unknown::ABC)
+	private function func4(array $a = [], Class2 $b = null, $c = Unknown::ABC)
 	{
 	}
 
