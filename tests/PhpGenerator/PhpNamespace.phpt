@@ -52,6 +52,8 @@ Assert::same('\Bar', $namespace->simplifyName('Bar'));
 Assert::same('C', $namespace->simplifyName('\bar\C'));
 Assert::same('C', $namespace->simplifyName('bar\C'));
 Assert::same('C\D', $namespace->simplifyName('Bar\C\D'));
+Assert::same('A<C, C\D>', $namespace->simplifyType('foo\A<\bar\C, Bar\C\D>'));
+Assert::same('žluťoučký', $namespace->simplifyType('foo\žluťoučký'));
 
 foreach (['String', 'string', 'int', 'float', 'bool', 'array', 'callable', 'self', 'parent', ''] as $type) {
 	Assert::same($type, $namespace->simplifyName($type));

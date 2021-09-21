@@ -141,7 +141,7 @@ final class PhpNamespace
 
 	public function simplifyType(string $type): string
 	{
-		return preg_replace_callback('~[^|&?]+~', function ($m) { return $this->simplifyName($m[0]); }, $type);
+		return preg_replace_callback('~[\w\x7f-\xff\\\\]+~', function ($m) { return $this->simplifyName($m[0]); }, $type);
 	}
 
 
