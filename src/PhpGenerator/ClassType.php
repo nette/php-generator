@@ -56,7 +56,7 @@ final class ClassType
 	/** @var string[] */
 	private $implements = [];
 
-	/** @var array[] */
+	/** @var TraitUse[] */
 	private $traits = [];
 
 	/** @var Constant[] name => Constant */
@@ -330,13 +330,18 @@ final class ClassType
 
 
 	/**
-	 * @param  string[]  $names
+	 * @param  string[]|TraitUse[]  $traits
 	 * @return static
 	 */
-	public function setTraits(array $names): self
+	public function setTraits(array $traits): self
 	{
-		$this->validateNames($names);
-		$this->traits = array_fill_keys($names, []);
+		$this->traits = [];
+		foreach ($traits as $trait) {
+			if (!$trait instanceof TraitUse) {
+				$trait = new TraitUse($trait);
+			}
+			$this->traits[$trait->getName()] = $trait;
+		}
 		return $this;
 	}
 
@@ -355,11 +360,19 @@ final class ClassType
 	}
 
 
-	/** @return static */
-	public function addTrait(string $name, array $resolutions = []): self
+	/**
+	 * @param  array|bool  $resolutions
+	 * @return static|TraitUse
+	 */
+	public function addTrait(string $name, $resolutions = [])
 	{
-		$this->validateNames([$name]);
-		$this->traits[$name] = $resolutions;
+		$this->traits[$name] = $trait = new TraitUse($name);
+		if ($resolutions === true) {
+			return $trait;
+		}
+		array_map(function ($item) use ($trait) {
+			$trait->addResolution($item);
+		}, $resolutions);
 		return $this;
 	}
 
@@ -373,7 +386,7 @@ final class ClassType
 
 
 	/**
-	 * @param  Method|Property|Constant|EnumCase  $member
+	 * @param  Method|Property|Constant|EnumCase|TraitUse  $member
 	 * @return static
 	 */
 	public function addMember($member): self
@@ -393,8 +406,11 @@ final class ClassType
 		} elseif ($member instanceof EnumCase) {
 			$this->cases[$member->getName()] = $member;
 
+		} elseif ($member instanceof TraitUse) {
+			$this->traits[$member->getName()] = $member;
+
 		} else {
-			throw new Nette\InvalidArgumentException('Argument must be Method|Property|Constant|EnumCase.');
+			throw new Nette\InvalidArgumentException('Argument must be Method|Property|Constant|EnumCase|TraitUse.');
 		}
 
 		return $this;

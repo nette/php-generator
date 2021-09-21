@@ -53,7 +53,6 @@ $class
 	->setFinal()
 	->setExtends(ParentClass::class)
 	->addImplement(Countable::class)
-	->addTrait(Nette\SmartObject::class)
 	->addComment("Description of class.\nSecond line\n")
 	->addComment('@property-read Nette\Forms\Form $form');
 
@@ -72,7 +71,6 @@ It will render this result:
  */
 final class Demo extends ParentClass implements Countable
 {
-	use Nette\SmartObject;
 }
 ```
 
@@ -315,7 +313,8 @@ Using Traits
 ```php
 $class = new Nette\PhpGenerator\ClassType('Demo');
 $class->addTrait('SmartObject');
-$class->addTrait('MyTrait', ['sayHello as protected']);
+$class->addTrait('MyTrait', true)
+	->addResolution('sayHello as protected');
 echo $class;
 ```
 

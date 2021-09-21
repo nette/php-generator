@@ -43,7 +43,6 @@ Assert::false($class->isFinal());
 Assert::true($class->isAbstract());
 Assert::same('ParentClass', $class->getExtends());
 Assert::same(['ObjectTrait', 'AnotherTrait'], $class->getTraits());
-Assert::same(['ObjectTrait' => [], 'AnotherTrait' => ['sayHello as protected']], $class->getTraitResolutions());
 Assert::count(2, $class->getConstants());
 Assert::type(Nette\PhpGenerator\Constant::class, $class->getConstants()['ROLE']);
 
@@ -138,6 +137,11 @@ $class->removeTrait('foo');
 
 $class->addImplement('foo');
 $class->removeImplement('foo');
+
+$class
+	->addTrait('ThirdTrait', true)
+		->addResolution('a as private foo')
+		->addResolution('b as private bar');
 
 
 sameFile(__DIR__ . '/expected/ClassType.expect', (string) $class);

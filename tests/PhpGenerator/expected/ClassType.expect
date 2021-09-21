@@ -10,6 +10,10 @@ abstract class Example extends ParentClass implements IExample, IOne
 	use AnotherTrait {
 		sayHello as protected;
 	}
+	use ThirdTrait {
+		a as private foo;
+		b as private bar;
+	}
 
 	const ROLE = 'admin';
 	final public const ACTIVE = false;

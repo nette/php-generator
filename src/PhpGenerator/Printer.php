@@ -140,8 +140,9 @@ class Printer
 			: function ($s) { return $s; };
 
 		$traits = [];
-		foreach ($class->getTraitResolutions() as $trait => $resolutions) {
-			$traits[] = 'use ' . $resolver($trait)
+		foreach ($class->getTraitResolutions() as $trait) {
+			$resolutions = $trait->getResolutions();
+			$traits[] = 'use ' . $resolver($trait->getName())
 				. ($resolutions ? " {\n" . $this->indentation . implode(";\n" . $this->indentation, $resolutions) . ";\n}\n" : ";\n");
 		}
 
