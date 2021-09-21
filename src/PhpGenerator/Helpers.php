@@ -91,7 +91,9 @@ final class Helpers
 
 	public static function unindent(string $s, int $level = 1): string
 	{
-		return preg_replace('#^(\t|\ \ \ \ ){1,' . $level . '}#m', '', $s);
+		return $level
+			? preg_replace('#^(\t|\ \ \ \ ){1,' . $level . '}#m', '', $s)
+			: $s;
 	}
 
 
