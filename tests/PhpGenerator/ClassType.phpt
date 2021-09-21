@@ -141,7 +141,8 @@ $class->removeImplement('foo');
 $class
 	->addTrait('ThirdTrait', true)
 		->addResolution('a as private foo')
-		->addResolution('b as private bar');
+		->addResolution('b as private bar')
+		->addComment('@use Foo');
 
 
 sameFile(__DIR__ . '/expected/ClassType.expect', (string) $class);

@@ -314,7 +314,8 @@ Using Traits
 $class = new Nette\PhpGenerator\ClassType('Demo');
 $class->addTrait('SmartObject');
 $class->addTrait('MyTrait', true)
-	->addResolution('sayHello as protected');
+	->addResolution('sayHello as protected')
+	->addComment('@use MyTrait<Foo>');
 echo $class;
 ```
 
@@ -324,6 +325,7 @@ Result:
 class Demo
 {
 	use SmartObject;
+	/** @use MyTrait<Foo> */
 	use MyTrait {
 		sayHello as protected;
 	}

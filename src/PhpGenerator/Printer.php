@@ -142,7 +142,8 @@ class Printer
 		$traits = [];
 		foreach ($class->getTraitResolutions() as $trait) {
 			$resolutions = $trait->getResolutions();
-			$traits[] = 'use ' . $resolver($trait->getName())
+			$traits[] = Helpers::formatDocComment((string) $trait->getComment())
+				. 'use ' . $resolver($trait->getName())
 				. ($resolutions ? " {\n" . $this->indentation . implode(";\n" . $this->indentation, $resolutions) . ";\n}\n" : ";\n");
 		}
 

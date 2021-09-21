@@ -46,6 +46,7 @@ class ParentClass
 
 class Class1 extends ParentClass
 {
+	/** @use Foo */
 	use Trait2;
 }
 

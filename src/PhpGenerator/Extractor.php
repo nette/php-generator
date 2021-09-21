@@ -291,14 +291,13 @@ final class Extractor
 
 	private function addTraitToClass(ClassType $class, Node\Stmt\TraitUse $node): void
 	{
-		$res = [];
+		foreach ($node->traits as $item) {
+			$trait = $class->addTrait($item->toString(), true);
+		}
 		foreach ($node->adaptations as $item) {
-			$res[] = trim($this->toPhp($item), ';');
+			$trait->addResolution(trim($this->toPhp($item), ';'));
 		}
-		foreach ($node->traits as $trait) {
-			$class->addTrait($trait->toString(), $res);
-			$res = [];
-		}
+		$this->addCommentAndAttributes($trait, $node);
 	}
 
 

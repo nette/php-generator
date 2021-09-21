@@ -10,6 +10,7 @@ abstract class Example extends ParentClass implements IExample, IOne
 	use AnotherTrait {
 		sayHello as protected;
 	}
+	/** @use Foo */
 	use ThirdTrait {
 		a as private foo;
 		b as private bar;

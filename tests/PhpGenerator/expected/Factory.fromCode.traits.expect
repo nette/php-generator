@@ -43,6 +43,7 @@ class ParentClass
 
 class Class1 extends ParentClass
 {
+	/** @use Foo */
 	use Trait2;
 }
 
@@ -98,10 +99,10 @@ trait Trait1b
 
 class Class5
 {
-	use Trait1 {
+	use Trait1;
+	use Trait1b {
 		\Trait1b::f1 insteadof \Trait1;
 		// not yet supported
 	\Trait1b::f1 as private;
 	}
-	use Trait1b;
 }

@@ -19,6 +19,7 @@ final class TraitUse
 {
 	use Nette\SmartObject;
 	use Traits\NameAware;
+	use Traits\CommentAware;
 
 	/** @var array */
 	private $resolutions = [];
