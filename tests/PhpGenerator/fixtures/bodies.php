@@ -34,6 +34,26 @@ abstract class Class7
 		throw new Nette\InvalidArgumentException('Argument must be Method|Property|Constant.');
 	}
 
+	function resolving($a = a\FOO, self $b = null, $c = self::FOO)
+	{
+		// constants
+		echo FOO;
+		echo \FOO;
+		echo a\FOO;
+		echo \Nette\FOO;
+
+		// functions
+		func();
+		\func();
+		a\func();
+		\Nette\func();
+
+		// classes
+		$x = new MyClass;
+		$y = new \stdClass;
+		$z = Nette\Utils\ArrayHash::class;
+	}
+
 	function complex()
 	{
 		echo 1;

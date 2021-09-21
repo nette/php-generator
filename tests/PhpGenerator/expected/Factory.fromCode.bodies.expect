@@ -45,6 +45,26 @@ abstract class Class7
 	}
 
 
+	public function resolving($a = \Abc\a\FOO, self $b = null, $c = self::FOO)
+	{
+		echo FOO;
+		echo \FOO;
+		echo \Abc\a\FOO;
+		echo \Nette\FOO;
+
+		// functions
+		func();
+		\func();
+		\Abc\a\func();
+		\Nette\func();
+
+		// classes
+		$x = new \Abc\MyClass;
+		$y = new \stdClass;
+		$z = \Nette\Utils\ArrayHash::class;
+	}
+
+
 	public function complex()
 	{
 		echo 1;

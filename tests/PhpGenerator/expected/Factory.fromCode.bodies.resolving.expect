@@ -1,3 +1,8 @@
+namespace Nette;
+
+use Abc\a\FOO;
+use Abc\a\func;
+
 abstract class Class7
 {
 	abstract public function abstractFun();
@@ -37,7 +42,7 @@ abstract class Class7
 	}
 
 
-	public function resolving($a = Abc\a\FOO, self $b = null, $c = self::FOO)
+	public function resolving($a = \Abc\a\FOO, self $b = null, $c = self::FOO)
 	{
 		echo FOO;
 		echo \FOO;
