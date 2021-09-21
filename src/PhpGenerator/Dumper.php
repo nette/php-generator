@@ -192,12 +192,12 @@ final class Dumper
 	 */
 	public function format(string $statement, ...$args): string
 	{
-		$tokens = preg_split('#(\.\.\.\?:?|\$\?|->\?|::\?|\\\\\?|\?\*|\?)#', $statement, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$tokens = preg_split('#(\.\.\.\?:?|\$\?|->\?|::\?|\\\\\?|\?\*|\?(?!\w))#', $statement, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$res = '';
 		foreach ($tokens as $n => $token) {
 			if ($n % 2 === 0) {
 				$res .= $token;
-			} elseif ($token === '\\?') {
+			} elseif ($token === '\?') {
 				$res .= '?';
 			} elseif (!$args) {
 				throw new Nette\InvalidArgumentException('Insufficient number of arguments.');

@@ -16,6 +16,8 @@ require __DIR__ . '/../bootstrap.php';
 $dumper = new Dumper;
 Assert::same('func', $dumper->format('func'));
 Assert::same('func(1)', $dumper->format('func(?)', 1));
+Assert::same('fn(?string $x = 1)', $dumper->format('fn(?string $x = ?)', 1));
+Assert::same('fn(?string $x = 1)', $dumper->format('fn(\?string $x = ?)', 1));
 Assert::same('func(1 ? 2 : 3)', $dumper->format('func(1 \? 2 : 3)'));
 Assert::same('func([1, 2])', $dumper->format('func(?)', [1, 2]));
 Assert::same('func(1, 2)', $dumper->format('func(...?)', [1, 2]));
