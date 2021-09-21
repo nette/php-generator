@@ -33,7 +33,7 @@ $class
 	->addImplement('IOne')
 	->setTraits(['ObjectTrait'])
 	->addTrait('AnotherTrait', ['sayHello as protected'])
-	->addComment("Description of class.\nThis is example\n")
+	->addComment("Description of class.\nThis is example\n /**/")
 	->addComment('@property-read Nette\Forms\Form $form')
 	->setConstants(['ROLE' => 'admin'])
 	->addConstant('ACTIVE', false)

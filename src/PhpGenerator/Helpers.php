@@ -45,7 +45,9 @@ final class Helpers
 
 	public static function formatDocComment(string $content): string
 	{
-		if (($s = trim($content)) === '') {
+		$s = trim($content);
+		$s = str_replace('*/', '* /', $s);
+		if ($s === '') {
 			return '';
 		} elseif (strpos($content, "\n") === false) {
 			return "/** $s */\n";

@@ -1,7 +1,7 @@
 /**
  * Description of class.
  * This is example
- *
+ *  /** /
  * @property-read Nette\Forms\Form $form
  */
 abstract class Example extends ParentClass implements IExample, IOne
