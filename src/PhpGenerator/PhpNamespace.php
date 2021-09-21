@@ -132,13 +132,20 @@ final class PhpNamespace
 	}
 
 
-	public function unresolveType(string $type): string
+	/** @deprecated  use simplifyName() */
+	public function unresolveName(string $name): string
 	{
-		return preg_replace_callback('~[^|&?]+~', function ($m) { return $this->unresolveName($m[0]); }, $type);
+		return $this->simplifyName($name);
 	}
 
 
-	public function unresolveName(string $name): string
+	public function simplifyType(string $type): string
+	{
+		return preg_replace_callback('~[^|&?]+~', function ($m) { return $this->simplifyName($m[0]); }, $type);
+	}
+
+
+	public function simplifyName(string $name): string
 	{
 		if (isset(Helpers::KEYWORDS[strtolower($name)]) || $name === '') {
 			return $name;

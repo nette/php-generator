@@ -15,46 +15,46 @@ require __DIR__ . '/../bootstrap.php';
 $namespace = new PhpNamespace('');
 
 Assert::same('', $namespace->getName());
-Assert::same('A', $namespace->unresolveName('A'));
-Assert::same('foo\A', $namespace->unresolveName('foo\A'));
+Assert::same('A', $namespace->simplifyName('A'));
+Assert::same('foo\A', $namespace->simplifyName('foo\A'));
 
 $namespace->addUse('Bar\C');
 
-Assert::same('Bar', $namespace->unresolveName('Bar'));
-Assert::same('C', $namespace->unresolveName('bar\C'));
-Assert::same('C\D', $namespace->unresolveName('Bar\C\D'));
+Assert::same('Bar', $namespace->simplifyName('Bar'));
+Assert::same('C', $namespace->simplifyName('bar\C'));
+Assert::same('C\D', $namespace->simplifyName('Bar\C\D'));
 
 foreach (['String', 'string', 'int', 'float', 'bool', 'array', 'callable', 'self', 'parent', ''] as $type) {
-	Assert::same($type, $namespace->unresolveName($type));
+	Assert::same($type, $namespace->simplifyName($type));
 }
 
 
 $namespace = new PhpNamespace('Foo');
 
 Assert::same('Foo', $namespace->getName());
-Assert::same('\A', $namespace->unresolveName('\A'));
-Assert::same('\A', $namespace->unresolveName('A'));
-Assert::same('A', $namespace->unresolveName('foo\A'));
+Assert::same('\A', $namespace->simplifyName('\A'));
+Assert::same('\A', $namespace->simplifyName('A'));
+Assert::same('A', $namespace->simplifyName('foo\A'));
 
-Assert::same('A', $namespace->unresolveType('foo\A'));
-Assert::same('null|A', $namespace->unresolveType('null|foo\A'));
-Assert::same('?A', $namespace->unresolveType('?foo\A'));
-Assert::same('A&\Countable', $namespace->unresolveType('foo\A&Countable'));
-Assert::same('', $namespace->unresolveType(''));
+Assert::same('A', $namespace->simplifyType('foo\A'));
+Assert::same('null|A', $namespace->simplifyType('null|foo\A'));
+Assert::same('?A', $namespace->simplifyType('?foo\A'));
+Assert::same('A&\Countable', $namespace->simplifyType('foo\A&Countable'));
+Assert::same('', $namespace->simplifyType(''));
 
 $namespace->addUse('Foo');
-Assert::same('B', $namespace->unresolveName('Foo\B'));
+Assert::same('B', $namespace->simplifyName('Foo\B'));
 
 $namespace->addUse('Bar\C');
 Assert::same(['C' => 'Bar\C', 'Foo' => 'Foo'], $namespace->getUses());
 
-Assert::same('\Bar', $namespace->unresolveName('Bar'));
-Assert::same('C', $namespace->unresolveName('\bar\C'));
-Assert::same('C', $namespace->unresolveName('bar\C'));
-Assert::same('C\D', $namespace->unresolveName('Bar\C\D'));
+Assert::same('\Bar', $namespace->simplifyName('Bar'));
+Assert::same('C', $namespace->simplifyName('\bar\C'));
+Assert::same('C', $namespace->simplifyName('bar\C'));
+Assert::same('C\D', $namespace->simplifyName('Bar\C\D'));
 
 foreach (['String', 'string', 'int', 'float', 'bool', 'array', 'callable', 'self', 'parent', ''] as $type) {
-	Assert::same($type, $namespace->unresolveName($type));
+	Assert::same($type, $namespace->simplifyName($type));
 }
 
 

@@ -136,7 +136,7 @@ class Printer
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		$class->validate();
 		$resolver = $this->namespace
-			? [$namespace, 'unresolveType']
+			? [$namespace, 'simplifyType']
 			: function ($s) { return $s; };
 
 		$traits = [];
@@ -343,7 +343,7 @@ class Printer
 			return '';
 		}
 		if ($this->namespace) {
-			$type = $this->namespace->unresolveType($type);
+			$type = $this->namespace->simplifyType($type);
 		}
 		if ($nullable && strcasecmp($type, 'mixed')) {
 			$type = strpos($type, '|') === false

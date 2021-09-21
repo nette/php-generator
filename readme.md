@@ -600,7 +600,7 @@ $class->addImplement('Foo\A') // it will resolve to A
 	->addTrait('Bar\AliasedClass'); // it will resolve to AliasedClass
 
 $method = $class->addMethod('method');
-$method->addComment('@return ' . $namespace->unresolveName('Foo\D')); // in comments resolve manually
+$method->addComment('@return ' . $namespace->simplifyType('Foo\D')); // in comments resolve manually
 $method->addParameter('arg')
 	->setType('Bar\OtherClass'); // it will resolve to \Bar\OtherClass
 
