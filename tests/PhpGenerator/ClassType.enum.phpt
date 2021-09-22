@@ -17,11 +17,11 @@ $enum = ClassType::enum('Suit');
 
 Assert::true($enum->isEnum());
 
-$enum
-	->setTraits(['ObjectTrait'])
-	->addComment("Description of class.\nThis is example\n")
-	->addAttribute('ExampleAttribute')
-	->addConstant('ACTIVE', false);
+$enum->addComment("Description of class.\nThis is example\n")
+	->addAttribute('ExampleAttribute');
+
+$enum->addConstant('ACTIVE', false);
+$enum->addTrait('ObjectTrait');
 
 $enum->addMethod('foo')
 	->setBody('return 10;');

@@ -109,10 +109,6 @@ Assert::exception(function () use ($class) {
 }, Nette\InvalidArgumentException::class, "Value '*' is not valid class name.");
 
 Assert::exception(function () use ($class) {
-	$class->setTraits(['A', '*']);
-}, Nette\InvalidArgumentException::class, "Value '*' is not valid trait name.");
-
-Assert::exception(function () use ($class) {
 	$class->addTrait('*');
 }, Nette\InvalidArgumentException::class, "Value '*' is not valid trait name.");
 

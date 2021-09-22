@@ -307,7 +307,7 @@ final class ClassType
 
 
 	/**
-	 * @param  string[]|TraitUse[]  $traits
+	 * @param  TraitUse[]  $traits
 	 */
 	public function setTraits(array $traits): static
 	{
@@ -315,6 +315,7 @@ final class ClassType
 		$this->traits = [];
 		foreach ($traits as $trait) {
 			if (!$trait instanceof TraitUse) {
+				trigger_error(__METHOD__ . '() accepts an array of TraitUse as parameter, string given.', E_USER_DEPRECATED);
 				$trait = new TraitUse($trait);
 			}
 
@@ -372,13 +373,14 @@ final class ClassType
 
 
 	/**
-	 * @param  Constant[]|mixed[]  $consts
+	 * @param  Constant[]  $consts
 	 */
 	public function setConstants(array $consts): static
 	{
 		$this->consts = [];
 		foreach ($consts as $k => $const) {
 			if (!$const instanceof Constant) {
+				trigger_error(__METHOD__ . '() accepts an array of Constant as parameter, ' . get_debug_type($const) . ' given.', E_USER_DEPRECATED);
 				$const = (new Constant($k))->setValue($const)->setPublic();
 			}
 
