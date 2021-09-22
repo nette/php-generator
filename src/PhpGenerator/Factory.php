@@ -151,15 +151,7 @@ final class Factory
 		$method->setVariadic($from->isVariadic());
 		$method->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$method->setAttributes(self::getAttributes($from));
-		if ($from->getReturnType() instanceof \ReflectionNamedType) {
-			$method->setReturnType($from->getReturnType()->getName());
-			$method->setReturnNullable($from->getReturnType()->allowsNull());
-		} elseif (
-			$from->getReturnType() instanceof \ReflectionUnionType
-			|| $from->getReturnType() instanceof \ReflectionIntersectionType
-		) {
-			$method->setReturnType((string) $from->getReturnType());
-		}
+		$method->setReturnType((string) $from->getReturnType());
 
 		return $method;
 	}
@@ -176,15 +168,7 @@ final class Factory
 		}
 
 		$function->setAttributes(self::getAttributes($from));
-		if ($from->getReturnType() instanceof \ReflectionNamedType) {
-			$function->setReturnType($from->getReturnType()->getName());
-			$function->setReturnNullable($from->getReturnType()->allowsNull());
-		} elseif (
-			$from->getReturnType() instanceof \ReflectionUnionType
-			|| $from->getReturnType() instanceof \ReflectionIntersectionType
-		) {
-			$function->setReturnType((string) $from->getReturnType());
-		}
+		$function->setReturnType((string) $from->getReturnType());
 
 		if ($withBody) {
 			if ($from->isClosure()) {
@@ -213,15 +197,7 @@ final class Factory
 			? new PromotedParameter($from->name)
 			: new Parameter($from->name);
 		$param->setReference($from->isPassedByReference());
-		if ($from->getType() instanceof \ReflectionNamedType) {
-			$param->setType($from->getType()->getName());
-			$param->setNullable($from->getType()->allowsNull());
-		} elseif (
-			$from->getType() instanceof \ReflectionUnionType
-			|| $from->getType() instanceof \ReflectionIntersectionType
-		) {
-			$param->setType((string) $from->getType());
-		}
+		$param->setType((string) $from->getType());
 
 		if ($from->isDefaultValueAvailable()) {
 			if ($from->isDefaultValueConstant()) {
@@ -274,15 +250,7 @@ final class Factory
 		$prop->setValue($defaults[$prop->getName()] ?? null);
 		$prop->setStatic($from->isStatic());
 		$prop->setVisibility($this->getVisibility($from));
-		if ($from->getType() instanceof \ReflectionNamedType) {
-			$prop->setType($from->getType()->getName());
-			$prop->setNullable($from->getType()->allowsNull());
-		} elseif (
-			$from->getType() instanceof \ReflectionUnionType
-			|| $from->getType() instanceof \ReflectionIntersectionType
-		) {
-			$prop->setType((string) $from->getType());
-		}
+		$prop->setType((string) $from->getType());
 
 		$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
 		$prop->setReadOnly(PHP_VERSION_ID >= 80100 ? $from->isReadOnly() : false);
