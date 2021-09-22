@@ -19,7 +19,7 @@ $class = (new ClassType('Example'))
 Assert::same(['getHandle' => $method], $class->getMethods());
 Assert::same(['handle' => $property], $class->getProperties());
 Assert::same(['ROLE' => $const], $class->getConstants());
-Assert::same(['Foo\Bar'], $class->getTraits());
+Assert::same(['Foo\Bar' => $trait], $class->getTraits());
 Assert::same('', $method->getBody());
 
 
