@@ -31,13 +31,15 @@ $class
 	->setExtends('ParentClass')
 	->addImplement('IExample')
 	->addImplement('IOne')
-	->setTraits(['ObjectTrait'])
-	->addTrait('AnotherTrait', ['sayHello as protected'])
 	->addComment("Description of class.\nThis is example\n /**/")
-	->addComment('@property-read Nette\Forms\Form $form')
-	->setConstants(['ROLE' => 'admin'])
-	->addConstant('ACTIVE', false)
-		->setFinal();
+	->addComment('@property-read Nette\Forms\Form $form');
+
+$class->addTrait('ObjectTrait');
+$class->addTrait('AnotherTrait', ['sayHello as protected']);
+
+$class->addConstant('ROLE', 'admin');
+$class->addConstant('ACTIVE', false)
+	->setFinal();
 
 Assert::false($class->isFinal());
 Assert::true($class->isAbstract());

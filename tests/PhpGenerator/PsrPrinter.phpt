@@ -17,9 +17,10 @@ $class = (new ClassType('Example'))
 	->setFinal(true)
 	->setExtends('ParentClass')
 	->addImplement('IExample')
-	->setTraits(['ObjectTrait'])
-	->addTrait('AnotherTrait', ['sayHello as protected'])
 	->addComment("Description of class.\nThis is example\n");
+
+$class->addTrait('ObjectTrait');
+$class->addTrait('AnotherTrait', ['sayHello as protected']);
 
 $class->addConstant('FORCE_ARRAY', new Literal('Nette\Utils\Json::FORCE_ARRAY'))
 	->setVisibility('private')
