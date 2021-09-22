@@ -16,13 +16,13 @@
 	],
 	"require": {
 		"php": ">=8.0 <8.2",
-		"nette/utils": "^3.1.2"
+		"nette/utils": "^3.2 || ^4.0"
 	},
 	"require-dev": {
 		"nette/tester": "^2.4",
 		"nikic/php-parser": "^4.13",
 		"tracy/tracy": "^2.8",
-		"phpstan/phpstan": "^0.12"
+		"phpstan/phpstan": "^1.0"
 	},
 	"suggest": {
 		"nikic/php-parser": "to use ClassType::withBodiesFrom() & GlobalFunction::withBodyFrom()"
