@@ -21,8 +21,9 @@ $class = $namespace->addClass('A')
 	->setExtends('ParentClass')
 	->addImplement('IExample')
 	->addImplement('Foo\IOne')
-	->setTraits(['Foo\ObjectTrait'])
 	->addComment("Description of class.\nThis is example\n");
+
+$class->addTrait('Foo\ObjectTrait');
 
 $class->addMethod('first')
 	->addComment('@return resource')
