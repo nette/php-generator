@@ -24,7 +24,6 @@ Assert::false($class->isInterface());
 Assert::false($class->isTrait());
 Assert::same([], $class->getExtends());
 Assert::same([], $class->getTraits());
-Assert::same([], $class->getTraitResolutions());
 
 $class
 	->setAbstract(true)
@@ -34,8 +33,8 @@ $class
 	->addComment("Description of class.\nThis is example\n /**/")
 	->addComment('@property-read Nette\Forms\Form $form');
 
-$class->addTrait('ObjectTrait');
-$class->addTrait('AnotherTrait')
+$trait1 = $class->addTrait('ObjectTrait');
+$trait2 = $class->addTrait('AnotherTrait')
 	->addResolution('sayHello as protected');
 
 $class->addConstant('ROLE', 'admin');
@@ -45,7 +44,7 @@ $class->addConstant('ACTIVE', false)
 Assert::false($class->isFinal());
 Assert::true($class->isAbstract());
 Assert::same('ParentClass', $class->getExtends());
-Assert::same(['ObjectTrait', 'AnotherTrait'], $class->getTraits());
+Assert::same(['ObjectTrait' => $trait1, 'AnotherTrait' => $trait2], $class->getTraits());
 Assert::count(2, $class->getConstants());
 Assert::type(Nette\PhpGenerator\Constant::class, $class->getConstants()['ROLE']);
 

@@ -329,15 +329,8 @@ final class ClassType
 	}
 
 
-	/** @return string[] */
+	/** @return TraitUse[] */
 	public function getTraits(): array
-	{
-		return array_keys($this->traits);
-	}
-
-
-	/** @internal */
-	public function getTraitResolutions(): array
 	{
 		return $this->traits;
 	}

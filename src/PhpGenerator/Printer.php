@@ -135,7 +135,7 @@ class Printer
 			: fn($s) => $s;
 
 		$traits = [];
-		foreach ($class->getTraitResolutions() as $trait) {
+		foreach ($class->getTraits() as $trait) {
 			$resolutions = $trait->getResolutions();
 			$traits[] = Helpers::formatDocComment((string) $trait->getComment())
 				. 'use ' . $resolver($trait->getName())
