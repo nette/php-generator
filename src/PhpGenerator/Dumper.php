@@ -47,8 +47,8 @@ final class Dumper
 			return $this->dumpArray($var, $parents, $level, $column);
 
 		} elseif ($var instanceof Literal) {
-			return ltrim(Nette\Utils\Strings::indent(trim((string) $var), $level), "\t");
-			
+			return $this->dumpLiteral($var, $level);
+
 		} elseif (is_object($var)) {
 			return $this->dumpObject($var, $parents, $level);
 
@@ -173,6 +173,13 @@ final class Dumper
 		return $class === \stdClass::class
 			? "(object) [$out]"
 			: '\\' . self::class . "::createObject('$class', [$out])";
+	}
+
+
+	private function dumpLiteral(Literal $var, int $level): string
+	{
+		$s = Nette\Utils\Strings::indent(trim((string) $var), $level, "\t");
+		return ltrim($s, "\t");
 	}
 
 
