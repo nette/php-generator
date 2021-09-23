@@ -21,6 +21,16 @@ final class Helpers
 
 	public const PHP_IDENT = '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*';
 
+	public const KEYWORDS = [
+		// built-in types
+		'string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'array' => 1, 'object' => 1,
+		'callable' => 1, 'iterable' => 1, 'void' => 1, 'null' => 1, 'mixed' => 1, 'false' => 1,
+		'never' => 1,
+
+		// class keywords
+		'self' => 1, 'parent' => 1, 'static' => 1,
+	];
+
 
 	/** @deprecated  use (new Nette\PhpGenerator\Dumper)->dump() */
 	public static function dump($var): string

@@ -26,12 +26,6 @@ final class PhpNamespace
 {
 	use Nette\SmartObject;
 
-	private const KEYWORDS = [
-		'string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'array' => 1, 'object' => 1,
-		'callable' => 1, 'iterable' => 1, 'void' => 1, 'self' => 1, 'parent' => 1, 'static' => 1,
-		'mixed' => 1, 'null' => 1, 'false' => 1, 'never' => 1,
-	];
-
 	/** @var string */
 	private $name;
 
@@ -137,7 +131,7 @@ final class PhpNamespace
 
 	public function unresolveName(string $name): string
 	{
-		if (isset(self::KEYWORDS[strtolower($name)]) || $name === '') {
+		if (isset(Helpers::KEYWORDS[strtolower($name)]) || $name === '') {
 			return $name;
 		}
 		$name = ltrim($name, '\\');
