@@ -35,8 +35,17 @@ class Printer
 	/** @var ?PhpNamespace */
 	protected $namespace;
 
+	/** @var ?Dumper */
+	protected $dumper;
+
 	/** @var bool */
 	private $resolveTypes = true;
+
+
+	public function __construct()
+	{
+		$this->dumper = new Dumper;
+	}
 
 
 	public function printFunction(GlobalFunction $function, PhpNamespace $namespace = null): string
@@ -63,7 +72,7 @@ class Printer
 		foreach ($closure->getUses() as $param) {
 			$uses[] = ($param->isReference() ? '&' : '') . '$' . $param->getName();
 		}
-		$useStr = strlen($tmp = implode(', ', $uses)) > (new Dumper)->wrapLength && count($uses) > 1
+		$useStr = strlen($tmp = implode(', ', $uses)) > $this->dumper->wrapLength && count($uses) > 1
 			? "\n" . $this->indentation . implode(",\n" . $this->indentation, $uses) . "\n"
 			: $tmp;
 
@@ -270,7 +279,7 @@ class Printer
 
 	protected function dump($var, int $column = 0): string
 	{
-		return (new Dumper)->dump($var, $column);
+		return $this->dumper->dump($var, $column);
 	}
 
 
@@ -321,7 +330,7 @@ class Printer
 
 		$line = implode(', ', $params);
 
-		return count($params) > 1 && ($special || strlen($line) + $column > (new Dumper)->wrapLength)
+		return count($params) > 1 && ($special || strlen($line) + $column > $this->dumper->wrapLength)
 			? "(\n" . $this->indent(implode(",\n", $params)) . ($special ? ',' : '') . "\n)"
 			: "($line)";
 	}
@@ -362,7 +371,7 @@ class Printer
 		}
 		$items = [];
 		foreach ($attrs as $attr) {
-			$args = (new Dumper)->format('...?:', $attr->getArguments());
+			$args = $this->dumper->format('...?:', $attr->getArguments());
 			$items[] = $this->printType($attr->getName(), false) . ($args ? "($args)" : '');
 		}
 		return $inline
