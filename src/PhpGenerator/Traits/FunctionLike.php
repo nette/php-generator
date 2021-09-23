@@ -127,11 +127,7 @@ trait FunctionLike
 	/** @return static */
 	public function setReturnType(?string $type): self
 	{
-		if ($type && $type[0] === '?') {
-			$type = substr($type, 1);
-			$this->returnNullable = true;
-		}
-		$this->returnType = $type;
+		$this->returnType = Nette\PhpGenerator\Helpers::validateType($type, $this->returnNullable);
 		return $this;
 	}
 

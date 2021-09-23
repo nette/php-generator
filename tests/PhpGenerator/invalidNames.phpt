@@ -109,6 +109,10 @@ Assert::exception(function () {
 	new Nette\PhpGenerator\Property('*');
 }, Nette\InvalidArgumentException::class);
 
+Assert::exception(function () {
+	(new Nette\PhpGenerator\Property('foo'))->setType('a b');
+}, Nette\InvalidArgumentException::class);
+
 
 Assert::noError(function () {
 	new Nette\PhpGenerator\Parameter('Iñtërnâtiônàlizætiøn');
@@ -130,6 +134,10 @@ Assert::exception(function () {
 	new Nette\PhpGenerator\Parameter('$test');
 }, Nette\InvalidArgumentException::class);
 
+Assert::exception(function () {
+	(new Nette\PhpGenerator\Parameter('foo'))->setType('a b');
+}, Nette\InvalidArgumentException::class);
+
 
 Assert::noError(function () {
 	new Nette\PhpGenerator\Method('Iñtërnâtiônàlizætiøn');
@@ -145,6 +153,10 @@ Assert::exception(function () {
 
 Assert::exception(function () {
 	new Nette\PhpGenerator\Method('*');
+}, Nette\InvalidArgumentException::class);
+
+Assert::exception(function () {
+	(new Nette\PhpGenerator\Method('foo'))->setReturnType('a b');
 }, Nette\InvalidArgumentException::class);
 
 

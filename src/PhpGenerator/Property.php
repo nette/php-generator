@@ -76,11 +76,7 @@ final class Property
 	/** @return static */
 	public function setType(?string $type): self
 	{
-		if ($type && $type[0] === '?') {
-			$type = substr($type, 1);
-			$this->nullable = true;
-		}
-		$this->type = $type;
+		$this->type = Helpers::validateType($type, $this->nullable);
 		return $this;
 	}
 

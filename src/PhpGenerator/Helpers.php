@@ -117,4 +117,23 @@ final class Helpers
 	{
 		return Dumper::createObject($class, $props);
 	}
+
+
+	public static function validateType(?string $type, bool &$nullable): ?string
+	{
+		if ($type === '' || $type === null) {
+			return  null;
+		}
+		if (!preg_match('#(?:
+			\?[\w\\\\]+|
+			[\w\\\\]+ (?: (&[\w\\\\]+)* | (\|[\w\\\\]+)* )
+		)()$#xAD', $type)) {
+			throw new Nette\InvalidArgumentException("Value '$type' is not valid type.");
+		}
+		if ($type[0] === '?') {
+			$nullable = true;
+			return substr($type, 1);
+		}
+		return $type;
+	}
 }

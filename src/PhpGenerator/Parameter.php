@@ -56,11 +56,7 @@ class Parameter
 	/** @return static */
 	public function setType(?string $type): self
 	{
-		if ($type && $type[0] === '?') {
-			$type = substr($type, 1);
-			$this->nullable = true;
-		}
-		$this->type = $type;
+		$this->type = Helpers::validateType($type, $this->nullable);
 		return $this;
 	}
 
@@ -74,15 +70,14 @@ class Parameter
 	/** @deprecated  use setType() */
 	public function setTypeHint(?string $type): self
 	{
-		$this->type = $type;
-		return $this;
+		return $this->setType($type);
 	}
 
 
 	/** @deprecated  use getType() */
 	public function getTypeHint(): ?string
 	{
-		return $this->type;
+		return $this->getType();
 	}
 
 
