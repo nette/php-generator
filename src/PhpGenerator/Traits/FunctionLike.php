@@ -12,6 +12,7 @@ namespace Nette\PhpGenerator\Traits;
 use Nette;
 use Nette\PhpGenerator\Dumper;
 use Nette\PhpGenerator\Parameter;
+use Nette\Utils\Type;
 
 
 /**
@@ -130,9 +131,14 @@ trait FunctionLike
 	}
 
 
-	public function getReturnType(): ?string
+	/**
+	 * @return Type|string|null
+	 */
+	public function getReturnType(bool $asObject = false)
 	{
-		return $this->returnType;
+		return $asObject && $this->returnType
+			? Type::fromString($this->returnType)
+			: $this->returnType;
 	}
 
 

@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\PhpGenerator;
 
 use Nette;
+use Nette\Utils\Type;
 
 
 /**
@@ -81,9 +82,14 @@ final class Property
 	}
 
 
-	public function getType(): ?string
+	/**
+	 * @return Type|string|null
+	 */
+	public function getType(bool $asObject = false)
 	{
-		return $this->type;
+		return $asObject && $this->type
+			? Type::fromString($this->type)
+			: $this->type;
 	}
 
 
