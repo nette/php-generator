@@ -772,9 +772,10 @@ Need to customize printer behavior? Create your own by inheriting the `Printer` 
 ```php
 class MyPrinter extends Nette\PhpGenerator\Printer
 {
-	protected string $indentation = "\t";
-	protected int $linesBetweenProperties = 0;
-	protected int $linesBetweenMethods = 1;
-	protected string $returnTypeColon = ': ';
+	public int $wrapLength = 120;
+	public string $indentation = "\t";
+	public int $linesBetweenProperties = 0;
+	public int $linesBetweenMethods = 2;
+	public string $returnTypeColon = ': ';
 }
 ```

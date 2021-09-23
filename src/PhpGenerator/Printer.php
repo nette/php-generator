@@ -21,10 +21,10 @@ class Printer
 	use Nette\SmartObject;
 
 	public int $wrapLength = 120;
-	protected string $indentation = "\t";
-	protected int $linesBetweenProperties = 0;
-	protected int $linesBetweenMethods = 2;
-	protected string $returnTypeColon = ': ';
+	public string $indentation = "\t";
+	public int $linesBetweenProperties = 0;
+	public int $linesBetweenMethods = 2;
+	public string $returnTypeColon = ': ';
 	protected ?PhpNamespace $namespace = null;
 	protected ?Dumper $dumper;
 	private bool $resolveTypes = true;
