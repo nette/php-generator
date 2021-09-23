@@ -25,6 +25,9 @@ final class Dumper
 	/** @var int */
 	public $wrapLength = 120;
 
+	/** @var string */
+	public $indentation = "\t";
+
 
 	/**
 	 * Returns a PHP representation of a variable.
@@ -92,7 +95,7 @@ final class Dumper
 			throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
 		}
 
-		$space = str_repeat("\t", $level);
+		$space = str_repeat($this->indentation, $level);
 		$outInline = '';
 		$outWrapped = "\n$space";
 		$parents[] = $var;
@@ -106,7 +109,7 @@ final class Dumper
 			$counter = is_int($k) ? max($k + 1, $counter) : $counter;
 			$outInline .= ($outInline === '' ? '' : ', ') . $keyPart;
 			$outInline .= $this->dumpVar($v, $parents, 0, $column + strlen($outInline));
-			$outWrapped .= "\t"
+			$outWrapped .= $this->indentation
 				. $keyPart
 				. $this->dumpVar($v, $parents, $level + 1, strlen($keyPart))
 				. ",\n$space";
@@ -145,7 +148,7 @@ final class Dumper
 		}
 
 		$arr = (array) $var;
-		$space = str_repeat("\t", $level);
+		$space = str_repeat($this->indentation, $level);
 
 		if ($level > $this->maxDepth || in_array($var, $parents ?? [], true)) {
 			throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
@@ -161,7 +164,7 @@ final class Dumper
 
 		foreach ($arr as $k => &$v) {
 			if (!isset($props) || isset($props[$k])) {
-				$out .= "$space\t"
+				$out .= $space . $this->indentation
 					. ($keyPart = $this->dumpVar($k) . ' => ')
 					. $this->dumpVar($v, $parents, $level + 1, strlen($keyPart))
 					. ",\n";
@@ -178,8 +181,8 @@ final class Dumper
 
 	private function dumpLiteral(Literal $var, int $level): string
 	{
-		$s = Nette\Utils\Strings::indent(trim((string) $var), $level, "\t");
-		return ltrim($s, "\t");
+		$s = Nette\Utils\Strings::indent(trim((string) $var), $level, $this->indentation);
+		return ltrim($s, $this->indentation);
 	}
 
 
@@ -229,7 +232,8 @@ final class Dumper
 			$k = !$named || is_int($k) ? '' : $k . ': ';
 			$outInline .= $outInline === '' ? '' : ', ';
 			$outInline .= $k . $this->dumpVar($v, [$var], 0, $column + strlen($outInline));
-			$outWrapped .= ($outWrapped === '' ? '' : ',') . "\n\t" . $k . $this->dumpVar($v, [$var], 1);
+			$outWrapped .= ($outWrapped === '' ? '' : ',') . "\n"
+				. $this->indentation . $k . $this->dumpVar($v, [$var], 1);
 		}
 
 		return count($var) > 1 && (strpos($outInline, "\n") !== false || $column + strlen($outInline) > $this->wrapLength)

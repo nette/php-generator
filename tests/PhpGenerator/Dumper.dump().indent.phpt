@@ -7,6 +7,7 @@
 declare(strict_types=1);
 
 use Nette\PhpGenerator\Dumper;
+use Nette\PhpGenerator\Literal;
 use Tester\Assert;
 
 
@@ -38,3 +39,21 @@ same('[
 	2,
 	3,
 ]', $dumper->dump([8 => 1, 2, 3], $dumper->wrapLength - 13));
+
+
+$dumper = new Dumper;
+$dumper->indentation = '  ';
+same('[
+  1,
+  2,
+  3,
+]', $dumper->dump([1, 2, 3], $dumper->wrapLength - 8));
+
+same(
+	"[
+  'multi' => [
+  1,
+  ],
+]",
+	$dumper->dump(['multi' => new Literal("[\n1,\n]\n")])
+);

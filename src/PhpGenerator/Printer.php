@@ -279,6 +279,7 @@ class Printer
 
 	protected function dump($var, int $column = 0): string
 	{
+		$this->dumper->indentation = $this->indentation;
 		return $this->dumper->dump($var, $column);
 	}
 
@@ -369,6 +370,7 @@ class Printer
 		if (!$attrs) {
 			return '';
 		}
+		$this->dumper->indentation = $this->indentation;
 		$items = [];
 		foreach ($attrs as $attr) {
 			$args = $this->dumper->format('...?:', $attr->getArguments());
