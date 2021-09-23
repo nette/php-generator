@@ -68,11 +68,9 @@ trait FunctionLike
 	 */
 	public function setParameters(array $val): self
 	{
+		(function (Parameter ...$val) {})(...$val);
 		$this->parameters = [];
 		foreach ($val as $v) {
-			if (!$v instanceof Parameter) {
-				throw new Nette\InvalidArgumentException('Argument must be Nette\PhpGenerator\Parameter[].');
-			}
 			$this->parameters[$v->getName()] = $v;
 		}
 		return $this;

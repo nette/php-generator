@@ -114,7 +114,7 @@ final class PhpNamespace
 
 		} elseif (isset($this->uses[$alias]) && $this->uses[$alias] !== $name) {
 			throw new InvalidStateException(
-				"Alias '$alias' used already for '{$this->uses[$alias]}', cannot use for '{$name}'."
+				"Alias '$alias' used already for '{$this->uses[$alias]}', cannot use for '$name'."
 			);
 		}
 

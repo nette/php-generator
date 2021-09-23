@@ -92,7 +92,7 @@ final class Helpers
 	public static function unindent(string $s, int $level = 1): string
 	{
 		return $level
-			? preg_replace('#^(\t|\ \ \ \ ){1,' . $level . '}#m', '', $s)
+			? preg_replace('#^(\t| {4}){1,' . $level . '}#m', '', $s)
 			: $s;
 	}
 
@@ -131,7 +131,7 @@ final class Helpers
 
 
 	/** @internal */
-	public static function createObject(string $class, array $props)
+	public static function createObject(string $class, array $props): object
 	{
 		return Dumper::createObject($class, $props);
 	}

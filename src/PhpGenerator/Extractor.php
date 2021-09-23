@@ -76,6 +76,7 @@ final class Extractor
 
 	public function extractFunctionBody(string $name): ?string
 	{
+		/** @var Node\Stmt\Function_ $functionNode */
 		$functionNode = (new NodeFinder)->findFirst($this->statements, function (Node $node) use ($name) {
 			return $node instanceof Node\Stmt\Function_ && $node->namespacedName->toString() === $name;
 		});
@@ -87,9 +88,8 @@ final class Extractor
 	/** @param  Node[]  $statements */
 	private function getReformattedBody(array $statements, int $level): string
 	{
-		$replacements = $this->prepareReplacements($statements);
 		$body = $this->getNodeContents(...$statements);
-		$body = $this->performReplacements($body, $replacements);
+		$body = $this->performReplacements($body, $this->prepareReplacements($statements));
 		return Helpers::unindent($body, $level);
 	}
 
@@ -98,55 +98,44 @@ final class Extractor
 	{
 		$start = $statements[0]->getStartFilePos();
 		$replacements = [];
-		$nodeFinder = new NodeFinder;
+		(new NodeFinder)->find($statements, function (Node $node) use (&$replacements, $start) {
+			if ($node instanceof Node\Name\FullyQualified) {
+				if ($node->getAttribute('originalName') instanceof Node\Name) {
+					$replacements[] = [
+						$node->getStartFilePos() - $start,
+						$node->getEndFilePos() - $start,
+						$node->toCodeString(),
+					];
+				}
 
-		// name-nodes => resolved fully-qualified name
-		foreach ($nodeFinder->findInstanceOf($statements, Node\Name\FullyQualified::class) as $node) {
-			if ($node->hasAttribute('originalName')
-				&& $node->getAttribute('originalName') instanceof Node\Name
-			) {
-				$replacements[] = [
-					$node->getStartFilePos() - $start,
-					$node->getEndFilePos() - $start,
-					$node->toCodeString(),
-				];
+			} elseif ($node instanceof Node\Scalar\String_ || $node instanceof Node\Scalar\EncapsedStringPart) {
+				// multi-line strings => singleline
+				$token = $this->getNodeContents($node);
+				if (strpos($token, "\n") !== false) {
+					$quote = $node instanceof Node\Scalar\String_ ? '"' : '';
+					$replacements[] = [
+						$node->getStartFilePos() - $start,
+						$node->getEndFilePos() - $start,
+						$quote . addcslashes($node->value, "\x00..\x1F") . $quote,
+					];
+				}
+
+			} elseif ($node instanceof Node\Scalar\Encapsed) {
+				// HEREDOC => "string"
+				if ($node->getAttribute('kind') === Node\Scalar\String_::KIND_HEREDOC) {
+					$replacements[] = [
+						$node->getStartFilePos() - $start,
+						$node->parts[0]->getStartFilePos() - $start - 1,
+						'"',
+					];
+					$replacements[] = [
+						end($node->parts)->getEndFilePos() - $start + 1,
+						$node->getEndFilePos() - $start,
+						'"',
+					];
+				}
 			}
-		}
-
-		// multi-line strings => singleline
-		foreach (array_merge(
-			$nodeFinder->findInstanceOf($statements, Node\Scalar\String_::class),
-			$nodeFinder->findInstanceOf($statements, Node\Scalar\EncapsedStringPart::class)
-		) as $node) {
-			/** @var Node\Scalar\String_|Node\Scalar\EncapsedStringPart $node */
-			$token = $this->getNodeContents($node);
-			if (strpos($token, "\n") !== false) {
-				$quote = $node instanceof Node\Scalar\String_ ? '"' : '';
-				$replacements[] = [
-					$node->getStartFilePos() - $start,
-					$node->getEndFilePos() - $start,
-					$quote . addcslashes($node->value, "\x00..\x1F") . $quote,
-				];
-			}
-		}
-
-		// HEREDOC => "string"
-		foreach ($nodeFinder->findInstanceOf($statements, Node\Scalar\Encapsed::class) as $node) {
-			/** @var Node\Scalar\Encapsed $node */
-			if ($node->getAttribute('kind') === Node\Scalar\String_::KIND_HEREDOC) {
-				$replacements[] = [
-					$node->getStartFilePos() - $start,
-					$node->parts[0]->getStartFilePos() - $start - 1,
-					'"',
-				];
-				$replacements[] = [
-					end($node->parts)->getEndFilePos() - $start + 1,
-					$node->getEndFilePos() - $start,
-					'"',
-				];
-			}
-		}
-
+		});
 		return $replacements;
 	}
 

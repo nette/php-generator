@@ -101,7 +101,8 @@ final class ClassType
 	 */
 	public static function from($class, bool $withBodies = false, bool $materializeTraits = true): self
 	{
-		return (new Factory)->fromClassReflection(new \ReflectionClass($class), $withBodies, $materializeTraits);
+		return (new Factory)
+			->fromClassReflection(new \ReflectionClass($class), $withBodies, $materializeTraits);
 	}
 
 
@@ -110,13 +111,15 @@ final class ClassType
 	 */
 	public static function withBodiesFrom($class): self
 	{
-		return (new Factory)->fromClassReflection(new \ReflectionClass($class), true);
+		return (new Factory)
+			->fromClassReflection(new \ReflectionClass($class), true);
 	}
 
 
 	public static function fromCode(string $code): self
 	{
-		return (new Factory)->fromClassCode($code);
+		return (new Factory)
+			->fromClassCode($code);
 	}
 
 
@@ -321,10 +324,7 @@ final class ClassType
 	/** @return static */
 	public function removeImplement(string $name): self
 	{
-		$key = array_search($name, $this->implements, true);
-		if ($key !== false) {
-			unset($this->implements[$key]);
-		}
+		$this->implements = array_diff($this->implements, [$name]);
 		return $this;
 	}
 
@@ -424,10 +424,10 @@ final class ClassType
 	public function setConstants(array $consts): self
 	{
 		$this->consts = [];
-		foreach ($consts as $k => $v) {
-			$const = $v instanceof Constant
-				? $v
-				: (new Constant($k))->setValue($v);
+		foreach ($consts as $k => $const) {
+			if (!$const instanceof Constant) {
+				$const = (new Constant($k))->setValue($const)->setPublic();
+			}
 			$this->consts[$const->getName()] = $const;
 		}
 		return $this;
@@ -443,7 +443,9 @@ final class ClassType
 
 	public function addConstant(string $name, $value): Constant
 	{
-		return $this->consts[$name] = (new Constant($name))->setValue($value)->setPublic();
+		return $this->consts[$name] = (new Constant($name))
+			->setValue($value)
+			->setPublic();
 	}
 
 
@@ -457,7 +459,7 @@ final class ClassType
 
 	/**
 	 * Sets cases to enum
-	 * @param  EnumCase[]  $consts
+	 * @param  EnumCase[]  $cases
 	 * @return static
 	 */
 	public function setCases(array $cases): self
@@ -481,7 +483,8 @@ final class ClassType
 	/** Adds case to enum */
 	public function addCase(string $name, $value = null): EnumCase
 	{
-		return $this->cases[$name] = (new EnumCase($name))->setValue($value);
+		return $this->cases[$name] = (new EnumCase($name))
+			->setValue($value);
 	}
 
 
@@ -499,11 +502,9 @@ final class ClassType
 	 */
 	public function setProperties(array $props): self
 	{
+		(function (Property ...$props) {})(...$props);
 		$this->properties = [];
 		foreach ($props as $v) {
-			if (!$v instanceof Property) {
-				throw new Nette\InvalidArgumentException('Argument must be Nette\PhpGenerator\Property[].');
-			}
 			$this->properties[$v->getName()] = $v;
 		}
 		return $this;
@@ -560,11 +561,9 @@ final class ClassType
 	 */
 	public function setMethods(array $methods): self
 	{
+		(function (Method ...$methods) {})(...$methods);
 		$this->methods = [];
 		foreach ($methods as $v) {
-			if (!$v instanceof Method) {
-				throw new Nette\InvalidArgumentException('Argument must be Nette\PhpGenerator\Method[].');
-			}
 			$this->methods[$v->getName()] = $v;
 		}
 		return $this;

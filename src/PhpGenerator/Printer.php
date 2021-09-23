@@ -116,11 +116,12 @@ class Printer
 			. ($method->getReturnReference() ? '&' : '')
 			. $method->getName();
 		$returnType = $this->printReturnType($method);
+		$params = $this->printParameters($method, strlen($line) + strlen($returnType) + strlen($this->indentation) + 2);
 
 		return Helpers::formatDocComment($method->getComment() . "\n")
 			. self::printAttributes($method->getAttributes())
 			. $line
-			. ($params = $this->printParameters($method, strlen($line) + strlen($returnType) + strlen($this->indentation) + 2)) // 2 = parentheses
+			. $params
 			. $returnType
 			. ($method->isAbstract() || $method->getBody() === null
 				? ";\n"
@@ -144,7 +145,9 @@ class Printer
 			$resolutions = $trait->getResolutions();
 			$traits[] = Helpers::formatDocComment((string) $trait->getComment())
 				. 'use ' . $resolver($trait->getName())
-				. ($resolutions ? " {\n" . $this->indentation . implode(";\n" . $this->indentation, $resolutions) . ";\n}\n" : ";\n");
+				. ($resolutions
+					? " {\n" . $this->indentation . implode(";\n" . $this->indentation, $resolutions) . ";\n}\n"
+					: ";\n");
 		}
 
 		$cases = [];
@@ -185,7 +188,9 @@ class Printer
 			$properties[] = Helpers::formatDocComment((string) $property->getComment())
 				. self::printAttributes($property->getAttributes())
 				. $def
-				. ($property->getValue() === null && !$property->isInitialized() ? '' : ' = ' . $this->dump($property->getValue(), strlen($def) + 3)) // 3 = ' = '
+				. ($property->getValue() === null && !$property->isInitialized()
+					? ''
+					: ' = ' . $this->dump($property->getValue(), strlen($def) + 3)) // 3 = ' = '
 				. ";\n";
 		}
 
@@ -264,28 +269,6 @@ class Printer
 	}
 
 
-	/** @return static */
-	public function setTypeResolving(bool $state = true): self
-	{
-		$this->resolveTypes = $state;
-		return $this;
-	}
-
-
-	protected function indent(string $s): string
-	{
-		$s = str_replace("\t", $this->indentation, $s);
-		return Strings::indent($s, 1, $this->indentation);
-	}
-
-
-	protected function dump($var, int $column = 0): string
-	{
-		$this->dumper->indentation = $this->indentation;
-		return $this->dumper->dump($var, $column);
-	}
-
-
 	protected function printUses(PhpNamespace $namespace): string
 	{
 		$name = $namespace->getName();
@@ -304,7 +287,7 @@ class Printer
 	/**
 	 * @param Closure|GlobalFunction|Method  $function
 	 */
-	public function printParameters($function, int $column = 0): string
+	protected function printParameters($function, int $column = 0): string
 	{
 		$params = [];
 		$list = $function->getParameters();
@@ -339,7 +322,7 @@ class Printer
 	}
 
 
-	public function printType(?string $type, bool $nullable): string
+	protected function printType(?string $type, bool $nullable): string
 	{
 		if ($type === null) {
 			return '';
@@ -384,7 +367,29 @@ class Printer
 	}
 
 
-	private function joinProperties(array $props)
+	/** @return static */
+	public function setTypeResolving(bool $state = true): self
+	{
+		$this->resolveTypes = $state;
+		return $this;
+	}
+
+
+	protected function indent(string $s): string
+	{
+		$s = str_replace("\t", $this->indentation, $s);
+		return Strings::indent($s, 1, $this->indentation);
+	}
+
+
+	protected function dump($var, int $column = 0): string
+	{
+		$this->dumper->indentation = $this->indentation;
+		return $this->dumper->dump($var, $column);
+	}
+
+
+	private function joinProperties(array $props): string
 	{
 		return $this->linesBetweenProperties
 			? implode(str_repeat("\n", $this->linesBetweenProperties), $props)

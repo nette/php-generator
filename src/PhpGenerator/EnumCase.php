@@ -22,7 +22,7 @@ final class EnumCase
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 
-	/** @var mixed */
+	/** @var string|int|null */
 	private $value;
 
 

@@ -121,7 +121,7 @@ final class Dumper
 	}
 
 
-	private function dumpObject(&$var, array $parents, int $level): string
+	private function dumpObject($var, array $parents, int $level): string
 	{
 		if ($var instanceof \Serializable) {
 			return 'unserialize(' . $this->dumpString(serialize($var)) . ')';
@@ -244,10 +244,9 @@ final class Dumper
 
 
 	/**
-	 * @return object
 	 * @internal
 	 */
-	public static function createObject(string $class, array $props)
+	public static function createObject(string $class, array $props): object
 	{
 		return unserialize('O' . substr(serialize($class), 1, -1) . substr(serialize($props), 1));
 	}

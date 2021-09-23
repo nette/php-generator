@@ -16,7 +16,7 @@ abstract class Example extends ParentClass implements IExample, IOne
 		b as private bar;
 	}
 
-	const ROLE = 'admin';
+	public const ROLE = 'admin';
 	final public const ACTIVE = false;
 
 	/** Commented */
