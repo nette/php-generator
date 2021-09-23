@@ -34,7 +34,9 @@ $namespace = new PhpNamespace('Foo');
 Assert::same('Foo', $namespace->getName());
 Assert::same('\A', $namespace->simplifyName('\A'));
 Assert::same('\A', $namespace->simplifyName('A'));
+Assert::same('\A\\', $namespace->simplifyName('A\\'));
 Assert::same('A', $namespace->simplifyName('foo\A'));
+Assert::same('A\\', $namespace->simplifyName('foo\A\\'));
 
 Assert::same('A', $namespace->simplifyType('foo\A'));
 Assert::same('null|A', $namespace->simplifyType('null|foo\A'));

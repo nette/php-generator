@@ -50,6 +50,7 @@ final class Extractor
 		$stmts = $parser->parse($this->code);
 
 		$traverser = new PhpParser\NodeTraverser;
+		$traverser->addVisitor(new PhpParser\NodeVisitor\ParentConnectingVisitor);
 		$traverser->addVisitor(new PhpParser\NodeVisitor\NameResolver(null, ['preserveOriginalNames' => true]));
 		$this->statements = $traverser->traverse($stmts);
 	}
@@ -67,7 +68,7 @@ final class Extractor
 		foreach ($nodeFinder->findInstanceOf($classNode, Node\Stmt\ClassMethod::class) as $methodNode) {
 			/** @var Node\Stmt\ClassMethod $methodNode */
 			if ($methodNode->stmts) {
-				$res[$methodNode->name->toString()] = $this->getReformattedBody($methodNode->stmts, 2);
+				$res[$methodNode->name->toString()] = $this->getReformattedContents($methodNode->stmts, 2);
 			}
 		}
 		return $res;
@@ -81,12 +82,12 @@ final class Extractor
 			return $node instanceof Node\Stmt\Function_ && $node->namespacedName->toString() === $name;
 		});
 
-		return $this->getReformattedBody($functionNode->stmts, 1);
+		return $this->getReformattedContents($functionNode->stmts, 1);
 	}
 
 
 	/** @param  Node[]  $statements */
-	private function getReformattedBody(array $statements, int $level): string
+	private function getReformattedContents(array $statements, int $level): string
 	{
 		$body = $this->getNodeContents(...$statements);
 		$body = $this->performReplacements($body, $this->prepareReplacements($statements));
@@ -101,10 +102,13 @@ final class Extractor
 		(new NodeFinder)->find($statements, function (Node $node) use (&$replacements, $start) {
 			if ($node instanceof Node\Name\FullyQualified) {
 				if ($node->getAttribute('originalName') instanceof Node\Name) {
+					$type = $node->getAttribute('parent') instanceof Node\Expr\ConstFetch
+							? PhpNamespace::NAME_CONSTANT
+							: ($node->getAttribute('parent') instanceof Node\Expr\FuncCall ? PhpNamespace::NAME_FUNCTION : PhpNamespace::NAME_NORMAL);
 					$replacements[] = [
 						$node->getStartFilePos() - $start,
 						$node->getEndFilePos() - $start,
-						$node->toCodeString(),
+						Helpers::tagName($node->toCodeString(), $type),
 					];
 				}
 
@@ -302,7 +306,7 @@ final class Extractor
 			}
 			$prop->setType($node->type ? $this->toPhp($node->type) : null);
 			if ($item->default) {
-				$prop->setValue(new Literal($this->toPhp($item->default)));
+				$prop->setValue(new Literal($this->getReformattedContents([$item->default], 1)));
 			}
 			$prop->setReadOnly(method_exists($node, 'isReadonly') && $node->isReadonly());
 			$this->addCommentAndAttributes($prop, $node);
@@ -328,7 +332,8 @@ final class Extractor
 	private function addConstantToClass(ClassType $class, Node\Stmt\ClassConst $node): void
 	{
 		foreach ($node->consts as $item) {
-			$const = $class->addConstant($item->name->toString(), new Literal($this->toPhp($item->value)));
+			$value = $this->getReformattedContents([$item->value], 1);
+			$const = $class->addConstant($item->name->toString(), new Literal($value));
 			if ($node->isPrivate()) {
 				$const->setPrivate();
 			} elseif ($node->isProtected()) {
@@ -359,7 +364,7 @@ final class Extractor
 			foreach ($group->attrs as $attribute) {
 				$args = [];
 				foreach ($attribute->args as $arg) {
-					$value = new Literal($this->toPhp($arg));
+					$value = new Literal($this->getReformattedContents([$arg], 0));
 					if ($arg->name) {
 						$args[$arg->name->toString()] = $value;
 					} else {
@@ -385,13 +390,13 @@ final class Extractor
 			$param->setReference($item->byRef);
 			$function->setVariadic($item->variadic);
 			if ($item->default) {
-				$param->setDefaultValue(new Literal($this->toPhp($item->default)));
+				$param->setDefaultValue(new Literal($this->getReformattedContents([$item->default], 2)));
 			}
 			$this->addCommentAndAttributes($param, $item);
 		}
 		$this->addCommentAndAttributes($function, $node);
 		if ($node->stmts) {
-			$function->setBody($this->getReformattedBody($node->stmts, 2));
+			$function->setBody($this->getReformattedContents($node->stmts, 2));
 		}
 	}
 

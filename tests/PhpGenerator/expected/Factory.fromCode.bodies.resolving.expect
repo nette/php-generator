@@ -38,7 +38,7 @@ abstract class Class7
 		/*
 		$this->methods[$member->getName()] = $member;
 		*/
-		throw new \Nette\InvalidArgumentException('Argument must be Method|Property|Constant.');
+		throw new InvalidArgumentException('Argument must be Method|Property|Constant.');
 	}
 
 
@@ -58,7 +58,7 @@ abstract class Class7
 		// classes
 		$x = new \Abc\MyClass;
 		$y = new \stdClass;
-		$z = \Nette\Utils\ArrayHash::class;
+		$z = Utils\ArrayHash::class;
 	}
 
 
@@ -97,6 +97,6 @@ abstract class Class7
 		c
 			<?php
 		}
-		throw new \Nette\InvalidArgumentException();
+		throw new InvalidArgumentException();
 	}
 }

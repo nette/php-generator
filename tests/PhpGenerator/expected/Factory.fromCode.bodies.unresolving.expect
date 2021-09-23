@@ -1,3 +1,8 @@
+namespace Nette;
+
+use Abc\a\FOO;
+use Abc\a\func;
+
 abstract class Class7
 {
 	abstract public function abstractFun();
@@ -27,7 +32,7 @@ abstract class Class7
 
 	public function long()
 	{
-		if ($member instanceof Method) {
+		if ($member instanceof \Abc\Method) {
 			$s = [1, 2, 3];
 		}
 		/*
@@ -37,21 +42,21 @@ abstract class Class7
 	}
 
 
-	public function resolving($a = Abc\a\FOO, self $b = null, $c = self::FOO)
+	public function resolving($a = \Abc\a\FOO, self $b = null, $c = self::FOO)
 	{
 		echo FOO;
 		echo \FOO;
-		echo a\FOO;
+		echo \Abc\a\FOO;
 		echo \Nette\FOO;
 
 		// functions
 		func();
 		\func();
-		a\func();
+		\Abc\a\func();
 		\Nette\func();
 
 		// classes
-		$x = new MyClass;
+		$x = new \Abc\MyClass;
 		$y = new \stdClass;
 		$z = \Nette\Utils\ArrayHash::class;
 	}
@@ -77,7 +82,7 @@ abstract class Class7
 		line
 		comment */
 		// Alias Method will not be resolved in comment
-		if ($member instanceof Method) {
+		if ($member instanceof \Abc\Method) {
 			$s1 = "\na\n\tb\n\t\tc\n";
 			$s2 = "\na\n\t{$b}\n\t\t$c\n";
 

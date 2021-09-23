@@ -26,6 +26,11 @@ final class PhpNamespace
 {
 	use Nette\SmartObject;
 
+	public const
+		NAME_NORMAL = 'n',
+		NAME_FUNCTION = 'f',
+		NAME_CONSTANT = 'c';
+
 	/** @var string */
 	private $name;
 

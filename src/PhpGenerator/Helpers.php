@@ -83,6 +83,27 @@ final class Helpers
 	}
 
 
+	public static function tagName(string $name, string $type = PhpNamespace::NAME_NORMAL): string
+	{
+		return "/*($type*/$name";
+	}
+
+
+	public static function simplifyTaggedNames(string $code, ?PhpNamespace $namespace): string
+	{
+		return preg_replace_callback('~/\*\(([ncf])\*/([\w\x7f-\xff\\\\]++)~', function ($m) use ($namespace) {
+			[, $type, $name] = $m;
+			if (!$namespace) {
+				return $name;
+			} elseif ($type === PhpNamespace::NAME_NORMAL) {
+				return $namespace->simplifyType($name);
+			} else {
+				return $namespace->simplifyType(self::extractNamespace($name) . '\\') . self::extractShortName($name);
+			}
+		}, $code);
+	}
+
+
 	public static function unformatDocComment(string $comment): string
 	{
 		return preg_replace('#^\s*\* ?#m', '', trim(trim(trim($comment), '/*')));

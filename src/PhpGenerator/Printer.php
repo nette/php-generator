@@ -55,13 +55,14 @@ class Printer
 			. ($function->getReturnReference() ? '&' : '')
 			. $function->getName();
 		$returnType = $this->printReturnType($function);
+		$body = Helpers::simplifyTaggedNames($function->getBody(), $this->namespace);
 
 		return Helpers::formatDocComment($function->getComment() . "\n")
 			. self::printAttributes($function->getAttributes())
 			. $line
 			. $this->printParameters($function, strlen($line) + strlen($returnType) + 2) // 2 = parentheses
 			. $returnType
-			. "\n{\n" . $this->indent(ltrim(rtrim($function->getBody()) . "\n")) . "}\n";
+			. "\n{\n" . $this->indent(ltrim(rtrim($body) . "\n")) . "}\n";
 	}
 
 
@@ -75,6 +76,7 @@ class Printer
 		$useStr = strlen($tmp = implode(', ', $uses)) > $this->dumper->wrapLength && count($uses) > 1
 			? "\n" . $this->indentation . implode(",\n" . $this->indentation, $uses) . "\n"
 			: $tmp;
+		$body = Helpers::simplifyTaggedNames($closure->getBody(), $this->namespace);
 
 		return self::printAttributes($closure->getAttributes(), true)
 			. 'function '
@@ -82,7 +84,7 @@ class Printer
 			. $this->printParameters($closure)
 			. ($uses ? " use ($useStr)" : '')
 			. $this->printReturnType($closure)
-			. " {\n" . $this->indent(ltrim(rtrim($closure->getBody()) . "\n")) . '}';
+			. " {\n" . $this->indent(ltrim(rtrim($body) . "\n")) . '}';
 	}
 
 
@@ -94,13 +96,14 @@ class Printer
 				throw new Nette\InvalidArgumentException('Arrow function cannot bind variables by-reference.');
 			}
 		}
+		$body = Helpers::simplifyTaggedNames($closure->getBody(), $this->namespace);
 
 		return self::printAttributes($closure->getAttributes())
 			. 'fn'
 			. ($closure->getReturnReference() ? '&' : '')
 			. $this->printParameters($closure)
 			. $this->printReturnType($closure)
-			. ' => ' . trim($closure->getBody()) . ';';
+			. ' => ' . trim($body) . ';';
 	}
 
 
@@ -117,6 +120,7 @@ class Printer
 			. $method->getName();
 		$returnType = $this->printReturnType($method);
 		$params = $this->printParameters($method, strlen($line) + strlen($returnType) + strlen($this->indentation) + 2);
+		$body = Helpers::simplifyTaggedNames((string) $method->getBody(), $this->namespace);
 
 		return Helpers::formatDocComment($method->getComment() . "\n")
 			. self::printAttributes($method->getAttributes())
@@ -127,7 +131,7 @@ class Printer
 				? ";\n"
 				: (strpos($params, "\n") === false ? "\n" : ' ')
 					. "{\n"
-					. $this->indent(ltrim(rtrim($method->getBody()) . "\n"))
+					. $this->indent(ltrim(rtrim($body) . "\n"))
 					. "}\n");
 	}
 
@@ -359,6 +363,7 @@ class Printer
 		$items = [];
 		foreach ($attrs as $attr) {
 			$args = $this->dumper->format('...?:', $attr->getArguments());
+			$args = Helpers::simplifyTaggedNames($args, $this->namespace);
 			$items[] = $this->printType($attr->getName(), false) . ($args ? "($args)" : '');
 		}
 		return $inline
@@ -385,7 +390,9 @@ class Printer
 	protected function dump($var, int $column = 0): string
 	{
 		$this->dumper->indentation = $this->indentation;
-		return $this->dumper->dump($var, $column);
+		$s = $this->dumper->dump($var, $column);
+		$s = Helpers::simplifyTaggedNames($s, $this->namespace);
+		return $s;
 	}
 
 
