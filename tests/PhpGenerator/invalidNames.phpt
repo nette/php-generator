@@ -36,6 +36,22 @@ Assert::exception(function () {
 	new Nette\PhpGenerator\PhpNamespace('\abc');
 }, Nette\InvalidArgumentException::class);
 
+Assert::exception(function () {
+	(new Nette\PhpGenerator\PhpNamespace('Abc'))->addUse('');
+}, Nette\InvalidArgumentException::class);
+
+Assert::exception(function () {
+	(new Nette\PhpGenerator\PhpNamespace('Abc'))->addUse('Foo', 'a b');
+}, Nette\InvalidArgumentException::class);
+
+Assert::exception(function () {
+	(new Nette\PhpGenerator\PhpNamespace('Abc'))->addUse('true');
+}, Nette\InvalidArgumentException::class);
+
+Assert::exception(function () {
+	(new Nette\PhpGenerator\PhpNamespace('Abc'))->addUse('aaa', 'true');
+}, Nette\InvalidArgumentException::class);
+
 
 Assert::noError(function () {
 	new Nette\PhpGenerator\ClassType(null); // anonymous class

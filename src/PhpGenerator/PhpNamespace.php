@@ -87,6 +87,15 @@ final class PhpNamespace
 	 */
 	public function addUse(string $name, string $alias = null, string &$aliasOut = null): self
 	{
+		if (
+			!Helpers::isNamespaceIdentifier($name, true)
+			|| (Helpers::isIdentifier($name) && isset(Helpers::KEYWORDS[strtolower($name)]))
+		) {
+			throw new Nette\InvalidArgumentException("Value '$name' is not valid class name.");
+		} elseif ($alias && (!Helpers::isIdentifier($alias) || isset(Helpers::KEYWORDS[strtolower($alias)]))) {
+			throw new Nette\InvalidArgumentException("Value '$alias' is not valid alias.");
+		}
+
 		$name = ltrim($name, '\\');
 		if ($alias === null && $this->name === Helpers::extractNamespace($name)) {
 			$alias = Helpers::extractShortName($name);
