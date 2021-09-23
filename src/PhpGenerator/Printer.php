@@ -20,6 +20,9 @@ class Printer
 {
 	use Nette\SmartObject;
 
+	/** @var int */
+	public $wrapLength = 120;
+
 	/** @var string */
 	protected $indentation = "\t";
 
@@ -73,7 +76,7 @@ class Printer
 		foreach ($closure->getUses() as $param) {
 			$uses[] = ($param->isReference() ? '&' : '') . '$' . $param->getName();
 		}
-		$useStr = strlen($tmp = implode(', ', $uses)) > $this->dumper->wrapLength && count($uses) > 1
+		$useStr = strlen($tmp = implode(', ', $uses)) > $this->wrapLength && count($uses) > 1
 			? "\n" . $this->indentation . implode(",\n" . $this->indentation, $uses) . "\n"
 			: $tmp;
 		$body = Helpers::simplifyTaggedNames($closure->getBody(), $this->namespace);
@@ -320,7 +323,7 @@ class Printer
 
 		$line = implode(', ', $params);
 
-		return count($params) > 1 && ($special || strlen($line) + $column > $this->dumper->wrapLength)
+		return count($params) > 1 && ($special || strlen($line) + $column > $this->wrapLength)
 			? "(\n" . $this->indent(implode(",\n", $params)) . ($special ? ',' : '') . "\n)"
 			: "($line)";
 	}
@@ -390,6 +393,7 @@ class Printer
 	protected function dump($var, int $column = 0): string
 	{
 		$this->dumper->indentation = $this->indentation;
+		$this->dumper->wrapLength = $this->wrapLength;
 		$s = $this->dumper->dump($var, $column);
 		$s = Helpers::simplifyTaggedNames($s, $this->namespace);
 		return $s;
