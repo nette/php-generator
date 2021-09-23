@@ -24,20 +24,11 @@ class Parameter
 	use Traits\NameAware;
 	use Traits\AttributeAware;
 
-	/** @var bool */
-	private $reference = false;
-
-	/** @var string|null */
-	private $type;
-
-	/** @var bool */
-	private $nullable = false;
-
-	/** @var bool */
-	private $hasDefaultValue = false;
-
-	/** @var mixed */
-	private $defaultValue;
+	private bool $reference = false;
+	private ?string $type = null;
+	private bool $nullable = false;
+	private bool $hasDefaultValue = false;
+	private mixed $defaultValue = null;
 
 
 	/** @return static */

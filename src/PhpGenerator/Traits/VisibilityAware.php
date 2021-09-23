@@ -18,8 +18,8 @@ use Nette\PhpGenerator\ClassType;
  */
 trait VisibilityAware
 {
-	/** @var string|null  public|protected|private */
-	private $visibility;
+	/** public|protected|private */
+	private ?string $visibility = null;
 
 
 	/**

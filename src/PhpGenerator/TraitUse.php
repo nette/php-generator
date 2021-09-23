@@ -21,8 +21,7 @@ final class TraitUse
 	use Traits\NameAware;
 	use Traits\CommentAware;
 
-	/** @var array */
-	private $resolutions = [];
+	private array $resolutions = [];
 
 
 	public function __construct(string $name)

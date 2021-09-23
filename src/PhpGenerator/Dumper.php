@@ -19,14 +19,9 @@ final class Dumper
 {
 	private const INDENT_LENGTH = 4;
 
-	/** @var int */
-	public $maxDepth = 50;
-
-	/** @var int */
-	public $wrapLength = 120;
-
-	/** @var string */
-	public $indentation = "\t";
+	public int $maxDepth = 50;
+	public int $wrapLength = 120;
+	public string $indentation = "\t";
 
 
 	/**

@@ -20,8 +20,8 @@ final class Factory
 {
 	use Nette\SmartObject;
 
-	private $bodyCache = [];
-	private $extractorCache = [];
+	private array $bodyCache = [];
+	private array $extractorCache = [];
 
 
 	public function fromClassReflection(

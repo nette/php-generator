@@ -35,41 +35,37 @@ final class ClassType
 		VISIBILITY_PROTECTED = 'protected',
 		VISIBILITY_PRIVATE = 'private';
 
-	/** @var PhpNamespace|null */
-	private $namespace;
+	private ?PhpNamespace $namespace;
 
-	/** @var string|null */
-	private $name;
+	private ?string $name;
 
-	/** @var string  class|interface|trait */
-	private $type = self::TYPE_CLASS;
+	/** class|interface|trait */
+	private string $type = self::TYPE_CLASS;
 
-	/** @var bool */
-	private $final = false;
+	private bool $final = false;
 
-	/** @var bool */
-	private $abstract = false;
+	private bool $abstract = false;
 
 	/** @var string|string[] */
-	private $extends = [];
+	private string|array $extends = [];
 
 	/** @var string[] */
-	private $implements = [];
+	private array $implements = [];
 
 	/** @var TraitUse[] */
-	private $traits = [];
+	private array $traits = [];
 
 	/** @var Constant[] name => Constant */
-	private $consts = [];
+	private array $consts = [];
 
 	/** @var Property[] name => Property */
-	private $properties = [];
+	private array $properties = [];
 
 	/** @var Method[] name => Method */
-	private $methods = [];
+	private array $methods = [];
 
 	/** @var EnumCase[] name => EnumCase */
-	private $cases = [];
+	private array $cases = [];
 
 
 	public static function class(?string $name): self

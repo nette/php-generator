@@ -22,8 +22,7 @@ final class EnumCase
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 
-	/** @var string|int|null */
-	private $value;
+	private string|int|null $value = null;
 
 
 	/** @return static */

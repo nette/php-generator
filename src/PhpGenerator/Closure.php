@@ -24,7 +24,7 @@ final class Closure
 	use Traits\AttributeAware;
 
 	/** @var Parameter[] */
-	private $uses = [];
+	private array $uses = [];
 
 
 	public static function from(\Closure $closure): self
