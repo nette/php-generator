@@ -26,10 +26,8 @@ final class PhpFile
 	use Traits\CommentAware;
 
 	/** @var PhpNamespace[] */
-	private $namespaces = [];
-
-	/** @var bool */
-	private $strictTypes = false;
+	private array $namespaces = [];
+	private bool $strictTypes = false;
 
 
 	public static function fromCode(string $code): self

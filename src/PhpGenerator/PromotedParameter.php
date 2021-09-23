@@ -20,8 +20,7 @@ final class PromotedParameter extends Parameter
 	use Traits\VisibilityAware;
 	use Traits\CommentAware;
 
-	/** @var bool */
-	private $readOnly = false;
+	private bool $readOnly = false;
 
 
 	/** @return static */

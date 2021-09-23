@@ -20,23 +20,14 @@ use Nette\Utils\Type;
  */
 trait FunctionLike
 {
-	/** @var string */
-	private $body = '';
+	private string $body = '';
 
 	/** @var Parameter[] */
-	private $parameters = [];
-
-	/** @var bool */
-	private $variadic = false;
-
-	/** @var string|null */
-	private $returnType;
-
-	/** @var bool */
-	private $returnReference = false;
-
-	/** @var bool */
-	private $returnNullable = false;
+	private array $parameters = [];
+	private bool $variadic = false;
+	private ?string $returnType = null;
+	private bool $returnReference = false;
+	private bool $returnNullable = false;
 
 
 	/** @return static */
