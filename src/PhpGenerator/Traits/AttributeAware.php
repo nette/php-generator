@@ -18,7 +18,7 @@ use Nette\PhpGenerator\Attribute;
 trait AttributeAware
 {
 	/** @var Attribute[] */
-	private $attributes = [];
+	private array $attributes = [];
 
 
 	/** @return static */

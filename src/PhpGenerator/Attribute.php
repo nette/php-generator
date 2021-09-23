@@ -19,11 +19,8 @@ final class Attribute
 {
 	use Nette\SmartObject;
 
-	/** @var string */
-	private $name;
-
-	/** @var array */
-	private $args;
+	private string $name;
+	private array $args;
 
 
 	public function __construct(string $name, array $args)

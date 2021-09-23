@@ -24,9 +24,9 @@ final class Extractor
 {
 	use Nette\SmartObject;
 
-	private $code;
-	private $statements;
-	private $printer;
+	private string $code;
+	private array $statements;
+	private PhpParser\PrettyPrinterAbstract $printer;
 
 
 	public function __construct(string $code)

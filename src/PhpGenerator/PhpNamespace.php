@@ -30,24 +30,22 @@ final class PhpNamespace
 		NAME_FUNCTION = 'f',
 		NAME_CONSTANT = 'c';
 
-	/** @var string */
-	private $name;
+	private string $name;
 
-	/** @var bool */
-	private $bracketedSyntax = false;
+	private bool $bracketedSyntax = false;
 
 	/** @var string[][] */
-	private $aliases = [
+	private array $aliases = [
 		self::NAME_NORMAL => [],
 		self::NAME_FUNCTION => [],
 		self::NAME_CONSTANT => [],
 	];
 
 	/** @var ClassType[] */
-	private $classes = [];
+	private array $classes = [];
 
 	/** @var GlobalFunction[] */
-	private $functions = [];
+	private array $functions = [];
 
 
 	public function __construct(string $name)

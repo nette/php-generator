@@ -20,29 +20,14 @@ class Printer
 {
 	use Nette\SmartObject;
 
-	/** @var int */
-	public $wrapLength = 120;
-
-	/** @var string */
-	protected $indentation = "\t";
-
-	/** @var int */
-	protected $linesBetweenProperties = 0;
-
-	/** @var int */
-	protected $linesBetweenMethods = 2;
-
-	/** @var string */
-	protected $returnTypeColon = ': ';
-
-	/** @var ?PhpNamespace */
-	protected $namespace;
-
-	/** @var ?Dumper */
-	protected $dumper;
-
-	/** @var bool */
-	private $resolveTypes = true;
+	public int $wrapLength = 120;
+	protected string $indentation = "\t";
+	protected int $linesBetweenProperties = 0;
+	protected int $linesBetweenMethods = 2;
+	protected string $returnTypeColon = ': ';
+	protected ?PhpNamespace $namespace = null;
+	protected ?Dumper $dumper;
+	private bool $resolveTypes = true;
 
 
 	public function __construct()
