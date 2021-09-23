@@ -46,10 +46,10 @@ final class Dumper
 		} elseif (is_array($var)) {
 			return $this->dumpArray($var, $parents, $level, $column);
 
+		} elseif ($var instanceof Literal) {
+			return ltrim(Nette\Utils\Strings::indent(trim((string) $var), $level), "\t");
+			
 		} elseif (is_object($var)) {
-			if ($var instanceof Literal || $var instanceof Closure) {
-				return ltrim(Nette\Utils\Strings::indent(trim((string) $var), $level), "\t");
-			}
 			return $this->dumpObject($var, $parents, $level);
 
 		} elseif (is_resource($var)) {

@@ -45,11 +45,6 @@ Assert::same('\'He\ll\\\\\o \\\'wor\\\\\\\'ld\\\\\'', $dumper->dump('He\ll\\\o \
 // literal
 Assert::same('[$s]', $dumper->dump([new Literal('$s')]));
 Assert::same("[strlen('hello')]", $dumper->dump([new Literal('strlen(?)', ['hello'])]));
-same('[
-	function () {
-		return 1;
-	},
-]', $dumper->dump([(new Nette\PhpGenerator\Closure)->setBody('return 1;')]));
 
 
 // arrays
