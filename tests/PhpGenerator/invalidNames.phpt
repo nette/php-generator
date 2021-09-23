@@ -62,6 +62,14 @@ Assert::exception(function () {
 	new Nette\PhpGenerator\ClassType('\abc');
 }, Nette\InvalidArgumentException::class);
 
+Assert::exception(function () {
+	new Nette\PhpGenerator\ClassType('enum');
+}, Nette\InvalidArgumentException::class);
+
+Assert::exception(function () {
+	new Nette\PhpGenerator\ClassType('bool');
+}, Nette\InvalidArgumentException::class);
+
 
 $class = new Nette\PhpGenerator\ClassType('Abc');
 Assert::exception(function () use ($class) {

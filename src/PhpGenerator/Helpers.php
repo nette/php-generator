@@ -29,6 +29,22 @@ final class Helpers
 
 		// class keywords
 		'self' => 1, 'parent' => 1, 'static' => 1,
+
+		// PHP keywords
+		'include' => 1, 'include_once' => 1, 'eval' => 1, 'require' => 1, 'require_once' => 1, 'or' => 1, 'xor' => 1,
+		'and' => 1, 'instanceof' => 1, 'new' => 1, 'clone' => 1, 'exit' => 1, 'if' => 1, 'elseif' => 1, 'else' => 1,
+		'endif' => 1, 'echo' => 1, 'do' => 1, 'while' => 1, 'endwhile' => 1, 'for' => 1, 'endfor' => 1, 'foreach' => 1,
+		'endforeach' => 1, 'declare' => 1, 'enddeclare' => 1, 'as' => 1, 'try' => 1, 'catch' => 1, 'finally' => 1,
+		'throw' => 1, 'use' => 1, 'insteadof' => 1, 'global' => 1, 'var' => 1, 'unset' => 1, 'isset' => 1, 'empty' => 1,
+		'continue' => 1, 'goto' => 1, 'function' => 1, 'const' => 1, 'return' => 1, 'print' => 1, 'yield' => 1, 'list' => 1,
+		'switch' => 1, 'endswitch' => 1, 'case' => 1, 'default' => 1, 'break' => 1, 'array' => 1, 'callable' => 1,
+		'extends' => 1, 'implements' => 1, 'namespace' => 1, 'trait' => 1, 'interface' => 1, 'class' => 1, '__CLASS__' => 1,
+		'__TRAIT__' => 1, '__FUNCTION__' => 1, '__METHOD__' => 1, '__LINE__' => 1, '__FILE__' => 1, '__DIR__' => 1,
+		'__NAMESPACE__' => 1, 'fn' => 1, 'match' => 1, 'enum' => 1, 'static' => 1, 'abstract' => 1, 'final' => 1,
+		'private' => 1, 'protected' => 1, 'public' => 1, 'readonly' => 1,
+
+		// additional reserved class names
+		'true' => 1,
 	];
 
 

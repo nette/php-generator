@@ -151,7 +151,7 @@ final class ClassType
 	/** @return static */
 	public function setName(?string $name): self
 	{
-		if ($name !== null && !Helpers::isIdentifier($name)) {
+		if ($name !== null && (!Helpers::isIdentifier($name) || isset(Helpers::KEYWORDS[strtolower($name)]))) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid class name.");
 		}
 		$this->name = $name;
