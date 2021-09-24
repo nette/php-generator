@@ -16,7 +16,7 @@ use Nette\Utils\Type;
 /**
  * Class property description.
  *
- * @property mixed $value
+ * @property-deprecated mixed $value
  */
 final class Property
 {

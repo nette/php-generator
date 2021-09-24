@@ -15,8 +15,8 @@ use Nette;
 /**
  * Class/Interface/Trait/Enum description.
  *
- * @property Method[] $methods
- * @property Property[] $properties
+ * @property-deprecated Method[] $methods
+ * @property-deprecated Property[] $properties
  */
 final class ClassType
 {
