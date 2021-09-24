@@ -15,7 +15,7 @@ use Nette;
 /**
  * Class method.
  *
- * @property string|null $body
+ * @property-deprecated string|null $body
  */
 final class Method
 {

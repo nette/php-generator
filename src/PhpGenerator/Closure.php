@@ -15,7 +15,7 @@ use Nette;
 /**
  * Closure.
  *
- * @property string $body
+ * @property-deprecated string $body
  */
 final class Closure
 {

@@ -15,7 +15,7 @@ use Nette;
 /**
  * Global function.
  *
- * @property string $body
+ * @property-deprecated string $body
  */
 final class GlobalFunction
 {
