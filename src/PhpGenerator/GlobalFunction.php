@@ -14,8 +14,6 @@ use Nette;
 
 /**
  * Global function.
- *
- * @property string $body
  */
 final class GlobalFunction
 {

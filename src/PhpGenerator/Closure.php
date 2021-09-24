@@ -14,8 +14,6 @@ use Nette;
 
 /**
  * Closure.
- *
- * @property string $body
  */
 final class Closure
 {

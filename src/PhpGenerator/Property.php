@@ -15,8 +15,6 @@ use Nette\Utils\Type;
 
 /**
  * Class property description.
- *
- * @property mixed $value
  */
 final class Property
 {

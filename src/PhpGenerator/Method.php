@@ -14,8 +14,6 @@ use Nette;
 
 /**
  * Class method.
- *
- * @property string|null $body
  */
 final class Method
 {

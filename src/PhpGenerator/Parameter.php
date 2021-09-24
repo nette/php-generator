@@ -15,8 +15,6 @@ use Nette\Utils\Type;
 
 /**
  * Function/Method parameter description.
- *
- * @property mixed $defaultValue
  */
 class Parameter
 {
