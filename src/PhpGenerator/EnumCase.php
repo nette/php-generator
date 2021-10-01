@@ -25,8 +25,7 @@ final class EnumCase
 	private string|int|null $value = null;
 
 
-	/** @return static */
-	public function setValue($val): self
+	public function setValue(string|int|null $val): static
 	{
 		$this->value = $val;
 		return $this;
