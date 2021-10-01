@@ -21,8 +21,7 @@ trait AttributeAware
 	private array $attributes = [];
 
 
-	/** @return static */
-	public function addAttribute(string $name, array $args = []): self
+	public function addAttribute(string $name, array $args = []): static
 	{
 		$this->attributes[] = new Attribute($name, $args);
 		return $this;
@@ -31,9 +30,8 @@ trait AttributeAware
 
 	/**
 	 * @param  Attribute[]  $attrs
-	 * @return static
 	 */
-	public function setAttributes(array $attrs): self
+	public function setAttributes(array $attrs): static
 	{
 		(function (Attribute ...$attrs) {})(...$attrs);
 		$this->attributes = $attrs;

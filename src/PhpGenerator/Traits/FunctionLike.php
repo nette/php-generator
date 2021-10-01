@@ -30,8 +30,7 @@ trait FunctionLike
 	private bool $returnNullable = false;
 
 
-	/** @return static */
-	public function setBody(string $code, array $args = null): self
+	public function setBody(string $code, array $args = null): static
 	{
 		$this->body = $args === null
 			? $code
@@ -46,8 +45,7 @@ trait FunctionLike
 	}
 
 
-	/** @return static */
-	public function addBody(string $code, array $args = null): self
+	public function addBody(string $code, array $args = null): static
 	{
 		$this->body .= ($args === null ? $code : (new Dumper)->format($code, ...$args)) . "\n";
 		return $this;
@@ -56,9 +54,8 @@ trait FunctionLike
 
 	/**
 	 * @param  Parameter[]  $val
-	 * @return static
 	 */
-	public function setParameters(array $val): self
+	public function setParameters(array $val): static
 	{
 		(function (Parameter ...$val) {})(...array_values($val));
 		$this->parameters = [];
@@ -91,17 +88,15 @@ trait FunctionLike
 
 	/**
 	 * @param  string  $name without $
-	 * @return static
 	 */
-	public function removeParameter(string $name): self
+	public function removeParameter(string $name): static
 	{
 		unset($this->parameters[$name]);
 		return $this;
 	}
 
 
-	/** @return static */
-	public function setVariadic(bool $state = true): self
+	public function setVariadic(bool $state = true): static
 	{
 		$this->variadic = $state;
 		return $this;
@@ -114,8 +109,7 @@ trait FunctionLike
 	}
 
 
-	/** @return static */
-	public function setReturnType(?string $type): self
+	public function setReturnType(?string $type): static
 	{
 		$this->returnType = Nette\PhpGenerator\Helpers::validateType($type, $this->returnNullable);
 		return $this;
@@ -133,8 +127,7 @@ trait FunctionLike
 	}
 
 
-	/** @return static */
-	public function setReturnReference(bool $state = true): self
+	public function setReturnReference(bool $state = true): static
 	{
 		$this->returnReference = $state;
 		return $this;
@@ -147,8 +140,7 @@ trait FunctionLike
 	}
 
 
-	/** @return static */
-	public function setReturnNullable(bool $state = true): self
+	public function setReturnNullable(bool $state = true): static
 	{
 		$this->returnNullable = $state;
 		return $this;
@@ -169,7 +161,7 @@ trait FunctionLike
 
 
 	/** @deprecated */
-	public function setNamespace(Nette\PhpGenerator\PhpNamespace $val = null): self
+	public function setNamespace(Nette\PhpGenerator\PhpNamespace $val = null): static
 	{
 		trigger_error(__METHOD__ . '() is deprecated', E_USER_DEPRECATED);
 		return $this;
