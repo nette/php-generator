@@ -35,7 +35,7 @@ Assert::same("'Hello'", $dumper->dump('Hello'));
 Assert::same('"\t\n\t"', $dumper->dump("\t\n\t"));
 Assert::same(
 	"'I\u{F1}t\u{EB}rn\u{E2}ti\u{F4}n\u{E0}liz\u{E6}ti\u{F8}n'",
-	$dumper->dump("I\u{F1}t\u{EB}rn\u{E2}ti\u{F4}n\u{E0}liz\u{E6}ti\u{F8}n") // Iñtërnâtiônàlizætiøn
+	$dumper->dump("I\u{F1}t\u{EB}rn\u{E2}ti\u{F4}n\u{E0}liz\u{E6}ti\u{F8}n"), // Iñtërnâtiônàlizætiøn
 );
 Assert::same('"\rHello \$"', $dumper->dump("\rHello $"));
 Assert::same("'He\\llo'", $dumper->dump('He\llo'));
@@ -61,12 +61,12 @@ Assert::same("[0 => 'a', -2 => 'b', 1 => 'c']", $dumper->dump(['a', -2 => 'b', 1
 // stdClass
 Assert::same(
 	"(object) [\n\t'a' => 1,\n\t'b' => 2,\n]",
-	$dumper->dump((object) ['a' => 1, 'b' => 2])
+	$dumper->dump((object) ['a' => 1, 'b' => 2]),
 );
 
 Assert::same(
 	"(object) [\n\t'a' => (object) [\n\t\t'b' => 2,\n\t],\n]",
-	$dumper->dump((object) ['a' => (object) ['b' => 2]])
+	$dumper->dump((object) ['a' => (object) ['b' => 2]]),
 );
 
 
@@ -82,7 +82,7 @@ class Test
 
 Assert::same(
 	"\\Nette\\PhpGenerator\\Dumper::createObject('Test', [\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n\t\"\\x00Test\\x00c\" => 3,\n])",
-	$dumper->dump(new Test)
+	$dumper->dump(new Test),
 );
 Assert::equal(new Test, eval('return ' . $dumper->dump(new Test) . ';'));
 
@@ -109,7 +109,7 @@ Assert::same(
 	PHP_VERSION_ID < 80100
 		? "\\Nette\\PhpGenerator\\Dumper::createObject('Test2', [\n\t\"\\x00Test2\\x00c\" => 4,\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n])"
 		: "\\Nette\\PhpGenerator\\Dumper::createObject('Test2', [\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n\t\"\\x00Test2\\x00c\" => 4,\n])",
-	$dumper->dump(new Test2)
+	$dumper->dump(new Test2),
 );
 Assert::equal(new Test2, eval('return ' . $dumper->dump(new Test2) . ';'));
 
@@ -127,14 +127,14 @@ Assert::same(
 	PHP_VERSION_ID < 80100
 		? "\\Closure::fromCallable('strlen')"
 		: 'strlen(...)',
-	$dumper->dump(Closure::fromCallable('strlen'))
+	$dumper->dump(Closure::fromCallable('strlen')),
 );
 
 Assert::same(
 	PHP_VERSION_ID < 80100
 		? "\\Closure::fromCallable(['Nette\\PhpGenerator\\ClassType', 'from'])"
 		: 'Nette\PhpGenerator\ClassType::from(...)',
-	$dumper->dump(Closure::fromCallable([Nette\PhpGenerator\ClassType::class, 'from']))
+	$dumper->dump(Closure::fromCallable([Nette\PhpGenerator\ClassType::class, 'from'])),
 );
 
 Assert::exception(function () {
@@ -175,11 +175,11 @@ class TestDateTime extends DateTime
 
 Assert::same(
 	"new \\DateTime('2016-06-22 20:52:43.123400', new \\DateTimeZone('Europe/Prague'))",
-	$dumper->dump(new DateTime('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague')))
+	$dumper->dump(new DateTime('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague'))),
 );
 Assert::same(
 	"new \\DateTimeImmutable('2016-06-22 20:52:43.123400', new \\DateTimeZone('Europe/Prague'))",
-	$dumper->dump(new DateTimeImmutable('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague')))
+	$dumper->dump(new DateTimeImmutable('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague'))),
 );
 same(
 	"\\Nette\\PhpGenerator\\Dumper::createObject('TestDateTime', [
@@ -187,5 +187,5 @@ same(
 	'timezone_type' => 3,
 	'timezone' => 'Europe/Prague',
 ])",
-	$dumper->dump(new TestDateTime('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague')))
+	$dumper->dump(new TestDateTime('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague'))),
 );

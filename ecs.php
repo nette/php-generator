@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 
 return function (Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator $containerConfigurator): void {
-	$containerConfigurator->import(PRESET_DIR . '/php71.php');
+	$containerConfigurator->import(PRESET_DIR . '/php80.php');
 
 	$parameters = $containerConfigurator->parameters();
 

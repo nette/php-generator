@@ -127,7 +127,7 @@ final class Dumper
 			return 'unserialize(' . $this->dumpString(serialize($var)) . ')';
 
 		} elseif ($var instanceof \UnitEnum) {
-			return '\\' . get_class($var) . '::' . $var->name;
+			return '\\' . $var::class . '::' . $var->name;
 
 		} elseif ($var instanceof \Closure) {
 			$inner = Nette\Utils\Callback::unwrap($var);
@@ -139,7 +139,7 @@ final class Dumper
 			throw new Nette\InvalidArgumentException('Cannot dump closure.');
 		}
 
-		$class = get_class($var);
+		$class = $var::class;
 		if ((new \ReflectionObject($var))->isAnonymous()) {
 			throw new Nette\InvalidArgumentException('Cannot dump anonymous class.');
 

@@ -55,5 +55,5 @@ same(
   1,
   ],
 ]",
-	$dumper->dump(['multi' => new Literal("[\n1,\n]\n")])
+	$dumper->dump(['multi' => new Literal("[\n1,\n]\n")]),
 );

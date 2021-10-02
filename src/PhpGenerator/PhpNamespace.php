@@ -165,7 +165,7 @@ final class PhpNamespace
 
 	public function simplifyType(string $type, string $of = self::NAME_NORMAL): string
 	{
-		return preg_replace_callback('~[\w\x7f-\xff\\\\]+~', function ($m) use ($of) { return $this->simplifyName($m[0], $of); }, $type);
+		return preg_replace_callback('~[\w\x7f-\xff\\\\]+~', fn($m) => $this->simplifyName($m[0], $of), $type);
 	}
 
 

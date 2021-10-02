@@ -81,7 +81,7 @@ class Printer
 			: $tmp;
 		$body = Helpers::simplifyTaggedNames($closure->getBody(), $this->namespace);
 
-		return self::printAttributes($closure->getAttributes(), true)
+		return self::printAttributes($closure->getAttributes(), inline: true)
 			. 'function '
 			. ($closure->getReturnReference() ? '&' : '')
 			. $this->printParameters($closure)
@@ -145,7 +145,7 @@ class Printer
 		$class->validate();
 		$resolver = $this->namespace
 			? [$namespace, 'simplifyType']
-			: function ($s) { return $s; };
+			: fn($s) => $s;
 
 		$traits = [];
 		foreach ($class->getTraitResolutions() as $trait) {
@@ -225,7 +225,7 @@ class Printer
 			. ($class->getImplements() ? 'implements ' . implode(', ', array_map($resolver, $class->getImplements())) . ' ' : '')
 			. ($class->getName() ? "\n" : '') . "{\n"
 			. ($members ? $this->indent(implode("\n", $members)) : '')
-			. '}'
+			. '}',
 		) . ($class->getName() ? "\n" : '');
 	}
 
@@ -273,7 +273,7 @@ class Printer
 			. ($file->getComment() ? "\n" . Helpers::formatDocComment($file->getComment() . "\n") : '')
 			. "\n"
 			. ($file->hasStrictTypes() ? "declare(strict_types=1);\n\n" : '')
-			. implode("\n\n", $namespaces)
+			. implode("\n\n", $namespaces),
 		) . "\n";
 	}
 
@@ -312,7 +312,7 @@ class Printer
 			$promoted = $param instanceof PromotedParameter ? $param : null;
 			$params[] =
 				($promoted ? Helpers::formatDocComment((string) $promoted->getComment()) : '')
-				. ($attrs = self::printAttributes($param->getAttributes(), true))
+				. ($attrs = self::printAttributes($param->getAttributes(), inline: true))
 				. ($promoted ?
 					($promoted->getVisibility() ?: 'public')
 					. ($promoted->isReadOnly() && $type ? ' readonly' : '')
@@ -372,7 +372,7 @@ class Printer
 		foreach ($attrs as $attr) {
 			$args = $this->dumper->format('...?:', $attr->getArguments());
 			$args = Helpers::simplifyTaggedNames($args, $this->namespace);
-			$items[] = $this->printType($attr->getName(), false) . ($args ? "($args)" : '');
+			$items[] = $this->printType($attr->getName(), nullable: false) . ($args ? "($args)" : '');
 		}
 		return $inline
 			? '#[' . implode(', ', $items) . '] '

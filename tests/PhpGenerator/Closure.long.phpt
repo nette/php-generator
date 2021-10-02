@@ -54,5 +54,5 @@ same(
 ) {
 	return null;
 }',
-	(string) $function
+	(string) $function,
 );
