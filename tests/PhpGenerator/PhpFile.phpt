@@ -32,9 +32,10 @@ Assert::same($namespaceFoo, $traitC->getNamespace());
 
 $classA
 	->addImplement('Foo\A')
-	->addTrait('Foo\C')
-	->addImplement('Bar\C')
-	->addTrait('Bar\D');
+	->addImplement('Bar\C');
+
+$classA->addTrait('Foo\C');
+$classA->addTrait('Bar\D');
 
 
 $namespaceBar = $file->addNamespace('Bar');
