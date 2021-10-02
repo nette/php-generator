@@ -574,7 +574,7 @@ $class = new Nette\PhpGenerator\ClassType('Task');
 $namespace->add($class);
 ```
 
-If the class already exists, it will be overwritten.
+If the class already exists, it throws exception.
 
 You can define use-statements:
 

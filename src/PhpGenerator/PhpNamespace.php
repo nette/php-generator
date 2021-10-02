@@ -242,7 +242,9 @@ final class PhpNamespace
 		}
 
 		$lower = strtolower($name);
-		if ($orig = array_change_key_case($this->aliases[self::NAME_NORMAL])[$lower] ?? null) {
+		if (isset($this->classes[$lower]) && $this->classes[$lower] !== $class) {
+			throw new Nette\InvalidStateException("Cannot add '$name', because it already exists.");
+		} elseif ($orig = array_change_key_case($this->aliases[self::NAME_NORMAL])[$lower] ?? null) {
 			throw new Nette\InvalidStateException("Name '$name' used already as alias for $orig.");
 		}
 
@@ -286,7 +288,9 @@ final class PhpNamespace
 	public function addFunction(string $name): GlobalFunction
 	{
 		$lower = strtolower($name);
-		if ($orig = array_change_key_case($this->aliases[self::NAME_FUNCTION])[$lower] ?? null) {
+		if (isset($this->functions[$lower])) {
+			throw new Nette\InvalidStateException("Cannot add '$name', because it already exists.");
+		} elseif ($orig = array_change_key_case($this->aliases[self::NAME_FUNCTION])[$lower] ?? null) {
 			throw new Nette\InvalidStateException("Name '$name' used already as alias for $orig.");
 		}
 
