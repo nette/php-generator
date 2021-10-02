@@ -22,3 +22,12 @@ Assert::same($namespace, $interfaceB->getNamespace());
 
 Assert::count(2, $namespace->getClasses());
 Assert::type(Nette\PhpGenerator\ClassType::class, $namespace->getClasses()['A']);
+
+Assert::exception(function () use ($namespace) {
+	$namespace->addClass('A');
+}, Nette\InvalidStateException::class, "Cannot add 'A', because it already exists.");
+
+Assert::exception(function () use ($namespace) {
+	$namespace->addFunction('f');
+	$namespace->addFunction('f');
+}, Nette\InvalidStateException::class, "Cannot add 'f', because it already exists.");
