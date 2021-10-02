@@ -26,5 +26,5 @@ function bar2()
 
 Assert::match(
 	"\$a = 10;\necho 123;",
-	$extractor->extractFunctionBody('NS\bar1')
+	$extractor->extractFunctionBody('NS\bar1'),
 );

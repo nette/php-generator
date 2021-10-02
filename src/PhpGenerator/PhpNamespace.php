@@ -122,7 +122,7 @@ final class PhpNamespace
 			$lower = strtolower($alias);
 			if (isset($aliases[$lower]) && strcasecmp($aliases[$lower], $name) !== 0) {
 				throw new InvalidStateException(
-					"Alias '$alias' used already for '{$aliases[$lower]}', cannot use for '$name'."
+					"Alias '$alias' used already for '{$aliases[$lower]}', cannot use for '$name'.",
 				);
 			} elseif (isset($used[$lower])) {
 				throw new Nette\InvalidStateException("Name '$alias' used already for '$this->name\\{$used[$lower]->getName()}'.");
@@ -154,8 +154,8 @@ final class PhpNamespace
 		asort($this->aliases[$of]);
 		return array_filter(
 			$this->aliases[$of],
-			function ($name, $alias) { return strcasecmp(($this->name ? $this->name . '\\' : '') . $alias, $name); },
-			ARRAY_FILTER_USE_BOTH
+			fn($name, $alias) => strcasecmp(($this->name ? $this->name . '\\' : '') . $alias, $name),
+			ARRAY_FILTER_USE_BOTH,
 		);
 	}
 
@@ -190,7 +190,7 @@ final class PhpNamespace
 
 	public function simplifyType(string $type, string $of = self::NAME_NORMAL): string
 	{
-		return preg_replace_callback('~[\w\x7f-\xff\\\\]+~', function ($m) use ($of) { return $this->simplifyName($m[0], $of); }, $type);
+		return preg_replace_callback('~[\w\x7f-\xff\\\\]+~', fn($m) => $this->simplifyName($m[0], $of), $type);
 	}
 
 

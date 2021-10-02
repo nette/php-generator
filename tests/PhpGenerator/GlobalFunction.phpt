@@ -23,7 +23,7 @@ function test()
 	return $a + $b;
 }
 ',
-	(string) $function
+	(string) $function,
 );
 
 
@@ -44,20 +44,19 @@ function func(stdClass $a, $b = null)
 {
 }
 ',
-	(string) $function
+	(string) $function,
 );
 
 
 $function = GlobalFunction::withBodyFrom('func');
 same(<<<'XX'
-/**
- * global
- */
-function func(stdClass $a, $b = null)
-{
-	echo \sprintf('hello, %s', 'world');
-	return 1;
-}
+	/**
+	 * global
+	 */
+	function func(stdClass $a, $b = null)
+	{
+		echo \sprintf('hello, %s', 'world');
+		return 1;
+	}
 
-XX
-, (string) $function);
+	XX, (string) $function);

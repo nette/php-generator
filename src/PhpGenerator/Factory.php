@@ -27,7 +27,7 @@ final class Factory
 	public function fromClassReflection(
 		\ReflectionClass $from,
 		bool $withBodies = false,
-		bool $materializeTraits = true
+		bool $materializeTraits = true,
 	): ClassType {
 		if ($withBodies && $from->isAnonymous()) {
 			throw new Nette\NotSupportedException('The $withBodies parameter cannot be used for anonymous functions.');
@@ -50,9 +50,7 @@ final class Factory
 
 		$ifaces = $from->getInterfaceNames();
 		foreach ($ifaces as $iface) {
-			$ifaces = array_filter($ifaces, function (string $item) use ($iface): bool {
-				return !is_subclass_of($iface, $item);
-			});
+			$ifaces = array_filter($ifaces, fn(string $item): bool => !is_subclass_of($iface, $item));
 		}
 
 		if ($from->isInterface()) {
@@ -99,7 +97,7 @@ final class Factory
 				if ($withBodies) {
 					$realMethodClass = $realMethod->getDeclaringClass();
 					$bodies = &$this->bodyCache[$realMethodClass->name];
-					$bodies = $bodies ?? $this->getExtractor($realMethodClass)->extractMethodBodies($realMethodClass->name);
+					$bodies ??= $this->getExtractor($realMethodClass)->extractMethodBodies($realMethodClass->name);
 					if (isset($bodies[$realMethod->name])) {
 						$m->setBody($bodies[$realMethod->name]);
 					}
@@ -298,18 +296,14 @@ final class Factory
 
 	public function fromObject(object $obj): Literal
 	{
-		return new Literal('new ' . get_class($obj) . '(/* unknown */)');
+		return new Literal('new ' . $obj::class . '(/* unknown */)');
 	}
 
 
 	public function fromClassCode(string $code): ClassType
 	{
 		$classes = $this->fromCode($code)->getClasses();
-		if (!$classes) {
-			throw new Nette\InvalidStateException('The code does not contain any class.');
-		}
-
-		return reset($classes);
+		return reset($classes) ?: throw new Nette\InvalidStateException('The code does not contain any class.');
 	}
 
 

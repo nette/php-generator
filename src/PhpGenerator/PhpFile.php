@@ -77,7 +77,7 @@ final class PhpFile
 			$res = $this->namespaces[$namespace->getName()] = $namespace;
 
 		} elseif (is_string($namespace)) {
-			$res = $this->namespaces[$namespace] = $this->namespaces[$namespace] ?? new PhpNamespace($namespace);
+			$res = $this->namespaces[$namespace] ??= new PhpNamespace($namespace);
 
 		} else {
 			throw new Nette\InvalidArgumentException('Argument must be string|PhpNamespace.');

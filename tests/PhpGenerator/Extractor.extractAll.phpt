@@ -30,58 +30,55 @@ sameFile(__DIR__ . '/expected/Extractor.traits.expect', (string) $file);
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/bodies.php')))->extractAll();
 sameFile(__DIR__ . '/expected/Extractor.bodies.expect', (string) $file);
 
-$file = (new Extractor(
-	<<<'XX'
-<?php
-class Class1
-{
-	public function foo()
+$file = (new Extractor(<<<'XX'
+	<?php
+	class Class1
 	{
-		new class {
-			function bar() {
-			}
-		};
+		public function foo()
+		{
+			new class {
+				function bar() {
+				}
+			};
+		}
 	}
-}
 
-function () {};
+	function () {};
 
-/** doc */
-function foo(A $a): B|C
-{
-	function bar()
+	/** doc */
+	function foo(A $a): B|C
 	{
+		function bar()
+		{
+		}
 	}
-}
 
-XX
-))->extractAll();
+	XX))->extractAll();
 Assert::type(Nette\PhpGenerator\PhpFile::class, $file);
 Assert::match(<<<'XX'
-<?php
+	<?php
 
-class Class1
-{
-	public function foo()
+	class Class1
 	{
-		new class {
-			function bar() {
-			}
-		};
+		public function foo()
+		{
+			new class {
+				function bar() {
+				}
+			};
+		}
 	}
-}
 
-/**
- * doc
- */
-function foo(A $a): B|C
-{
-	function bar()
+	/**
+	 * doc
+	 */
+	function foo(A $a): B|C
 	{
+		function bar()
+		{
+		}
 	}
-}
-XX
-, (string) $file);
+	XX, (string) $file);
 
 
 Assert::exception(function () {

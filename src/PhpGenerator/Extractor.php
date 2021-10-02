@@ -61,10 +61,11 @@ final class Extractor
 	public function extractMethodBodies(string $className): array
 	{
 		$nodeFinder = new NodeFinder;
-		$classNode = $nodeFinder->findFirst($this->statements, function (Node $node) use ($className) {
-			return ($node instanceof Node\Stmt\Class_ || $node instanceof Node\Stmt\Trait_)
-				&& $node->namespacedName->toString() === $className;
-		});
+		$classNode = $nodeFinder->findFirst(
+			$this->statements,
+			fn(Node $node) => ($node instanceof Node\Stmt\Class_ || $node instanceof Node\Stmt\Trait_)
+				&& $node->namespacedName->toString() === $className,
+		);
 
 		$res = [];
 		foreach ($nodeFinder->findInstanceOf($classNode, Node\Stmt\ClassMethod::class) as $methodNode) {
@@ -81,9 +82,10 @@ final class Extractor
 	public function extractFunctionBody(string $name): ?string
 	{
 		/** @var Node\Stmt\Function_ $functionNode */
-		$functionNode = (new NodeFinder)->findFirst($this->statements, function (Node $node) use ($name) {
-			return $node instanceof Node\Stmt\Function_ && $node->namespacedName->toString() === $name;
-		});
+		$functionNode = (new NodeFinder)->findFirst(
+			$this->statements,
+			fn(Node $node) => $node instanceof Node\Stmt\Function_ && $node->namespacedName->toString() === $name,
+		);
 
 		return $this->getReformattedContents($functionNode->stmts, 1);
 	}
@@ -105,9 +107,11 @@ final class Extractor
 		(new NodeFinder)->find($statements, function (Node $node) use (&$replacements, $start) {
 			if ($node instanceof Node\Name\FullyQualified) {
 				if ($node->getAttribute('originalName') instanceof Node\Name) {
-					$of = $node->getAttribute('parent') instanceof Node\Expr\ConstFetch
-							? PhpNamespace::NAME_CONSTANT
-							: ($node->getAttribute('parent') instanceof Node\Expr\FuncCall ? PhpNamespace::NAME_FUNCTION : PhpNamespace::NAME_NORMAL);
+					$of = match (true) {
+						$node->getAttribute('parent') instanceof Node\Expr\ConstFetch => PhpNamespace::NAME_CONSTANT,
+						$node->getAttribute('parent') instanceof Node\Expr\FuncCall => PhpNamespace::NAME_FUNCTION,
+						default => PhpNamespace::NAME_NORMAL,
+					};
 					$replacements[] = [
 						$node->getStartFilePos() - $start,
 						$node->getEndFilePos() - $start,
@@ -117,7 +121,7 @@ final class Extractor
 			} elseif ($node instanceof Node\Scalar\String_ || $node instanceof Node\Scalar\EncapsedStringPart) {
 				// multi-line strings => singleline
 				$token = $this->getNodeContents($node);
-				if (strpos($token, "\n") !== false) {
+				if (str_contains($token, "\n")) {
 					$quote = $node instanceof Node\Scalar\String_ ? '"' : '';
 					$replacements[] = [
 						$node->getStartFilePos() - $start,
@@ -147,9 +151,7 @@ final class Extractor
 
 	private function performReplacements(string $s, array $replacements): string
 	{
-		usort($replacements, function ($a, $b) { // sort by position in file
-			return $b[0] <=> $a[0];
-		});
+		usort($replacements, fn($a, $b) => $b[0] <=> $a[0]);
 
 		foreach ($replacements as [$start, $end, $replacement]) {
 			$s = substr_replace($s, $replacement, $start, $end - $start + 1);
@@ -171,38 +173,25 @@ final class Extractor
 		};
 
 		$visitor->callback = function (Node $node) use (&$class, &$namespace, $phpFile) {
-			if ($node instanceof Node\Stmt\DeclareDeclare && $node->key->name === 'strict_types') {
-				$phpFile->setStrictTypes((bool) $node->value->value);
-			} elseif ($node instanceof Node\Stmt\Namespace_) {
-				$namespace = $node->name ? $node->name->toString() : '';
-			} elseif ($node instanceof Node\Stmt\Use_) {
-				$this->addUseToNamespace($node, $phpFile->addNamespace($namespace));
-			} elseif ($node instanceof Node\Stmt\Class_) {
-				if (!$node->name) {
-					return PhpParser\NodeTraverser::DONT_TRAVERSE_CHILDREN;
-				}
-
-				$class = $this->addClassToFile($phpFile, $node);
-			} elseif ($node instanceof Node\Stmt\Interface_) {
-				$class = $this->addInterfaceToFile($phpFile, $node);
-			} elseif ($node instanceof Node\Stmt\Trait_) {
-				$class = $this->addTraitToFile($phpFile, $node);
-			} elseif ($node instanceof Node\Stmt\Enum_) {
-				$class = $this->addEnumToFile($phpFile, $node);
-			} elseif ($node instanceof Node\Stmt\Function_) {
-				$this->addFunctionToFile($phpFile, $node);
-			} elseif ($node instanceof Node\Stmt\TraitUse) {
-				$this->addTraitToClass($class, $node);
-			} elseif ($node instanceof Node\Stmt\Property) {
-				$this->addPropertyToClass($class, $node);
-			} elseif ($node instanceof Node\Stmt\ClassMethod) {
-				$this->addMethodToClass($class, $node);
-			} elseif ($node instanceof Node\Stmt\ClassConst) {
-				$this->addConstantToClass($class, $node);
-			} elseif ($node instanceof Node\Stmt\EnumCase) {
-				$this->addEnumCaseToClass($class, $node);
+			if ($node instanceof Node\Stmt\Class_ && !$node->name) {
+				return PhpParser\NodeTraverser::DONT_TRAVERSE_CHILDREN;
 			}
-
+			match (true) {
+				$node instanceof Node\Stmt\DeclareDeclare && $node->key->name === 'strict_types' => $phpFile->setStrictTypes((bool) $node->value->value),
+				$node instanceof Node\Stmt\Namespace_ => $namespace = $node->name?->toString(),
+				$node instanceof Node\Stmt\Use_ => $this->addUseToNamespace($node, $phpFile->addNamespace($namespace)),
+				$node instanceof Node\Stmt\Class_ => $class = $this->addClassToFile($phpFile, $node),
+				$node instanceof Node\Stmt\Interface_ => $class = $this->addInterfaceToFile($phpFile, $node),
+				$node instanceof Node\Stmt\Trait_ => $class = $this->addTraitToFile($phpFile, $node),
+				$node instanceof Node\Stmt\Enum_ => $class = $this->addEnumToFile($phpFile, $node),
+				$node instanceof Node\Stmt\Function_ => $this->addFunctionToFile($phpFile, $node),
+				$node instanceof Node\Stmt\TraitUse => $this->addTraitToClass($class, $node),
+				$node instanceof Node\Stmt\Property => $this->addPropertyToClass($class, $node),
+				$node instanceof Node\Stmt\ClassMethod => $this->addMethodToClass($class, $node),
+				$node instanceof Node\Stmt\ClassConst => $this->addConstantToClass($class, $node),
+				$node instanceof Node\Stmt\EnumCase => $this->addEnumCaseToClass($class, $node),
+				default => null,
+			};
 			if ($node instanceof Node\FunctionLike) {
 				return PhpParser\NodeTraverser::DONT_TRAVERSE_CHILDREN;
 			}
@@ -227,7 +216,7 @@ final class Extractor
 			$node::TYPE_CONSTANT => PhpNamespace::NAME_CONSTANT,
 		][$node->type];
 		foreach ($node->uses as $use) {
-			$namespace->addUse($use->name->toString(), $use->alias ? $use->alias->toString() : null, $of);
+			$namespace->addUse($use->name->toString(), $use->alias?->toString(), $of);
 		}
 	}
 
@@ -360,7 +349,7 @@ final class Extractor
 
 	private function addEnumCaseToClass(ClassType $class, Node\Stmt\EnumCase $node)
 	{
-		$case = $class->addCase($node->name->toString(), $node->expr ? $node->expr->value : null);
+		$case = $class->addCase($node->name->toString(), $node->expr?->value);
 		$this->addCommentAndAttributes($case, $node);
 	}
 

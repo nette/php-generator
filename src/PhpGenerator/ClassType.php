@@ -112,7 +112,7 @@ final class ClassType
 	public static function withBodiesFrom($class): self
 	{
 		return (new Factory)
-			->fromClassReflection(new \ReflectionClass($class), true);
+			->fromClassReflection(new \ReflectionClass($class), withBodies: true);
 	}
 
 
@@ -368,9 +368,7 @@ final class ClassType
 			return $trait;
 		}
 
-		array_map(function ($item) use ($trait) {
-			$trait->addResolution($item);
-		}, $resolutions);
+		array_map(fn($item) => $trait->addResolution($item), $resolutions);
 		return $this;
 	}
 
@@ -389,25 +387,14 @@ final class ClassType
 	 */
 	public function addMember($member): self
 	{
-		if ($member instanceof Method) {
-			$this->methods[strtolower($member->getName())] = $member;
-
-		} elseif ($member instanceof Property) {
-			$this->properties[$member->getName()] = $member;
-
-		} elseif ($member instanceof Constant) {
-			$this->consts[$member->getName()] = $member;
-
-		} elseif ($member instanceof EnumCase) {
-			$this->cases[$member->getName()] = $member;
-
-		} elseif ($member instanceof TraitUse) {
-			$this->traits[$member->getName()] = $member;
-
-		} else {
-			throw new Nette\InvalidArgumentException('Argument must be Method|Property|Constant|EnumCase|TraitUse.');
-		}
-
+		match (true) {
+			$member instanceof Method => $this->methods[strtolower($member->getName())] = $member,
+			$member instanceof Property => $this->properties[$member->getName()] = $member,
+			$member instanceof Constant => $this->consts[$member->getName()] = $member,
+			$member instanceof EnumCase => $this->cases[$member->getName()] = $member,
+			$member instanceof TraitUse => $this->traits[$member->getName()] = $member,
+			default => throw new Nette\InvalidArgumentException('Argument must be Method|Property|Constant|EnumCase|TraitUse.'),
+		};
 		return $this;
 	}
 
@@ -637,7 +624,7 @@ final class ClassType
 	private function validateNames(array $names): void
 	{
 		foreach ($names as $name) {
-			if (!Helpers::isNamespaceIdentifier($name, true)) {
+			if (!Helpers::isNamespaceIdentifier($name, allowLeadingSlash: true)) {
 				throw new Nette\InvalidArgumentException("Value '$name' is not valid class name.");
 			}
 		}
@@ -646,7 +633,7 @@ final class ClassType
 
 	public function __clone()
 	{
-		$clone = function ($item) { return clone $item; };
+		$clone = fn($item) => clone $item;
 		$this->cases = array_map($clone, $this->cases);
 		$this->consts = array_map($clone, $this->consts);
 		$this->properties = array_map($clone, $this->properties);

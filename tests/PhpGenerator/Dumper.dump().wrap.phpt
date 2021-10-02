@@ -27,7 +27,7 @@ same(
 	$dumper->dump([
 		'a' => [1, 2, 3],
 		'aaaaaaaaa' => [1, 2, 3],
-	])
+	]),
 );
 
 same(
@@ -40,7 +40,7 @@ same(
 	$dumper->dump([
 		'single' => new Literal('1 + 2'),
 		'multi' => new Literal("[\n\t1,\n]\n"),
-	])
+	]),
 );
 
 same(
@@ -55,7 +55,7 @@ same(
 	$dumper->dump((object) [
 		'a' => [1, 2, 3],
 		'aaaaaaaaa' => [1, 2, 3],
-	])
+	]),
 );
 
 

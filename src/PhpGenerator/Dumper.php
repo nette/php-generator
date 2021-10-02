@@ -77,12 +77,10 @@ final class Dumper
 		$utf8 = preg_match('##u', $s);
 		$escaped = preg_replace_callback(
 			$utf8 ? '#[\p{C}\\\\]#u' : '#[\x00-\x1F\x7F-\xFF\\\\]#',
-			function ($m) use ($special) {
-				return $special[$m[0]] ?? (strlen($m[0]) === 1
+			fn($m) => $special[$m[0]] ?? (strlen($m[0]) === 1
 					? '\x' . str_pad(strtoupper(dechex(ord($m[0]))), 2, '0', STR_PAD_LEFT) . ''
-					: '\u{' . strtoupper(ltrim(dechex(self::utf8Ord($m[0])), '0')) . '}');
-			},
-			$s
+					: '\u{' . strtoupper(ltrim(dechex(self::utf8Ord($m[0])), '0')) . '}'),
+			$s,
 		);
 		return $s === str_replace('\\\\', '\\', $escaped)
 			? "'" . preg_replace('#\'|\\\\(?=[\'\\\\]|$)#D', '\\\\$0', $s) . "'"
@@ -93,15 +91,12 @@ final class Dumper
 	private static function utf8Ord(string $c): int
 	{
 		$ord0 = ord($c[0]);
-		if ($ord0 < 0x80) {
-			return $ord0;
-		} elseif ($ord0 < 0xE0) {
-			return ($ord0 << 6) + ord($c[1]) - 0x3080;
-		} elseif ($ord0 < 0xF0) {
-			return ($ord0 << 12) + (ord($c[1]) << 6) + ord($c[2]) - 0xE2080;
-		} else {
-			return ($ord0 << 18) + (ord($c[1]) << 12) + (ord($c[2]) << 6) + ord($c[3]) - 0x3C82080;
-		}
+		return match (true) {
+			$ord0 < 0x80 => $ord0,
+			$ord0 < 0xE0 => ($ord0 << 6) + ord($c[1]) - 0x3080,
+			$ord0 < 0xF0 => ($ord0 << 12) + (ord($c[1]) << 6) + ord($c[2]) - 0xE2080,
+			default => ($ord0 << 18) + (ord($c[1]) << 12) + (ord($c[2]) << 6) + ord($c[3]) - 0x3C82080,
+		};
 	}
 
 
@@ -146,7 +141,7 @@ final class Dumper
 			return 'unserialize(' . $this->dumpString(serialize($var)) . ')';
 
 		} elseif ($var instanceof \UnitEnum) {
-			return '\\' . get_class($var) . '::' . $var->name;
+			return '\\' . $var::class . '::' . $var->name;
 
 		} elseif ($var instanceof \Closure) {
 			$inner = Nette\Utils\Callback::unwrap($var);
@@ -159,7 +154,7 @@ final class Dumper
 			throw new Nette\InvalidArgumentException('Cannot dump closure.');
 		}
 
-		$class = get_class($var);
+		$class = $var::class;
 		if ((new \ReflectionObject($var))->isAnonymous()) {
 			throw new Nette\InvalidArgumentException('Cannot dump anonymous class.');
 
