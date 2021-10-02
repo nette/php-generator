@@ -48,7 +48,7 @@ namespace
 	return new Foo();
 }
 ',
-		(string) $method
+		(string) $method,
 	);
 
 }

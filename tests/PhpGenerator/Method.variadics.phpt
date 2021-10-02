@@ -45,7 +45,7 @@ same(
 	return 42;
 }
 ',
-	(string) $method
+	(string) $method,
 );
 
 
@@ -61,7 +61,7 @@ same(
 	return 42;
 }
 ',
-	(string) $method
+	(string) $method,
 );
 
 
@@ -79,7 +79,7 @@ same(
 	return 42;
 }
 ',
-	(string) $method
+	(string) $method,
 );
 
 
@@ -95,7 +95,7 @@ same(
 	return 42;
 }
 ',
-	(string) $method
+	(string) $method,
 );
 
 
@@ -111,5 +111,5 @@ same(
 	return 42;
 }
 ',
-	(string) $method
+	(string) $method,
 );

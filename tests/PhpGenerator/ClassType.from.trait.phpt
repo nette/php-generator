@@ -20,29 +20,21 @@ $classes = [
 	Class5::class,
 ];
 
-$res = array_map(function ($class) {
-	return ClassType::from($class);
-}, $classes);
+$res = array_map(fn($class) => ClassType::from($class), $classes);
 
 sameFile(__DIR__ . '/expected/ClassType.from.trait-materialize.expect', implode("\n", $res));
 
 
-$res = array_map(function ($class) {
-	return ClassType::withBodiesFrom($class);
-}, $classes);
+$res = array_map(fn($class) => ClassType::withBodiesFrom($class), $classes);
 
 sameFile(__DIR__ . '/expected/ClassType.from.trait-materialize.bodies.expect', implode("\n", $res));
 
 
-$res = array_map(function ($class) {
-	return ClassType::from($class, /*withBodies:*/ false, /*materializeTraits:*/ false);
-}, $classes);
+$res = array_map(fn($class) => ClassType::from($class, materializeTraits: false), $classes);
 
 sameFile(__DIR__ . '/expected/ClassType.from.trait-use.expect', implode("\n", $res));
 
 
-$res = array_map(function ($class) {
-	return ClassType::from($class, /*withBodies:*/ true, /*materializeTraits:*/ false);
-}, $classes);
+$res = array_map(fn($class) => ClassType::from($class, withBodies: true, materializeTraits: false), $classes);
 
 sameFile(__DIR__ . '/expected/ClassType.from.trait-use.bodies.expect', implode("\n", $res));

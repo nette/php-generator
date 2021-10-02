@@ -32,5 +32,5 @@ same(
 	return null;
 }
 ',
-	(string) $method
+	(string) $method,
 );
