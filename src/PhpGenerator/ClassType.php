@@ -339,14 +339,13 @@ final class ClassType
 	}
 
 
-	public function addTrait(string $name, array|bool $resolutions = []): static|TraitUse
+	public function addTrait(string $name, array|bool $deprecatedParam = null): TraitUse
 	{
-		$this->traits[$name] = $trait = new TraitUse($name);
-		if ($resolutions === true) {
-			return $trait;
+		$this->traits[$name] = $trait = new TraitUse($name, $this);
+		if (is_array($deprecatedParam)) {
+			array_map(fn($item) => $trait->addResolution($item), $deprecatedParam);
 		}
-		array_map(fn($item) => $trait->addResolution($item), $resolutions);
-		return $this;
+		return $trait;
 	}
 
 

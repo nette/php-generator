@@ -314,7 +314,7 @@ Using Traits
 ```php
 $class = new Nette\PhpGenerator\ClassType('Demo');
 $class->addTrait('SmartObject');
-$class->addTrait('MyTrait', true)
+$class->addTrait('MyTrait')
 	->addResolution('sayHello as protected')
 	->addComment('@use MyTrait<Foo>');
 echo $class;
