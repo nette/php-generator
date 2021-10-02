@@ -35,7 +35,8 @@ $class
 	->addComment('@property-read Nette\Forms\Form $form');
 
 $class->addTrait('ObjectTrait');
-$class->addTrait('AnotherTrait', ['sayHello as protected']);
+$class->addTrait('AnotherTrait')
+	->addResolution('sayHello as protected');
 
 $class->addConstant('ROLE', 'admin');
 $class->addConstant('ACTIVE', false)
@@ -141,7 +142,7 @@ $class->addImplement('foo');
 $class->removeImplement('foo');
 
 $class
-	->addTrait('ThirdTrait', true)
+	->addTrait('ThirdTrait')
 		->addResolution('a as private foo')
 		->addResolution('b as private bar')
 		->addComment('@use Foo');

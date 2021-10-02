@@ -18,9 +18,10 @@ $class = new ClassType('Example');
 $class
 	->setExtends('\ParentClass')
 	->addImplement('One')
-	->addImplement('\Two')
-	->addTrait('Three')
-	->addTrait('\Four');
+	->addImplement('\Two');
+
+$class->addTrait('Three');
+$class->addTrait('\Four');
 
 $class->addMethod('one')
 	->setReturnType('One');
@@ -45,9 +46,10 @@ $class = new ClassType('Example', new PhpNamespace(''));
 $class
 	->setExtends('\ParentClass')
 	->addImplement('One')
-	->addImplement('\Two')
-	->addTrait('Three')
-	->addTrait('\Four');
+	->addImplement('\Two');
+
+$class->addTrait('Three');
+$class->addTrait('\Four');
 
 $class->addMethod('one')
 	->setReturnType('One');

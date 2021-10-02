@@ -20,8 +20,9 @@ $interfaceB = $namespace->addInterface('B');
 $classA
 	->addImplement('Foo\A')
 	->addImplement('Bar\C')
-	->addTrait('Bar\D')
 	->addAttribute('Foo\A');
+
+$classA->addTrait('Bar\D');
 
 $method = $classA->addMethod('test');
 $method->addAttribute('Foo\A');
