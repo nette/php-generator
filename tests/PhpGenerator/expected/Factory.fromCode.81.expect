@@ -1,4 +1,10 @@
-#[Attr(new Abc\Attr(/* unknown */))]
+<?php
+
+declare(strict_types=1);
+
+namespace Abc;
+
+#[Attr(new Attr(max: 6))]
 class Class11
 {
 	final public const FOO = 10;
@@ -12,7 +18,12 @@ class Class11
 	}
 
 
-	public function bar($c = new stdClass(/* unknown */))
+	public function bar($c = new \stdClass)
 	{
 	}
+}
+
+#[\Attribute]
+class Attr
+{
 }

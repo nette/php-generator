@@ -225,6 +225,8 @@ final class Factory
 					$parts[0] = Helpers::tagName($parts[0]);
 				}
 				$param->setDefaultValue(new Literal(implode('::', $parts)));
+			} elseif (is_object($from->getDefaultValue())) {
+				$param->setDefaultValue($this->fromObject($from->getDefaultValue()));
 			} else {
 				$param->setDefaultValue($from->getDefaultValue());
 			}
@@ -285,6 +287,12 @@ final class Factory
 	}
 
 
+	public function fromObject(object $obj): Literal
+	{
+		return new Literal('new ' . get_class($obj) . '(/* unknown */)');
+	}
+
+
 	public function fromClassCode(string $code): ClassType
 	{
 		$classes = $this->fromCode($code)->getClasses();
@@ -308,7 +316,13 @@ final class Factory
 			return [];
 		}
 		return array_map(function ($attr) {
-			return new Attribute($attr->getName(), $attr->getArguments());
+			$args = $attr->getArguments();
+			foreach ($args as &$arg) {
+				if (is_object($arg)) {
+					$arg = $this->fromObject($arg);
+				}
+			}
+			return new Attribute($attr->getName(), $args);
 		}, $from->getAttributes());
 	}
 

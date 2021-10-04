@@ -18,8 +18,8 @@ sameFile(__DIR__ . '/expected/Factory.fromCode.74.expect', (string) $file);
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.80.php')))->extractAll();
 sameFile(__DIR__ . '/expected/Factory.fromCode.80.expect', (string) $file);
 
-//$file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.81.php')))->extractAll();
-//sameFile(__DIR__ . '/expected/Factory.fromCode.81.expect', (string) $file);
+$file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.81.php')))->extractAll();
+sameFile(__DIR__ . '/expected/Factory.fromCode.81.expect', (string) $file);
 
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/enum.php')))->extractAll();
 sameFile(__DIR__ . '/expected/Factory.fromCode.enum.expect', (string) $file);
