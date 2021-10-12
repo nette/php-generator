@@ -147,19 +147,11 @@ final class Extractor
 	private function performReplacements(string $s, array $replacements): string
 	{
 		usort($replacements, function ($a, $b) { // sort by position in file
-			return $a[0] <=> $b[0];
+			return $b[0] <=> $a[0];
 		});
 
-		$correctiveOffset = 0;
 		foreach ($replacements as [$start, $end, $replacement]) {
-			$replacingStringLength = $end - $start + 1;
-			$s = substr_replace(
-				$s,
-				$replacement,
-				$correctiveOffset + $start,
-				$replacingStringLength
-			);
-			$correctiveOffset += strlen($replacement) - $replacingStringLength;
+			$s = substr_replace($s, $replacement, $start, $end - $start + 1);
 		}
 		return $s;
 	}
