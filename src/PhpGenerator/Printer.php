@@ -281,11 +281,9 @@ class Printer
 		$name = $namespace->getName();
 		$uses = [];
 		foreach ($namespace->getUses() as $alias => $original) {
-			if ($original !== ($name ? $name . '\\' . $alias : $alias)) {
-				$uses[] = $alias === $original || substr($original, -(strlen($alias) + 1)) === '\\' . $alias
-					? "use $original;"
-					: "use $original as $alias;";
-			}
+			$uses[] = Helpers::extractShortName($original) === $alias
+				? "use $original;"
+				: "use $original as $alias;";
 		}
 		return implode("\n", $uses);
 	}

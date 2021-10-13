@@ -114,7 +114,7 @@ Assert::same(['Baz\\f2', 'f1'], array_keys($file->getFunctions()));
 
 
 $file = new PhpFile;
-$file->addClass('A');
+$file->addClass('CA');
 $file->addUse('A')
 	->addUse('B', 'C');
 

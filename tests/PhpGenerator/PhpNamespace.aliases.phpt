@@ -44,7 +44,6 @@ $namespace->addUse('Foo');
 Assert::same('B', $namespace->simplifyName('Foo\B'));
 
 $namespace->addUse('Bar\C');
-Assert::same(['C' => 'Bar\C', 'Foo' => 'Foo'], $namespace->getUses());
 Assert::same('C', $namespace->simplifyName('Foo\C'));
 
 Assert::same('\Bar', $namespace->simplifyName('Bar'));
@@ -61,14 +60,14 @@ $namespace->addUse('Bar\C');
 
 Assert::exception(function () use ($namespace) {
 	$namespace->addTrait('C');
-}, Nette\InvalidStateException::class, "Alias 'C' used already for 'Bar\\C', cannot use for 'Foo\\C'.");
+}, Nette\InvalidStateException::class, "Name 'C' used already as alias for Bar\\C.");
 
 $namespace->addClass('B');
 Assert::exception(function () use ($namespace) {
 	$namespace->addUse('Lorem\B', 'B');
-}, Nette\InvalidStateException::class, "Alias 'B' used already for 'Foo\\B', cannot use for 'Lorem\\B'.");
+}, Nette\InvalidStateException::class, "Name 'B' used already for 'Foo\\B'.");
 
-Assert::same(['C' => 'Bar\\C', 'B' => 'Foo\\B'], $namespace->getUses());
+Assert::same(['C' => 'Bar\\C'], $namespace->getUses());
 
 
 // alias generation
@@ -80,9 +79,8 @@ Assert::same('C1', $namespace->simplifyName('Bar\C'));
 
 $namespace = new PhpNamespace('');
 $namespace->addUse('Bar\C');
-Assert::exception(function () use ($namespace) {
-	$namespace->addUse('C');
-}, Nette\InvalidStateException::class, "Alias 'C' used already for 'Bar\\C', cannot use for 'C'.");
+$namespace->addUse('C');
+Assert::same('C1', $namespace->simplifyName('C'));
 
 $namespace = new PhpNamespace('');
 $namespace->addUse('A');
@@ -96,9 +94,8 @@ Assert::same('C', $namespace->simplifyName('C'));
 $namespace->addUse('Bar\C');
 Assert::same('C1', $namespace->simplifyName('Bar\C'));
 Assert::same('C', $namespace->simplifyName('Foo\C'));
-Assert::exception(function () use ($namespace) {
-	$namespace->addUse('Foo\C');
-}, Nette\InvalidStateException::class, "Alias 'C' used already for 'C', cannot use for 'Foo\\C'.");
+$namespace->addUse('Foo\C');
+Assert::same('C', $namespace->simplifyName('Foo\C'));
 
 $namespace = new PhpNamespace('Foo');
 $namespace->addUse('Bar\C');

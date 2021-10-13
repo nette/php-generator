@@ -1,7 +1,8 @@
 <?php
 
+use A;
 use B as C;
 
-class A
+class CA
 {
 }

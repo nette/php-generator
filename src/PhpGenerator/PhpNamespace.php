@@ -102,25 +102,23 @@ final class PhpNamespace
 		}
 
 		$name = ltrim($name, '\\');
-		if ($alias === null && $this->name === Helpers::extractNamespace($name)) {
-			$alias = Helpers::extractShortName($name);
-		}
 		if ($alias === null) {
 			$base = Helpers::extractShortName($name);
 			$counter = null;
 			do {
 				$alias = $base . $counter;
 				$counter++;
-			} while (isset($this->aliases[$alias]) && $this->aliases[$alias] !== $name);
+			} while ((isset($this->aliases[$alias]) && $this->aliases[$alias] !== $name) || isset($this->classes[$alias]));
 
 		} elseif (isset($this->aliases[$alias]) && $this->aliases[$alias] !== $name) {
 			throw new InvalidStateException(
 				"Alias '$alias' used already for '{$this->aliases[$alias]}', cannot use for '$name'."
 			);
+		} elseif (isset($this->classes[$alias])) {
+			throw new Nette\InvalidStateException("Name '$alias' used already for '$this->name\\{$this->classes[$alias]->getName()}'.");
 		}
 
 		$this->aliases[$alias] = $name;
-		asort($this->aliases);
 		return $this;
 	}
 
@@ -128,6 +126,7 @@ final class PhpNamespace
 	/** @return string[] */
 	public function getUses(): array
 	{
+		asort($this->aliases);
 		return $this->aliases;
 	}
 
@@ -175,8 +174,9 @@ final class PhpNamespace
 		$name = $class->getName();
 		if ($name === null) {
 			throw new Nette\InvalidArgumentException('Class does not have a name.');
+		} elseif ($orig = $this->aliases[$name] ?? null) {
+			throw new Nette\InvalidStateException("Name '$name' used already as alias for $orig.");
 		}
-		$this->addUse($this->name . '\\' . $name);
 		$this->classes[$name] = $class;
 		return $this;
 	}

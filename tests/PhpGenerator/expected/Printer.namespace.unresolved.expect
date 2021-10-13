@@ -1,6 +1,7 @@
 namespace Foo;
 
 use Bar\C;
+use Foo\D;
 use Foo\D as E;
 
 /**
