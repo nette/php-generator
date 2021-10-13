@@ -16,6 +16,7 @@ Assert::exception(function () {
 
 
 $class = (new ClassType('Example'))
+	->addMember($method = new Nette\PhpGenerator\Method('GETHANDLE'))
 	->addMember($method = new Nette\PhpGenerator\Method('getHandle'))
 	->addMember($property = new Nette\PhpGenerator\Property('handle'))
 	->addMember($const = new Nette\PhpGenerator\Constant('ROLE'))

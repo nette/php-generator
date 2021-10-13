@@ -186,7 +186,8 @@ $class->removeProperty('b')->removeProperty('c');
 Assert::same(['a'], array_keys($class->getProperties()));
 
 $class->addMethod('a');
+$class->addMethod('A');
 $class->addMethod('b');
-$class->removeMethod('b')->removeMethod('c');
+$class->removeMethod('B')->removeMethod('c');
 
-Assert::same(['a'], array_keys($class->getMethods()));
+Assert::same(['A'], array_keys($class->getMethods()));

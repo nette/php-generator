@@ -395,7 +395,7 @@ final class ClassType
 			if ($this->isInterface()) {
 				$member->setBody(null);
 			}
-			$this->methods[$member->getName()] = $member;
+			$this->methods[strtolower($member->getName())] = $member;
 
 		} elseif ($member instanceof Property) {
 			$this->properties[$member->getName()] = $member;
@@ -563,8 +563,8 @@ final class ClassType
 	{
 		(function (Method ...$methods) {})(...array_values($methods));
 		$this->methods = [];
-		foreach ($methods as $v) {
-			$this->methods[$v->getName()] = $v;
+		foreach ($methods as $m) {
+			$this->methods[strtolower($m->getName())] = $m;
 		}
 		return $this;
 	}
@@ -573,16 +573,21 @@ final class ClassType
 	/** @return Method[] */
 	public function getMethods(): array
 	{
-		return $this->methods;
+		$res = [];
+		foreach ($this->methods as $m) {
+			$res[$m->getName()] = $m;
+		}
+		return $res;
 	}
 
 
 	public function getMethod(string $name): Method
 	{
-		if (!isset($this->methods[$name])) {
+		$m = $this->methods[strtolower($name)] ?? null;
+		if (!$m) {
 			throw new Nette\InvalidArgumentException("Method '$name' not found.");
 		}
-		return $this->methods[$name];
+		return $m;
 	}
 
 
@@ -594,21 +599,21 @@ final class ClassType
 		} else {
 			$method->setPublic();
 		}
-		return $this->methods[$name] = $method;
+		return $this->methods[strtolower($name)] = $method;
 	}
 
 
 	/** @return static */
 	public function removeMethod(string $name): self
 	{
-		unset($this->methods[$name]);
+		unset($this->methods[strtolower($name)]);
 		return $this;
 	}
 
 
 	public function hasMethod(string $name): bool
 	{
-		return isset($this->methods[$name]);
+		return isset($this->methods[strtolower($name)]);
 	}
 
 
