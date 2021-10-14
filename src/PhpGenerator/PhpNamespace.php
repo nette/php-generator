@@ -11,7 +11,6 @@ namespace Nette\PhpGenerator;
 
 use Nette;
 use Nette\InvalidStateException;
-use Nette\Utils\Strings;
 
 
 /**
@@ -107,7 +106,7 @@ final class PhpNamespace
 		}
 
 		$name = ltrim($name, '\\');
-		$aliases = $this->aliases[$of];
+		$aliases = array_change_key_case($this->aliases[$of]);
 		$used = [self::NAME_NORMAL => $this->classes, self::NAME_FUNCTION => $this->functions, self::NAME_CONSTANT => []][$of];
 
 		if ($alias === null) {
@@ -115,14 +114,15 @@ final class PhpNamespace
 			$counter = null;
 			do {
 				$alias = $base . $counter;
+				$lower = strtolower($alias);
 				$counter++;
-			} while ((isset($aliases[$alias]) && $aliases[$alias] !== $name) || isset($used[strtolower($alias)]));
+			} while ((isset($aliases[$lower]) && strcasecmp($aliases[$lower], $name) !== 0) || isset($used[$lower]));
 
 		} else {
 			$lower = strtolower($alias);
-			if (isset($aliases[$alias]) && $aliases[$alias] !== $name) {
+			if (isset($aliases[$lower]) && strcasecmp($aliases[$lower], $name) !== 0) {
 				throw new InvalidStateException(
-					"Alias '$alias' used already for '{$aliases[$alias]}', cannot use for '$name'."
+					"Alias '$alias' used already for '{$aliases[$lower]}', cannot use for '$name'."
 				);
 			} elseif (isset($used[$lower])) {
 				throw new Nette\InvalidStateException("Name '$alias' used already for '$this->name\\{$used[$lower]->getName()}'.");
@@ -185,13 +185,12 @@ final class PhpNamespace
 			return $this->simplifyName(Helpers::extractNamespace($name) . '\\') . Helpers::extractShortName($name);
 		}
 
-		$lower = strtolower($name);
-		$res = Strings::startsWith($lower, strtolower($this->name) . '\\')
+		$res = self::startsWith($name, $this->name . '\\')
 			? substr($name, strlen($this->name) + 1)
 			: null;
 
 		foreach ($this->aliases[$of] as $alias => $original) {
-			if (Strings::startsWith($lower . '\\', strtolower($original) . '\\')) {
+			if (self::startsWith($name . '\\', $original . '\\')) {
 				$short = $alias . substr($name, strlen($original));
 				if (!isset($res) || strlen($res) > strlen($short)) {
 					$res = $short;
@@ -209,10 +208,12 @@ final class PhpNamespace
 		$name = $class->getName();
 		if ($name === null) {
 			throw new Nette\InvalidArgumentException('Class does not have a name.');
-		} elseif ($orig = $this->aliases[self::NAME_NORMAL][$name] ?? null) {
+		}
+		$lower = strtolower($name);
+		if ($orig = array_change_key_case($this->aliases[self::NAME_NORMAL])[$lower] ?? null) {
 			throw new Nette\InvalidStateException("Name '$name' used already as alias for $orig.");
 		}
-		$this->classes[strtolower($name)] = $class;
+		$this->classes[$lower] = $class;
 		return $this;
 	}
 
@@ -245,7 +246,7 @@ final class PhpNamespace
 	public function addFunction(string $name): GlobalFunction
 	{
 		$lower = strtolower($name);
-		if ($orig = $this->aliases[self::NAME_FUNCTION][$name] ?? null) {
+		if ($orig = array_change_key_case($this->aliases[self::NAME_FUNCTION])[$lower] ?? null) {
 			throw new Nette\InvalidStateException("Name '$name' used already as alias for $orig.");
 		}
 		return $this->functions[$lower] = new GlobalFunction($name);
@@ -271,6 +272,12 @@ final class PhpNamespace
 			$res[$fn->getName()] = $fn;
 		}
 		return $res;
+	}
+
+
+	private static function startsWith(string $a, string $b): bool
+	{
+		return strncasecmp($a, $b, strlen($b)) === 0;
 	}
 
 
