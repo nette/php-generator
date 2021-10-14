@@ -116,14 +116,17 @@ final class PhpNamespace
 			do {
 				$alias = $base . $counter;
 				$counter++;
-			} while ((isset($aliases[$alias]) && $aliases[$alias] !== $name) || isset($used[$alias]));
+			} while ((isset($aliases[$alias]) && $aliases[$alias] !== $name) || isset($used[strtolower($alias)]));
 
-		} elseif (isset($aliases[$alias]) && $aliases[$alias] !== $name) {
-			throw new InvalidStateException(
-				"Alias '$alias' used already for '{$aliases[$alias]}', cannot use for '$name'."
-			);
-		} elseif (isset($used[$alias])) {
-			throw new Nette\InvalidStateException("Name '$alias' used already for '$this->name\\{$used[$alias]->getName()}'.");
+		} else {
+			$lower = strtolower($alias);
+			if (isset($aliases[$alias]) && $aliases[$alias] !== $name) {
+				throw new InvalidStateException(
+					"Alias '$alias' used already for '{$aliases[$alias]}', cannot use for '$name'."
+				);
+			} elseif (isset($used[$lower])) {
+				throw new Nette\InvalidStateException("Name '$alias' used already for '$this->name\\{$used[$lower]->getName()}'.");
+			}
 		}
 
 		$this->aliases[$of][$alias] = $name;
@@ -209,7 +212,7 @@ final class PhpNamespace
 		} elseif ($orig = $this->aliases[self::NAME_NORMAL][$name] ?? null) {
 			throw new Nette\InvalidStateException("Name '$name' used already as alias for $orig.");
 		}
-		$this->classes[$name] = $class;
+		$this->classes[strtolower($name)] = $class;
 		return $this;
 	}
 
@@ -241,24 +244,33 @@ final class PhpNamespace
 
 	public function addFunction(string $name): GlobalFunction
 	{
+		$lower = strtolower($name);
 		if ($orig = $this->aliases[self::NAME_FUNCTION][$name] ?? null) {
 			throw new Nette\InvalidStateException("Name '$name' used already as alias for $orig.");
 		}
-		return $this->functions[$name] = new GlobalFunction($name);
+		return $this->functions[$lower] = new GlobalFunction($name);
 	}
 
 
 	/** @return ClassType[] */
 	public function getClasses(): array
 	{
-		return $this->classes;
+		$res = [];
+		foreach ($this->classes as $class) {
+			$res[$class->getName()] = $class;
+		}
+		return $res;
 	}
 
 
 	/** @return GlobalFunction[] */
 	public function getFunctions(): array
 	{
-		return $this->functions;
+		$res = [];
+		foreach ($this->functions as $fn) {
+			$res[$fn->getName()] = $fn;
+		}
+		return $res;
 	}
 
 
