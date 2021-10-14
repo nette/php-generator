@@ -11,6 +11,8 @@ $namespace = new PhpNamespace('Foo');
 
 $namespace->addUse('Foo');
 $namespace->addUse('Bar\C');
+$namespace->addUseFunction('Bar\c');
+$namespace->addUseConstant('Bar\FOO');
 
 $classA = $namespace->addClass('A');
 $interfaceB = $namespace->addInterface('B');

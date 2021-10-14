@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Abc;
 
 use Nette;
+use function substr;
+use const BAR;
 
 abstract class Class7
 {

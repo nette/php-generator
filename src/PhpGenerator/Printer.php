@@ -234,7 +234,9 @@ class Printer
 	{
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		$name = $namespace->getName();
-		$uses = $this->printUses($namespace);
+		$uses = $this->printUses($namespace)
+			. $this->printUses($namespace, PhpNamespace::NAME_FUNCTION)
+			. $this->printUses($namespace, PhpNamespace::NAME_CONSTANT);
 
 		$items = [];
 		foreach ($namespace->getClasses() as $class) {
@@ -244,7 +246,7 @@ class Printer
 			$items[] = $this->printFunction($function, $namespace);
 		}
 
-		$body = ($uses ? $uses . "\n\n" : '')
+		$body = ($uses ? $uses . "\n" : '')
 			. implode("\n", $items);
 
 		if ($namespace->hasBracketedSyntax()) {
@@ -276,16 +278,21 @@ class Printer
 	}
 
 
-	protected function printUses(PhpNamespace $namespace): string
+	protected function printUses(PhpNamespace $namespace, string $of = PhpNamespace::NAME_NORMAL): string
 	{
+		$prefix = [
+			PhpNamespace::NAME_NORMAL => '',
+			PhpNamespace::NAME_FUNCTION => 'function ',
+			PhpNamespace::NAME_CONSTANT => 'const ',
+		][$of];
 		$name = $namespace->getName();
 		$uses = [];
-		foreach ($namespace->getUses() as $alias => $original) {
+		foreach ($namespace->getUses($of) as $alias => $original) {
 			$uses[] = Helpers::extractShortName($original) === $alias
-				? "use $original;"
-				: "use $original as $alias;";
+				? "use $prefix$original;\n"
+				: "use $prefix$original as $alias;\n";
 		}
-		return implode("\n", $uses);
+		return implode('', $uses);
 	}
 
 

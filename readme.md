@@ -582,6 +582,8 @@ You can define use-statements:
 $namespace->addUse(Http\Request::class);
 // use Http\Request as HttpReq;
 $namespace->addUse(Http\Request::class, 'HttpReq');
+// use function iter\range;
+$namespace->addUseFunction('iter\range');
 ```
 
 Class Names Resolving

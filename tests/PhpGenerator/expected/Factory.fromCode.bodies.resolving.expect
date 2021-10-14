@@ -47,13 +47,13 @@ abstract class Class7
 		echo FOO;
 		echo \FOO;
 		echo \Abc\a\FOO;
-		echo \Nette\FOO;
+		echo FOO;
 
 		// functions
 		func();
 		\func();
 		\Abc\a\func();
-		\Nette\func();
+		func();
 
 		// classes
 		$x = new \Abc\MyClass;

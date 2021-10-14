@@ -134,9 +134,9 @@ final class PhpFile
 
 
 	/** @return static */
-	public function addUse(string $name, string $alias = null): self
+	public function addUse(string $name, string $alias = null, string $of = PhpNamespace::NAME_NORMAL): self
 	{
-		$this->addNamespace('')->addUse($name, $alias);
+		$this->addNamespace('')->addUse($name, $alias, $of);
 		return $this;
 	}
 

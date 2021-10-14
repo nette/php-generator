@@ -2,6 +2,8 @@ namespace Foo;
 
 use Bar\C;
 use Foo;
+use function Bar\c;
+use const Bar\FOO;
 
 #[A]
 class A implements A, C
