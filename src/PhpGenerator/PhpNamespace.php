@@ -38,7 +38,7 @@ final class PhpNamespace
 	private $bracketedSyntax = false;
 
 	/** @var string[] */
-	private $uses = [];
+	private $aliases = [];
 
 	/** @var ClassType[] */
 	private $classes = [];
@@ -114,18 +114,18 @@ final class PhpNamespace
 				} else {
 					$alias = array_pop($path) . $alias;
 				}
-			} while (isset($this->uses[$alias . $counter]) && $this->uses[$alias . $counter] !== $name);
+			} while (isset($this->aliases[$alias . $counter]) && $this->aliases[$alias . $counter] !== $name);
 			$alias .= $counter;
 
-		} elseif (isset($this->uses[$alias]) && $this->uses[$alias] !== $name) {
+		} elseif (isset($this->aliases[$alias]) && $this->aliases[$alias] !== $name) {
 			throw new InvalidStateException(
-				"Alias '$alias' used already for '{$this->uses[$alias]}', cannot use for '$name'."
+				"Alias '$alias' used already for '{$this->aliases[$alias]}', cannot use for '$name'."
 			);
 		}
 
 		$aliasOut = $alias;
-		$this->uses[$alias] = $name;
-		asort($this->uses);
+		$this->aliases[$alias] = $name;
+		asort($this->aliases);
 		return $this;
 	}
 
@@ -133,7 +133,7 @@ final class PhpNamespace
 	/** @return string[] */
 	public function getUses(): array
 	{
-		return $this->uses;
+		return $this->aliases;
 	}
 
 
@@ -161,7 +161,7 @@ final class PhpNamespace
 			? substr($name, strlen($this->name) + 1)
 			: null;
 
-		foreach ($this->uses as $alias => $original) {
+		foreach ($this->aliases as $alias => $original) {
 			if (Strings::startsWith($lower . '\\', strtolower($original) . '\\')) {
 				$short = $alias . substr($name, strlen($original));
 				if (!isset($res) || strlen($res) > strlen($short)) {
