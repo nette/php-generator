@@ -181,15 +181,20 @@ final class PhpNamespace
 			return $this->simplifyName(Helpers::extractNamespace($name) . '\\') . Helpers::extractShortName($name);
 		}
 
-		$shortest = null;
-		$relative = self::startsWith($name, $this->name . '\\')
-			? substr($name, strlen($this->name) + 1)
-			: null;
+        $shortest = null;
+        if (self::startsWith($name, $this->name . '\\')) {
+            // initiate $shortest with a path relative to the namespace
+            $shortest = substr($name, strlen($this->name) + 1);
+            // invalidate $shortest if it matches another alias
+            foreach ($this->aliases[$of] as $alias => $original) {
+                if ($shortest && self::startsWith($shortest . '\\', $alias . '\\')) {
+                    $shortest = null;
 
-		foreach ($this->aliases[$of] as $alias => $original) {
-			if ($relative && self::startsWith($relative . '\\', $alias . '\\')) {
-				$relative = null;
-			}
+                    break;
+                }
+            }
+        }
+        foreach ($this->aliases[$of] as $alias => $original) {
 			if (self::startsWith($name . '\\', $original . '\\')) {
 				$short = $alias . substr($name, strlen($original));
 				if (!isset($shortest) || strlen($shortest) > strlen($short)) {
@@ -198,11 +203,7 @@ final class PhpNamespace
 			}
 		}
 
-		if (isset($shortest, $relative) && strlen($shortest) < strlen($relative)) {
-			return $relative;
-		}
-
-		return $relative ?? $shortest ?? ($this->name ? '\\' : '') . $name;
+		return $shortest ?? ($this->name ? '\\' : '') . $name;
 	}
 
 

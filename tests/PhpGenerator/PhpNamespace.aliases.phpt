@@ -68,6 +68,10 @@ Assert::same('B', $namespace->simplifyName('Foo\B'));
 
 $namespace->addUse('Bar\C');
 Assert::same('Foo\C', $namespace->simplifyName('Foo\C'));
+Assert::same('C', $namespace->simplifyName('Bar\C'));
+
+$namespace->addUse('Foo\Bar\D');
+Assert::same('D', $namespace->simplifyName('Foo\Bar\D'));
 
 Assert::same('\Bar', $namespace->simplifyName('Bar'));
 Assert::same('C', $namespace->simplifyName('\bar\C'));
