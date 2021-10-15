@@ -203,7 +203,7 @@ final class PhpNamespace
 		}
 
 		if (isset($shortest, $relative) && strlen($shortest) < strlen($relative)) {
-			return $relative;
+			return $shortest;
 		}
 
 		return $relative ?? $shortest ?? ($this->name ? '\\' : '') . $name;

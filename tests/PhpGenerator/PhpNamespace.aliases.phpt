@@ -165,6 +165,10 @@ $namespace->addUse('Bar\C');
 $namespace->addUse('C');
 Assert::same('C1', $namespace->simplifyName('C'));
 
+$namespace = new PhpNamespace('Foo\Bar');
+$namespace->addUse('Foo\Bar\Baz\Qux');
+Assert::same('Qux', $namespace->simplifyName('Foo\Bar\Baz\Qux'));
+
 $namespace = new PhpNamespace('Foo');
 $namespace->addUseFunction('Bar\c');
 $namespace->addUseFunction('c');
