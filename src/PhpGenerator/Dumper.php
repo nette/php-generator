@@ -64,25 +64,44 @@ final class Dumper
 	}
 
 
-	private function dumpString(string $var): string
+	private function dumpString(string $s): string
 	{
-		if (preg_match('#[^\x09\x20-\x7E\xA0-\x{10FFFF}]#u', $var) || preg_last_error()) {
-			static $table;
-			if ($table === null) {
-				foreach (array_merge(range("\x00", "\x1F"), range("\x7F", "\xFF")) as $ch) {
-					$table[$ch] = '\x' . str_pad(dechex(ord($ch)), 2, '0', STR_PAD_LEFT);
-				}
-				$table['\\'] = '\\\\';
-				$table["\r"] = '\r';
-				$table["\n"] = '\n';
-				$table["\t"] = '\t';
-				$table['$'] = '\$';
-				$table['"'] = '\"';
-			}
-			return '"' . strtr($var, $table) . '"';
-		}
+		static $special = [
+			"\r" => '\r',
+			"\n" => '\n',
+			"\t" => '\t',
+			"\e" => '\e',
+			'\\' => '\\\\',
+		];
 
-		return "'" . preg_replace('#\'|\\\\(?=[\'\\\\]|$)#D', '\\\\$0', $var) . "'";
+		$utf8 = preg_match('##u', $s);
+		$escaped = preg_replace_callback(
+			$utf8 ? '#[\p{C}\\\\]#u' : '#[\x00-\x1F\x7F-\xFF\\\\]#',
+			function ($m) use ($special) {
+				return $special[$m[0]] ?? (strlen($m[0]) === 1
+					? '\x' . str_pad(strtoupper(dechex(ord($m[0]))), 2, '0', STR_PAD_LEFT) . ''
+					: '\u{' . strtoupper(ltrim(dechex(self::utf8Ord($m[0])), '0')) . '}');
+			},
+			$s
+		);
+		return $s === str_replace('\\\\', '\\', $escaped)
+			? "'" . preg_replace('#\'|\\\\(?=[\'\\\\]|$)#D', '\\\\$0', $s) . "'"
+			: '"' . addcslashes($escaped, '"$') . '"';
+	}
+
+
+	private static function utf8Ord(string $c): int
+	{
+		$ord0 = ord($c[0]);
+		if ($ord0 < 0x80) {
+			return $ord0;
+		} elseif ($ord0 < 0xE0) {
+			return ($ord0 << 6) + ord($c[1]) - 0x3080;
+		} elseif ($ord0 < 0xF0) {
+			return ($ord0 << 12) + (ord($c[1]) << 6) + ord($c[2]) - 0xE2080;
+		} else {
+			return ($ord0 << 18) + (ord($c[1]) << 12) + (ord($c[2]) << 6) + ord($c[3]) - 0x3C82080;
+		}
 	}
 
 
