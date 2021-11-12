@@ -285,12 +285,13 @@ class Printer
 			PhpNamespace::NAME_FUNCTION => 'function ',
 			PhpNamespace::NAME_CONSTANT => 'const ',
 		][$of];
-		$name = $namespace->getName();
 		$uses = [];
 		foreach ($namespace->getUses($of) as $alias => $original) {
-			$uses[] = Helpers::extractShortName($original) === $alias
-				? "use $prefix$original;\n"
-				: "use $prefix$original as $alias;\n";
+            if ($of !== PhpNamespace::NAME_NORMAL || $namespace->getName() !== Helpers::extractNamespace($original)) {
+                $uses[] = Helpers::extractShortName($original) === $alias
+                    ? "use $prefix$original;\n"
+                    : "use $prefix$original as $alias;\n";
+            }
 		}
 		return implode('', $uses);
 	}
