@@ -1,6 +1,5 @@
 <?php
 
-use A;
 use B as C;
 
 class CA
