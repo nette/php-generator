@@ -15,7 +15,7 @@ class Class8
  * Description of class.
  */
 #[\ExampleAttribute]
-#[NamedArguments(foo: foo: 'bar', bar: bar: [1, 2, 3])]
+#[NamedArguments(foo: 'bar', bar: [1, 2, 3])]
 class Class9
 {
 	/** Commented */

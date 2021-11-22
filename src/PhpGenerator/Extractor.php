@@ -359,7 +359,7 @@ final class Extractor
 			foreach ($group->attrs as $attribute) {
 				$args = [];
 				foreach ($attribute->args as $arg) {
-					$value = new Literal($this->getReformattedContents([$arg], 0));
+					$value = new Literal($this->getReformattedContents([$arg->value], 0));
 					if ($arg->name) {
 						$args[$arg->name->toString()] = $value;
 					} else {
