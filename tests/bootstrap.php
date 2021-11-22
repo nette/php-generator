@@ -20,7 +20,12 @@ function same(string $expected, $actual): void
 
 function sameFile(string $file, $actual): void
 {
-	same(file_get_contents($file), $actual);
+	try {
+		same(file_get_contents($file), $actual);
+	} catch (Tester\AssertException $e) {
+		$e->outputName = basename($file, '.expect');
+		throw $e;
+	}
 }
 
 
