@@ -10,25 +10,25 @@ require __DIR__ . '/../bootstrap.php';
 
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.php')))->extractAll();
 Assert::type(Nette\PhpGenerator\PhpFile::class, $file);
-sameFile(__DIR__ . '/expected/Factory.fromCode.expect', (string) $file);
+sameFile(__DIR__ . '/expected/Extractor.classes.expect', (string) $file);
 
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.74.php')))->extractAll();
-sameFile(__DIR__ . '/expected/Factory.fromCode.74.expect', (string) $file);
+sameFile(__DIR__ . '/expected/Extractor.classes.74.expect', (string) $file);
 
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.80.php')))->extractAll();
-sameFile(__DIR__ . '/expected/Factory.fromCode.80.expect', (string) $file);
+sameFile(__DIR__ . '/expected/Extractor.classes.80.expect', (string) $file);
 
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.81.php')))->extractAll();
-sameFile(__DIR__ . '/expected/Factory.fromCode.81.expect', (string) $file);
+sameFile(__DIR__ . '/expected/Extractor.classes.81.expect', (string) $file);
 
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/enum.php')))->extractAll();
-sameFile(__DIR__ . '/expected/Factory.fromCode.enum.expect', (string) $file);
+sameFile(__DIR__ . '/expected/Extractor.enum.expect', (string) $file);
 
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/traits.php')))->extractAll();
-sameFile(__DIR__ . '/expected/Factory.fromCode.traits.expect', (string) $file);
+sameFile(__DIR__ . '/expected/Extractor.traits.expect', (string) $file);
 
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/bodies.php')))->extractAll();
-sameFile(__DIR__ . '/expected/Factory.fromCode.bodies.expect', (string) $file);
+sameFile(__DIR__ . '/expected/Extractor.bodies.expect', (string) $file);
 
 $file = (new Extractor(
 	<<<'XX'

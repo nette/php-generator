@@ -18,7 +18,7 @@ $namespace->addUse('Abc\a\func'); // must not be confused with func
 $namespace->add(reset($classes));
 
 $printer = new Printer;
-sameFile(__DIR__ . '/expected/Factory.fromCode.bodies.resolving.expect', $printer->printNamespace($namespace));
+sameFile(__DIR__ . '/expected/Extractor.bodies.resolving.expect', $printer->printNamespace($namespace));
 
 $printer->setTypeResolving(false);
-sameFile(__DIR__ . '/expected/Factory.fromCode.bodies.unresolving.expect', $printer->printNamespace($namespace));
+sameFile(__DIR__ . '/expected/Extractor.bodies.unresolving.expect', $printer->printNamespace($namespace));
