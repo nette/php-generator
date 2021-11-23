@@ -167,6 +167,27 @@ final class PhpNamespace
 	}
 
 
+	public function resolveName(string $name, string $of = self::NAME_NORMAL): string
+	{
+		if (isset(Helpers::KEYWORDS[strtolower($name)]) || $name === '') {
+			return $name;
+		} elseif ($name[0] === '\\') {
+			return substr($name, 1);
+		}
+
+		$aliases = array_change_key_case($this->aliases[$of]);
+		if ($of !== self::NAME_NORMAL) {
+			return $aliases[strtolower($name)]
+				?? $this->resolveName(Helpers::extractNamespace($name) . '\\') . Helpers::extractShortName($name);
+		}
+
+		$parts = explode('\\', $name, 2);
+		return ($res = $aliases[strtolower($parts[0])] ?? null)
+			? $res . (isset($parts[1]) ? '\\' . $parts[1] : '')
+			: $this->name . ($this->name ? '\\' : '') . $name;
+	}
+
+
 	public function simplifyType(string $type, string $of = self::NAME_NORMAL): string
 	{
 		return preg_replace_callback('~[\w\x7f-\xff\\\\]+~', function ($m) use ($of) { return $this->simplifyName($m[0], $of); }, $type);

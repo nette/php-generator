@@ -586,6 +586,20 @@ $namespace->addUse(Http\Request::class, 'HttpReq');
 $namespace->addUseFunction('iter\range');
 ```
 
+To simplify a fully qualified class, function or constant name according to the defined aliases, use the `simplifyName` method:
+
+```php
+echo $namespace->simplifyName('Foo\Bar'); // 'Bar', because 'Foo' is current namespace
+echo $namespace->simplifyName('iter\range', $namespace::NAME_FUNCTION); // 'range', because of the defined use-statement
+```
+
+Conversely, you can convert a simplified class, function or constant name to a fully qualified one using the `resolveName` method:
+
+```php
+echo $namespace->resolveName('Bar'); // 'Foo\Bar'
+echo $namespace->resolveName('range', $namespace::NAME_FUNCTION); // 'iter\range'
+```
+
 Class Names Resolving
 ---------------------
 
@@ -599,11 +613,11 @@ $namespace = new Nette\PhpGenerator\PhpNamespace('Foo');
 $namespace->addUse('Bar\AliasedClass');
 
 $class = $namespace->addClass('Demo');
-$class->addImplement('Foo\A') // it will resolve to A
-	->addTrait('Bar\AliasedClass'); // it will resolve to AliasedClass
+$class->addImplement('Foo\A') // it will simplify to A
+	->addTrait('Bar\AliasedClass'); // it will simplify to AliasedClass
 
 $method = $class->addMethod('method');
-$method->addComment('@return ' . $namespace->simplifyType('Foo\D')); // in comments resolve manually
+$method->addComment('@return ' . $namespace->simplifyType('Foo\D')); // in comments simplify manually
 $method->addParameter('arg')
 	->setType('Bar\OtherClass'); // it will resolve to \Bar\OtherClass
 
