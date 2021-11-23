@@ -207,7 +207,7 @@ final class Dumper
 
 
 	/**
-	 * Generates PHP statement.
+	 * Generates PHP statement. Supports placeholders: ?  \?  $?  ->?  ::?  ...?  ...?:  ?*
 	 */
 	public function format(string $statement, ...$args): string
 	{
