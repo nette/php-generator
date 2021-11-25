@@ -125,8 +125,8 @@ final class PhpFile
 		$functions = [];
 		foreach ($this->namespaces as $n => $namespace) {
 			$n .= $n ? '\\' : '';
-			foreach ($namespace->getFunctions() as $c => $class) {
-				$functions[$n . $c] = $class;
+			foreach ($namespace->getFunctions() as $f => $function) {
+				$functions[$n . $f] = $function;
 			}
 		}
 		return $functions;
