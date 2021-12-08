@@ -159,7 +159,7 @@ final class Helpers
 	public static function validateType(?string $type, bool &$nullable): ?string
 	{
 		if ($type === '' || $type === null) {
-			return  null;
+			return null;
 		}
 		if (!preg_match('#(?:
 			\?[\w\\\\]+|

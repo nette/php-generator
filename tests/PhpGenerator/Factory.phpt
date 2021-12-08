@@ -26,17 +26,17 @@ Assert::type(Nette\PhpGenerator\ClassType::class, $res);
 Assert::null($res->getName());
 
 
-$res = $factory->fromMethodReflection(new \ReflectionMethod(ReflectionClass::class, 'getName'));
+$res = $factory->fromMethodReflection(new ReflectionMethod(ReflectionClass::class, 'getName'));
 Assert::type(Nette\PhpGenerator\Method::class, $res);
 Assert::same('getName', $res->getName());
 
 
-$res = $factory->fromFunctionReflection(new \ReflectionFunction('trim'));
+$res = $factory->fromFunctionReflection(new ReflectionFunction('trim'));
 Assert::type(Nette\PhpGenerator\GlobalFunction::class, $res);
 Assert::same('trim', $res->getName());
 
 
-$res = $factory->fromFunctionReflection(new \ReflectionFunction(function () {}));
+$res = $factory->fromFunctionReflection(new ReflectionFunction(function () {}));
 Assert::type(Nette\PhpGenerator\Closure::class, $res);
 
 

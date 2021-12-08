@@ -25,7 +25,7 @@ namespace
 
 	interface A
 	{
-		public function testClass(): \A\Foo;
+		public function testClass(): A\Foo;
 
 		public function testScalar(): string;
 	}
