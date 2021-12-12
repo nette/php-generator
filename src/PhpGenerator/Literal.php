@@ -22,7 +22,7 @@ class Literal
 	private $args;
 
 
-	public function __construct(string $value, array $args = null)
+	public function __construct(string $value, ?array $args = null)
 	{
 		$this->value = $value;
 		$this->args = $args;

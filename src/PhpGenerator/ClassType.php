@@ -123,7 +123,7 @@ final class ClassType
 	}
 
 
-	public function __construct(string $name = null, PhpNamespace $namespace = null)
+	public function __construct(?string $name = null, ?PhpNamespace $namespace = null)
 	{
 		$this->setName($name);
 		$this->namespace = $namespace;

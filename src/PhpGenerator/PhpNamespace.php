@@ -94,7 +94,7 @@ final class PhpNamespace
 	 * @throws InvalidStateException
 	 * @return static
 	 */
-	public function addUse(string $name, string $alias = null, string $of = self::NAME_NORMAL): self
+	public function addUse(string $name, ?string $alias = null, string $of = self::NAME_NORMAL): self
 	{
 		if (
 			!Helpers::isNamespaceIdentifier($name, true)
@@ -135,14 +135,14 @@ final class PhpNamespace
 
 
 	/** @return static */
-	public function addUseFunction(string $name, string $alias = null): self
+	public function addUseFunction(string $name, ?string $alias = null): self
 	{
 		return $this->addUse($name, $alias, self::NAME_FUNCTION);
 	}
 
 
 	/** @return static */
-	public function addUseConstant(string $name, string $alias = null): self
+	public function addUseConstant(string $name, ?string $alias = null): self
 	{
 		return $this->addUse($name, $alias, self::NAME_CONSTANT);
 	}

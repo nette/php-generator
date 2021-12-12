@@ -64,7 +64,7 @@ final class Method
 
 
 	/** @return static */
-	public function setBody(?string $code, array $args = null): self
+	public function setBody(?string $code, ?array $args = null): self
 	{
 		$this->body = $args === null || $code === null
 			? $code

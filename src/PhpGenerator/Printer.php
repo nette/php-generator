@@ -51,7 +51,7 @@ class Printer
 	}
 
 
-	public function printFunction(GlobalFunction $function, PhpNamespace $namespace = null): string
+	public function printFunction(GlobalFunction $function, ?PhpNamespace $namespace = null): string
 	{
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		$line = 'function '
@@ -69,7 +69,7 @@ class Printer
 	}
 
 
-	public function printClosure(Closure $closure, PhpNamespace $namespace = null): string
+	public function printClosure(Closure $closure, ?PhpNamespace $namespace = null): string
 	{
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		$uses = [];
@@ -92,7 +92,7 @@ class Printer
 	}
 
 
-	public function printArrowFunction(Closure $closure, PhpNamespace $namespace = null): string
+	public function printArrowFunction(Closure $closure, ?PhpNamespace $namespace = null): string
 	{
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		foreach ($closure->getUses() as $use) {
@@ -112,7 +112,7 @@ class Printer
 	}
 
 
-	public function printMethod(Method $method, PhpNamespace $namespace = null): string
+	public function printMethod(Method $method, ?PhpNamespace $namespace = null): string
 	{
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		$method->validate();
@@ -141,7 +141,7 @@ class Printer
 	}
 
 
-	public function printClass(ClassType $class, PhpNamespace $namespace = null): string
+	public function printClass(ClassType $class, ?PhpNamespace $namespace = null): string
 	{
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		$class->validate();
