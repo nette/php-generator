@@ -34,7 +34,7 @@ final class TraitUse
 	}
 
 
-	public function addResolution(string $resolution): self
+	public function addResolution(string $resolution): static
 	{
 		$this->resolutions[] = $resolution;
 		return $this;

@@ -286,10 +286,7 @@ class Printer
 	}
 
 
-	/**
-	 * @param Closure|GlobalFunction|Method  $function
-	 */
-	protected function printParameters($function, int $column = 0): string
+	protected function printParameters(Closure|GlobalFunction|Method $function, int $column = 0): string
 	{
 		$params = [];
 		$list = $function->getParameters();
@@ -344,10 +341,7 @@ class Printer
 	}
 
 
-	/**
-	 * @param Closure|GlobalFunction|Method  $function
-	 */
-	private function printReturnType($function): string
+	private function printReturnType(Closure|GlobalFunction|Method $function): string
 	{
 		return ($tmp = $this->printType($function->getReturnType(), $function->isReturnNullable()))
 			? $this->returnTypeColon . $tmp
@@ -375,8 +369,7 @@ class Printer
 	}
 
 
-	/** @return static */
-	public function setTypeResolving(bool $state = true): self
+	public function setTypeResolving(bool $state = true): static
 	{
 		$this->resolveTypes = $state;
 		return $this;

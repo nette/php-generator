@@ -23,8 +23,7 @@ final class PromotedParameter extends Parameter
 	private bool $readOnly = false;
 
 
-	/** @return static */
-	public function setReadOnly(bool $state = true): self
+	public function setReadOnly(bool $state = true): static
 	{
 		$this->readOnly = $state;
 		return $this;

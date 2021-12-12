@@ -68,18 +68,11 @@ final class PhpFile
 	}
 
 
-	/** @param  string|PhpNamespace  $namespace */
-	public function addNamespace($namespace): PhpNamespace
+	public function addNamespace(string|PhpNamespace $namespace): PhpNamespace
 	{
-		if ($namespace instanceof PhpNamespace) {
-			$res = $this->namespaces[$namespace->getName()] = $namespace;
-
-		} elseif (is_string($namespace)) {
-			$res = $this->namespaces[$namespace] ??= new PhpNamespace($namespace);
-
-		} else {
-			throw new Nette\InvalidArgumentException('Argument must be string|PhpNamespace.');
-		}
+		$res = $namespace instanceof PhpNamespace
+			? ($this->namespaces[$namespace->getName()] = $namespace)
+			: ($this->namespaces[$namespace] ??= new PhpNamespace($namespace));
 
 		foreach ($this->namespaces as $namespace) {
 			$namespace->setBracketedSyntax(count($this->namespaces) > 1 && isset($this->namespaces['']));
@@ -134,8 +127,7 @@ final class PhpFile
 	}
 
 
-	/** @return static */
-	public function addUse(string $name, ?string $alias = null, string $of = PhpNamespace::NAME_NORMAL): self
+	public function addUse(string $name, ?string $alias = null, string $of = PhpNamespace::NAME_NORMAL): static
 	{
 		$this->addNamespace('')->addUse($name, $alias, $of);
 		return $this;
@@ -144,9 +136,8 @@ final class PhpFile
 
 	/**
 	 * Adds declare(strict_types=1) to output.
-	 * @return static
 	 */
-	public function setStrictTypes(bool $on = true): self
+	public function setStrictTypes(bool $on = true): static
 	{
 		$this->strictTypes = $on;
 		return $this;

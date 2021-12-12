@@ -65,10 +65,9 @@ final class PhpNamespace
 
 
 	/**
-	 * @return static
 	 * @internal
 	 */
-	public function setBracketedSyntax(bool $state = true): self
+	public function setBracketedSyntax(bool $state = true): static
 	{
 		$this->bracketedSyntax = $state;
 		return $this;
@@ -90,9 +89,8 @@ final class PhpNamespace
 
 	/**
 	 * @throws InvalidStateException
-	 * @return static
 	 */
-	public function addUse(string $name, ?string $alias = null, string $of = self::NAME_NORMAL): self
+	public function addUse(string $name, ?string $alias = null, string $of = self::NAME_NORMAL): static
 	{
 		if (
 			!Helpers::isNamespaceIdentifier($name, true)
@@ -132,15 +130,13 @@ final class PhpNamespace
 	}
 
 
-	/** @return static */
-	public function addUseFunction(string $name, ?string $alias = null): self
+	public function addUseFunction(string $name, ?string $alias = null): static
 	{
 		return $this->addUse($name, $alias, self::NAME_FUNCTION);
 	}
 
 
-	/** @return static */
-	public function addUseConstant(string $name, ?string $alias = null): self
+	public function addUseConstant(string $name, ?string $alias = null): static
 	{
 		return $this->addUse($name, $alias, self::NAME_CONSTANT);
 	}
@@ -236,8 +232,7 @@ final class PhpNamespace
 	}
 
 
-	/** @return static */
-	public function add(ClassType $class): self
+	public function add(ClassType $class): static
 	{
 		$name = $class->getName();
 		if ($name === null) {
@@ -279,7 +274,7 @@ final class PhpNamespace
 	}
 
 
-	public function removeClass(string $name): self
+	public function removeClass(string $name): static
 	{
 		unset($this->classes[strtolower($name)]);
 		return $this;
@@ -297,7 +292,7 @@ final class PhpNamespace
 	}
 
 
-	public function removeFunction(string $name): self
+	public function removeFunction(string $name): static
 	{
 		unset($this->functions[strtolower($name)]);
 		return $this;

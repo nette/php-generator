@@ -31,8 +31,7 @@ class Parameter
 	private mixed $defaultValue = null;
 
 
-	/** @return static */
-	public function setReference(bool $state = true): self
+	public function setReference(bool $state = true): static
 	{
 		$this->reference = $state;
 		return $this;
@@ -45,18 +44,14 @@ class Parameter
 	}
 
 
-	/** @return static */
-	public function setType(?string $type): self
+	public function setType(?string $type): static
 	{
 		$this->type = Helpers::validateType($type, $this->nullable);
 		return $this;
 	}
 
 
-	/**
-	 * @return Type|string|null
-	 */
-	public function getType(bool $asObject = false)
+	public function getType(bool $asObject = false): Type|string|null
 	{
 		return $asObject && $this->type
 			? Type::fromString($this->type)
@@ -65,7 +60,7 @@ class Parameter
 
 
 	/** @deprecated  use setType() */
-	public function setTypeHint(?string $type): self
+	public function setTypeHint(?string $type): static
 	{
 		return $this->setType($type);
 	}
@@ -80,9 +75,8 @@ class Parameter
 
 	/**
 	 * @deprecated  just use setDefaultValue()
-	 * @return static
 	 */
-	public function setOptional(bool $state = true): self
+	public function setOptional(bool $state = true): static
 	{
 		trigger_error(__METHOD__ . '() is deprecated, use setDefaultValue()', E_USER_DEPRECATED);
 		$this->hasDefaultValue = $state;
@@ -90,8 +84,7 @@ class Parameter
 	}
 
 
-	/** @return static */
-	public function setNullable(bool $state = true): self
+	public function setNullable(bool $state = true): static
 	{
 		$this->nullable = $state;
 		return $this;
@@ -104,8 +97,7 @@ class Parameter
 	}
 
 
-	/** @return static */
-	public function setDefaultValue($val): self
+	public function setDefaultValue(mixed $val): static
 	{
 		$this->defaultValue = $val;
 		$this->hasDefaultValue = true;
@@ -113,7 +105,7 @@ class Parameter
 	}
 
 
-	public function getDefaultValue()
+	public function getDefaultValue(): mixed
 	{
 		return $this->defaultValue;
 	}

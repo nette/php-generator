@@ -347,7 +347,7 @@ final class Extractor
 	}
 
 
-	private function addEnumCaseToClass(ClassType $class, Node\Stmt\EnumCase $node)
+	private function addEnumCaseToClass(ClassType $class, Node\Stmt\EnumCase $node): void
 	{
 		$case = $class->addCase($node->name->toString(), $node->expr?->value);
 		$this->addCommentAndAttributes($case, $node);
@@ -381,10 +381,7 @@ final class Extractor
 	}
 
 
-	/**
-	 * @param  GlobalFunction|Method  $function
-	 */
-	private function setupFunction($function, Node\FunctionLike $node): void
+	private function setupFunction(GlobalFunction|Method $function, Node\FunctionLike $node): void
 	{
 		$function->setReturnReference($node->returnsByRef());
 		$function->setReturnType($node->getReturnType() ? $this->toPhp($node->getReturnType()) : null);
@@ -407,7 +404,7 @@ final class Extractor
 	}
 
 
-	private function toPhp($value): string
+	private function toPhp(mixed $value): string
 	{
 		return $this->printer->prettyPrint([$value]);
 	}
