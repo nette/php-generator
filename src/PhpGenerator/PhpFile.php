@@ -86,6 +86,7 @@ final class PhpFile
 		foreach ($this->namespaces as $namespace) {
 			$namespace->setBracketedSyntax(count($this->namespaces) > 1 && isset($this->namespaces['']));
 		}
+
 		return $res;
 	}
 
@@ -115,6 +116,7 @@ final class PhpFile
 				$classes[$n . $c] = $class;
 			}
 		}
+
 		return $classes;
 	}
 
@@ -129,6 +131,7 @@ final class PhpFile
 				$functions[$n . $f] = $function;
 			}
 		}
+
 		return $functions;
 	}
 
@@ -173,6 +176,7 @@ final class PhpFile
 			if (PHP_VERSION_ID >= 70400) {
 				throw $e;
 			}
+
 			trigger_error('Exception in ' . __METHOD__ . "(): {$e->getMessage()} in {$e->getFile()}:{$e->getLine()}", E_USER_ERROR);
 			return '';
 		}

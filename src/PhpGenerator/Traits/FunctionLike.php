@@ -74,6 +74,7 @@ trait FunctionLike
 		foreach ($val as $v) {
 			$this->parameters[$v->getName()] = $v;
 		}
+
 		return $this;
 	}
 
@@ -94,6 +95,7 @@ trait FunctionLike
 		if (func_num_args() > 1) {
 			$param->setDefaultValue($defaultValue);
 		}
+
 		return $this->parameters[$name] = $param;
 	}
 

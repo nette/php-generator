@@ -26,6 +26,7 @@ trait NameAware
 		if (!Nette\PhpGenerator\Helpers::isIdentifier($name)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid name.");
 		}
+
 		$this->name = $name;
 	}
 

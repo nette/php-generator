@@ -30,6 +30,7 @@ final class TraitUse
 		if (!Nette\PhpGenerator\Helpers::isNamespaceIdentifier($name, true)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid trait name.");
 		}
+
 		$this->name = $name;
 	}
 

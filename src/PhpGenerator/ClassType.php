@@ -138,6 +138,7 @@ final class ClassType
 			if (PHP_VERSION_ID >= 70400) {
 				throw $e;
 			}
+
 			trigger_error('Exception in ' . __METHOD__ . "(): {$e->getMessage()} in {$e->getFile()}:{$e->getLine()}", E_USER_ERROR);
 			return '';
 		}
@@ -157,6 +158,7 @@ final class ClassType
 		if ($name !== null && (!Helpers::isIdentifier($name) || isset(Helpers::KEYWORDS[strtolower($name)]))) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid class name.");
 		}
+
 		$this->name = $name;
 		return $this;
 	}
@@ -222,6 +224,7 @@ final class ClassType
 		if (!in_array($type, [self::TYPE_CLASS, self::TYPE_INTERFACE, self::TYPE_TRAIT, self::TYPE_ENUM], true)) {
 			throw new Nette\InvalidArgumentException('Argument must be class|interface|trait|enum.');
 		}
+
 		$this->type = $type;
 		return $this;
 	}
@@ -270,6 +273,7 @@ final class ClassType
 		if (!is_string($names) && !is_array($names)) {
 			throw new Nette\InvalidArgumentException('Argument must be string or string[].');
 		}
+
 		$this->validateNames((array) $names);
 		$this->extends = $names;
 		return $this;
@@ -340,8 +344,10 @@ final class ClassType
 			if (!$trait instanceof TraitUse) {
 				$trait = new TraitUse($trait);
 			}
+
 			$this->traits[$trait->getName()] = $trait;
 		}
+
 		return $this;
 	}
 
@@ -370,6 +376,7 @@ final class ClassType
 		if ($resolutions === true) {
 			return $trait;
 		}
+
 		array_map(function ($item) use ($trait) {
 			$trait->addResolution($item);
 		}, $resolutions);
@@ -395,6 +402,7 @@ final class ClassType
 			if ($this->isInterface()) {
 				$member->setBody(null);
 			}
+
 			$this->methods[strtolower($member->getName())] = $member;
 
 		} elseif ($member instanceof Property) {
@@ -428,8 +436,10 @@ final class ClassType
 			if (!$const instanceof Constant) {
 				$const = (new Constant($k))->setValue($const)->setPublic();
 			}
+
 			$this->consts[$const->getName()] = $const;
 		}
+
 		return $this;
 	}
 
@@ -469,6 +479,7 @@ final class ClassType
 		foreach ($cases as $case) {
 			$this->cases[$case->getName()] = $case;
 		}
+
 		return $this;
 	}
 
@@ -507,6 +518,7 @@ final class ClassType
 		foreach ($props as $v) {
 			$this->properties[$v->getName()] = $v;
 		}
+
 		return $this;
 	}
 
@@ -523,6 +535,7 @@ final class ClassType
 		if (!isset($this->properties[$name])) {
 			throw new Nette\InvalidArgumentException("Property '$name' not found.");
 		}
+
 		return $this->properties[$name];
 	}
 
@@ -566,6 +579,7 @@ final class ClassType
 		foreach ($methods as $m) {
 			$this->methods[strtolower($m->getName())] = $m;
 		}
+
 		return $this;
 	}
 
@@ -577,6 +591,7 @@ final class ClassType
 		foreach ($this->methods as $m) {
 			$res[$m->getName()] = $m;
 		}
+
 		return $res;
 	}
 
@@ -587,6 +602,7 @@ final class ClassType
 		if (!$m) {
 			throw new Nette\InvalidArgumentException("Method '$name' not found.");
 		}
+
 		return $m;
 	}
 
@@ -599,6 +615,7 @@ final class ClassType
 		} else {
 			$method->setPublic();
 		}
+
 		return $this->methods[strtolower($name)] = $method;
 	}
 

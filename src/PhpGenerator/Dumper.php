@@ -155,6 +155,7 @@ final class Dumper
 					? '\Closure::fromCallable(' . $this->dump($inner) . ')'
 					: implode('::', (array) $inner) . '(...)';
 			}
+
 			throw new Nette\InvalidArgumentException('Cannot dump closure.');
 		}
 
@@ -227,6 +228,7 @@ final class Dumper
 				if (!is_array($arg)) {
 					throw new Nette\InvalidArgumentException('Argument must be an array.');
 				}
+
 				$res .= $this->dumpArguments($arg, strlen($res) - strrpos($res, "\n"), $token === '...?:');
 
 			} else { // $  ->  ::
@@ -234,12 +236,15 @@ final class Dumper
 				if ($arg instanceof Literal || !Helpers::isIdentifier($arg)) {
 					$arg = '{' . $this->dumpVar($arg) . '}';
 				}
+
 				$res .= substr($token, 0, -1) . $arg;
 			}
 		}
+
 		if ($args) {
 			throw new Nette\InvalidArgumentException('Insufficient number of placeholders.');
 		}
+
 		return $res;
 	}
 

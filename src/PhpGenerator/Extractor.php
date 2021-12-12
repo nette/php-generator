@@ -34,6 +34,7 @@ final class Extractor
 		if (!class_exists(ParserFactory::class)) {
 			throw new Nette\NotSupportedException("PHP-Parser is required to load method bodies, install package 'nikic/php-parser' 4.7 or newer.");
 		}
+
 		$this->printer = new PhpParser\PrettyPrinter\Standard;
 		$this->parseCode($code);
 	}
@@ -44,6 +45,7 @@ final class Extractor
 		if (substr($code, 0, 5) !== '<?php') {
 			throw new Nette\InvalidStateException('The input string is not a PHP code.');
 		}
+
 		$this->code = str_replace("\r\n", "\n", $code);
 		$lexer = new PhpParser\Lexer\Emulative(['usedAttributes' => ['startFilePos', 'endFilePos', 'comments']]);
 		$parser = (new ParserFactory)->create(ParserFactory::ONLY_PHP7, $lexer);
@@ -71,6 +73,7 @@ final class Extractor
 				$res[$methodNode->name->toString()] = $this->getReformattedContents($methodNode->stmts, 2);
 			}
 		}
+
 		return $res;
 	}
 
@@ -111,7 +114,6 @@ final class Extractor
 						Helpers::tagName($node->toCodeString(), $of),
 					];
 				}
-
 			} elseif ($node instanceof Node\Scalar\String_ || $node instanceof Node\Scalar\EncapsedStringPart) {
 				// multi-line strings => singleline
 				$token = $this->getNodeContents($node);
@@ -123,7 +125,6 @@ final class Extractor
 						$quote . addcslashes($node->value, "\x00..\x1F") . $quote,
 					];
 				}
-
 			} elseif ($node instanceof Node\Scalar\Encapsed) {
 				// HEREDOC => "string"
 				if ($node->getAttribute('kind') === Node\Scalar\String_::KIND_HEREDOC) {
@@ -153,6 +154,7 @@ final class Extractor
 		foreach ($replacements as [$start, $end, $replacement]) {
 			$s = substr_replace($s, $replacement, $start, $end - $start + 1);
 		}
+
 		return $s;
 	}
 
@@ -179,6 +181,7 @@ final class Extractor
 				if (!$node->name) {
 					return PhpParser\NodeTraverser::DONT_TRAVERSE_CHILDREN;
 				}
+
 				$class = $this->addClassToFile($phpFile, $node);
 			} elseif ($node instanceof Node\Stmt\Interface_) {
 				$class = $this->addInterfaceToFile($phpFile, $node);
@@ -199,6 +202,7 @@ final class Extractor
 			} elseif ($node instanceof Node\Stmt\EnumCase) {
 				$this->addEnumCaseToClass($class, $node);
 			}
+
 			if ($node instanceof Node\FunctionLike) {
 				return PhpParser\NodeTraverser::DONT_TRAVERSE_CHILDREN;
 			}
@@ -230,9 +234,11 @@ final class Extractor
 		if ($node->extends) {
 			$class->setExtends($node->extends->toString());
 		}
+
 		foreach ($node->implements as $item) {
 			$class->addImplement($item->toString());
 		}
+
 		$class->setFinal($node->isFinal());
 		$class->setAbstract($node->isAbstract());
 		$this->addCommentAndAttributes($class, $node);
@@ -246,6 +252,7 @@ final class Extractor
 		foreach ($node->extends as $item) {
 			$class->addExtend($item->toString());
 		}
+
 		$this->addCommentAndAttributes($class, $node);
 		return $class;
 	}
@@ -265,6 +272,7 @@ final class Extractor
 		foreach ($node->implements as $item) {
 			$class->addImplement($item->toString());
 		}
+
 		$this->addCommentAndAttributes($class, $node);
 		return $class;
 	}
@@ -282,9 +290,11 @@ final class Extractor
 		foreach ($node->traits as $item) {
 			$trait = $class->addTrait($item->toString(), true);
 		}
+
 		foreach ($node->adaptations as $item) {
 			$trait->addResolution(trim($this->toPhp($item), ';'));
 		}
+
 		$this->addCommentAndAttributes($trait, $node);
 	}
 
@@ -299,10 +309,12 @@ final class Extractor
 			} elseif ($node->isProtected()) {
 				$prop->setProtected();
 			}
+
 			$prop->setType($node->type ? $this->toPhp($node->type) : null);
 			if ($item->default) {
 				$prop->setValue(new Literal($this->getReformattedContents([$item->default], 1)));
 			}
+
 			$prop->setReadOnly(method_exists($node, 'isReadonly') && $node->isReadonly());
 			$this->addCommentAndAttributes($prop, $node);
 		}
@@ -320,6 +332,7 @@ final class Extractor
 		} elseif ($node->isProtected()) {
 			$method->setProtected();
 		}
+
 		$this->setupFunction($method, $node);
 	}
 
@@ -334,6 +347,7 @@ final class Extractor
 			} elseif ($node->isProtected()) {
 				$const->setProtected();
 			}
+
 			$const->setFinal(method_exists($node, 'isFinal') && $node->isFinal());
 			$this->addCommentAndAttributes($const, $node);
 		}
@@ -366,6 +380,7 @@ final class Extractor
 						$args[] = $value;
 					}
 				}
+
 				$element->addAttribute($attribute->name->toString(), $args);
 			}
 		}
@@ -387,8 +402,10 @@ final class Extractor
 			if ($item->default) {
 				$param->setDefaultValue(new Literal($this->getReformattedContents([$item->default], 2)));
 			}
+
 			$this->addCommentAndAttributes($param, $item);
 		}
+
 		$this->addCommentAndAttributes($function, $node);
 		if ($node->stmts) {
 			$function->setBody($this->getReformattedContents($node->stmts, 2));

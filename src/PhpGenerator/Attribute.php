@@ -31,6 +31,7 @@ final class Attribute
 		if (!Helpers::isNamespaceIdentifier($name)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid attribute name.");
 		}
+
 		$this->name = $name;
 		$this->args = $args;
 	}

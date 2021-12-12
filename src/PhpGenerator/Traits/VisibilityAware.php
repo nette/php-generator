@@ -31,6 +31,7 @@ trait VisibilityAware
 		if (!in_array($val, [ClassType::VISIBILITY_PUBLIC, ClassType::VISIBILITY_PROTECTED, ClassType::VISIBILITY_PRIVATE, null], true)) {
 			throw new Nette\InvalidArgumentException('Argument must be public|protected|private.');
 		}
+
 		$this->visibility = $val;
 		return $this;
 	}

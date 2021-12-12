@@ -54,6 +54,7 @@ final class Factory
 				return !is_subclass_of($iface, $item);
 			});
 		}
+
 		if ($from->isInterface()) {
 			$class->setExtends($ifaces);
 		} else {
@@ -82,6 +83,7 @@ final class Factory
 				$props[] = $this->fromPropertyReflection($prop);
 			}
 		}
+
 		$class->setProperties($props);
 
 		$methods = $resolutions = [];
@@ -112,6 +114,7 @@ final class Factory
 				$resolutions[] = $realMethod->name . ' as' . $modifier . $alias;
 			}
 		}
+
 		$class->setMethods($methods);
 
 		if (!$materializeTraits) {
@@ -129,6 +132,7 @@ final class Factory
 				$consts[] = $this->fromConstantReflection($const);
 			}
 		}
+
 		$class->setConstants($consts);
 		$class->setCases($cases);
 
@@ -159,6 +163,7 @@ final class Factory
 		) {
 			$method->setReturnType((string) $from->getReturnType());
 		}
+
 		return $method;
 	}
 
@@ -173,6 +178,7 @@ final class Factory
 		if (!$from->isClosure()) {
 			$function->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		}
+
 		$function->setAttributes(self::getAttributes($from));
 		if ($from->getReturnType() instanceof \ReflectionNamedType) {
 			$function->setReturnType($from->getReturnType()->getName());
@@ -183,12 +189,15 @@ final class Factory
 		) {
 			$function->setReturnType((string) $from->getReturnType());
 		}
+
 		if ($withBody) {
 			if ($from->isClosure()) {
 				throw new Nette\NotSupportedException('The $withBody parameter cannot be used for closures.');
 			}
+
 			$function->setBody($this->getExtractor($from)->extractFunctionBody($from->name));
 		}
+
 		return $function;
 	}
 
@@ -218,20 +227,24 @@ final class Factory
 		) {
 			$param->setType((string) $from->getType());
 		}
+
 		if ($from->isDefaultValueAvailable()) {
 			if ($from->isDefaultValueConstant()) {
 				$parts = explode('::', $from->getDefaultValueConstantName());
 				if (count($parts) > 1) {
 					$parts[0] = Helpers::tagName($parts[0]);
 				}
+
 				$param->setDefaultValue(new Literal(implode('::', $parts)));
 			} elseif (is_object($from->getDefaultValue())) {
 				$param->setDefaultValue($this->fromObject($from->getDefaultValue()));
 			} else {
 				$param->setDefaultValue($from->getDefaultValue());
 			}
+
 			$param->setNullable($param->isNullable() && $param->getDefaultValue() !== null);
 		}
+
 		$param->setAttributes(self::getAttributes($from));
 		return $param;
 	}
@@ -276,11 +289,13 @@ final class Factory
 			) {
 				$prop->setType((string) $from->getType());
 			}
+
 			$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
 			$prop->setReadOnly(PHP_VERSION_ID >= 80100 ? $from->isReadOnly() : false);
 		} else {
 			$prop->setInitialized(false);
 		}
+
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$prop->setAttributes(self::getAttributes($from));
 		return $prop;
@@ -299,6 +314,7 @@ final class Factory
 		if (!$classes) {
 			throw new Nette\InvalidStateException('The code does not contain any class.');
 		}
+
 		return reset($classes);
 	}
 
@@ -315,6 +331,7 @@ final class Factory
 		if (PHP_VERSION_ID < 80000) {
 			return [];
 		}
+
 		return array_map(function ($attr) {
 			$args = $attr->getArguments();
 			foreach ($args as &$arg) {
@@ -322,6 +339,7 @@ final class Factory
 					$arg = $this->fromObject($arg);
 				}
 			}
+
 			return new Attribute($attr->getName(), $args);
 		}, $from->getAttributes());
 	}
@@ -344,6 +362,7 @@ final class Factory
 		} elseif (!$file) {
 			throw new Nette\InvalidStateException("Source code of $from->name not found.");
 		}
+
 		return new Extractor(file_get_contents($file));
 	}
 }
