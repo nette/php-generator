@@ -10,7 +10,6 @@ require __DIR__ . '/../bootstrap.php';
 
 
 $class = (new ClassType('Example'))
-	->addMember($method = new Nette\PhpGenerator\Method('GETHANDLE'))
 	->addMember($method = new Nette\PhpGenerator\Method('getHandle'))
 	->addMember($property = new Nette\PhpGenerator\Property('handle'))
 	->addMember($const = new Nette\PhpGenerator\Constant('ROLE'))
@@ -23,6 +22,9 @@ Assert::same(['Foo\Bar' => $trait], $class->getTraits());
 Assert::same('', $method->getBody());
 
 
-$class = (new ClassType('Example'))
-	->setType('interface')
-	->addMember($method = new Nette\PhpGenerator\Method('getHandle'));
+// duplicity
+$class = new ClassType('Example');
+$class->addMember(new Nette\PhpGenerator\Method('foo'));
+Assert::exception(function () use ($class) {
+	$class->addMember(new Nette\PhpGenerator\Method('FOO'));
+}, Nette\InvalidStateException::class, "Cannot add member 'FOO', because it already exists.");

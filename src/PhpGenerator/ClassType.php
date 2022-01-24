@@ -338,6 +338,9 @@ final class ClassType
 
 	public function addTrait(string $name, array|bool|null $deprecatedParam = null): TraitUse
 	{
+		if (isset($this->traits[$name])) {
+			throw new Nette\InvalidStateException("Cannot add trait '$name', because it already exists.");
+		}
 		$this->traits[$name] = $trait = new TraitUse($name, $this);
 		if (is_array($deprecatedParam)) {
 			array_map(fn($item) => $trait->addResolution($item), $deprecatedParam);
@@ -356,13 +359,18 @@ final class ClassType
 
 	public function addMember(Method|Property|Constant|EnumCase|TraitUse $member): static
 	{
-		match (true) {
-			$member instanceof Method => $this->methods[strtolower($member->getName())] = $member,
-			$member instanceof Property => $this->properties[$member->getName()] = $member,
-			$member instanceof Constant => $this->consts[$member->getName()] = $member,
-			$member instanceof EnumCase => $this->cases[$member->getName()] = $member,
-			$member instanceof TraitUse => $this->traits[$member->getName()] = $member,
+		$name = $member->getName();
+		[$type, $n] = match (true) {
+			$member instanceof Method => ['methods', strtolower($name)],
+			$member instanceof Property => ['properties', $name],
+			$member instanceof Constant => ['consts', $name],
+			$member instanceof EnumCase => ['cases', $name],
+			$member instanceof TraitUse => ['traits', $name],
 		};
+		if (isset($this->$type[$n])) {
+			throw new Nette\InvalidStateException("Cannot add member '$name', because it already exists.");
+		}
+		$this->$type[$n] = $member;
 		return $this;
 	}
 
@@ -395,6 +403,9 @@ final class ClassType
 
 	public function addConstant(string $name, $value): Constant
 	{
+		if (isset($this->consts[$name])) {
+			throw new Nette\InvalidStateException("Cannot add constant '$name', because it already exists.");
+		}
 		return $this->consts[$name] = (new Constant($name))
 			->setValue($value)
 			->setPublic();
@@ -434,6 +445,9 @@ final class ClassType
 	/** Adds case to enum */
 	public function addCase(string $name, string|int|null $value = null): EnumCase
 	{
+		if (isset($this->cases[$name])) {
+			throw new Nette\InvalidStateException("Cannot add cases '$name', because it already exists.");
+		}
 		return $this->cases[$name] = (new EnumCase($name))
 			->setValue($value);
 	}
@@ -483,6 +497,9 @@ final class ClassType
 	 */
 	public function addProperty(string $name, $value = null): Property
 	{
+		if (isset($this->properties[$name])) {
+			throw new Nette\InvalidStateException("Cannot add property '$name', because it already exists.");
+		}
 		return $this->properties[$name] = func_num_args() > 1
 			? (new Property($name))->setValue($value)
 			: new Property($name);
@@ -545,12 +562,16 @@ final class ClassType
 
 	public function addMethod(string $name): Method
 	{
+		$lower = strtolower($name);
+		if (isset($this->methods[$lower])) {
+			throw new Nette\InvalidStateException("Cannot add method '$name', because it already exists.");
+		}
 		$method = new Method($name);
 		if (!$this->isInterface()) {
 			$method->setPublic();
 		}
 
-		return $this->methods[strtolower($name)] = $method;
+		return $this->methods[$lower] = $method;
 	}
 
 

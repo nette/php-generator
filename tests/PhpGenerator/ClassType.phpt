@@ -173,6 +173,33 @@ Assert::exception(function () {
 }, Nette\InvalidArgumentException::class, 'Argument must be public|protected|private.');
 
 
+// duplicity
+$class = new ClassType('Example');
+$class->addConstant('a', 1);
+Assert::exception(function () use ($class) {
+	$class->addConstant('a', 1);
+}, Nette\InvalidStateException::class, "Cannot add constant 'a', because it already exists.");
+
+$class->addProperty('a');
+Assert::exception(function () use ($class) {
+	$class->addProperty('a');
+}, Nette\InvalidStateException::class, "Cannot add property 'a', because it already exists.");
+
+$class->addMethod('a');
+Assert::exception(function () use ($class) {
+	$class->addMethod('a');
+}, Nette\InvalidStateException::class, "Cannot add method 'a', because it already exists.");
+
+Assert::exception(function () use ($class) {
+	$class->addMethod('A');
+}, Nette\InvalidStateException::class, "Cannot add method 'A', because it already exists.");
+
+$class->addTrait('A');
+Assert::exception(function () use ($class) {
+	$class->addTrait('A');
+}, Nette\InvalidStateException::class, "Cannot add trait 'A', because it already exists.");
+
+
 // remove members
 $class = new ClassType('Example');
 $class->addConstant('a', 1);
@@ -188,8 +215,7 @@ $class->removeProperty('b')->removeProperty('c');
 Assert::same(['a'], array_keys($class->getProperties()));
 
 $class->addMethod('a');
-$class->addMethod('A');
 $class->addMethod('b');
 $class->removeMethod('B')->removeMethod('c');
 
-Assert::same(['A'], array_keys($class->getMethods()));
+Assert::same(['a'], array_keys($class->getMethods()));
