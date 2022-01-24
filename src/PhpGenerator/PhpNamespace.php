@@ -281,6 +281,13 @@ final class PhpNamespace
 	}
 
 
+	public function removeClass(string $name): self
+	{
+		unset($this->classes[strtolower($name)]);
+		return $this;
+	}
+
+
 	public function addFunction(string $name): GlobalFunction
 	{
 		$lower = strtolower($name);
@@ -289,6 +296,13 @@ final class PhpNamespace
 		}
 
 		return $this->functions[$lower] = new GlobalFunction($name);
+	}
+
+
+	public function removeFunction(string $name): self
+	{
+		unset($this->functions[strtolower($name)]);
+		return $this;
 	}
 
 
