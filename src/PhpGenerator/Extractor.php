@@ -208,6 +208,10 @@ final class Extractor
 			}
 		};
 
+		if ($this->statements) {
+			$this->addCommentAndAttributes($phpFile, $this->statements[0]);
+		}
+
 		$traverser = new PhpParser\NodeTraverser;
 		$traverser->addVisitor($visitor);
 		$traverser->traverse($this->statements);
@@ -367,6 +371,7 @@ final class Extractor
 			$comment = $node->getDocComment()->getReformattedText();
 			$comment = Helpers::unformatDocComment($comment);
 			$element->setComment($comment);
+			$node->setDocComment(new PhpParser\Comment\Doc(''));
 		}
 
 		foreach ($node->attrGroups ?? [] as $group) {

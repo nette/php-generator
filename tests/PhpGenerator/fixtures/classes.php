@@ -1,6 +1,14 @@
 <?php
 
+/**
+ * First comment
+ */
+
 declare(strict_types=1);
+
+/**
+ * Second comment
+ */
 
 namespace Abc;
 
