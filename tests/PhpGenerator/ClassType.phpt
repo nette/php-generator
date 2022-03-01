@@ -22,7 +22,7 @@ Assert::false($class->isAbstract());
 Assert::true($class->isClass());
 Assert::false($class->isInterface());
 Assert::false($class->isTrait());
-Assert::same([], $class->getExtends());
+Assert::same(null, $class->getExtends());
 Assert::same([], $class->getTraits());
 
 $class

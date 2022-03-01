@@ -25,10 +25,10 @@ final class TraitUse
 
 	/** @var string[] */
 	private array $resolutions = [];
-	private ?ClassType $parent;
+	private ?ClassLike $parent;
 
 
-	public function __construct(string $name, ?ClassType $parent = null)
+	public function __construct(string $name, ?ClassLike $parent = null)
 	{
 		if (!Nette\PhpGenerator\Helpers::isNamespaceIdentifier($name, true)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid trait name.");

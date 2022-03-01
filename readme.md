@@ -226,9 +226,8 @@ Interface or Trait
 You can create interfaces and traits:
 
 ```php
-$interface = Nette\PhpGenerator\ClassType::interface('MyInterface');
-$trait = Nette\PhpGenerator\ClassType::trait('MyTrait');
-// in a similar way $class = Nette\PhpGenerator\ClassType::class('MyClass');
+$interface = Nette\PhpGenerator\InterfaceType('MyInterface');
+$trait = Nette\PhpGenerator\TraitType('MyTrait');
 ```
 
 Enums
@@ -237,7 +236,7 @@ Enums
 You can easily create the enums that PHP 8.1 brings:
 
 ```php
-$enum = Nette\PhpGenerator\ClassType::enum('Suit');
+$enum = Nette\PhpGenerator\EnumType('Suit');
 $enum->addCase('Clubs');
 $enum->addCase('Diamonds');
 $enum->addCase('Hearts');

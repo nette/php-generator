@@ -32,7 +32,7 @@ final class Factory
 		\ReflectionClass $from,
 		bool $withBodies = false,
 		?bool $materializeTraits = null,
-	): ClassType {
+	): ClassLike {
 		if ($materializeTraits !== null) {
 			trigger_error(__METHOD__ . '() parameter $materializeTraits has been removed (is always false).', E_USER_DEPRECATED);
 		}
@@ -40,19 +40,21 @@ final class Factory
 			throw new Nette\NotSupportedException('The $withBodies parameter cannot be used for anonymous functions.');
 		}
 
-		$class = $from->isAnonymous()
-			? new ClassType
-			: new ClassType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
-
+		$enumIface = null;
 		if (PHP_VERSION_ID >= 80100 && $from->isEnum()) {
-			$class->setType($class::TYPE_ENUM);
+			$class = new EnumType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
 			$from = new \ReflectionEnum($from->getName());
 			$enumIface = $from->isBacked() ? \BackedEnum::class : \UnitEnum::class;
+		} elseif ($from->isAnonymous()) {
+			$class = new ClassType;
+		} elseif ($from->isInterface()) {
+			$class = new InterfaceType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
+		} elseif ($from->isTrait()) {
+			$class = new TraitType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
 		} else {
-			$class->setType($from->isInterface() ? $class::TYPE_INTERFACE : ($from->isTrait() ? $class::TYPE_TRAIT : $class::TYPE_CLASS));
+			$class = new ClassType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
 			$class->setFinal($from->isFinal() && $class->isClass());
 			$class->setAbstract($from->isAbstract() && $class->isClass());
-			$enumIface = null;
 		}
 
 		$ifaces = $from->getInterfaceNames();
@@ -62,7 +64,7 @@ final class Factory
 
 		if ($from->isInterface()) {
 			$class->setExtends($ifaces);
-		} else {
+		} elseif ($ifaces) {
 			$ifaces = array_diff($ifaces, [$enumIface]);
 			$class->setImplements($ifaces);
 		}
@@ -87,7 +89,9 @@ final class Factory
 			}
 		}
 
-		$class->setProperties($props);
+		if ($props) {
+			$class->setProperties($props);
+		}
 
 		$methods = $resolutions = [];
 		foreach ($from->getMethods() as $method) {
@@ -134,7 +138,9 @@ final class Factory
 		}
 
 		$class->setConstants($consts);
-		$class->setCases($cases);
+		if ($cases) {
+			$class->setCases($cases);
+		}
 
 		return $class;
 	}
@@ -268,7 +274,7 @@ final class Factory
 	}
 
 
-	public function fromClassCode(string $code): ClassType
+	public function fromClassCode(string $code): ClassLike
 	{
 		$classes = $this->fromCode($code)->getClasses();
 		return reset($classes) ?: throw new Nette\InvalidStateException('The code does not contain any class.');
@@ -301,7 +307,7 @@ final class Factory
 	{
 		return $from->isPrivate()
 			? ClassType::VISIBILITY_PRIVATE
-			: ($from->isProtected() ? ClassType::VISIBILITY_PROTECTED : ClassType::VISIBILITY_PUBLIC);
+			: ($from->isProtected() ? ClassLike::VISIBILITY_PROTECTED : ClassLike::VISIBILITY_PUBLIC);
 	}
 
 

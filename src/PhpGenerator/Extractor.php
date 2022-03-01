@@ -252,7 +252,7 @@ final class Extractor
 	}
 
 
-	private function addInterfaceToFile(PhpFile $phpFile, Node\Stmt\Interface_ $node): ClassType
+	private function addInterfaceToFile(PhpFile $phpFile, Node\Stmt\Interface_ $node): InterfaceType
 	{
 		$class = $phpFile->addInterface($node->namespacedName->toString());
 		foreach ($node->extends as $item) {
@@ -264,7 +264,7 @@ final class Extractor
 	}
 
 
-	private function addTraitToFile(PhpFile $phpFile, Node\Stmt\Trait_ $node): ClassType
+	private function addTraitToFile(PhpFile $phpFile, Node\Stmt\Trait_ $node): TraitType
 	{
 		$class = $phpFile->addTrait($node->namespacedName->toString());
 		$this->addCommentAndAttributes($class, $node);
@@ -272,15 +272,15 @@ final class Extractor
 	}
 
 
-	private function addEnumToFile(PhpFile $phpFile, Node\Stmt\Enum_ $node): ClassType
+	private function addEnumToFile(PhpFile $phpFile, Node\Stmt\Enum_ $node): EnumType
 	{
-		$class = $phpFile->addEnum($node->namespacedName->toString());
+		$enum = $phpFile->addEnum($node->namespacedName->toString());
 		foreach ($node->implements as $item) {
-			$class->addImplement($item->toString());
+			$enum->addImplement($item->toString());
 		}
 
-		$this->addCommentAndAttributes($class, $node);
-		return $class;
+		$this->addCommentAndAttributes($enum, $node);
+		return $enum;
 	}
 
 
@@ -291,7 +291,7 @@ final class Extractor
 	}
 
 
-	private function addTraitToClass(ClassType $class, Node\Stmt\TraitUse $node): void
+	private function addTraitToClass(ClassLike $class, Node\Stmt\TraitUse $node): void
 	{
 		foreach ($node->traits as $item) {
 			$trait = $class->addTrait($item->toString(), true);
@@ -305,7 +305,7 @@ final class Extractor
 	}
 
 
-	private function addPropertyToClass(ClassType $class, Node\Stmt\Property $node): void
+	private function addPropertyToClass(ClassLike $class, Node\Stmt\Property $node): void
 	{
 		foreach ($node->props as $item) {
 			$prop = $class->addProperty($item->name->toString());
@@ -327,7 +327,7 @@ final class Extractor
 	}
 
 
-	private function addMethodToClass(ClassType $class, Node\Stmt\ClassMethod $node): void
+	private function addMethodToClass(ClassLike $class, Node\Stmt\ClassMethod $node): void
 	{
 		$method = $class->addMethod($node->name->toString());
 		$method->setAbstract($node->isAbstract());
@@ -343,7 +343,7 @@ final class Extractor
 	}
 
 
-	private function addConstantToClass(ClassType $class, Node\Stmt\ClassConst $node): void
+	private function addConstantToClass(ClassLike $class, Node\Stmt\ClassConst $node): void
 	{
 		foreach ($node->consts as $item) {
 			$value = $this->getReformattedContents([$item->value], 1);
@@ -360,7 +360,7 @@ final class Extractor
 	}
 
 
-	private function addEnumCaseToClass(ClassType $class, Node\Stmt\EnumCase $node): void
+	private function addEnumCaseToClass(EnumType $class, Node\Stmt\EnumCase $node): void
 	{
 		$case = $class->addCase($node->name->toString(), $node->expr?->value);
 		$this->addCommentAndAttributes($case, $node);

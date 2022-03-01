@@ -93,14 +93,6 @@ Assert::exception(function () use ($class) {
 }, Nette\InvalidArgumentException::class, "Value '*' is not valid class name.");
 
 Assert::exception(function () use ($class) {
-	$class->setExtends(['A', '*']);
-}, Nette\InvalidArgumentException::class, "Value '*' is not valid class name.");
-
-Assert::exception(function () use ($class) {
-	$class->addExtend('*');
-}, Nette\InvalidArgumentException::class, "Value '*' is not valid class name.");
-
-Assert::exception(function () use ($class) {
 	$class->setImplements(['A', '*']);
 }, Nette\InvalidArgumentException::class, "Value '*' is not valid class name.");
 
@@ -111,6 +103,16 @@ Assert::exception(function () use ($class) {
 Assert::exception(function () use ($class) {
 	$class->addTrait('*');
 }, Nette\InvalidArgumentException::class, "Value '*' is not valid trait name.");
+
+
+$iface = new Nette\PhpGenerator\InterfaceType('Abc');
+Assert::exception(function () use ($iface) {
+	$iface->setExtends(['A', '*']);
+}, Nette\InvalidArgumentException::class, "Value '*' is not valid class name.");
+
+Assert::exception(function () use ($iface) {
+	$iface->addExtend('*');
+}, Nette\InvalidArgumentException::class, "Value '*' is not valid class name.");
 
 
 Assert::noError(function () {

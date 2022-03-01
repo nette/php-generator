@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\InterfaceType;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
 
-$class = ClassType::fromCode(file_get_contents(__DIR__ . '/fixtures/classes.php'));
-Assert::type(ClassType::class, $class);
+$class = InterfaceType::fromCode(file_get_contents(__DIR__ . '/fixtures/classes.php'));
+Assert::type(InterfaceType::class, $class);
 Assert::match(<<<'XX'
 	/**
 	 * Interface
@@ -23,5 +23,5 @@ Assert::match(<<<'XX'
 
 
 Assert::exception(function () {
-	ClassType::fromCode('<?php');
+	InterfaceType::fromCode('<?php');
 }, Nette\InvalidStateException::class, 'The code does not contain any class.');

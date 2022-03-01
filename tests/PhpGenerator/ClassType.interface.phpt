@@ -6,14 +6,14 @@
 
 declare(strict_types=1);
 
-use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\InterfaceType;
 use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
 
 
-$interface = ClassType::interface('IExample');
+$interface = new InterfaceType('IExample');
 $interface
 	->addExtend('IOne')
 	->addExtend('ITwo')

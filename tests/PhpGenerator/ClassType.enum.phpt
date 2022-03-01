@@ -6,14 +6,14 @@
 
 declare(strict_types=1);
 
-use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\EnumType;
 use Tester\Assert;
 
 
 require __DIR__ . '/../bootstrap.php';
 
 
-$enum = ClassType::enum('Suit');
+$enum = new EnumType('Suit');
 
 Assert::true($enum->isEnum());
 
@@ -37,7 +37,7 @@ $enum->addCase('Spades');
 $res[] = $enum;
 
 
-$enum = ClassType::enum('Method');
+$enum = new EnumType('Method');
 $enum->addImplement('IOne');
 
 $enum->addCase('GET', 'get');

@@ -136,9 +136,9 @@ Assert::same(
 
 Assert::same(
 	PHP_VERSION_ID < 80100
-		? "\\Closure::fromCallable(['Nette\\PhpGenerator\\ClassType', 'from'])"
-		: 'Nette\PhpGenerator\ClassType::from(...)',
-	$dumper->dump(Closure::fromCallable([Nette\PhpGenerator\ClassType::class, 'from'])),
+		? "\\Closure::fromCallable(['Nette\\PhpGenerator\\ClassLike', 'from'])"
+		: 'Nette\PhpGenerator\ClassLike::from(...)',
+	$dumper->dump(Closure::fromCallable([Nette\PhpGenerator\ClassLike::class, 'from'])),
 );
 
 Assert::exception(function () {

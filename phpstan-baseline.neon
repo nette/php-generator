@@ -1,9 +1,19 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Match expression does not handle remaining value\: true$#'
+			count: 1
+			path: src/PhpGenerator/ClassLike.php
+
+		-
 			message: '#^Method Nette\\PhpGenerator\\ClassType\:\:addTrait\(\) has parameter \$deprecatedParam with no value type specified in iterable type array\.$#'
 			count: 1
 			path: src/PhpGenerator/ClassType.php
+
+		-
+			message: '#^Method Nette\\PhpGenerator\\EnumType\:\:addTrait\(\) has parameter \$deprecatedParam with no value type specified in iterable type array\.$#'
+			count: 1
+			path: src/PhpGenerator/EnumType.php
 
 		-
 			message: '#^Access to an undefined property PhpParser\\Node\:\:\$attrGroups\.$#'
@@ -12,6 +22,26 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property PhpParser\\Node\\Expr\:\:\$value\.$#'
+			count: 1
+			path: src/PhpGenerator/Extractor.php
+
+		-
+			message: '#^Call to an undefined method Nette\\PhpGenerator\\ClassLike\:\:addConstant\(\)\.$#'
+			count: 1
+			path: src/PhpGenerator/Extractor.php
+
+		-
+			message: '#^Call to an undefined method Nette\\PhpGenerator\\ClassLike\:\:addMethod\(\)\.$#'
+			count: 1
+			path: src/PhpGenerator/Extractor.php
+
+		-
+			message: '#^Call to an undefined method Nette\\PhpGenerator\\ClassLike\:\:addProperty\(\)\.$#'
+			count: 1
+			path: src/PhpGenerator/Extractor.php
+
+		-
+			message: '#^Call to an undefined method Nette\\PhpGenerator\\ClassLike\:\:addTrait\(\)\.$#'
 			count: 1
 			path: src/PhpGenerator/Extractor.php
 
@@ -61,6 +91,11 @@ parameters:
 			path: src/PhpGenerator/Factory.php
 
 		-
+			message: '#^Parameter \#1 \$name of method Nette\\PhpGenerator\\ClassType\:\:setExtends\(\) expects string\|null, array\<int, string\> given\.$#'
+			count: 1
+			path: src/PhpGenerator/Factory.php
+
+		-
 			message: '#^Unreachable statement \- code above always terminates\.$#'
 			count: 1
 			path: src/PhpGenerator/Factory.php
@@ -79,3 +114,8 @@ parameters:
 			message: '#^Method Nette\\PhpGenerator\\Method\:\:from\(\) has parameter \$method with no value type specified in iterable type array\.$#'
 			count: 1
 			path: src/PhpGenerator/Method.php
+
+		-
+			message: '#^Method Nette\\PhpGenerator\\TraitType\:\:addTrait\(\) has parameter \$deprecatedParam with no value type specified in iterable type array\.$#'
+			count: 1
+			path: src/PhpGenerator/TraitType.php

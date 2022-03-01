@@ -53,7 +53,7 @@ $enumEN = $namespaceBar->addEnum('EN');
 Assert::same($enumEN->getNamespace(), $namespaceBar);
 
 $classB
-	->addExtend('Foo\A')
+	->setExtends('Foo\A')
 	->addImplement('Foo\B')
 	->addTrait('Foo\C');
 

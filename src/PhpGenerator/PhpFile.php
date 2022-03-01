@@ -44,7 +44,7 @@ final class PhpFile
 	}
 
 
-	public function addInterface(string $name): ClassType
+	public function addInterface(string $name): InterfaceType
 	{
 		return $this
 			->addNamespace(Helpers::extractNamespace($name))
@@ -52,7 +52,7 @@ final class PhpFile
 	}
 
 
-	public function addTrait(string $name): ClassType
+	public function addTrait(string $name): TraitType
 	{
 		return $this
 			->addNamespace(Helpers::extractNamespace($name))
@@ -60,7 +60,7 @@ final class PhpFile
 	}
 
 
-	public function addEnum(string $name): ClassType
+	public function addEnum(string $name): EnumType
 	{
 		return $this
 			->addNamespace(Helpers::extractNamespace($name))
@@ -97,7 +97,7 @@ final class PhpFile
 	}
 
 
-	/** @return ClassType[] */
+	/** @return ClassLike[] */
 	public function getClasses(): array
 	{
 		$classes = [];

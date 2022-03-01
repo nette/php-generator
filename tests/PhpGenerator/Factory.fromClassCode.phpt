@@ -12,7 +12,7 @@ require __DIR__ . '/../bootstrap.php';
 $factory = new Factory;
 
 $class = $factory->fromClassCode(file_get_contents(__DIR__ . '/fixtures/classes.php'));
-Assert::type(Nette\PhpGenerator\ClassType::class, $class);
+Assert::type(Nette\PhpGenerator\InterfaceType::class, $class);
 Assert::match(<<<'XX'
 	/**
 	 * Interface

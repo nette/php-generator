@@ -41,7 +41,7 @@ final class PhpNamespace
 		self::NAME_CONSTANT => [],
 	];
 
-	/** @var ClassType[] */
+	/** @var ClassLike[] */
 	private array $classes = [];
 
 	/** @var GlobalFunction[] */
@@ -234,7 +234,7 @@ final class PhpNamespace
 	}
 
 
-	public function add(ClassType $class): static
+	public function add(ClassLike $class): static
 	{
 		$name = $class->getName();
 		if ($name === null) {
@@ -260,21 +260,24 @@ final class PhpNamespace
 	}
 
 
-	public function addInterface(string $name): ClassType
+	public function addInterface(string $name): InterfaceType
 	{
-		return $this->addClass($name)->setType(ClassType::TYPE_INTERFACE);
+		$this->add($iface = new InterfaceType($name, $this));
+		return $iface;
 	}
 
 
-	public function addTrait(string $name): ClassType
+	public function addTrait(string $name): TraitType
 	{
-		return $this->addClass($name)->setType(ClassType::TYPE_TRAIT);
+		$this->add($trait = new TraitType($name, $this));
+		return $trait;
 	}
 
 
-	public function addEnum(string $name): ClassType
+	public function addEnum(string $name): EnumType
 	{
-		return $this->addClass($name)->setType(ClassType::TYPE_ENUM);
+		$this->add($enum = new EnumType($name, $this));
+		return $enum;
 	}
 
 
@@ -305,7 +308,7 @@ final class PhpNamespace
 	}
 
 
-	/** @return ClassType[] */
+	/** @return ClassLike[] */
 	public function getClasses(): array
 	{
 		$res = [];
