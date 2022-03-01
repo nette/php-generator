@@ -275,6 +275,7 @@ final class Extractor
 	private function addEnumToFile(PhpFile $phpFile, Node\Stmt\Enum_ $node): EnumType
 	{
 		$enum = $phpFile->addEnum($node->namespacedName->toString());
+		$enum->setType($node->scalarType?->toString());
 		foreach ($node->implements as $item) {
 			$enum->addImplement($item->toString());
 		}
@@ -362,7 +363,12 @@ final class Extractor
 
 	private function addEnumCaseToClass(EnumType $class, Node\Stmt\EnumCase $node): void
 	{
-		$case = $class->addCase($node->name->toString(), $node->expr?->value);
+		$value = match (true) {
+			$node->expr === null => null,
+			$node->expr instanceof Node\Scalar\LNumber, $node->expr instanceof Node\Scalar\String_ => $node->expr->value,
+			default => new Literal($this->getReformattedContents([$node->expr], 1)),
+		};
+		$case = $class->addCase($node->name->toString(), $value);
 		$this->addCommentAndAttributes($case, $node);
 	}
 

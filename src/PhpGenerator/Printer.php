@@ -147,8 +147,11 @@ class Printer
 		}
 
 		$cases = [];
+		$enumType = null;
 		if ($class instanceof EnumType) {
+			$enumType = $class->getType();
 			foreach ($class->getCases() as $case) {
+				$enumType ??= is_scalar($case->getValue()) ? get_debug_type($case->getValue()) : null;
 				$cases[] = Helpers::formatDocComment((string) $case->getComment())
 					. self::printAttributes($case->getAttributes())
 					. 'case ' . $case->getName()
@@ -156,10 +159,6 @@ class Printer
 					. ";\n";
 			}
 		}
-
-		$enumType = isset($case) && $case->getValue() !== null
-			? $this->returnTypeColon . get_debug_type($case->getValue())
-			: '';
 
 		$consts = [];
 		$methods = [];
@@ -209,8 +208,8 @@ class Printer
 
 		$members = array_filter([
 			implode('', $traits),
-			$this->joinProperties($cases),
 			$this->joinProperties($consts),
+			$this->joinProperties($cases),
 			$this->joinProperties($properties),
 			($methods && $properties ? str_repeat("\n", $this->linesBetweenMethods - 1) : '')
 			. implode(str_repeat("\n", $this->linesBetweenMethods), $methods),
@@ -228,7 +227,7 @@ class Printer
 			. self::printAttributes($class->getAttributes())
 			. ($class instanceof ClassType && $class->isAbstract() ? 'abstract ' : '')
 			. ($class instanceof ClassType && $class->isFinal() ? 'final ' : '')
-			. ($class->getName() ? $type . ' ' . $class->getName() . $enumType . ' ' : '')
+			. ($class->getName() ? $type . ' ' . $class->getName() . ($enumType ? $this->returnTypeColon . $enumType : '') . ' ' : '')
 			. (($class instanceof ClassType || $class instanceof InterfaceType) && $class->getExtends()
 				? 'extends ' . implode(', ', array_map($resolver, (array) $class->getExtends())) . ' '
 				: '')

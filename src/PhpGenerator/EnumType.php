@@ -26,6 +26,20 @@ final class EnumType extends ClassLike
 
 	/** @var array<string, EnumCase> */
 	private array $cases = [];
+	private ?string $type = null;
+
+
+	public function setType(?string $type): static
+	{
+		$this->type = $type;
+		return $this;
+	}
+
+
+	public function getType(): ?string
+	{
+		return $this->type;
+	}
 
 
 	/**
@@ -85,7 +99,7 @@ final class EnumType extends ClassLike
 
 
 	/** Adds case to enum */
-	public function addCase(string $name, string|int|null $value = null): EnumCase
+	public function addCase(string $name, string|int|Literal|null $value = null): EnumCase
 	{
 		if (isset($this->cases[$name])) {
 			throw new Nette\InvalidStateException("Cannot add cases '$name', because it already exists.");

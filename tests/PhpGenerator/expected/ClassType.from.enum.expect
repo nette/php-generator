@@ -4,6 +4,9 @@
 #[\ExampleAttribute]
 enum Enum1
 {
+	public const FOO = 123;
+	public const BAR = \Abc\Enum1::Clubs;
+
 	/** Commented */
 	case Clubs;
 
@@ -11,9 +14,6 @@ enum Enum1
 	case Diamonds;
 	case Hearts;
 	case Spades;
-
-	public const FOO = 123;
-	public const BAR = \Abc\Enum1::Clubs;
 
 	public function foo($x = self::Diamonds)
 	{

@@ -35,3 +35,10 @@ enum Enum2: string implements \Countable
 	{
 	}
 }
+
+enum Enum3: int
+{
+	const FOO = 123;
+	case A = self::FOO;
+	case B = 20 + 5;
+}

@@ -22,17 +22,17 @@ final class EnumCase
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 
-	private string|int|null $value = null;
+	private string|int|Literal|null $value = null;
 
 
-	public function setValue(string|int|null $val): static
+	public function setValue(string|int|Literal|null $val): static
 	{
 		$this->value = $val;
 		return $this;
 	}
 
 
-	public function getValue(): string|int|null
+	public function getValue(): string|int|Literal|null
 	{
 		return $this->value;
 	}
