@@ -166,6 +166,9 @@ final class Extractor
 		$phpFile = new PhpFile;
 		$namespace = '';
 		$visitor = new class extends PhpParser\NodeVisitorAbstract {
+			public $callback;
+
+
 			public function enterNode(Node $node)
 			{
 				return ($this->callback)($node);
@@ -177,7 +180,9 @@ final class Extractor
 				return PhpParser\NodeTraverser::DONT_TRAVERSE_CHILDREN;
 			}
 			match (true) {
-				$node instanceof Node\Stmt\DeclareDeclare && $node->key->name === 'strict_types' => $phpFile->setStrictTypes((bool) $node->value->value),
+				$node instanceof Node\Stmt\DeclareDeclare
+					&& $node->key->name === 'strict_types'
+					&& $node->value instanceof Node\Scalar\LNumber => $phpFile->setStrictTypes((bool) $node->value->value),
 				$node instanceof Node\Stmt\Namespace_ => $namespace = $node->name?->toString(),
 				$node instanceof Node\Stmt\Use_ => $this->addUseToNamespace($node, $phpFile->addNamespace($namespace)),
 				$node instanceof Node\Stmt\Class_ => $class = $this->addClassToFile($phpFile, $node),
@@ -385,7 +390,7 @@ final class Extractor
 	{
 		$function->setReturnReference($node->returnsByRef());
 		$function->setReturnType($node->getReturnType() ? $this->toPhp($node->getReturnType()) : null);
-		foreach ($node->params as $item) {
+		foreach ($node->getParams() as $item) {
 			$param = $function->addParameter($item->var->name);
 			$param->setType($item->type ? $this->toPhp($item->type) : null);
 			$param->setReference($item->byRef);
@@ -398,8 +403,8 @@ final class Extractor
 		}
 
 		$this->addCommentAndAttributes($function, $node);
-		if ($node->stmts) {
-			$function->setBody($this->getReformattedContents($node->stmts, 2));
+		if ($node->getStmts()) {
+			$function->setBody($this->getReformattedContents($node->getStmts(), 2));
 		}
 	}
 
