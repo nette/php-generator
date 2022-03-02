@@ -1,0 +1,81 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method Nette\\PhpGenerator\\ClassType\:\:addTrait\(\) has parameter \$deprecatedParam with no value type specified in iterable type array\.$#'
+			count: 1
+			path: src/PhpGenerator/ClassType.php
+
+		-
+			message: '#^Access to an undefined property PhpParser\\Node\:\:\$attrGroups\.$#'
+			count: 1
+			path: src/PhpGenerator/Extractor.php
+
+		-
+			message: '#^Access to an undefined property PhpParser\\Node\\Expr\:\:\$value\.$#'
+			count: 1
+			path: src/PhpGenerator/Extractor.php
+
+		-
+			message: '#^Method Nette\\PhpGenerator\\Extractor\:\:addCommentAndAttributes\(\) has parameter \$element with no type specified\.$#'
+			count: 1
+			path: src/PhpGenerator/Extractor.php
+
+		-
+			message: '#^Property class@anonymous/PhpGenerator/Extractor\.php\:176\:\:\$callback has no type specified\.$#'
+			count: 1
+			path: src/PhpGenerator/Extractor.php
+
+		-
+			message: '#^Variable \$trait might not be defined\.$#'
+			count: 2
+			path: src/PhpGenerator/Extractor.php
+
+		-
+			message: '#^Call to an undefined method ReflectionClass\<object\>\:\:hasCase\(\)\.$#'
+			count: 1
+			path: src/PhpGenerator/Factory.php
+
+		-
+			message: '#^Elseif branch is unreachable because previous condition is always true\.$#'
+			count: 1
+			path: src/PhpGenerator/Factory.php
+
+		-
+			message: '#^Method Nette\\PhpGenerator\\Factory\:\:getAttributes\(\) has parameter \$from with no type specified\.$#'
+			count: 1
+			path: src/PhpGenerator/Factory.php
+
+		-
+			message: '#^Method Nette\\PhpGenerator\\Factory\:\:getAttributes\(\) return type has no value type specified in iterable type array\.$#'
+			count: 1
+			path: src/PhpGenerator/Factory.php
+
+		-
+			message: '#^Method Nette\\PhpGenerator\\Factory\:\:getExtractor\(\) has parameter \$from with no type specified\.$#'
+			count: 1
+			path: src/PhpGenerator/Factory.php
+
+		-
+			message: '#^Method Nette\\PhpGenerator\\Factory\:\:getVisibility\(\) has parameter \$from with no type specified\.$#'
+			count: 1
+			path: src/PhpGenerator/Factory.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			count: 1
+			path: src/PhpGenerator/Factory.php
+
+		-
+			message: '#^Variable \$bodies on left side of \?\?\= always exists and is not nullable\.$#'
+			count: 1
+			path: src/PhpGenerator/Factory.php
+
+		-
+			message: '#^Method Nette\\PhpGenerator\\Helpers\:\:formatArgs\(\) has parameter \$args with no value type specified in iterable type array\.$#'
+			count: 1
+			path: src/PhpGenerator/Helpers.php
+
+		-
+			message: '#^Method Nette\\PhpGenerator\\Method\:\:from\(\) has parameter \$method with no value type specified in iterable type array\.$#'
+			count: 1
+			path: src/PhpGenerator/Method.php
