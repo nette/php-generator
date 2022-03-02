@@ -30,6 +30,7 @@ trait FunctionLike
 	private bool $returnNullable = false;
 
 
+	/** @param  ?mixed[]  $args */
 	public function setBody(string $code, ?array $args = null): static
 	{
 		$this->body = $args === null
@@ -45,6 +46,7 @@ trait FunctionLike
 	}
 
 
+	/** @param  ?mixed[]  $args */
 	public function addBody(string $code, ?array $args = null): static
 	{
 		$this->body .= ($args === null ? $code : (new Dumper)->format($code, ...$args)) . "\n";
@@ -77,7 +79,7 @@ trait FunctionLike
 	/**
 	 * @param  string  $name without $
 	 */
-	public function addParameter(string $name, $defaultValue = null): Parameter
+	public function addParameter(string $name, mixed $defaultValue = null): Parameter
 	{
 		$param = new Parameter($name);
 		if (func_num_args() > 1) {

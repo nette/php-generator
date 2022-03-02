@@ -85,7 +85,7 @@ final class Method
 	/**
 	 * @param  string  $name without $
 	 */
-	public function addPromotedParameter(string $name, $defaultValue = null): PromotedParameter
+	public function addPromotedParameter(string $name, mixed $defaultValue = null): PromotedParameter
 	{
 		$param = new PromotedParameter($name);
 		if (func_num_args() > 1) {

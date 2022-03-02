@@ -49,7 +49,7 @@ final class Helpers
 
 
 	/** @deprecated  use (new Nette\PhpGenerator\Dumper)->dump() */
-	public static function dump($var): string
+	public static function dump(mixed $var): string
 	{
 		trigger_error(__METHOD__ . '() is deprecated, use (new Nette\PhpGenerator\Dumper)->dump().', E_USER_DEPRECATED);
 		return (new Dumper)->dump($var);
@@ -57,7 +57,7 @@ final class Helpers
 
 
 	/** @deprecated  use (new Nette\PhpGenerator\Dumper)->format() */
-	public static function format(string $statement, ...$args): string
+	public static function format(string $statement, mixed ...$args): string
 	{
 		trigger_error(__METHOD__ . '() is deprecated, use (new Nette\PhpGenerator\Dumper)->format().', E_USER_DEPRECATED);
 		return (new Dumper)->format($statement, ...$args);
@@ -119,13 +119,13 @@ final class Helpers
 	}
 
 
-	public static function isIdentifier($value): bool
+	public static function isIdentifier(mixed $value): bool
 	{
 		return is_string($value) && preg_match('#^' . self::PHP_IDENT . '$#D', $value);
 	}
 
 
-	public static function isNamespaceIdentifier($value, bool $allowLeadingSlash = false): bool
+	public static function isNamespaceIdentifier(mixed $value, bool $allowLeadingSlash = false): bool
 	{
 		$re = '#^' . ($allowLeadingSlash ? '\\\\?' : '') . self::PHP_IDENT . '(\\\\' . self::PHP_IDENT . ')*$#D';
 		return is_string($value) && preg_match($re, $value);
@@ -152,7 +152,10 @@ final class Helpers
 	}
 
 
-	/** @internal */
+	/**
+	 * @param  mixed[]  $props
+	 * @internal
+	 */
 	public static function createObject(string $class, array $props): object
 	{
 		return Dumper::createObject($class, $props);

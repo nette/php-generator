@@ -25,6 +25,8 @@ final class Extractor
 	use Nette\SmartObject;
 
 	private string $code;
+
+	/** @var Node[] */
 	private array $statements;
 	private PhpParser\PrettyPrinterAbstract $printer;
 
@@ -58,6 +60,7 @@ final class Extractor
 	}
 
 
+	/** @return array<string, string> */
 	public function extractMethodBodies(string $className): array
 	{
 		$nodeFinder = new NodeFinder;
@@ -91,20 +94,24 @@ final class Extractor
 	}
 
 
-	/** @param  Node[]  $statements */
-	private function getReformattedContents(array $statements, int $level): string
+	/** @param  Node[]  $nodes */
+	private function getReformattedContents(array $nodes, int $level): string
 	{
-		$body = $this->getNodeContents(...$statements);
-		$body = $this->performReplacements($body, $this->prepareReplacements($statements));
+		$body = $this->getNodeContents(...$nodes);
+		$body = $this->performReplacements($body, $this->prepareReplacements($nodes));
 		return Helpers::unindent($body, $level);
 	}
 
 
-	private function prepareReplacements(array $statements): array
+	/**
+	 * @param  Node[]  $nodes
+	 * @return array<array{int, int, string}>
+	 */
+	private function prepareReplacements(array $nodes): array
 	{
-		$start = $statements[0]->getStartFilePos();
+		$start = $nodes[0]->getStartFilePos();
 		$replacements = [];
-		(new NodeFinder)->find($statements, function (Node $node) use (&$replacements, $start) {
+		(new NodeFinder)->find($nodes, function (Node $node) use (&$replacements, $start) {
 			if ($node instanceof Node\Name\FullyQualified) {
 				if ($node->getAttribute('originalName') instanceof Node\Name) {
 					$of = match (true) {
@@ -149,6 +156,7 @@ final class Extractor
 	}
 
 
+	/** @param  array<array{int, int, string}>  $replacements */
 	private function performReplacements(string $s, array $replacements): string
 	{
 		usort($replacements, fn($a, $b) => $b[0] <=> $a[0]);

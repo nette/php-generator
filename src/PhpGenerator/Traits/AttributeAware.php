@@ -21,6 +21,7 @@ trait AttributeAware
 	private array $attributes = [];
 
 
+	/** @param  mixed[]  $args */
 	public function addAttribute(string $name, array $args = []): static
 	{
 		$this->attributes[] = new Attribute($name, $args);

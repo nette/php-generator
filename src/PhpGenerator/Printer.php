@@ -349,6 +349,7 @@ class Printer
 	}
 
 
+	/** @param  Attribute[]  $attrs */
 	private function printAttributes(array $attrs, bool $inline = false): string
 	{
 		if (!$attrs) {
@@ -383,7 +384,7 @@ class Printer
 	}
 
 
-	protected function dump($var, int $column = 0): string
+	protected function dump(mixed $var, int $column = 0): string
 	{
 		$this->dumper->indentation = $this->indentation;
 		$this->dumper->wrapLength = $this->wrapLength;
@@ -393,6 +394,7 @@ class Printer
 	}
 
 
+	/** @param  string[]  $props */
 	private function joinProperties(array $props): string
 	{
 		return $this->linesBetweenProperties

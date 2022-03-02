@@ -55,16 +55,16 @@ final class ClassType
 	/** @var TraitUse[] */
 	private array $traits = [];
 
-	/** @var Constant[] name => Constant */
+	/** @var array<string, Constant> */
 	private array $consts = [];
 
-	/** @var Property[] name => Property */
+	/** @var array<string, Property> */
 	private array $properties = [];
 
-	/** @var Method[] name => Method */
+	/** @var array<string, Method> */
 	private array $methods = [];
 
-	/** @var EnumCase[] name => EnumCase */
+	/** @var array<string, EnumCase> */
 	private array $cases = [];
 
 
@@ -401,7 +401,7 @@ final class ClassType
 	}
 
 
-	public function addConstant(string $name, $value): Constant
+	public function addConstant(string $name, mixed $value): Constant
 	{
 		if (isset($this->consts[$name])) {
 			throw new Nette\InvalidStateException("Cannot add constant '$name', because it already exists.");
@@ -495,7 +495,7 @@ final class ClassType
 	/**
 	 * @param  string  $name  without $
 	 */
-	public function addProperty(string $name, $value = null): Property
+	public function addProperty(string $name, mixed $value = null): Property
 	{
 		if (isset($this->properties[$name])) {
 			throw new Nette\InvalidStateException("Cannot add property '$name', because it already exists.");
@@ -603,6 +603,7 @@ final class ClassType
 	}
 
 
+	/** @param  string[]  $names */
 	private function validateNames(array $names): void
 	{
 		foreach ($names as $name) {

@@ -20,10 +20,14 @@ final class Factory
 {
 	use Nette\SmartObject;
 
+	/** @var string[][]  */
 	private array $bodyCache = [];
+
+	/** @var Extractor[]  */
 	private array $extractorCache = [];
 
 
+	/** @param  \ReflectionClass<object>  $from */
 	public function fromClassReflection(
 		\ReflectionClass $from,
 		bool $withBodies = false,

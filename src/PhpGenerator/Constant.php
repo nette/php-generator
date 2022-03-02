@@ -27,7 +27,7 @@ final class Constant
 	private bool $final = false;
 
 
-	public function setValue($val): static
+	public function setValue(mixed $val): static
 	{
 		$this->value = $val;
 		return $this;

@@ -32,7 +32,7 @@ final class EnumCase
 	}
 
 
-	public function getValue()
+	public function getValue(): string|int|null
 	{
 		return $this->value;
 	}

@@ -50,6 +50,7 @@ final class Closure
 	}
 
 
+	/** @return Parameter[] */
 	public function getUses(): array
 	{
 		return $this->uses;

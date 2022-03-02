@@ -23,8 +23,8 @@ final class TraitUse
 	use Traits\NameAware;
 	use Traits\CommentAware;
 
+	/** @var string[] */
 	private array $resolutions = [];
-
 	private ?ClassType $parent;
 
 
@@ -46,12 +46,14 @@ final class TraitUse
 	}
 
 
+	/** @return string[] */
 	public function getResolutions(): array
 	{
 		return $this->resolutions;
 	}
 
 
+	/** @param  mixed[]  $args */
 	public function __call(string $nm, array $args): mixed
 	{
 		if (!$this->parent) {

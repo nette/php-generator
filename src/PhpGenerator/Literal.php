@@ -17,6 +17,7 @@ class Literal
 {
 	public function __construct(
 		private string $value,
+		/** @var ?mixed[] */
 		private ?array $args = null,
 	) {
 	}

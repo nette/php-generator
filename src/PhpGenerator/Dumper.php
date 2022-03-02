@@ -27,13 +27,14 @@ final class Dumper
 	/**
 	 * Returns a PHP representation of a variable.
 	 */
-	public function dump($var, int $column = 0): string
+	public function dump(mixed $var, int $column = 0): string
 	{
 		return $this->dumpVar($var, [], 0, $column);
 	}
 
 
-	private function dumpVar(&$var, array $parents = [], int $level = 0, int $column = 0): string
+	/** @param  array<mixed[]|object>  $parents */
+	private function dumpVar(mixed &$var, array $parents = [], int $level = 0, int $column = 0): string
 	{
 		if ($var === null) {
 			return 'null';
@@ -95,6 +96,10 @@ final class Dumper
 	}
 
 
+	/**
+	 * @param  mixed[]  $var
+	 * @param  array<mixed[]|object>  $parents
+	 */
 	private function dumpArray(array &$var, array $parents, int $level, int $column): string
 	{
 		if (empty($var)) {
@@ -130,7 +135,8 @@ final class Dumper
 	}
 
 
-	private function dumpObject($var, array $parents, int $level): string
+	/** @param  array<mixed[]|object>  $parents */
+	private function dumpObject(object $var, array $parents, int $level): string
 	{
 		if ($var instanceof \Serializable) {
 			return 'unserialize(' . $this->dumpString(serialize($var)) . ')';
@@ -200,7 +206,7 @@ final class Dumper
 	/**
 	 * Generates PHP statement. Supports placeholders: ?  \?  $?  ->?  ::?  ...?  ...?:  ?*
 	 */
-	public function format(string $statement, ...$args): string
+	public function format(string $statement, mixed ...$args): string
 	{
 		$tokens = preg_split('#(\.\.\.\?:?|\$\?|->\?|::\?|\\\\\?|\?\*|\?(?!\w))#', $statement, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$res = '';
@@ -239,6 +245,7 @@ final class Dumper
 	}
 
 
+	/** @param  mixed[]  $var */
 	private function dumpArguments(array &$var, int $column, bool $named): string
 	{
 		$outInline = $outWrapped = '';
@@ -257,6 +264,7 @@ final class Dumper
 
 
 	/**
+	 * @param  mixed[]  $props
 	 * @internal
 	 */
 	public static function createObject(string $class, array $props): object
