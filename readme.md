@@ -590,14 +590,14 @@ To simplify a fully qualified class, function or constant name according to the 
 
 ```php
 echo $namespace->simplifyName('Foo\Bar'); // 'Bar', because 'Foo' is current namespace
-echo $namespace->simplifyName('iter\range', $namespace::NAME_FUNCTION); // 'range', because of the defined use-statement
+echo $namespace->simplifyName('iter\range', $namespace::NameFunction); // 'range', because of the defined use-statement
 ```
 
 Conversely, you can convert a simplified class, function or constant name to a fully qualified one using the `resolveName` method:
 
 ```php
 echo $namespace->resolveName('Bar'); // 'Foo\Bar'
-echo $namespace->resolveName('range', $namespace::NAME_FUNCTION); // 'iter\range'
+echo $namespace->resolveName('range', $namespace::NameFunction); // 'iter\range'
 ```
 
 Class Names Resolving

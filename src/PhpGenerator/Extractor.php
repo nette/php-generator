@@ -106,8 +106,8 @@ final class Extractor
 			if ($node instanceof Node\Name\FullyQualified) {
 				if ($node->getAttribute('originalName') instanceof Node\Name) {
 					$of = $node->getAttribute('parent') instanceof Node\Expr\ConstFetch
-							? PhpNamespace::NAME_CONSTANT
-							: ($node->getAttribute('parent') instanceof Node\Expr\FuncCall ? PhpNamespace::NAME_FUNCTION : PhpNamespace::NAME_NORMAL);
+							? PhpNamespace::NameConstant
+							: ($node->getAttribute('parent') instanceof Node\Expr\FuncCall ? PhpNamespace::NameFunction : PhpNamespace::NameNormal);
 					$replacements[] = [
 						$node->getStartFilePos() - $start,
 						$node->getEndFilePos() - $start,
@@ -225,9 +225,9 @@ final class Extractor
 	private function addUseToNamespace(Node\Stmt\Use_ $node, PhpNamespace $namespace): void
 	{
 		$of = [
-			$node::TYPE_NORMAL => PhpNamespace::NAME_NORMAL,
-			$node::TYPE_FUNCTION => PhpNamespace::NAME_FUNCTION,
-			$node::TYPE_CONSTANT => PhpNamespace::NAME_CONSTANT,
+			$node::TYPE_NORMAL => PhpNamespace::NameNormal,
+			$node::TYPE_FUNCTION => PhpNamespace::NameFunction,
+			$node::TYPE_CONSTANT => PhpNamespace::NameConstant,
 		][$node->type];
 		foreach ($node->uses as $use) {
 			$namespace->addUse($use->name->toString(), $use->alias ? $use->alias->toString() : null, $of);

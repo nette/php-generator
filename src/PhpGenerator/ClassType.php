@@ -31,9 +31,14 @@ final class ClassType
 		TYPE_ENUM = 'enum';
 
 	public const
-		VISIBILITY_PUBLIC = 'public',
-		VISIBILITY_PROTECTED = 'protected',
-		VISIBILITY_PRIVATE = 'private';
+		VisibilityPublic = 'public',
+		VisibilityProtected = 'protected',
+		VisibilityPrivate = 'private';
+
+	public const
+		VISIBILITY_PUBLIC = self::VisibilityPublic,
+		VISIBILITY_PROTECTED = self::VisibilityProtected,
+		VISIBILITY_PRIVATE = self::VisibilityPrivate;
 
 	/** @var PhpNamespace|null */
 	private $namespace;
@@ -155,7 +160,7 @@ final class ClassType
 	/** @return static */
 	public function setName(?string $name): self
 	{
-		if ($name !== null && (!Helpers::isIdentifier($name) || isset(Helpers::KEYWORDS[strtolower($name)]))) {
+		if ($name !== null && (!Helpers::isIdentifier($name) || isset(Helpers::Keywords[strtolower($name)]))) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid class name.");
 		}
 

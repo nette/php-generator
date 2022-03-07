@@ -23,21 +23,21 @@ Assert::same('C\D', $namespace->simplifyName('Bar\C\D'));
 
 $namespace->addUseFunction('Foo\a');
 
-Assert::same('bar\c', $namespace->simplifyName('bar\c', $namespace::NAME_FUNCTION));
-Assert::same('a', $namespace->simplifyName('foo\A', $namespace::NAME_FUNCTION));
-Assert::same('foo\a\b', $namespace->simplifyName('foo\a\b', $namespace::NAME_FUNCTION));
+Assert::same('bar\c', $namespace->simplifyName('bar\c', $namespace::NameFunction));
+Assert::same('a', $namespace->simplifyName('foo\A', $namespace::NameFunction));
+Assert::same('foo\a\b', $namespace->simplifyName('foo\a\b', $namespace::NameFunction));
 
 $namespace->addUseFunction('Bar\c');
 
-Assert::same('Bar', $namespace->simplifyName('Bar', $namespace::NAME_FUNCTION));
-Assert::same('c', $namespace->simplifyName('bar\c', $namespace::NAME_FUNCTION));
-Assert::same('C\d', $namespace->simplifyName('Bar\C\d', $namespace::NAME_FUNCTION));
+Assert::same('Bar', $namespace->simplifyName('Bar', $namespace::NameFunction));
+Assert::same('c', $namespace->simplifyName('bar\c', $namespace::NameFunction));
+Assert::same('C\d', $namespace->simplifyName('Bar\C\d', $namespace::NameFunction));
 
 $namespace->addUseConstant('Bar\c');
 
-Assert::same('Bar', $namespace->simplifyName('Bar', $namespace::NAME_CONSTANT));
-Assert::same('c', $namespace->simplifyName('bar\c', $namespace::NAME_CONSTANT));
-Assert::same('C\d', $namespace->simplifyName('Bar\C\d', $namespace::NAME_CONSTANT));
+Assert::same('Bar', $namespace->simplifyName('Bar', $namespace::NameConstant));
+Assert::same('c', $namespace->simplifyName('bar\c', $namespace::NameConstant));
+Assert::same('C\d', $namespace->simplifyName('Bar\C\d', $namespace::NameConstant));
 
 
 
@@ -75,16 +75,16 @@ Assert::same('žluťoučký', $namespace->simplifyType('foo\žluťoučký'));
 $namespace->addUseFunction('Foo\a');
 
 foreach (['String', 'string', 'int', 'float', 'bool', 'array', 'callable', 'self', 'parent', ''] as $type) {
-	Assert::same($type, $namespace->simplifyName($type, $namespace::NAME_FUNCTION));
+	Assert::same($type, $namespace->simplifyName($type, $namespace::NameFunction));
 }
 
-Assert::same('\bar\c', $namespace->simplifyName('bar\c', $namespace::NAME_FUNCTION));
-Assert::same('a', $namespace->simplifyName('foo\A', $namespace::NAME_FUNCTION));
-Assert::same('Foo\C\b', $namespace->simplifyName('foo\C\b', $namespace::NAME_FUNCTION));
-Assert::same('a\b', $namespace->simplifyName('foo\a\b', $namespace::NAME_FUNCTION));
+Assert::same('\bar\c', $namespace->simplifyName('bar\c', $namespace::NameFunction));
+Assert::same('a', $namespace->simplifyName('foo\A', $namespace::NameFunction));
+Assert::same('Foo\C\b', $namespace->simplifyName('foo\C\b', $namespace::NameFunction));
+Assert::same('a\b', $namespace->simplifyName('foo\a\b', $namespace::NameFunction));
 
 $namespace->addUseFunction('Bar\c');
 
-Assert::same('\Bar', $namespace->simplifyName('Bar', $namespace::NAME_FUNCTION));
-Assert::same('c', $namespace->simplifyName('bar\c', $namespace::NAME_FUNCTION));
-Assert::same('C\d', $namespace->simplifyName('Bar\C\d', $namespace::NAME_FUNCTION));
+Assert::same('\Bar', $namespace->simplifyName('Bar', $namespace::NameFunction));
+Assert::same('c', $namespace->simplifyName('bar\c', $namespace::NameFunction));
+Assert::same('C\d', $namespace->simplifyName('Bar\C\d', $namespace::NameFunction));
