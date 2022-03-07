@@ -19,9 +19,9 @@ final class Helpers
 {
 	use Nette\StaticClass;
 
-	public const PHP_IDENT = '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*';
+	public const ReIdentifier = '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*';
 
-	public const KEYWORDS = [
+	public const Keywords = [
 		// built-in types
 		'string' => 1, 'int' => 1, 'float' => 1, 'bool' => 1, 'array' => 1, 'object' => 1,
 		'callable' => 1, 'iterable' => 1, 'void' => 1, 'null' => 1, 'mixed' => 1, 'false' => 1,
@@ -46,6 +46,11 @@ final class Helpers
 		// additional reserved class names
 		'true' => 1,
 	];
+
+	/** @deprecated  */
+	public const
+		PHP_IDENT = self::ReIdentifier,
+		KEYWORDS = self::Keywords;
 
 
 	/** @deprecated  use (new Nette\PhpGenerator\Dumper)->dump() */
@@ -86,9 +91,9 @@ final class Helpers
 	}
 
 
-	public static function tagName(string $name, string $of = PhpNamespace::NAME_NORMAL): string
+	public static function tagName(string $name, string $of = PhpNamespace::NameNormal): string
 	{
-		return isset(self::KEYWORDS[strtolower($name)])
+		return isset(self::Keywords[strtolower($name)])
 			? $name
 			: "/*($of*/$name";
 	}
@@ -121,13 +126,13 @@ final class Helpers
 
 	public static function isIdentifier(mixed $value): bool
 	{
-		return is_string($value) && preg_match('#^' . self::PHP_IDENT . '$#D', $value);
+		return is_string($value) && preg_match('#^' . self::ReIdentifier . '$#D', $value);
 	}
 
 
 	public static function isNamespaceIdentifier(mixed $value, bool $allowLeadingSlash = false): bool
 	{
-		$re = '#^' . ($allowLeadingSlash ? '\\\\?' : '') . self::PHP_IDENT . '(\\\\' . self::PHP_IDENT . ')*$#D';
+		$re = '#^' . ($allowLeadingSlash ? '\\\\?' : '') . self::ReIdentifier . '(\\\\' . self::ReIdentifier . ')*$#D';
 		return is_string($value) && preg_match($re, $value);
 	}
 

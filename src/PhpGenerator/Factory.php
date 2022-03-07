@@ -306,8 +306,8 @@ final class Factory
 	private function getVisibility($from): string
 	{
 		return $from->isPrivate()
-			? ClassType::VISIBILITY_PRIVATE
-			: ($from->isProtected() ? ClassLike::VISIBILITY_PROTECTED : ClassLike::VISIBILITY_PUBLIC);
+			? ClassLike::VisibilityPrivate
+			: ($from->isProtected() ? ClassLike::VisibilityProtected : ClassLike::VisibilityPublic);
 	}
 
 

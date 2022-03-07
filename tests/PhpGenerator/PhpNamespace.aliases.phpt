@@ -48,7 +48,7 @@ Assert::exception(function () use ($namespace) {
 }, Nette\InvalidStateException::class, "Name 'F2' used already for 'Foo\\f2'.");
 
 Assert::same(['C' => 'Bar\C'], $namespace->getUses());
-Assert::same(['f1' => 'Bar\f1'], $namespace->getUses($namespace::NAME_FUNCTION));
+Assert::same(['f1' => 'Bar\f1'], $namespace->getUses($namespace::NameFunction));
 
 
 // alias generation
@@ -90,4 +90,4 @@ Assert::same('Qux', $namespace->simplifyName('Foo\Bar\Baz\Qux'));
 $namespace = new PhpNamespace('Foo');
 $namespace->addUseFunction('Bar\c');
 $namespace->addUseFunction('c');
-Assert::same('c1', $namespace->simplifyName('c', $namespace::NAME_FUNCTION));
+Assert::same('c1', $namespace->simplifyName('c', $namespace::NameFunction));

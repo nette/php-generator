@@ -17,7 +17,7 @@ use Nette;
  */
 final class Dumper
 {
-	private const INDENT_LENGTH = 4;
+	private const IndentLength = 4;
 
 	public int $maxDepth = 50;
 	public int $wrapLength = 120;
@@ -130,7 +130,7 @@ final class Dumper
 		}
 
 		array_pop($parents);
-		$wrap = str_contains($outInline, "\n") || $level * self::INDENT_LENGTH + $column + strlen($outInline) + 3 > $this->wrapLength; // 3 = [],
+		$wrap = str_contains($outInline, "\n") || $level * self::IndentLength + $column + strlen($outInline) + 3 > $this->wrapLength; // 3 = [],
 		return '[' . ($wrap ? $outWrapped : $outInline) . ']';
 	}
 

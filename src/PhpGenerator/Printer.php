@@ -246,8 +246,8 @@ class Printer
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		$name = $namespace->getName();
 		$uses = $this->printUses($namespace)
-			. $this->printUses($namespace, PhpNamespace::NAME_FUNCTION)
-			. $this->printUses($namespace, PhpNamespace::NAME_CONSTANT);
+			. $this->printUses($namespace, PhpNamespace::NameFunction)
+			. $this->printUses($namespace, PhpNamespace::NameConstant);
 
 		$items = [];
 		foreach ($namespace->getClasses() as $class) {
@@ -290,12 +290,12 @@ class Printer
 	}
 
 
-	protected function printUses(PhpNamespace $namespace, string $of = PhpNamespace::NAME_NORMAL): string
+	protected function printUses(PhpNamespace $namespace, string $of = PhpNamespace::NameNormal): string
 	{
 		$prefix = [
-			PhpNamespace::NAME_NORMAL => '',
-			PhpNamespace::NAME_FUNCTION => 'function ',
-			PhpNamespace::NAME_CONSTANT => 'const ',
+			PhpNamespace::NameNormal => '',
+			PhpNamespace::NameFunction => 'function ',
+			PhpNamespace::NameConstant => 'const ',
 		][$of];
 		$name = $namespace->getName();
 		$uses = [];

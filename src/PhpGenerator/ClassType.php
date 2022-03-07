@@ -33,7 +33,6 @@ final class ClassType extends ClassLike
 		TYPE_ENUM = 'enum';
 
 	private string $type = self::TYPE_CLASS;
-
 	private bool $final = false;
 	private bool $abstract = false;
 	private ?string $extends = null;

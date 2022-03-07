@@ -26,21 +26,21 @@ Assert::same('Bar\C\D', $namespace->resolveName('C\D'));
 
 $namespace->addUseFunction('Foo\a');
 
-Assert::same('bar\c', $namespace->resolveName('bar\c', $namespace::NAME_FUNCTION));
-Assert::same('Foo\a', $namespace->resolveName('A', $namespace::NAME_FUNCTION));
-Assert::same('foo\a\b', $namespace->resolveName('foo\a\b', $namespace::NAME_FUNCTION));
+Assert::same('bar\c', $namespace->resolveName('bar\c', $namespace::NameFunction));
+Assert::same('Foo\a', $namespace->resolveName('A', $namespace::NameFunction));
+Assert::same('foo\a\b', $namespace->resolveName('foo\a\b', $namespace::NameFunction));
 
 $namespace->addUseFunction('Bar\c');
 
-Assert::same('Bar', $namespace->resolveName('Bar', $namespace::NAME_FUNCTION));
-Assert::same('Bar\c', $namespace->resolveName('C', $namespace::NAME_FUNCTION));
-Assert::same('Bar\C\d', $namespace->resolveName('c\d', $namespace::NAME_FUNCTION));
+Assert::same('Bar', $namespace->resolveName('Bar', $namespace::NameFunction));
+Assert::same('Bar\c', $namespace->resolveName('C', $namespace::NameFunction));
+Assert::same('Bar\C\d', $namespace->resolveName('c\d', $namespace::NameFunction));
 
 $namespace->addUseConstant('Bar\c');
 
-Assert::same('Bar', $namespace->resolveName('Bar', $namespace::NAME_CONSTANT));
-Assert::same('Bar\c', $namespace->resolveName('C', $namespace::NAME_CONSTANT));
-Assert::same('Bar\C\d', $namespace->resolveName('c\d', $namespace::NAME_CONSTANT));
+Assert::same('Bar', $namespace->resolveName('Bar', $namespace::NameConstant));
+Assert::same('Bar\c', $namespace->resolveName('C', $namespace::NameConstant));
+Assert::same('Bar\C\d', $namespace->resolveName('c\d', $namespace::NameConstant));
 
 
 
@@ -71,16 +71,16 @@ Assert::same('Bar\C\D', $namespace->resolveName('c\D'));
 $namespace->addUseFunction('Foo\a');
 
 foreach (['String', 'string', 'int', 'float', 'bool', 'array', 'callable', 'self', 'parent', ''] as $type) {
-	Assert::same($type, $namespace->resolveName($type, $namespace::NAME_FUNCTION));
+	Assert::same($type, $namespace->resolveName($type, $namespace::NameFunction));
 }
 
-Assert::same('bar\c', $namespace->resolveName('\bar\c', $namespace::NAME_FUNCTION));
-Assert::same('Foo\a', $namespace->resolveName('A', $namespace::NAME_FUNCTION));
-Assert::same('Foo\C\b', $namespace->resolveName('foo\C\b', $namespace::NAME_FUNCTION));
-Assert::same('Foo\A\b', $namespace->resolveName('A\b', $namespace::NAME_FUNCTION));
+Assert::same('bar\c', $namespace->resolveName('\bar\c', $namespace::NameFunction));
+Assert::same('Foo\a', $namespace->resolveName('A', $namespace::NameFunction));
+Assert::same('Foo\C\b', $namespace->resolveName('foo\C\b', $namespace::NameFunction));
+Assert::same('Foo\A\b', $namespace->resolveName('A\b', $namespace::NameFunction));
 
 $namespace->addUseFunction('Bar\c');
 
-Assert::same('Bar', $namespace->resolveName('\Bar', $namespace::NAME_FUNCTION));
-Assert::same('Bar\c', $namespace->resolveName('C', $namespace::NAME_FUNCTION));
-Assert::same('Bar\C\d', $namespace->resolveName('c\d', $namespace::NAME_FUNCTION));
+Assert::same('Bar', $namespace->resolveName('\Bar', $namespace::NameFunction));
+Assert::same('Bar\c', $namespace->resolveName('C', $namespace::NameFunction));
+Assert::same('Bar\C\d', $namespace->resolveName('c\d', $namespace::NameFunction));
