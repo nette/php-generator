@@ -390,7 +390,10 @@ final class Extractor
 		$function->setReturnReference($node->returnsByRef());
 		$function->setReturnType($node->getReturnType() ? $this->toPhp($node->getReturnType()) : null);
 		foreach ($node->getParams() as $item) {
-			$param = $function->addParameter($item->var->name);
+			$visibility = $this->toVisibility($item->flags);
+			$param = $visibility
+				? ($function->addPromotedParameter($item->var->name))->setVisibility($visibility)
+				: $function->addParameter($item->var->name);
 			$param->setType($item->type ? $this->toPhp($item->type) : null);
 			$param->setReference($item->byRef);
 			$function->setVariadic($item->variadic);
