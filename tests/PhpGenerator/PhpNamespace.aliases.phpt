@@ -57,6 +57,8 @@ $namespace->addUse('C');
 Assert::same('C', $namespace->simplifyName('C'));
 $namespace->addUse('Bar\C');
 Assert::same('C1', $namespace->simplifyName('Bar\C'));
+$namespace->removeUse('bar\c');
+Assert::same('Bar\C', $namespace->simplifyName('Bar\C'));
 
 $namespace = new PhpNamespace('');
 $namespace->addUse('Bar\C');
@@ -91,3 +93,5 @@ $namespace = new PhpNamespace('Foo');
 $namespace->addUseFunction('Bar\c');
 $namespace->addUseFunction('c');
 Assert::same('c1', $namespace->simplifyName('c', $namespace::NameFunction));
+$namespace->removeUse('c', $namespace::NameFunction);
+Assert::same('\c', $namespace->simplifyName('c', $namespace::NameFunction));

@@ -137,6 +137,16 @@ final class PhpNamespace
 	}
 
 
+	public function removeUse(string $name, string $of = self::NameNormal): void
+	{
+		foreach ($this->aliases[$of] as $alias => $item) {
+			if (strcasecmp($item, $name) === 0) {
+				unset($this->aliases[$of][$alias]);
+			}
+		}
+	}
+
+
 	public function addUseFunction(string $name, ?string $alias = null): static
 	{
 		return $this->addUse($name, $alias, self::NameFunction);
