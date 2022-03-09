@@ -31,7 +31,7 @@ enum Enum2: string implements \Countable
 	case GET = 'get';
 	case POST = 'post';
 
-	public function count(): int
+	function count(): int
 	{
 	}
 }
