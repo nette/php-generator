@@ -311,12 +311,7 @@ final class Extractor
 		foreach ($node->props as $item) {
 			$prop = $class->addProperty($item->name->toString());
 			$prop->setStatic($node->isStatic());
-			if ($node->isPrivate()) {
-				$prop->setPrivate();
-			} elseif ($node->isProtected()) {
-				$prop->setProtected();
-			}
-
+			$prop->setVisibility($this->toVisibility($node->flags));
 			$prop->setType($node->type ? $this->toPhp($node->type) : null);
 			if ($item->default) {
 				$prop->setValue(new Literal($this->getReformattedContents([$item->default], 1)));
@@ -334,12 +329,7 @@ final class Extractor
 		$method->setAbstract($node->isAbstract());
 		$method->setFinal($node->isFinal());
 		$method->setStatic($node->isStatic());
-		if ($node->isPrivate()) {
-			$method->setPrivate();
-		} elseif ($node->isProtected()) {
-			$method->setProtected();
-		}
-
+		$method->setVisibility($this->toVisibility($node->flags));
 		$this->setupFunction($method, $node);
 	}
 
@@ -349,12 +339,7 @@ final class Extractor
 		foreach ($node->consts as $item) {
 			$value = $this->getReformattedContents([$item->value], 1);
 			$const = $class->addConstant($item->name->toString(), new Literal($value));
-			if ($node->isPrivate()) {
-				$const->setPrivate();
-			} elseif ($node->isProtected()) {
-				$const->setProtected();
-			}
-
+			$const->setVisibility($this->toVisibility($node->flags));
 			$const->setFinal(method_exists($node, 'isFinal') && $node->isFinal());
 			$this->addCommentAndAttributes($const, $node);
 		}
@@ -420,6 +405,17 @@ final class Extractor
 		if ($node->getStmts()) {
 			$function->setBody($this->getReformattedContents($node->getStmts(), 2));
 		}
+	}
+
+
+	private function toVisibility(int $flags): ?string
+	{
+		return match (true) {
+			(bool) ($flags & Node\Stmt\Class_::MODIFIER_PUBLIC) => ClassType::VisibilityPublic,
+			(bool) ($flags & Node\Stmt\Class_::MODIFIER_PROTECTED) => ClassType::VisibilityProtected,
+			(bool) ($flags & Node\Stmt\Class_::MODIFIER_PRIVATE) => ClassType::VisibilityPrivate,
+			default => null,
+		};
 	}
 
 

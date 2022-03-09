@@ -20,6 +20,6 @@ Assert::match(<<<'XX'
 	 */
 	interface Interface1
 	{
-		function func1();
+		public function func1();
 	}
 	XX, (string) $class);

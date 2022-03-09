@@ -21,7 +21,7 @@ class Class9
 	/** Commented */
 	#[ExampleAttribute]
 	#[WithArguments(true)]
-	public const FOO = 123;
+	const FOO = 123;
 
 	/** @var resource */
 	#[ExampleAttribute]
@@ -42,7 +42,7 @@ class Class10
 	public string|int $prop;
 
 
-	public function test(mixed $param): string|int
+	function test(mixed $param): string|int
 	{
 	}
 }

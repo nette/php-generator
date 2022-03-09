@@ -14,7 +14,7 @@ namespace Abc;
  */
 interface Interface1
 {
-	function func1();
+	public function func1();
 }
 
 interface Interface2
@@ -82,7 +82,7 @@ class Class3
 
 class Class4
 {
-	public const THE_CONSTANT = 9;
+	const THE_CONSTANT = 9;
 }
 
 class Class5
