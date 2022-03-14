@@ -246,7 +246,7 @@ final class PhpNamespace
 			return $shortest;
 		}
 
-		return $relative ?? $shortest ?? ($this->name ? '\\' : '') . $name;
+		return $relative ?? $shortest ?? $name;
 	}
 
 
