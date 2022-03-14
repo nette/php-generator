@@ -20,7 +20,6 @@ use Nette;
  */
 final class TraitType extends ClassLike
 {
-	use Traits\ConstantsAware;
 	use Traits\MethodsAware;
 	use Traits\PropertiesAware;
 	use Traits\TraitsAware;
@@ -29,7 +28,6 @@ final class TraitType extends ClassLike
 	{
 		$name = $member->getName();
 		[$type, $n] = match (true) {
-			$member instanceof Constant => ['consts', $name],
 			$member instanceof Method => ['methods', strtolower($name)],
 			$member instanceof Property => ['properties', $name],
 			$member instanceof TraitUse => ['traits', $name],
@@ -45,7 +43,6 @@ final class TraitType extends ClassLike
 	public function __clone()
 	{
 		$clone = fn($item) => clone $item;
-		$this->consts = array_map($clone, $this->consts);
 		$this->methods = array_map($clone, $this->methods);
 		$this->properties = array_map($clone, $this->properties);
 		$this->traits = array_map($clone, $this->traits);

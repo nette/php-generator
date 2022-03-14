@@ -137,7 +137,9 @@ final class Factory
 			}
 		}
 
-		$class->setConstants($consts);
+		if ($consts) {
+			$class->setConstants($consts);
+		}
 		if ($cases) {
 			$class->setCases($cases);
 		}
