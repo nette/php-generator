@@ -62,7 +62,7 @@ final class Dumper
 
 	private function dumpString(string $s): string
 	{
-		static $special = [
+		$special = [
 			"\r" => '\r',
 			"\n" => '\n',
 			"\t" => '\t',
