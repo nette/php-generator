@@ -79,7 +79,7 @@ final class Helpers
 
 	public static function formatDocComment(string $content): string
 	{
-		$s = trim($content);
+		$s = trim(Nette\Utils\Strings::normalize($content));
 		$s = str_replace('*/', '* /', $s);
 		if ($s === '') {
 			return '';

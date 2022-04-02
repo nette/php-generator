@@ -45,7 +45,7 @@ $class->addMethod('first')
 	->addComment('@return resource')
 	->setFinal(true)
 	->setReturnType('stdClass')
-	->setBody("func();\nreturn ?;", [['aaaaaaaaaaaa' => 1, 'bbbbbbbbbbb' => 2, 'cccccccccccccc' => 3, 'dddddddddddd' => 4, 'eeeeeeeeeeee' => 5, 'ffffffff' => 6]])
+	->setBody("func(); \r\nreturn ?;", [['aaaaaaaaaaaa' => 1, 'bbbbbbbbbbb' => 2, 'cccccccccccccc' => 3, 'dddddddddddd' => 4, 'eeeeeeeeeeee' => 5, 'ffffffff' => 6]])
 	->addParameter('var')
 		->setType('stdClass');
 
@@ -67,7 +67,7 @@ sameFile(__DIR__ . '/expected/Printer.class-alt.expect', $printer->printClass($c
 $function = new Nette\PhpGenerator\GlobalFunction('func');
 $function
 	->setReturnType('stdClass')
-	->setBody("func();\nreturn 123;")
+	->setBody("func(); \r\nreturn 123;")
 	->addParameter('var')
 		->setType('stdClass');
 
@@ -77,7 +77,7 @@ sameFile(__DIR__ . '/expected/Printer.function.expect', $printer->printFunction(
 $closure = new Nette\PhpGenerator\Closure;
 $closure
 	->setReturnType('stdClass')
-	->setBody("func();\nreturn 123;")
+	->setBody("func(); \r\nreturn 123;")
 	->addParameter('var')
 		->setType('stdClass');
 

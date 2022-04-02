@@ -198,6 +198,7 @@ final class Dumper
 	private function dumpLiteral(Literal $var, int $level): string
 	{
 		$s = $var->formatWith($this);
+		$s = Nette\Utils\Strings::normalizeNewlines($s);
 		$s = Nette\Utils\Strings::indent(trim($s), $level, $this->indentation);
 		return ltrim($s, $this->indentation);
 	}
