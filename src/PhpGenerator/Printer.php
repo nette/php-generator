@@ -44,13 +44,14 @@ class Printer
 			. $function->getName();
 		$returnType = $this->printReturnType($function);
 		$body = Helpers::simplifyTaggedNames($function->getBody(), $this->namespace);
+		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
 
 		return Helpers::formatDocComment($function->getComment() . "\n")
 			. self::printAttributes($function->getAttributes())
 			. $line
 			. $this->printParameters($function, strlen($line) + strlen($returnType) + 2) // 2 = parentheses
 			. $returnType
-			. "\n{\n" . $this->indent(ltrim(rtrim($body) . "\n")) . "}\n";
+			. "\n{\n" . $this->indent($body) . "}\n";
 	}
 
 
@@ -66,6 +67,7 @@ class Printer
 			? "\n" . $this->indentation . implode(",\n" . $this->indentation, $uses) . ",\n"
 			: $tmp;
 		$body = Helpers::simplifyTaggedNames($closure->getBody(), $this->namespace);
+		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
 
 		return self::printAttributes($closure->getAttributes(), inline: true)
 			. 'function '
@@ -73,7 +75,7 @@ class Printer
 			. $this->printParameters($closure)
 			. ($uses ? " use ($useStr)" : '')
 			. $this->printReturnType($closure)
-			. " {\n" . $this->indent(ltrim(rtrim($body) . "\n")) . '}';
+			. " {\n" . $this->indent($body) . '}';
 	}
 
 
@@ -93,7 +95,7 @@ class Printer
 			. ($closure->getReturnReference() ? '&' : '')
 			. $this->printParameters($closure)
 			. $this->printReturnType($closure)
-			. ' => ' . trim($body) . ';';
+			. ' => ' . trim(Strings::normalize($body)) . ';';
 	}
 
 
@@ -110,7 +112,8 @@ class Printer
 			. $method->getName();
 		$returnType = $this->printReturnType($method);
 		$params = $this->printParameters($method, strlen($line) + strlen($returnType) + strlen($this->indentation) + 2);
-		$body = Helpers::simplifyTaggedNames((string) $method->getBody(), $this->namespace);
+		$body = Helpers::simplifyTaggedNames($method->getBody(), $this->namespace);
+		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
 
 		return Helpers::formatDocComment($method->getComment() . "\n")
 			. self::printAttributes($method->getAttributes())
@@ -119,10 +122,7 @@ class Printer
 			. $returnType
 			. ($method->isAbstract() || $isInterface
 				? ";\n"
-				: (str_contains($params, "\n") ? ' ' : "\n")
-					. "{\n"
-					. $this->indent(ltrim(rtrim($body) . "\n"))
-					. "}\n");
+				: (str_contains($params, "\n") ? ' ' : "\n") . "{\n" . $this->indent($body) . "}\n");
 	}
 
 

@@ -48,7 +48,7 @@ final class Extractor
 			throw new Nette\InvalidStateException('The input string is not a PHP code.');
 		}
 
-		$this->code = str_replace("\r\n", "\n", $code);
+		$this->code = Nette\Utils\Strings::normalizeNewlines($code);
 		$lexer = new PhpParser\Lexer\Emulative(['usedAttributes' => ['startFilePos', 'endFilePos', 'comments']]);
 		$parser = (new ParserFactory)->create(ParserFactory::ONLY_PHP7, $lexer);
 		$stmts = $parser->parse($this->code);
