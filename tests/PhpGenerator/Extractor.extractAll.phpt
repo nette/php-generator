@@ -12,12 +12,6 @@ $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.php')))->e
 Assert::type(Nette\PhpGenerator\PhpFile::class, $file);
 sameFile(__DIR__ . '/expected/Extractor.classes.expect', (string) $file);
 
-$file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.74.php')))->extractAll();
-sameFile(__DIR__ . '/expected/Extractor.classes.74.expect', (string) $file);
-
-$file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.80.php')))->extractAll();
-sameFile(__DIR__ . '/expected/Extractor.classes.80.expect', (string) $file);
-
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.81.php')))->extractAll();
 sameFile(__DIR__ . '/expected/Extractor.classes.81.expect', (string) $file);
 

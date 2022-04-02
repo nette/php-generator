@@ -76,13 +76,3 @@ same(
 }',
 	(string) $function,
 );
-
-
-
-$closure = function (stdClass $a, $b = null) {};
-$function = Closure::from($closure);
-same(
-	'function (stdClass $a, $b = null) {
-}',
-	(string) $function,
-);

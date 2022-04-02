@@ -25,5 +25,9 @@ $res[] = (new Factory)->fromClassReflection(new ReflectionObject($obj));
 $res[] = ClassType::from(Abc\Class4::class);
 $res[] = ClassType::from(Abc\Class5::class);
 $res[] = ClassType::from(Abc\Class6::class);
+$res[] = ClassType::from(Abc\Class7::class);
+$res[] = ClassType::from(Abc\Class8::class);
+$res[] = ClassType::from(Abc\Class9::class);
+$res[] = ClassType::from(Abc\Class10::class);
 
 sameFile(__DIR__ . '/expected/ClassType.from.expect', implode("\n", $res));

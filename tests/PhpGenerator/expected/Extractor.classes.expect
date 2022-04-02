@@ -108,3 +108,57 @@ class Class6 extends Class4
 	private const THE_PRIVATE_CONSTANT = 9;
 	public const THE_PUBLIC_CONSTANT = 9;
 }
+
+class Class7
+{
+	public \A $a;
+	public ?\B $b;
+	public ?\C $c = null;
+	public ?int $i = 1;
+}
+
+class Class8
+{
+	public function __construct(
+		public $a,
+		private int|string $b = 10,
+		$c = null,
+	) {
+	}
+}
+
+/**
+ * Description of class.
+ */
+#[\ExampleAttribute]
+#[NamedArguments(foo: 'bar', bar: [1, 2, 3])]
+class Class9
+{
+	/** Commented */
+	#[ExampleAttribute]
+	#[WithArguments(true)]
+	const FOO = 123;
+
+	/** @var resource */
+	#[ExampleAttribute]
+	public $handle;
+
+
+	/**
+	 * Returns file handle
+	 */
+	#[ExampleAttribute]
+	public function getHandle(#[WithArguments(123)] $mode)
+	{
+	}
+}
+
+class Class10
+{
+	public string|int $prop;
+
+
+	function test(mixed $param): string|int
+	{
+	}
+}
