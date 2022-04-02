@@ -33,7 +33,7 @@ same(
 	$abcdq,
 	$abcdr,
 	$abcds,
-	$abcdt
+	$abcdt,
 ) use (
 	$abcde,
 	$abcdf,
@@ -50,7 +50,7 @@ same(
 	$abcdq,
 	$abcdr,
 	$abcds,
-	$abcdt
+	$abcdt,
 ) {
 	return null;
 }',

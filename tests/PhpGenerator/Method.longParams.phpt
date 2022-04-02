@@ -27,7 +27,7 @@ same(
 	string $i,
 	string $j,
 	string $k,
-	string $l
+	string $l,
 ) {
 	return null;
 }

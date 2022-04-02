@@ -63,7 +63,7 @@ class Printer
 		}
 
 		$useStr = strlen($tmp = implode(', ', $uses)) > $this->wrapLength && count($uses) > 1
-			? "\n" . $this->indentation . implode(",\n" . $this->indentation, $uses) . "\n"
+			? "\n" . $this->indentation . implode(",\n" . $this->indentation, $uses) . ",\n"
 			: $tmp;
 		$body = Helpers::simplifyTaggedNames($closure->getBody(), $this->namespace);
 
@@ -345,7 +345,7 @@ class Printer
 		$line = implode(', ', $params);
 
 		return count($params) > 1 && ($special || strlen($line) + $column > $this->wrapLength)
-			? "(\n" . $this->indent(implode(",\n", $params)) . ($special ? ',' : '') . "\n)"
+			? "(\n" . $this->indent(implode(",\n", $params)) . ",\n)"
 			: "($line)";
 	}
 
