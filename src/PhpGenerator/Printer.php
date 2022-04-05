@@ -126,8 +126,10 @@ class Printer
 	}
 
 
-	public function printClass(ClassLike $class, ?PhpNamespace $namespace = null): string
-	{
+	public function printClass(
+		ClassType|InterfaceType|TraitType|EnumType $class,
+		?PhpNamespace $namespace = null,
+	): string {
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		$class->validate();
 		$resolver = $this->namespace
@@ -161,11 +163,7 @@ class Printer
 		}
 
 		$consts = [];
-		if (
-			$class instanceof ClassType
-			|| $class instanceof InterfaceType
-			|| $class instanceof EnumType
-		) {
+		if ($class instanceof ClassType || $class instanceof InterfaceType || $class instanceof EnumType) {
 			foreach ($class->getConstants() as $const) {
 				$def = ($const->isFinal() ? 'final ' : '')
 					. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
@@ -221,29 +219,32 @@ class Printer
 			. implode(str_repeat("\n", $this->linesBetweenMethods), $methods),
 		]);
 
-		$type = match (true) {
-			$class instanceof ClassType => $class->getType(),
-			$class instanceof InterfaceType => 'interface',
-			$class instanceof TraitType => 'trait',
-			$class instanceof EnumType => 'enum',
-		};
+		if ($class instanceof ClassType) {
+			$line[] = $class->isAbstract() ? 'abstract' : null;
+			$line[] = $class->isFinal() ? 'final' : null;
+		}
 
-		return Strings::normalize(
-			Helpers::formatDocComment($class->getComment() . "\n")
+		$line[] = match (true) {
+			$class instanceof ClassType => $class->getName() ? $class->getType() . ' ' . $class->getName() : null,
+			$class instanceof InterfaceType => 'interface ' . $class->getName(),
+			$class instanceof TraitType => 'trait ' . $class->getName(),
+			$class instanceof EnumType => 'enum ' . $class->getName() . ($enumType ? $this->returnTypeColon . $enumType : ''),
+		};
+		$line[] = ($class instanceof ClassType || $class instanceof InterfaceType) && $class->getExtends()
+			? 'extends ' . implode(', ', array_map($resolver, (array) $class->getExtends()))
+			: null;
+		$line[] = ($class instanceof ClassType || $class instanceof EnumType) && $class->getImplements()
+			? 'implements ' . implode(', ', array_map($resolver, $class->getImplements()))
+			: null;
+		$line[] = $class->getName() ? null : '{';
+
+		return Helpers::formatDocComment($class->getComment() . "\n")
 			. self::printAttributes($class->getAttributes())
-			. ($class instanceof ClassType && $class->isAbstract() ? 'abstract ' : '')
-			. ($class instanceof ClassType && $class->isFinal() ? 'final ' : '')
-			. ($class->getName() ? $type . ' ' . $class->getName() . ($enumType ? $this->returnTypeColon . $enumType : '') . ' ' : '')
-			. (($class instanceof ClassType || $class instanceof InterfaceType) && $class->getExtends()
-				? 'extends ' . implode(', ', array_map($resolver, (array) $class->getExtends())) . ' '
-				: '')
-			. (($class instanceof ClassType || $class instanceof EnumType) && $class->getImplements()
-				? 'implements ' . implode(', ', array_map($resolver, $class->getImplements())) . ' '
-				: '')
-			. ($class->getName() ? "\n" : '') . "{\n"
+			. implode(' ', array_filter($line))
+			. ($class->getName() ? "\n{\n" : "\n")
 			. ($members ? $this->indent(implode("\n", $members)) : '')
-			. '}',
-		) . ($class->getName() ? "\n" : '');
+			. '}'
+			. ($class->getName() ? "\n" : '');
 	}
 
 
@@ -286,13 +287,11 @@ class Printer
 			$namespaces[] = $this->printNamespace($namespace);
 		}
 
-		return Strings::normalize(
-			"<?php\n"
+		return "<?php\n"
 			. ($file->getComment() ? "\n" . Helpers::formatDocComment($file->getComment() . "\n") : '')
 			. "\n"
 			. ($file->hasStrictTypes() ? "declare(strict_types=1);\n\n" : '')
-			. implode("\n\n", $namespaces),
-		) . "\n";
+			. implode("\n\n", $namespaces);
 	}
 
 
