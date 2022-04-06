@@ -84,7 +84,7 @@ final class Helpers
 		if ($s === '') {
 			return '';
 		} elseif (str_contains($content, "\n")) {
-			return str_replace("\n", "\n * ", "/**\n$s") . "\n */\n";
+			return str_replace("\n", "\n *", "/**\n$s") . "\n */\n";
 		} else {
 			return "/** $s */\n";
 		}
