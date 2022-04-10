@@ -138,7 +138,12 @@ final class Dumper
 	/** @param  array<mixed[]|object>  $parents */
 	private function dumpObject(object $var, array $parents, int $level): string
 	{
-		if ($var instanceof \Serializable) {
+		$class = $var::class;
+		if (method_exists($var, '__serialize')) {
+			$data = $this->dump($var->__serialize());
+			return '\\' . self::class . "::createObject(\\$class::class, $data)";
+
+		} elseif ($var instanceof \Serializable) { // deprecated
 			return 'unserialize(' . $this->dumpString(serialize($var)) . ')';
 
 		} elseif ($var instanceof \UnitEnum) {
@@ -155,7 +160,6 @@ final class Dumper
 			throw new Nette\InvalidArgumentException('Cannot dump closure.');
 		}
 
-		$class = $var::class;
 		if ((new \ReflectionObject($var))->isAnonymous()) {
 			throw new Nette\InvalidArgumentException('Cannot dump anonymous class.');
 
@@ -270,6 +274,11 @@ final class Dumper
 	 */
 	public static function createObject(string $class, array $props): object
 	{
+		if (method_exists($class, '__serialize')) {
+			$obj = (new \ReflectionClass($class))->newInstanceWithoutConstructor();
+			$obj->__unserialize($props);
+			return $obj;
+		}
 		return unserialize('O' . substr(serialize($class), 1, -1) . substr(serialize($props), 1));
 	}
 }

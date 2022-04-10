@@ -172,6 +172,26 @@ if (PHP_VERSION_ID < 80100) {
 }
 
 
+// __serialize
+class TestSer
+{
+	public function __serialize(): array
+	{
+		return ['a', 'b'];
+	}
+
+
+	public function __unserialize(array $data): void
+	{
+	}
+}
+
+
+$dumper = new Dumper;
+Assert::same('\Nette\PhpGenerator\Dumper::createObject(\TestSer::class, [\'a\', \'b\'])', $dumper->dump(new TestSer));
+Assert::equal(new TestSer, eval('return ' . $dumper->dump(new TestSer) . ';'));
+
+
 
 // datetime
 class TestDateTime extends DateTime
