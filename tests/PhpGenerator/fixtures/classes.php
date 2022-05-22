@@ -177,9 +177,11 @@ class Class10
 
 class Class11
 {
-	public function __construct(
-		private readonly string $foo
-	)
+	private readonly string $bar;
+
+
+	public function __construct(private readonly string $foo)
 	{
+		$this->bar = "foobar";
 	}
 }
