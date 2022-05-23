@@ -391,8 +391,9 @@ final class Extractor
 		$function->setReturnType($node->getReturnType() ? $this->toPhp($node->getReturnType()) : null);
 		foreach ($node->getParams() as $item) {
 			$visibility = $this->toVisibility($item->flags);
+			$isReadonly = (bool) ($item->flags & Node\Stmt\Class_::MODIFIER_READONLY);
 			$param = $visibility
-				? ($function->addPromotedParameter($item->var->name))->setVisibility($visibility)
+				? ($function->addPromotedParameter($item->var->name))->setVisibility($visibility)->setReadonly($isReadonly)
 				: $function->addParameter($item->var->name);
 			$param->setType($item->type ? $this->toPhp($item->type) : null);
 			$param->setReference($item->byRef);
