@@ -27,3 +27,14 @@ class Class11
 class Attr
 {
 }
+
+class Class12
+{
+	private readonly string $bar;
+
+
+	public function __construct(private readonly string $foo)
+	{
+		$this->bar = "foobar";
+	}
+}
