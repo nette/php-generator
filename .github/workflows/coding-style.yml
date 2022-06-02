@@ -27,5 +27,5 @@ jobs:
                   php-version: 8.0
                   coverage: none
 
-            - run: composer create-project nette/coding-standard temp/coding-standard ^3 --no-progress --ignore-platform-reqs
+            - run: composer create-project nette/coding-standard temp/coding-standard ^3 --no-progress
             - run: php temp/coding-standard/ecs check
