@@ -25,6 +25,7 @@ class Printer
 	public int $linesBetweenProperties = 0;
 	public int $linesBetweenMethods = 2;
 	public string $returnTypeColon = ': ';
+	public bool $bracesOnNextLine = true;
 	protected ?PhpNamespace $namespace = null;
 	protected ?Dumper $dumper;
 	private bool $resolveTypes = true;
@@ -51,7 +52,8 @@ class Printer
 			. $line
 			. $this->printParameters($function, strlen($line) + strlen($returnType) + 2) // 2 = parentheses
 			. $returnType
-			. "\n{\n" . $this->indent($body) . "}\n";
+			. ($this->bracesOnNextLine ? "\n" : ' ')
+			. "{\n" . $this->indent($body) . "}\n";
 	}
 
 
@@ -114,6 +116,7 @@ class Printer
 		$params = $this->printParameters($method, strlen($line) + strlen($returnType) + strlen($this->indentation) + 2);
 		$body = Helpers::simplifyTaggedNames($method->getBody(), $this->namespace);
 		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
+		$braceOnNextLine = $this->bracesOnNextLine && !str_contains($params, "\n");
 
 		return Helpers::formatDocComment($method->getComment() . "\n")
 			. self::printAttributes($method->getAttributes())
@@ -122,7 +125,7 @@ class Printer
 			. $returnType
 			. ($method->isAbstract() || $isInterface
 				? ";\n"
-				: (str_contains($params, "\n") ? ' ' : "\n") . "{\n" . $this->indent($body) . "}\n");
+				: ($braceOnNextLine ? "\n" : ' ') . "{\n" . $this->indent($body) . "}\n");
 	}
 
 
