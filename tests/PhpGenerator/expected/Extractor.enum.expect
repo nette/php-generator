@@ -18,8 +18,8 @@ enum Enum1
 	case Hearts;
 	case Spades;
 
-	public const FOO = 123;
-	public const BAR = self::Clubs;
+	const FOO = 123;
+	const BAR = self::Clubs;
 
 	public function foo($x = self::Diamonds)
 	{

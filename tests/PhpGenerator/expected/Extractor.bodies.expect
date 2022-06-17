@@ -10,32 +10,32 @@ use const BAR;
 
 abstract class Class7
 {
-	abstract public function abstractFun();
+	abstract function abstractFun();
 
 
-	public function emptyFun()
+	function emptyFun()
 	{
 	}
 
 
-	public function emptyFun2()
+	function emptyFun2()
 	{
 	}
 
 
-	public function simple()
-	{
-		return 1;
-	}
-
-
-	public function simple2()
+	function simple()
 	{
 		return 1;
 	}
 
 
-	public function long()
+	function simple2()
+	{
+		return 1;
+	}
+
+
+	function long()
 	{
 		if ($member instanceof Method) {
 			$s = [1, 2, 3];
@@ -47,7 +47,7 @@ abstract class Class7
 	}
 
 
-	public function resolving($a = a\FOO, self $b = null, $c = self::FOO)
+	function resolving($a = a\FOO, self $b = null, $c = self::FOO)
 	{
 		echo FOO;
 		echo \FOO;
@@ -67,7 +67,7 @@ abstract class Class7
 	}
 
 
-	public function complex()
+	function complex()
 	{
 		echo 1;
 		// single line comment
