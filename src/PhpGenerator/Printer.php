@@ -24,6 +24,8 @@ class Printer
 	public string $indentation = "\t";
 	public int $linesBetweenProperties = 0;
 	public int $linesBetweenMethods = 2;
+    public int $linesBetweenNamespaceTypes = 0;
+    public bool $psrSortNamespaces = false;
 	public string $returnTypeColon = ': ';
 	public bool $bracesOnNextLine = true;
 	protected ?PhpNamespace $namespace = null;
@@ -256,7 +258,9 @@ class Printer
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		$name = $namespace->getName();
 		$uses = $this->printUses($namespace)
+			. str_repeat("\n", $this->linesBetweenNamespaceTypes)
 			. $this->printUses($namespace, PhpNamespace::NameFunction)
+			. str_repeat("\n", $this->linesBetweenNamespaceTypes)
 			. $this->printUses($namespace, PhpNamespace::NameConstant);
 
 		$items = [];
@@ -305,9 +309,8 @@ class Printer
 			PhpNamespace::NameFunction => 'function ',
 			PhpNamespace::NameConstant => 'const ',
 		][$of];
-		$name = $namespace->getName();
 		$uses = [];
-		foreach ($namespace->getUses($of) as $alias => $original) {
+		foreach ($namespace->getUses($of, $this->psrSortNamespaces) as $alias => $original) {
 			$uses[] = Helpers::extractShortName($original) === $alias
 				? "use $prefix$original;\n"
 				: "use $prefix$original as $alias;\n";

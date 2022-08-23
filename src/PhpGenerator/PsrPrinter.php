@@ -17,4 +17,6 @@ final class PsrPrinter extends Printer
 {
 	public string $indentation = '    ';
 	public int $linesBetweenMethods = 1;
+	public int $linesBetweenNamespaceTypes = 1;
+    public bool $psrSortNamespaces = true;
 }

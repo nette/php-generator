@@ -160,9 +160,9 @@ final class PhpNamespace
 
 
 	/** @return string[] */
-	public function getUses(string $of = self::NameNormal): array
+	public function getUses(string $of = self::NameNormal, bool $psrSort = false): array
 	{
-		asort($this->aliases[$of]);
+		$psrSort ? uasort($this->aliases[$of], fn (string $first, string $second): int => strcasecmp(str_replace('\\', ' ', $first), str_replace('\\', ' ', $second))) : asort($this->aliases[$of]);
 		return array_filter(
 			$this->aliases[$of],
 			fn($name, $alias) => strcasecmp(($this->name ? $this->name . '\\' : '') . $alias, $name),
