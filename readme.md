@@ -487,6 +487,7 @@ class MyPrinter extends Nette\PhpGenerator\Printer
 	public string $indentation = "\t";
 	public int $linesBetweenProperties = 0;
 	public int $linesBetweenMethods = 2;
+	public int $linesBetweenUseTypes = 0;
 	public bool $bracesOnNextLine = true;
 	public string $returnTypeColon = ': ';
 }
