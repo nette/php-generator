@@ -86,7 +86,7 @@ class Test
 }
 
 Assert::same(
-	"\\Nette\\PhpGenerator\\Dumper::createObject('Test', [\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n\t\"\\x00Test\\x00c\" => 3,\n])",
+	"\\Nette\\PhpGenerator\\Dumper::createObject(\\Test::class, [\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n\t\"\\x00Test\\x00c\" => 3,\n])",
 	$dumper->dump(new Test),
 );
 Assert::equal(new Test, eval('return ' . $dumper->dump(new Test) . ';'));
@@ -112,8 +112,8 @@ class Test2 extends Test
 
 Assert::same(
 	PHP_VERSION_ID < 80100
-		? "\\Nette\\PhpGenerator\\Dumper::createObject('Test2', [\n\t\"\\x00Test2\\x00c\" => 4,\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n])"
-		: "\\Nette\\PhpGenerator\\Dumper::createObject('Test2', [\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n\t\"\\x00Test2\\x00c\" => 4,\n])",
+		? "\\Nette\\PhpGenerator\\Dumper::createObject(\\Test2::class, [\n\t\"\\x00Test2\\x00c\" => 4,\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n])"
+		: "\\Nette\\PhpGenerator\\Dumper::createObject(\\Test2::class, [\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n\t\"\\x00Test2\\x00c\" => 4,\n])",
 	$dumper->dump(new Test2),
 );
 Assert::equal(new Test2, eval('return ' . $dumper->dump(new Test2) . ';'));
@@ -188,7 +188,7 @@ class TestSer
 
 
 $dumper = new Dumper;
-Assert::same('\Nette\PhpGenerator\Dumper::createObject(\TestSer::class, [\'a\', \'b\'])', $dumper->dump(new TestSer));
+Assert::same("\\Nette\\PhpGenerator\\Dumper::createObject(\\TestSer::class, [\n\t0 => 'a',\n\t1 => 'b',\n])", $dumper->dump(new TestSer));
 Assert::equal(new TestSer, eval('return ' . $dumper->dump(new TestSer) . ';'));
 
 
@@ -207,7 +207,7 @@ Assert::same(
 	$dumper->dump(new DateTimeImmutable('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague'))),
 );
 same(
-	"\\Nette\\PhpGenerator\\Dumper::createObject('TestDateTime', [
+	"\\Nette\\PhpGenerator\\Dumper::createObject(\\TestDateTime::class, [
 	'date' => '2016-06-22 20:52:43.123400',
 	'timezone_type' => 3,
 	'timezone' => 'Europe/Prague',

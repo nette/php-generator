@@ -139,9 +139,9 @@ final class Dumper
 	private function dumpObject(object $var, array $parents, int $level): string
 	{
 		$class = $var::class;
-		if (method_exists($var, '__serialize')) {
-			$data = $this->dump($var->__serialize());
-			return '\\' . self::class . "::createObject(\\$class::class, $data)";
+
+		if (in_array($class, [\DateTime::class, \DateTimeImmutable::class], true)) {
+			return $this->format("new \\$class(?, new \\DateTimeZone(?))", $var->format('Y-m-d H:i:s.u'), $var->getTimeZone()->getName());
 
 		} elseif ($var instanceof \Serializable) { // deprecated
 			return 'unserialize(' . $this->dumpString(serialize($var)) . ')';
@@ -158,29 +158,28 @@ final class Dumper
 			}
 
 			throw new Nette\InvalidArgumentException('Cannot dump closure.');
-		}
 
-		if ((new \ReflectionObject($var))->isAnonymous()) {
+		} elseif ((new \ReflectionObject($var))->isAnonymous()) {
 			throw new Nette\InvalidArgumentException('Cannot dump anonymous class.');
 
-		} elseif (in_array($class, [\DateTime::class, \DateTimeImmutable::class], true)) {
-			return $this->format("new \\$class(?, new \\DateTimeZone(?))", $var->format('Y-m-d H:i:s.u'), $var->getTimeZone()->getName());
-		}
-
-		$arr = (array) $var;
-		$space = str_repeat($this->indentation, $level);
-
-		if ($level > $this->maxDepth || in_array($var, $parents, true)) {
+		} elseif ($level > $this->maxDepth || in_array($var, $parents, true)) {
 			throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
 		}
 
-		$out = "\n";
-		$parents[] = $var;
-		if (method_exists($var, '__sleep')) {
-			foreach ($var->__sleep() as $v) {
-				$props[$v] = $props["\x00*\x00$v"] = $props["\x00$class\x00$v"] = true;
+		if (method_exists($var, '__serialize')) {
+			$arr = $var->__serialize();
+		} else {
+			$arr = (array) $var;
+			if (method_exists($var, '__sleep')) {
+				foreach ($var->__sleep() as $v) {
+					$props[$v] = $props["\x00*\x00$v"] = $props["\x00$class\x00$v"] = true;
+				}
 			}
 		}
+
+		$space = str_repeat($this->indentation, $level);
+		$out = "\n";
+		$parents[] = $var;
 
 		foreach ($arr as $k => &$v) {
 			if (!isset($props) || isset($props[$k])) {
@@ -195,7 +194,7 @@ final class Dumper
 		$out .= $space;
 		return $class === \stdClass::class
 			? "(object) [$out]"
-			: '\\' . self::class . "::createObject('$class', [$out])";
+			: '\\' . self::class . "::createObject(\\$class::class, [$out])";
 	}
 
 
