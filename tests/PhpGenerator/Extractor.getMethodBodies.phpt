@@ -35,6 +35,17 @@ abstract class Another
 		echo 123;
 	}
 }
+
+enum Color
+{
+	case Red;
+	case Blue;
+
+	public function getName(): string
+	{
+		return $this->name;
+	}
+}
 ');
 
 $bodies = $extractor->extractMethodBodies('NS\Undefined');
@@ -44,4 +55,9 @@ $bodies = $extractor->extractMethodBodies('NS\Foo');
 Assert::same([
 	'bar1' => "\$a = 10;\necho 123;",
 	'bar2' => 'echo "hello";',
+], $bodies);
+
+$bodies = $extractor->extractMethodBodies('NS\Color');
+Assert::same([
+	'getName' => 'return $this->name;',
 ], $bodies);

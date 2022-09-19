@@ -62,8 +62,7 @@ final class Extractor
 	{
 		$nodeFinder = new NodeFinder;
 		$classNode = $nodeFinder->findFirst($this->statements, function (Node $node) use ($className) {
-			return ($node instanceof Node\Stmt\Class_ || $node instanceof Node\Stmt\Trait_)
-				&& $node->namespacedName->toString() === $className;
+			return $node instanceof Node\Stmt\ClassLike && $node->namespacedName->toString() === $className;
 		});
 
 		$res = [];
