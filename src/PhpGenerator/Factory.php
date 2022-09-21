@@ -304,7 +304,7 @@ final class Factory
 
 	public function fromObject(object $obj): Literal
 	{
-		return new Literal('new ' . get_class($obj) . '(/* unknown */)');
+		return new Literal('new \\' . get_class($obj) . '(/* unknown */)');
 	}
 
 
