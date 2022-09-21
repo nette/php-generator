@@ -162,3 +162,13 @@ class Class10
 	{
 	}
 }
+
+class Class11
+{
+	public string|int $prop;
+
+
+	function test(Class2 $param = new Class2(), Class3 $param2 = new Class3()): string|int
+	{
+	}
+}
