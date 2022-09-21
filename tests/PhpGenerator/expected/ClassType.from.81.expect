@@ -1,4 +1,4 @@
-#[Attr(new Abc\Attr(/* unknown */))]
+#[Attr(new \Abc\Attr(/* unknown */))]
 class Class11
 {
 	final public const FOO = 10;
@@ -12,7 +12,7 @@ class Class11
 	}
 
 
-	public function bar($c = new stdClass(/* unknown */))
+	public function bar($c = new \stdClass(/* unknown */))
 	{
 	}
 }
