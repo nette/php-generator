@@ -174,3 +174,12 @@ class Class10
 	{
 	}
 }
+
+class Class11
+{
+    public string|int $prop;
+
+    function test(Class2 $param = new Class2(), \Abc\Class3 $param2 = new \Abc\Class3()): string|int
+    {
+    }
+}
