@@ -77,13 +77,13 @@ final class Helpers
 	}
 
 
-	public static function formatDocComment(string $content): string
+	public static function formatDocComment(string $content, bool $forceMultiLine = false): string
 	{
 		$s = trim($content);
 		$s = str_replace('*/', '* /', $s);
 		if ($s === '') {
 			return '';
-		} elseif (str_contains($content, "\n")) {
+		} elseif ($forceMultiLine || str_contains($content, "\n")) {
 			$s = str_replace("\n", "\n * ", "/**\n$s") . "\n */";
 			return Nette\Utils\Strings::normalize($s) . "\n";
 		} else {
