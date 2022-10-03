@@ -385,7 +385,7 @@ final class Extractor
 	}
 
 
-	private function setupFunction(GlobalFunction|Method $function, Node\FunctionLike $node): void
+	private function setupFunction(FunctionLike $function, Node\FunctionLike $node): void
 	{
 		$function->setReturnReference($node->returnsByRef());
 		$function->setReturnType($node->getReturnType() ? $this->toPhp($node->getReturnType()) : null);

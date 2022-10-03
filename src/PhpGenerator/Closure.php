@@ -9,18 +9,12 @@ declare(strict_types=1);
 
 namespace Nette\PhpGenerator;
 
-use Nette;
-
 
 /**
  * Closure.
- *
- * @property-deprecated string $body
  */
-final class Closure
+final class Closure extends FunctionLike
 {
-	use Nette\SmartObject;
-	use Traits\FunctionLike;
 	use Traits\AttributeAware;
 
 	/** @var Parameter[] */
