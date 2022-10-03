@@ -14,13 +14,9 @@ use Nette;
 
 /**
  * Class method.
- *
- * @property-deprecated string|null $body
  */
-final class Method
+final class Method extends FunctionLike
 {
-	use Nette\SmartObject;
-	use Traits\FunctionLike;
 	use Traits\NameAware;
 	use Traits\VisibilityAware;
 	use Traits\CommentAware;
@@ -92,7 +88,11 @@ final class Method
 			$param->setDefaultValue($defaultValue);
 		}
 
-		return $this->parameters[$name] = $param;
+		$params = $this->getParameters();
+		$params[$name] = $param;
+		$this->setParameters($params);
+
+		return $param;
 	}
 
 

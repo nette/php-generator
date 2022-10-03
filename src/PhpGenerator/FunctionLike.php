@@ -7,20 +7,22 @@
 
 declare(strict_types=1);
 
-namespace Nette\PhpGenerator\Traits;
+namespace Nette\PhpGenerator;
 
 use JetBrains\PhpStorm\Language;
 use Nette;
-use Nette\PhpGenerator\Dumper;
-use Nette\PhpGenerator\Parameter;
 use Nette\Utils\Type;
 
 
 /**
- * @internal
+ * GlobalFunction/Closure/Method description.
+ *
+ * @property-deprecated string $body
  */
-trait FunctionLike
+abstract class FunctionLike
 {
+	use Nette\SmartObject;
+
 	private string $body = '';
 
 	/** @var Parameter[] */
