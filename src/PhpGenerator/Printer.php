@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\PhpGenerator;
 
 use Nette;
+use Nette\PhpGenerator\Traits\CommentAware;
 use Nette\Utils\Strings;
 
 
@@ -48,7 +49,7 @@ class Printer
 		$body = Helpers::simplifyTaggedNames($function->getBody(), $this->namespace);
 		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
 
-		return Helpers::formatDocComment($function->getComment() . "\n")
+		return $this->printDocComment($function)
 			. self::printAttributes($function->getAttributes())
 			. $line
 			. $this->printParameters($function, strlen($line) + strlen($returnType) + 2) // 2 = parentheses
@@ -119,7 +120,7 @@ class Printer
 		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
 		$braceOnNextLine = $this->bracesOnNextLine && !str_contains($params, "\n");
 
-		return Helpers::formatDocComment($method->getComment() . "\n")
+		return $this->printDocComment($method)
 			. self::printAttributes($method->getAttributes())
 			. $line
 			. $params
@@ -144,7 +145,7 @@ class Printer
 		if ($class instanceof ClassType || $class instanceof TraitType || $class instanceof EnumType) {
 			foreach ($class->getTraits() as $trait) {
 				$resolutions = $trait->getResolutions();
-				$traits[] = Helpers::formatDocComment((string) $trait->getComment())
+				$traits[] = $this->printDocComment($trait)
 					. 'use ' . $resolver($trait->getName())
 					. ($resolutions
 						? " {\n" . $this->indentation . implode(";\n" . $this->indentation, $resolutions) . ";\n}\n"
@@ -158,7 +159,7 @@ class Printer
 			$enumType = $class->getType();
 			foreach ($class->getCases() as $case) {
 				$enumType ??= is_scalar($case->getValue()) ? get_debug_type($case->getValue()) : null;
-				$cases[] = Helpers::formatDocComment((string) $case->getComment())
+				$cases[] = $this->printDocComment($case)
 					. self::printAttributes($case->getAttributes())
 					. 'case ' . $case->getName()
 					. ($case->getValue() === null ? '' : ' = ' . $this->dump($case->getValue()))
@@ -173,7 +174,7 @@ class Printer
 					. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
 					. 'const ' . $const->getName() . ' = ';
 
-				$consts[] = Helpers::formatDocComment((string) $const->getComment())
+				$consts[] = $this->printDocComment($const)
 					. self::printAttributes($const->getAttributes())
 					. $def
 					. $this->dump($const->getValue(), strlen($def)) . ";\n";
@@ -204,7 +205,7 @@ class Printer
 					. ltrim($this->printType($type, $property->isNullable()) . ' ')
 					. '$' . $property->getName());
 
-				$properties[] = Helpers::formatDocComment((string) $property->getComment())
+				$properties[] = $this->printDocComment($property)
 					. self::printAttributes($property->getAttributes())
 					. $def
 					. ($property->getValue() === null && !$property->isInitialized()
@@ -242,7 +243,7 @@ class Printer
 			: null;
 		$line[] = $class->getName() ? null : '{';
 
-		return Helpers::formatDocComment($class->getComment() . "\n")
+		return $this->printDocComment($class)
 			. self::printAttributes($class->getAttributes())
 			. implode(' ', array_filter($line))
 			. ($class->getName() ? "\n{\n" : "\n")
@@ -295,7 +296,7 @@ class Printer
 		}
 
 		return "<?php\n"
-			. ($file->getComment() ? "\n" . Helpers::formatDocComment($file->getComment() . "\n") : '')
+			. ($file->getComment() ? "\n" . $this->printDocComment($file) : '')
 			. "\n"
 			. ($file->hasStrictTypes() ? "declare(strict_types=1);\n\n" : '')
 			. implode("\n\n", $namespaces);
@@ -332,7 +333,7 @@ class Printer
 			$type = $param->getType();
 			$promoted = $param instanceof PromotedParameter ? $param : null;
 			$params[] =
-				($promoted ? Helpers::formatDocComment((string) $promoted->getComment()) : '')
+				($promoted ? $this->printDocComment($promoted, false) : '')
 				. ($attrs = self::printAttributes($param->getAttributes(), inline: true))
 				. ($promoted ?
 					($promoted->getVisibility() ?: 'public')
@@ -374,6 +375,11 @@ class Printer
 		return $type;
 	}
 
+    /** @param CommentAware $commentable */
+    protected function printDocComment($commentable, bool $newline = true): string
+    {
+        return ($commentable instanceof PhpFile && $commentable->getComment() ? "\n" : '') . Helpers::formatDocComment($commentable->getComment() . ($commentable->getComment() && $newline ? "\n" : ''));
+    }
 
 	private function printReturnType(Closure|GlobalFunction|Method $function): string
 	{
