@@ -71,7 +71,7 @@ final class Extractor
 
 		$res = [];
 		foreach ($nodeFinder->findInstanceOf($classNode, Node\Stmt\ClassMethod::class) as $methodNode) {
-			/** @var Node\Stmt\ClassMethod $methodNode */
+			assert($methodNode instanceof Node\Stmt\ClassMethod);
 			if ($methodNode->stmts) {
 				$res[$methodNode->name->toString()] = $this->getReformattedContents($methodNode->stmts, 2);
 			}
@@ -83,11 +83,11 @@ final class Extractor
 
 	public function extractFunctionBody(string $name): ?string
 	{
-		/** @var Node\Stmt\Function_ $functionNode */
 		$functionNode = (new NodeFinder)->findFirst(
 			$this->statements,
 			fn(Node $node) => $node instanceof Node\Stmt\Function_ && $node->namespacedName->toString() === $name,
 		);
+		assert($functionNode instanceof Node\Stmt\Function_);
 
 		return $this->getReformattedContents($functionNode->stmts, 1);
 	}

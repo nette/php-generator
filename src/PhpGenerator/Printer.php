@@ -49,7 +49,7 @@ class Printer
 		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
 
 		return $this->printDocComment($function)
-			. self::printAttributes($function->getAttributes())
+			. $this->printAttributes($function->getAttributes())
 			. $line
 			. $this->printParameters($function, strlen($line) + strlen($returnType) + 2) // 2 = parentheses
 			. $returnType
@@ -72,7 +72,7 @@ class Printer
 		$body = Helpers::simplifyTaggedNames($closure->getBody(), $this->namespace);
 		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
 
-		return self::printAttributes($closure->getAttributes(), inline: true)
+		return $this->printAttributes($closure->getAttributes(), inline: true)
 			. 'function '
 			. ($closure->getReturnReference() ? '&' : '')
 			. $this->printParameters($closure)
@@ -93,7 +93,7 @@ class Printer
 
 		$body = Helpers::simplifyTaggedNames($closure->getBody(), $this->namespace);
 
-		return self::printAttributes($closure->getAttributes())
+		return $this->printAttributes($closure->getAttributes())
 			. 'fn'
 			. ($closure->getReturnReference() ? '&' : '')
 			. $this->printParameters($closure)
@@ -120,7 +120,7 @@ class Printer
 		$braceOnNextLine = $this->bracesOnNextLine && !str_contains($params, "\n");
 
 		return $this->printDocComment($method)
-			. self::printAttributes($method->getAttributes())
+			. $this->printAttributes($method->getAttributes())
 			. $line
 			. $params
 			. $returnType
@@ -133,7 +133,8 @@ class Printer
 	public function printClass(
 		ClassType|InterfaceType|TraitType|EnumType $class,
 		?PhpNamespace $namespace = null,
-	): string {
+	): string
+	{
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		$class->validate();
 		$resolver = $this->namespace
@@ -159,7 +160,7 @@ class Printer
 			foreach ($class->getCases() as $case) {
 				$enumType ??= is_scalar($case->getValue()) ? get_debug_type($case->getValue()) : null;
 				$cases[] = $this->printDocComment($case)
-					. self::printAttributes($case->getAttributes())
+					. $this->printAttributes($case->getAttributes())
 					. 'case ' . $case->getName()
 					. ($case->getValue() === null ? '' : ' = ' . $this->dump($case->getValue()))
 					. ";\n";
@@ -174,7 +175,7 @@ class Printer
 					. 'const ' . $const->getName() . ' = ';
 
 				$consts[] = $this->printDocComment($const)
-					. self::printAttributes($const->getAttributes())
+					. $this->printAttributes($const->getAttributes())
 					. $def
 					. $this->dump($const->getValue(), strlen($def)) . ";\n";
 			}
@@ -205,7 +206,7 @@ class Printer
 					. '$' . $property->getName());
 
 				$properties[] = $this->printDocComment($property)
-					. self::printAttributes($property->getAttributes())
+					. $this->printAttributes($property->getAttributes())
 					. $def
 					. ($property->getValue() === null && !$property->isInitialized()
 						? ''
@@ -243,7 +244,7 @@ class Printer
 		$line[] = $class->getName() ? null : '{';
 
 		return $this->printDocComment($class)
-			. self::printAttributes($class->getAttributes())
+			. $this->printAttributes($class->getAttributes())
 			. implode(' ', array_filter($line))
 			. ($class->getName() ? "\n{\n" : "\n")
 			. ($members ? $this->indent(implode("\n", $members)) : '')
@@ -333,7 +334,7 @@ class Printer
 			$promoted = $param instanceof PromotedParameter ? $param : null;
 			$params[] =
 				($promoted ? $this->printDocComment($promoted) : '')
-				. ($attrs = self::printAttributes($param->getAttributes(), inline: true))
+				. ($attrs = $this->printAttributes($param->getAttributes(), inline: true))
 				. ($promoted ?
 					($promoted->getVisibility() ?: 'public')
 					. ($promoted->isReadOnly() && $type ? ' readonly' : '')
