@@ -14,13 +14,10 @@ use Nette;
 
 /**
  * Global function.
- *
- * @property-deprecated string $body
  */
-final class GlobalFunction
+final class GlobalFunction extends FunctionLike
 {
 	use Nette\SmartObject;
-	use Traits\FunctionLike;
 	use Traits\NameAware;
 	use Traits\CommentAware;
 	use Traits\AttributeAware;

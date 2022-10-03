@@ -385,7 +385,7 @@ class Printer
 	}
 
 
-	private function printReturnType(Closure|GlobalFunction|Method $function): string
+	private function printReturnType(FunctionLike $function): string
 	{
 		return ($tmp = $this->printType($function->getReturnType(), $function->isReturnNullable()))
 			? $this->returnTypeColon . $tmp
