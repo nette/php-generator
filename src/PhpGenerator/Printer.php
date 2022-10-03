@@ -61,7 +61,7 @@ class Printer
 		$body = Helpers::simplifyTaggedNames($function->getBody(), $this->namespace);
 
 		return Helpers::formatDocComment($function->getComment() . "\n")
-			. self::printAttributes($function->getAttributes())
+			. $this->printAttributes($function->getAttributes())
 			. $line
 			. $this->printParameters($function, strlen($line) + strlen($returnType) + 2) // 2 = parentheses
 			. $returnType
@@ -82,7 +82,7 @@ class Printer
 			: $tmp;
 		$body = Helpers::simplifyTaggedNames($closure->getBody(), $this->namespace);
 
-		return self::printAttributes($closure->getAttributes(), true)
+		return $this->printAttributes($closure->getAttributes(), true)
 			. 'function '
 			. ($closure->getReturnReference() ? '&' : '')
 			. $this->printParameters($closure)
@@ -103,7 +103,7 @@ class Printer
 
 		$body = Helpers::simplifyTaggedNames($closure->getBody(), $this->namespace);
 
-		return self::printAttributes($closure->getAttributes())
+		return $this->printAttributes($closure->getAttributes())
 			. 'fn'
 			. ($closure->getReturnReference() ? '&' : '')
 			. $this->printParameters($closure)
@@ -128,7 +128,7 @@ class Printer
 		$body = Helpers::simplifyTaggedNames((string) $method->getBody(), $this->namespace);
 
 		return Helpers::formatDocComment($method->getComment() . "\n")
-			. self::printAttributes($method->getAttributes())
+			. $this->printAttributes($method->getAttributes())
 			. $line
 			. $params
 			. $returnType
@@ -162,7 +162,7 @@ class Printer
 		$cases = [];
 		foreach ($class->getCases() as $case) {
 			$cases[] = Helpers::formatDocComment((string) $case->getComment())
-				. self::printAttributes($case->getAttributes())
+				. $this->printAttributes($case->getAttributes())
 				. 'case ' . $case->getName()
 				. ($case->getValue() === null ? '' : ' = ' . $this->dump($case->getValue()))
 				. ";\n";
@@ -179,7 +179,7 @@ class Printer
 				. 'const ' . $const->getName() . ' = ';
 
 			$consts[] = Helpers::formatDocComment((string) $const->getComment())
-				. self::printAttributes($const->getAttributes())
+				. $this->printAttributes($const->getAttributes())
 				. $def
 				. $this->dump($const->getValue(), strlen($def)) . ";\n";
 		}
@@ -196,7 +196,7 @@ class Printer
 				. '$' . $property->getName());
 
 			$properties[] = Helpers::formatDocComment((string) $property->getComment())
-				. self::printAttributes($property->getAttributes())
+				. $this->printAttributes($property->getAttributes())
 				. $def
 				. ($property->getValue() === null && !$property->isInitialized()
 					? ''
@@ -220,7 +220,7 @@ class Printer
 
 		return Strings::normalize(
 			Helpers::formatDocComment($class->getComment() . "\n")
-			. self::printAttributes($class->getAttributes())
+			. $this->printAttributes($class->getAttributes())
 			. ($class->isAbstract() ? 'abstract ' : '')
 			. ($class->isFinal() ? 'final ' : '')
 			. ($class->getName() ? $class->getType() . ' ' . $class->getName() . $enumType . ' ' : '')
@@ -317,7 +317,7 @@ class Printer
 			$promoted = $param instanceof PromotedParameter ? $param : null;
 			$params[] =
 				($promoted ? Helpers::formatDocComment((string) $promoted->getComment()) : '')
-				. ($attrs = self::printAttributes($param->getAttributes(), true))
+				. ($attrs = $this->printAttributes($param->getAttributes(), true))
 				. ($promoted ?
 					($promoted->getVisibility() ?: 'public')
 					. ($promoted->isReadOnly() && $type ? ' readonly' : '')
