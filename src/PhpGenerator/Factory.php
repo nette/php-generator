@@ -194,7 +194,7 @@ final class Factory
 	}
 
 
-	public function fromCallable(callable $from): Method|GlobalFunction|Closure
+	public function fromCallable(callable $from): FunctionLike
 	{
 		$ref = Nette\Utils\Callback::toReflection($from);
 		return $ref instanceof \ReflectionMethod
