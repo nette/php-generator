@@ -27,6 +27,7 @@ class Type
 		Void = 'void',
 		Never = 'never',
 		Mixed = 'mixed',
+		True = 'true',
 		False = 'false',
 		Null = 'null',
 		Self = 'self',
