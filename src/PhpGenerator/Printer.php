@@ -167,7 +167,13 @@ class Printer
 		}
 
 		$consts = [];
-		if ($class instanceof ClassType || $class instanceof InterfaceType || $class instanceof EnumType) {
+		$methods = [];
+		if (
+			$class instanceof ClassType
+			|| $class instanceof InterfaceType
+			|| $class instanceof TraitType
+			|| $class instanceof EnumType
+		) {
 			foreach ($class->getConstants() as $const) {
 				$def = ($const->isFinal() ? 'final ' : '')
 					. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
@@ -178,15 +184,7 @@ class Printer
 					. $def
 					. $this->dump($const->getValue(), strlen($def)) . ";\n";
 			}
-		}
 
-		$methods = [];
-		if (
-			$class instanceof ClassType
-			|| $class instanceof InterfaceType
-			|| $class instanceof EnumType
-			|| $class instanceof TraitType
-		) {
 			foreach ($class->getMethods() as $method) {
 				$methods[] = $this->printMethod($method, $namespace, $class->isInterface());
 			}
