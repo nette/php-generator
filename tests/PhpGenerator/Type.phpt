@@ -8,7 +8,7 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-Assert::same('A|string', Type::union(A::class, Type::STRING));
+Assert::same('A|string', Type::union(A::class, Type::String));
 
 Assert::same('?A', Type::nullable(A::class));
 Assert::same('?A', Type::nullable(A::class, true));
