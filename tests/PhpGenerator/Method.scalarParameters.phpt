@@ -39,8 +39,8 @@ Assert::same('float', $method->getParameters()['d']->getType());
 
 $method = (new Method('create'))
 	->setBody('return null;');
-$method->addParameter('a')->setType(Type::STRING);
-$method->addParameter('b')->setType(Type::BOOL);
+$method->addParameter('a')->setType(Type::String);
+$method->addParameter('b')->setType(Type::Bool);
 
 same(
 	'function create(string $a, bool $b)
