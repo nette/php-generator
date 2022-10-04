@@ -60,16 +60,16 @@ $class->addProperty('order')
 	->setValue(new Literal('RecursiveIteratorIterator::SELF_FIRST'));
 
 $class->addProperty('typed1')
-	->setType(Type::ARRAY)
+	->setType(Type::Array)
 	->setReadOnly();
 
 $class->addProperty('typed2')
-	->setType(Type::ARRAY)
+	->setType(Type::Array)
 	->setNullable()
 	->setInitialized();
 
 $class->addProperty('typed3')
-	->setType(Type::ARRAY)
+	->setType(Type::Array)
 	->setValue(null);
 
 $p = $class->addProperty('sections', ['first' => true])
@@ -128,7 +128,7 @@ $method->addParameter('item');
 
 $method->addParameter('res', null)
 		->setReference(true)
-		->setType(Type::union(Type::ARRAY, 'null'));
+		->setType(Type::union(Type::Array, 'null'));
 
 $method->addParameter('bar', null)
 		->setType('stdClass|string')
