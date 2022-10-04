@@ -131,8 +131,8 @@ $method->addParameter('res', null)
 		->setType(Type::union(Type::Array, 'null'));
 
 $method->addParameter('bar', null)
-		->setType('stdClass|string')
-		->setNullable(true);
+		->setNullable(true)
+		->setType('stdClass|string');
 
 $class->addTrait('foo');
 $class->removeTrait('foo');

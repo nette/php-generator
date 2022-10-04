@@ -20,7 +20,7 @@
 	},
 	"require-dev": {
 		"nette/tester": "^2.4",
-		"nikic/php-parser": "^4.14",
+		"nikic/php-parser": "^4.15",
 		"tracy/tracy": "^2.8",
 		"phpstan/phpstan": "^1.0"
 	},
