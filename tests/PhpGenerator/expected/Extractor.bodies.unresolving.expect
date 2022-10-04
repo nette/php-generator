@@ -32,6 +32,7 @@ abstract class Class7
 
 	function long()
 	{
+		// comment
 		if ($member instanceof \Abc\Method) {
 			$s = [1, 2, 3];
 		}
@@ -44,6 +45,7 @@ abstract class Class7
 
 	function resolving($a = \Abc\a\FOO, self $b = null, $c = self::FOO)
 	{
+		// constants
 		echo FOO;
 		echo \FOO;
 		echo \Abc\a\FOO;
