@@ -170,14 +170,19 @@ final class Helpers
 
 	public static function validateType(?string $type, bool &$nullable): ?string
 	{
+		$nullable = false;
 		if ($type === '' || $type === null) {
 			return null;
 		}
 
-		if (!preg_match('#(?:
-			\?[\w\\\\]+|
-			[\w\\\\]+ (?: (&[\w\\\\]+)* | (\|[\w\\\\]+)* )
-		)()$#xAD', $type)) {
+		if (!preg_match(<<<'XX'
+			~(?n)
+			(
+				\?? (?<type> [\w\\]+)|
+				(?<intersection> (?&type) (& (?&type))+  )|
+				(?<upart> (?&type) | \( (?&intersection) \) )  (\| (?&upart) )+
+			)$~xAD
+			XX, $type)) {
 			throw new Nette\InvalidArgumentException("Value '$type' is not valid type.");
 		}
 
