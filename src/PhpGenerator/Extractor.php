@@ -108,7 +108,7 @@ final class Extractor
 	 */
 	private function prepareReplacements(array $nodes): array
 	{
-		$start = $nodes[0]->getStartFilePos();
+		$start = $this->getNodeStartPos($nodes[0]);
 		$replacements = [];
 		(new NodeFinder)->find($nodes, function (Node $node) use (&$replacements, $start) {
 			if ($node instanceof Node\Name\FullyQualified) {
@@ -430,7 +430,15 @@ final class Extractor
 
 	private function getNodeContents(Node ...$nodes): string
 	{
-		$start = $nodes[0]->getStartFilePos();
+		$start = $this->getNodeStartPos($nodes[0]);
 		return substr($this->code, $start, end($nodes)->getEndFilePos() - $start + 1);
+	}
+
+
+	private function getNodeStartPos(Node $node): int
+	{
+		return ($comments = $node->getComments())
+			? $comments[0]->getStartFilePos()
+			: $node->getStartFilePos();
 	}
 }

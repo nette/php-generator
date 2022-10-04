@@ -8,6 +8,24 @@ class Class1
 			}
 		};
 	}
+
+	function comment1()
+	{
+		/** comment */
+		$a = 10;
+	}
+
+	function comment2()
+	{
+		// comment
+		'bar';
+	}
+
+	function comment3()
+	{
+		// comment
+		Foo\Bar::XX;
+	}
 }
 
 function () {};
