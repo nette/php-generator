@@ -141,7 +141,7 @@ public function __construct(
 }
 ```
 
-Readonly properties introduced by PHP 8.1 can be marked via `setReadOnly()`.
+Readonly properties and classes can be marked via `setReadOnly()`.
 
 ------
 

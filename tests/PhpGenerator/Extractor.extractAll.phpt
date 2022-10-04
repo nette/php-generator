@@ -15,6 +15,9 @@ sameFile(__DIR__ . '/expected/Extractor.classes.expect', (string) $file);
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.81.php')))->extractAll();
 sameFile(__DIR__ . '/expected/Extractor.classes.81.expect', (string) $file);
 
+$file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.82.php')))->extractAll();
+sameFile(__DIR__ . '/expected/Extractor.classes.82.expect', (string) $file);
+
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/enum.php')))->extractAll();
 sameFile(__DIR__ . '/expected/Extractor.enum.expect', (string) $file);
 

@@ -36,6 +36,7 @@ final class ClassType extends ClassLike
 	private bool $final = false;
 	private bool $abstract = false;
 	private ?string $extends = null;
+	private bool $readOnly = false;
 
 	/** @var string[] */
 	private array $implements = [];
@@ -169,6 +170,19 @@ final class ClassType extends ClassLike
 	public function isAbstract(): bool
 	{
 		return $this->abstract;
+	}
+
+
+	public function setReadOnly(bool $state = true): static
+	{
+		$this->readOnly = $state;
+		return $this;
+	}
+
+
+	public function isReadOnly(): bool
+	{
+		return $this->readOnly;
 	}
 
 
