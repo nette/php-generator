@@ -246,6 +246,7 @@ final class Extractor
 
 		$class->setFinal($node->isFinal());
 		$class->setAbstract($node->isAbstract());
+		$class->setReadOnly(method_exists($node, 'isReadonly') && $node->isReadonly());
 		$this->addCommentAndAttributes($class, $node);
 		return $class;
 	}

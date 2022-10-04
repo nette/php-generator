@@ -227,6 +227,7 @@ class Printer
 		if ($class instanceof ClassType) {
 			$line[] = $class->isAbstract() ? 'abstract' : null;
 			$line[] = $class->isFinal() ? 'final' : null;
+			$line[] = $class->isReadOnly() ? 'readonly' : null;
 		}
 
 		$line[] = match (true) {

@@ -56,6 +56,7 @@ final class Factory
 			$class = new ClassType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
 			$class->setFinal($from->isFinal() && $class->isClass());
 			$class->setAbstract($from->isAbstract() && $class->isClass());
+			$class->setReadOnly(PHP_VERSION_ID >= 80200 && $from->isReadOnly());
 		}
 
 		$ifaces = $from->getInterfaceNames();
