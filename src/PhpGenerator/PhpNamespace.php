@@ -162,7 +162,7 @@ final class PhpNamespace
 	/** @return string[] */
 	public function getUses(string $of = self::NameNormal): array
 	{
-		asort($this->aliases[$of]);
+		uasort($this->aliases[$of], fn(string $a, string $b): int => strtr($a, '\\', ' ') <=> strtr($b, '\\', ' '));
 		return array_filter(
 			$this->aliases[$of],
 			fn($name, $alias) => strcasecmp(($this->name ? $this->name . '\\' : '') . $alias, $name),
