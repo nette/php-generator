@@ -32,7 +32,8 @@ final class Factory
 		\ReflectionClass $from,
 		bool $withBodies = false,
 		?bool $materializeTraits = null,
-	): ClassLike {
+	): ClassLike
+	{
 		if ($materializeTraits !== null) {
 			trigger_error(__METHOD__ . '() parameter $materializeTraits has been removed (is always false).', E_USER_DEPRECATED);
 		}

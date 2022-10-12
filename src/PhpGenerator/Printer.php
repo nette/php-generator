@@ -133,7 +133,8 @@ class Printer
 	public function printClass(
 		ClassType|InterfaceType|TraitType|EnumType $class,
 		?PhpNamespace $namespace = null,
-	): string {
+	): string
+	{
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		$class->validate();
 		$resolver = $this->namespace

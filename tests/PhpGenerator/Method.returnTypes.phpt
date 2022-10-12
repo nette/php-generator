@@ -13,8 +13,7 @@ namespace A
 	}
 }
 
-namespace
-{
+namespace {
 	use Nette\PhpGenerator\Method;
 	use Tester\Assert;
 
