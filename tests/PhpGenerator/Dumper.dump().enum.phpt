@@ -14,7 +14,8 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-enum Suit {
+enum Suit
+{
 	case Clubs;
 	case Diamonds;
 	case Hearts;

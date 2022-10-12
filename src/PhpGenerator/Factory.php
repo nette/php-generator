@@ -28,7 +28,8 @@ final class Factory
 		\ReflectionClass $from,
 		bool $withBodies = false,
 		bool $materializeTraits = true
-	): ClassType {
+	): ClassType
+	{
 		if ($withBodies && $from->isAnonymous()) {
 			throw new Nette\NotSupportedException('The $withBodies parameter cannot be used for anonymous functions.');
 		}

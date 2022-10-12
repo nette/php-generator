@@ -20,7 +20,7 @@ interface Interface1
 	public function func1();
 }
 XX
-, (string) $class);
+	, (string) $class);
 
 
 Assert::exception(function () {

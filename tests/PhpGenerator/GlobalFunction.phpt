@@ -60,4 +60,4 @@ function func(stdClass $a, $b = null)
 }
 
 XX
-, (string) $function);
+	, (string) $function);
