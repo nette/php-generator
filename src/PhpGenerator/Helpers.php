@@ -170,7 +170,6 @@ final class Helpers
 
 	public static function validateType(?string $type, bool &$nullable): ?string
 	{
-		$nullable = false;
 		if ($type === '' || $type === null) {
 			return null;
 		}
