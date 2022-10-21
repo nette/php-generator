@@ -50,12 +50,12 @@ class Printer
 
 		return $this->printPrefixComment($function)
             . $this->printDocComment($function)
-			. $this->printAttributes($function->getAttributes())
+			. $this->printAttributes($function->getAttributes()) . $this->printPrefixInlineComment($function)
 			. $line
 			. $this->printParameters($function, strlen($line) + strlen($returnType) + 2) // 2 = parentheses
 			. $returnType
 			. ($this->bracesOnNextLine ? "\n" : ' ')
-			. "{\n" . $this->indent($body) . "}\n"
+			. "{\n" . $this->indent($body) . "}" . $this->printSuffixInlineComment($function) . "\n"
             . $this->printSuffixComment($function);
 	}
 
@@ -129,7 +129,9 @@ class Printer
 			. $returnType
 			. ($method->isAbstract() || $isInterface
 				? ";\n"
-				: ($braceOnNextLine ? "\n" : ' ') . "{\n" . $this->indent($body) . "}\n")
+				: ($braceOnNextLine ?
+                    $this->printPrefixInlineComment($method) . "\n" : ' ')
+                    . "{\n" . $this->indent($body) . "}".$this->printSuffixInlineComment($method)."\n")
             . $this->printSuffixComment($method);
 	}
 
@@ -213,14 +215,23 @@ class Printer
 					. ltrim($this->printType($type, $property->isNullable()) . ' ')
 					. '$' . $property->getName());
 
+                $isMultiLine = str_contains((string)$property->getValue(), "\n");
+                $content = ($property->getValue() === null && !$property->isInitialized()) ? null : $this->dump($property->getValue(), strlen($def) + 3); // 3 = ' = '
+
+                if ($isMultiLine) {
+                    $content = explode("\n", $content);
+                    $content[0] .= $this->printPrefixInlineComment($property);
+                    $content = implode("\n", $content);
+                }
+
 				$properties[] = $this->printPrefixComment($property)
                     . $this->printDocComment($property)
 					. $this->printAttributes($property->getAttributes())
 					. $def
-					. ($property->getValue() === null && !$property->isInitialized()
-						? ''
-						: ' = ' . $this->dump($property->getValue(), strlen($def) + 3)) // 3 = ' = '
-					. ";\n"
+                    . ($content ? ' = ' . $content : '')
+					. ";"
+                    . $this->printSuffixInlineComment($property)
+                    . "\n"
                     . $this->printSuffixComment($property);
 			}
 		}

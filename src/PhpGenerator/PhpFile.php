@@ -111,7 +111,6 @@ final class PhpFile
 		return $classes;
 	}
 
-
 	/** @return GlobalFunction[] */
 	public function getFunctions(): array
 	{
