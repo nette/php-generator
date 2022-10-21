@@ -76,7 +76,6 @@ final class Helpers
 		return (new Dumper)->format($statement, ...$args);
 	}
 
-
 	public static function formatDocComment(string $content, bool $forceMultiLine = false): string
 	{
 		$s = trim($content);
@@ -91,6 +90,11 @@ final class Helpers
 		}
 	}
 
+    public static function formatInlineDocComment(string $content): string
+    {
+        $s = trim($content);
+        return '// ' . Nette\Utils\Strings::normalize($s);
+    }
 
 	public static function tagName(string $name, string $of = PhpNamespace::NameNormal): string
 	{

@@ -48,13 +48,15 @@ class Printer
 		$body = Helpers::simplifyTaggedNames($function->getBody(), $this->namespace);
 		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
 
-		return $this->printDocComment($function)
+		return $this->printPrefixComment($function)
+            . $this->printDocComment($function)
 			. $this->printAttributes($function->getAttributes())
 			. $line
 			. $this->printParameters($function, strlen($line) + strlen($returnType) + 2) // 2 = parentheses
 			. $returnType
 			. ($this->bracesOnNextLine ? "\n" : ' ')
-			. "{\n" . $this->indent($body) . "}\n";
+			. "{\n" . $this->indent($body) . "}\n"
+            . $this->printSuffixComment($function);
 	}
 
 
@@ -119,14 +121,16 @@ class Printer
 		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
 		$braceOnNextLine = $this->bracesOnNextLine && !str_contains($params, "\n");
 
-		return $this->printDocComment($method)
+		return $this->printPrefixComment($method)
+            . $this->printDocComment($method)
 			. $this->printAttributes($method->getAttributes())
 			. $line
 			. $params
 			. $returnType
 			. ($method->isAbstract() || $isInterface
 				? ";\n"
-				: ($braceOnNextLine ? "\n" : ' ') . "{\n" . $this->indent($body) . "}\n");
+				: ($braceOnNextLine ? "\n" : ' ') . "{\n" . $this->indent($body) . "}\n")
+            . $this->printSuffixComment($method);
 	}
 
 
@@ -145,11 +149,13 @@ class Printer
 		if ($class instanceof ClassType || $class instanceof TraitType || $class instanceof EnumType) {
 			foreach ($class->getTraits() as $trait) {
 				$resolutions = $trait->getResolutions();
-				$traits[] = $this->printDocComment($trait)
+				$traits[] = $this->printPrefixComment($trait)
+                    . $this->printDocComment($trait)
 					. 'use ' . $resolver($trait->getName())
 					. ($resolutions
-						? " {\n" . $this->indentation . implode(";\n" . $this->indentation, $resolutions) . ";\n}\n"
-						: ";\n");
+						? $this->printSuffixInlineComment($trait, true) . " {\n" . $this->indentation . implode(";\n" . $this->indentation, $resolutions) . ";\n}\n"
+						: ";" . $this->printSuffixInlineComment($trait) . "\n")
+                    . $this->printSuffixComment($trait);
 			}
 		}
 
@@ -159,11 +165,13 @@ class Printer
 			$enumType = $class->getType();
 			foreach ($class->getCases() as $case) {
 				$enumType ??= is_scalar($case->getValue()) ? get_debug_type($case->getValue()) : null;
-				$cases[] = $this->printDocComment($case)
+				$cases[] = $this->printPrefixComment($case)
+                    . $this->printDocComment($case)
 					. $this->printAttributes($case->getAttributes())
 					. 'case ' . $case->getName()
 					. ($case->getValue() === null ? '' : ' = ' . $this->dump($case->getValue()))
-					. ";\n";
+					. ";\n"
+                    . $this->printSuffixComment($case);
 			}
 		}
 
@@ -180,10 +188,12 @@ class Printer
 					. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
 					. 'const ' . $const->getName() . ' = ';
 
-				$consts[] = $this->printDocComment($const)
+				$consts[] = $this->printPrefixComment($const)
+                    . $this->printDocComment($const)
 					. $this->printAttributes($const->getAttributes())
 					. $def
-					. $this->dump($const->getValue(), strlen($def)) . ";\n";
+					. $this->dump($const->getValue(), strlen($def)) . ";\n"
+                    . $this->printSuffixComment($const);
 			}
 
 			foreach ($class->getMethods() as $method) {
@@ -203,13 +213,15 @@ class Printer
 					. ltrim($this->printType($type, $property->isNullable()) . ' ')
 					. '$' . $property->getName());
 
-				$properties[] = $this->printDocComment($property)
+				$properties[] = $this->printPrefixComment($property)
+                    . $this->printDocComment($property)
 					. $this->printAttributes($property->getAttributes())
 					. $def
 					. ($property->getValue() === null && !$property->isInitialized()
 						? ''
 						: ' = ' . $this->dump($property->getValue(), strlen($def) + 3)) // 3 = ' = '
-					. ";\n";
+					. ";\n"
+                    . $this->printSuffixComment($property);
 			}
 		}
 
@@ -242,13 +254,15 @@ class Printer
 			: null;
 		$line[] = $class->getName() ? null : '{';
 
-		return $this->printDocComment($class)
+		return $this->printPrefixComment($class)
+            . $this->printDocComment($class)
 			. $this->printAttributes($class->getAttributes())
 			. implode(' ', array_filter($line))
 			. ($class->getName() ? "\n{\n" : "\n")
 			. ($members ? $this->indent(implode("\n", $members)) : '')
 			. '}'
-			. ($class->getName() ? "\n" : '');
+			. ($class->getName() ? "\n" : '')
+            . $this->printSuffixComment($class);
 	}
 
 
@@ -295,6 +309,7 @@ class Printer
 		}
 
 		return "<?php\n"
+            // @todo: prefix/suffix
 			. ($file->getComment() ? "\n" . $this->printDocComment($file) : '')
 			. "\n"
 			. ($file->hasStrictTypes() ? "declare(strict_types=1);\n\n" : '')
@@ -332,6 +347,7 @@ class Printer
 			$type = $param->getType();
 			$promoted = $param instanceof PromotedParameter ? $param : null;
 			$params[] =
+                // @todo prefix/suffix
 				($promoted ? $this->printDocComment($promoted) : '')
 				. ($attrs = $this->printAttributes($param->getAttributes(), inline: true))
 				. ($promoted ?
@@ -374,7 +390,6 @@ class Printer
 		return $type;
 	}
 
-
 	protected function printDocComment(/*Traits\CommentAware*/ $commentable): string
 	{
 		$multiLine = $commentable instanceof GlobalFunction
@@ -384,6 +399,33 @@ class Printer
 		return Helpers::formatDocComment((string) $commentable->getComment(), $multiLine);
 	}
 
+    protected function printPrefixComment(/*Traits\CommentAware*/ $commentable): string
+    {
+        return Helpers::formatDocComment((string) $commentable->getPrefixComment());
+    }
+
+    protected function printSuffixComment(/*Traits\CommentAware*/ $commentable): string
+    {
+        return Helpers::formatDocComment((string) $commentable->getSuffixComment());
+    }
+
+    protected function printPrefixInlineComment(/*Traits\CommentAware*/ $commentable, bool $addNewLine = false): string
+    {
+        if ($commentable->getPrefixInlineComment()) {
+            return Helpers::formatInlineDocComment(
+                (string)$commentable->getPrefixInlineComment()
+            ) . ($addNewLine ? "\n" : '');
+        }
+        return '';
+    }
+
+    protected function printSuffixInlineComment(/*Traits\CommentAware*/ $commentable, bool $addNewLine = false): string
+    {
+        if ($commentable->getSuffixInlineComment()) {
+            return Helpers::formatInlineDocComment((string) $commentable->getSuffixInlineComment()) . ($addNewLine ? "\n" : '');
+        }
+        return '';
+    }
 
 	private function printReturnType(FunctionLike $function): string
 	{
