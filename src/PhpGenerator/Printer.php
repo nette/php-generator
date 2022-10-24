@@ -230,7 +230,7 @@ class Printer
 					. $def
                     . ($content ? ' = ' . $content : '')
 					. ";"
-                    . $this->printSuffixInlineComment($property)
+                    . (!$isMultiLine ? $this->printPrefixInlineComment($property) : $this->printSuffixInlineComment($property))
                     . "\n"
                     . $this->printSuffixComment($property);
 			}
