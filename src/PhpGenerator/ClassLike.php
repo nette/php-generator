@@ -26,11 +26,14 @@ abstract class ClassLike
 		VisibilityProtected = 'protected',
 		VisibilityPrivate = 'private';
 
-	/** @deprecated */
-	public const
-		VISIBILITY_PUBLIC = self::VisibilityPublic,
-		VISIBILITY_PROTECTED = self::VisibilityProtected,
-		VISIBILITY_PRIVATE = self::VisibilityPrivate;
+	/** @deprecated use ClassLike::VisibilityPublic */
+	public const VISIBILITY_PUBLIC = self::VisibilityPublic;
+
+	/** @deprecated use ClassLike::VisibilityProtected */
+	public const VISIBILITY_PROTECTED = self::VisibilityProtected;
+
+	/** @deprecated use ClassLike::VisibilityPrivate */
+	public const VISIBILITY_PRIVATE = self::VisibilityPrivate;
 
 	private ?PhpNamespace $namespace;
 	private ?string $name;
