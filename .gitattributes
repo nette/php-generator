@@ -1,9 +1,8 @@
 .gitattributes export-ignore
 .gitignore export-ignore
 .github export-ignore
-.travis.yml export-ignore
-ecs.php export-ignore
-phpstan.neon export-ignore
+ncs.* export-ignore
+phpstan*.neon export-ignore
 tests/ export-ignore
 
 *.sh eol=lf
