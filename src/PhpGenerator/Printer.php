@@ -394,7 +394,7 @@ class Printer
 
 
 	/** @param  Attribute[]  $attrs */
-	private function printAttributes(array $attrs, bool $inline = false): string
+	protected function printAttributes(array $attrs, bool $inline = false): string
 	{
 		if (!$attrs) {
 			return '';
