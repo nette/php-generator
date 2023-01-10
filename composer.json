@@ -22,7 +22,8 @@
 		"nette/tester": "^2.4",
 		"nikic/php-parser": "^4.15",
 		"tracy/tracy": "^2.8",
-		"phpstan/phpstan": "^1.0"
+		"phpstan/phpstan": "^1.0",
+		"jetbrains/phpstorm-attributes": "dev-master"
 	},
 	"suggest": {
 		"nikic/php-parser": "to use ClassType::from(withBodies: true) & ClassType::fromCode()"
