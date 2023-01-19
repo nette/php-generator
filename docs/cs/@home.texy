@@ -1,0 +1,823 @@
+Generátor PHP kódu
+******************
+
+<div class=perex>
+- Potřebujete generovat kód tříd, funkcí, PHP souborů atd?
+- Umí všechny nejnovější vychytávky v PHP (jako enumy atd.)
+- Dovolí vám snadno modifikovat existující třídy
+- Výstup vyhovující PSR-12
+- Zralá, stabilní a široce používaná knihovna
+</div>
+
+
+Instalace
+---------
+
+Knihovnu stáhnete a nainstalujete pomocí nástroje [Composer|/best-practices/composer]:
+
+```shell
+composer require nette/php-generator
+```
+
+Kompatibilitu s PHP naleznete v [tabulce |#Tabulka kompatibility].
+
+
+Třídy
+-----
+
+Začněme rovnou příkladem tvorby třídy pomocí [ClassType |api:Nette\PhpGenerator\ClassType]:
+
+```php
+$class = new Nette\PhpGenerator\ClassType('Demo');
+
+$class
+	->setFinal()
+	->setExtends(ParentClass::class)
+	->addImplement(Countable::class)
+	->addComment("Popis třídy.\nDruhý řádek\n")
+	->addComment('@property-read Nette\Forms\Form $form');
+
+// kód jednoduše vygenerujete přetypováním na řetězec nebo použitím echo:
+echo $class;
+```
+
+Vrátí následující výsledek:
+
+```php
+/**
+ * Popis třídy
+ * Druhý řádek
+ *
+ * @property-read Nette\Forms\Form $form
+ */
+final class Demo extends ParentClass implements Countable
+{
+	use Nette\SmartObject;
+}
+```
+
+K vygenerování kódu můžeme také použít tzv. printer, který na rozdíl od `echo $class` budeme moci [dále konfigurovat |#Printer a soulad s PSR]:
+
+```php
+$printer = new Nette\PhpGenerator\Printer;
+echo $printer->printClass($class);
+```
+
+Můžeme přidat konstanty (třída [Constant |api:Nette\PhpGenerator\Constant]) a proměnné (třída [Property |api:Nette\PhpGenerator\Property]):
+
+```php
+$class->addConstant('ID', 123)
+	->setProtected() // viditelnost konstant
+	->setFinal();
+
+$class->addProperty('items', [1, 2, 3])
+	->setPrivate() // nebo setVisibility('private')
+	->setStatic()
+	->addComment('@var int[]');
+
+$class->addProperty('list')
+	->setType('?array')
+	->setInitialized(); // vypíše '= null'
+```
+
+Vygeneruje:
+
+```php
+final protected const ID = 123;
+
+/** @var int[] */
+private static $items = [1, 2, 3];
+
+public ?array $list = null;
+```
+
+A můžeme přidat [metody|#Signatury metod a funkcí]:
+
+```php
+$method = $class->addMethod('count')
+	->addComment('Count it.')
+	->setFinal()
+	->setProtected()
+	->setReturnType('?int') // návratové typy u metod
+	->setBody('return count($items ?: $this->items);');
+
+$method->addParameter('items', []) // $items = []
+	->setReference()           // &$items = []
+	->setType('array');        // array &$items = []
+```
+
+Výsledkem je:
+
+```php
+/**
+ * Count it.
+ */
+final protected function count(array &$items = []): ?int
+{
+	return count($items ?: $this->items);
+}
+```
+
+Propagované parametry zavedené PHP 8.0 lze předat konstruktoru (od verze 3.5):
+
+```php
+$method = $class->addMethod('__construct');
+$method->addPromotedParameter('name');
+$method->addPromotedParameter('args', [])
+	->setPrivate();
+```
+
+Výsledkem je:
+
+```php
+public function __construct(
+	public $name,
+	private $args = [],
+) {
+}
+```
+
+Vlastnosti určené pouze pro čtení zavedené v PHP 8.1 lze označit pomocí funkce `setReadOnly()`.
+
+------
+
+Pokud přidaná vlastnost, konstanta, metoda nebo parametr již existují, vyhodí se výjimka.
+
+Členy třídy lze odebrat pomocí `removeProperty()`, `removeConstant()`, `removeMethod()` nebo `removeParameter()`.
+
+Do třídy můžete také přidat existující objekty `Method`, `Property` nebo `Constant`:
+
+```php
+$method = new Nette\PhpGenerator\Method('getHandle');
+$property = new Nette\PhpGenerator\Property('handle');
+$const = new Nette\PhpGenerator\Constant('ROLE');
+
+$class = (new Nette\PhpGenerator\ClassType('Demo'))
+	->addMember($method)
+	->addMember($property)
+	->addMember($const);
+```
+
+Můžete také klonovat stávající metody, vlastnosti a konstanty pod jiným názvem pomocí `cloneWithName()`:
+
+```php
+$methodCount = $class->getMethod('count');
+$methodRecount = $methodCount->cloneWithName('recount');
+$class->addMember($methodRecount);
+```
+
+
+Interface nebo traita
+---------------------
+
+Lze vytvářet rozhraní a traity:
+
+```php
+$interface = new Nette\PhpGenerator\InterfaceType('MyInterface');
+$trait = new Nette\PhpGenerator\TraitType('MyTrait');
+```
+
+Používání trait:
+
+```php
+$class = new Nette\PhpGenerator\ClassType('Demo');
+$class->addTrait('SmartObject');
+$class->addTrait('MyTrait')
+	->addResolution('sayHello as protected')
+	->addComment('@use MyTrait<Foo>');
+echo $class;
+```
+
+Výsledek:
+
+```php
+class Demo
+{
+	use SmartObject;
+	use MyTrait {
+		sayHello as protected;
+	}
+}
+```
+
+
+Enums .{data-version:v3.6}
+--------------------------
+
+Výčty, které přináší PHP 8.1, můžete snadno vytvořit takto:
+
+```php
+$enum = new Nette\PhpGenerator\EnumType('Suit');
+$enum->addCase('Clubs');
+$enum->addCase('Diamonds');
+$enum->addCase('Hearts');
+$enum->addCase('Spades');
+
+echo $enum;
+```
+
+Výsledek:
+
+```php
+enum Suit
+{
+	case Clubs;
+	case Diamonds;
+	case Hearts;
+	case Spades;
+}
+```
+
+Můžete také definovat skalární ekvivalenty a vytvořit tak "backed" výčet:
+
+```php
+$enum->addCase('Clubs', '♣');
+$enum->addCase('Diamonds', '♦');
+```
+
+Ke každému *case* je možné přidat komentář nebo [#atributy] pomocí `addComment()` nebo `addAttribute()`.
+
+
+Anonymní třídy
+--------------
+
+Jako název předáme `null` a máme anonymní třídu:
+
+```php
+$class = new Nette\PhpGenerator\ClassType(null);
+$class->addMethod('__construct')
+	->addParameter('foo');
+
+echo '$obj = new class ($val) ' . $class . ';';
+```
+
+Výsledek:
+
+```php
+$obj = new class ($val) {
+
+	public function __construct($foo)
+	{
+	}
+};
+```
+
+
+Globální funkce
+---------------
+
+Kód funkcí generuje třída [GlobalFunction |api:Nette\PhpGenerator\GlobalFunction]:
+
+```php
+$function = new Nette\PhpGenerator\GlobalFunction('foo');
+$function->setBody('return $a + $b;');
+$function->addParameter('a');
+$function->addParameter('b');
+echo $function;
+
+// nebo použijte PsrPrinter pro výstup v souladu s PSR-2 / PSR-12
+// echo (new Nette\PhpGenerator\PsrPrinter)->printFunction($function);
+```
+
+Výsledek:
+
+```php
+function foo($a, $b)
+{
+	return $a + $b;
+}
+```
+
+
+Anonymní funkce
+---------------
+
+Kód anonymních funkcí generuje třída [Closure |api:Nette\PhpGenerator\Closure]:
+
+```php
+$closure = new Nette\PhpGenerator\Closure;
+$closure->setBody('return $a + $b;');
+$closure->addParameter('a');
+$closure->addParameter('b');
+$closure->addUse('c')
+	->setReference();
+echo $closure;
+
+// nebo použijte PsrPrinter pro výstup v souladu s PSR-2 / PSR-12
+// echo (new Nette\PhpGenerator\PsrPrinter)->printClosure($closure);
+```
+
+Výsledek:
+
+```php
+function ($a, $b) use (&$c) {
+	return $a + $b;
+}
+```
+
+
+Zkrácené arrow funkce
+---------------------
+
+Můžete také vypsat zkrácenou anonymní funkci pomocí printeru:
+
+```php
+$closure = new Nette\PhpGenerator\Closure;
+$closure->setBody('$a + $b');
+$closure->addParameter('a');
+$closure->addParameter('b');
+
+echo (new Nette\PhpGenerator\Printer)->printArrowFunction($closure);
+```
+
+Výsledek:
+
+```php
+fn($a, $b) => $a + $b
+```
+
+
+Signatury metod a funkcí
+------------------------
+
+Metody reprezentuje třída [Method |api:Nette\PhpGenerator\Method]. Můžete nastavit viditelnost, návratovou hodnotu, přidat komentáře, [atributy|#Atributy] atd:
+
+```php
+$method = $class->addMethod('count')
+	->addComment('Count it.')
+	->setFinal()
+	->setProtected()
+	->setReturnType('?int');
+```
+
+Jednotlivé parametry reprezentuje třídy [Parameter |api:Nette\PhpGenerator\Parameter]. Opět můžete nastavit všechny myslitelné vlastnosti:
+
+```php
+$method->addParameter('items', []) // $items = []
+	->setReference()           // &$items = []
+	->setType('array');        // array &$items = []
+
+// function count(&$items = [])
+```
+
+Pro definici tzv. variadics parametrů (nebo též splat operátor) slouží `setVariadics()`:
+
+```php
+$method = $class->addMethod('count');
+$method->setVariadic(true);
+$method->addParameter('items');
+```
+
+Vygeneruje:
+
+```php
+function count(...$items)
+{
+}
+```
+
+
+Těla metod a funkcí
+-------------------
+
+Tělo lze předat najednou metodě `setBody()` nebo postupně (po řádcích) opakovaným voláním `addBody()`:
+
+```php
+$function = new Nette\PhpGenerator\GlobalFunction('foo');
+$function->addBody('$a = rand(10, 20);');
+$function->addBody('return $a;');
+echo $function;
+```
+
+Výsledek
+
+```php
+function foo()
+{
+	$a = rand(10, 20);
+	return $a;
+}
+```
+
+Můžete použít speciální zástupné znaky pro snadné vkládání proměnných.
+
+Jednoduché zástupné symboly `?`
+
+```php
+$str = 'any string';
+$num = 3;
+$function = new Nette\PhpGenerator\GlobalFunction('foo');
+$function->addBody('return substr(?, ?);', [$str, $num]);
+echo $function;
+```
+
+Výsledek
+
+```php
+function foo()
+{
+	return substr('any string', 3);
+}
+```
+
+Zástupný znak pro variadic `...?`
+
+```php
+$items = [1, 2, 3];
+$function = new Nette\PhpGenerator\GlobalFunction('foo');
+$function->setBody('myfunc(...?);', [$items]);
+echo $function;
+```
+
+Výsledek:
+
+```php
+function foo()
+{
+	myfunc(1, 2, 3);
+}
+```
+
+Můžete také použít pojmenované parametry pro PHP 8 pomocí  `...?: `(od verze 3.5)
+
+```php
+$items = ['foo' => 1, 'bar' => true];
+$function->setBody('myfunc(...?:);', [$items]);
+
+// myfunc(foo: 1, bar: true);
+```
+
+Zástupný symbol se escapuje pomocí lomítka `\?`
+
+```php
+$num = 3;
+$function = new Nette\PhpGenerator\GlobalFunction('foo');
+$function->addParameter('a');
+$function->addBody('return $a \? 10 : ?;', [$num]);
+echo $function;
+```
+
+Výsledek:
+
+```php
+function foo($a)
+{
+	return $a ? 10 : 3;
+}
+```
+
+
+Printer a soulad s PSR
+----------------------
+
+PHP kód generují objekty `Printer`. K je vám tiskárna `PsrPrinter`, jejíž výstup je v souladu s PSR-2 a PSR-12 a k odsazování používá mezery, a dále `Printer`, která pro odsazování používá tabulátory.
+
+```php
+$class = new Nette\PhpGenerator\ClassType('Demo');
+// ...
+
+$printer = new Nette\PhpGenerator\PsrPrinter;
+echo $printer->printClass($class); // odsazení 4 mezerami
+```
+
+Potřebujete na míru upravit chování printeru? Vytvořte si vlastní poděděním třídy `Printer`. Můžete překonfigurovat tyto proměnné:
+
+```php
+class MyPrinter extends Nette\PhpGenerator\Printer
+{
+	public int $wrapLength = 120;
+	public string $indentation = "\t";
+	public int $linesBetweenProperties = 0;
+	public int $linesBetweenMethods = 2;
+	public int $linesBetweenUseTypes = 0;
+	public bool $bracesOnNextLine = true;
+	public string $returnTypeColon = ': ';
+}
+```
+
+
+Typy
+----
+
+Každý typ nebo union/intersection typ lze předat jako řetězec, můžete také použít předdefinované konstanty pro nativní typy:
+
+```php
+use Nette\PhpGenerator\Type;
+
+$member->setType('array'); // nebo Type::ARRAY;
+$member->setType('array|string'); // nebo Type::union('array', 'string')
+$member->setType('Foo&Bar'); // nebo Type::intersection(Foo::class, Bar::class)
+$member->setType(null); // odstraní typ
+```
+
+Totéž platí pro metodu `setReturnType()`.
+
+
+Literály
+--------
+
+Pomocí `Literal` můžete předávat libovolný kód PHP, například pro výchozí hodnoty vlastností nebo parametrů atd:
+
+```php
+use Nette\PhpGenerator\Literal;
+
+$class = new Nette\PhpGenerator\ClassType('Demo');
+
+$class->addProperty('foo', new Literal('Iterator::SELF_FIRST'));
+
+$class->addMethod('bar')
+	->addParameter('id', new Literal('1 + 2'));
+
+echo $class;
+```
+
+Výsledek:
+
+```php
+class Demo
+{
+	public $foo = Iterator::SELF_FIRST;
+
+	public function bar($id = 1 + 2)
+	{
+	}
+}
+```
+
+Můžete také předat parametry do `Literal` a nechat je zformátovat do platného kódu PHP pomocí [zástupných znaků|#Generování těl metod a funkcí]:
+
+```php
+new Literal('substr(?, ?)', [$a, $b]);
+// generuje například: substr('hello', 5);
+```
+
+
+Atributy .{data-version:v3.5}
+-----------------------------
+
+PHP 8 atributy můžete přidat do všech tříd, metod, vlastností, konstant, enumů, funkcí, closures a parametrů. Jako hodnoty parametrů lze používat i [#literály].
+
+```php
+$class = new Nette\PhpGenerator\ClassType('Demo');
+$class->addAttribute('Deprecated');
+
+$class->addProperty('list')
+	->addAttribute('WithArguments', [1, 2]);
+
+$method = $class->addMethod('count')
+	->addAttribute('Foo\Cached', ['mode' => true]);
+
+$method->addParameter('items')
+	->addAttribute('Bar');
+
+echo $class;
+```
+
+Výsledek:
+
+```php
+#[Deprecated]
+class Demo
+{
+	#[WithArguments(1, 2)]
+	public $list;
+
+
+	#[Foo\Cached(mode: true)]
+	public function count(#[Bar] $items)
+	{
+	}
+}
+```
+
+
+Jmenný prostor
+--------------
+
+Třídy, vlastnosti, rozhraní a výčty (dále jen třídy) lze seskupit do jmenných prostorů reprezentovaných třídou [PhpNamespace |api:Nette\PhpGenerator\PhpNamespace]:
+
+```php
+$namespace = new Nette\PhpGenerator\PhpNamespace('Foo');
+
+// vytvoříme nové třídy v namespace
+$class = $namespace->addClass('Task');
+$interface = $namespace->addInterface('Countable');
+$trait = $namespace->addTrait('NameAware');
+
+// nebo vložíme existující třídu do namespace
+$class = new Nette\PhpGenerator\ClassType('Task');
+$namespace->add($class);
+```
+
+Pokud třída již existuje, vyhodí se výjimka.
+
+Můžete definovat klauzule use:
+
+```php
+// use Http\Request;
+$namespace->addUse(Http\Request::class);
+// use Http\Request as HttpReq;
+$namespace->addUse(Http\Request::class, 'HttpReq');
+// use function iter\range;
+$namespace->addUseFunction('iter\range');
+```
+
+Chcete-li zjednodušit plně kvalifikovaný název třídy, funkce nebo konstanty podle definovaných aliasů, použijte metodu `simplifyName`:
+
+```php
+echo $namespace->simplifyName('Foo\Bar'); // 'Bar', protože 'Foo' je aktuální jmenný prostor
+echo $namespace->simplifyName('iter\range', $namespace::NAME_FUNCTION); // 'range', kvůli definovanému use-statement
+```
+
+Zjednodušený název třídy, funkce nebo konstanty můžete naopak převést na plně kvalifikovaný název pomocí metody `resolveName`:
+
+```php
+echo $namespace->resolveName('Bar'); // 'Foo\Bar'
+echo $namespace->resolveName('range', $namespace::NAME_FUNCTION); // 'iter\range'
+```
+
+
+Překlady názvů tříd
+-------------------
+
+**Když je třída součástí jmenného prostoru, je vykreslena mírně odlišně:** všechny typy (například typehinty, návratové typy, název rodičovské třídy,
+implementovaná rozhraní, použité vlastnosti a atributy) jsou automaticky *překládány* (pokud to nevypnete, viz níže).
+To znamená, že musíte v definicích **používat úplné názvy tříd** a ty budou nahrazeny
+za aliasy (podle klauzulí use) nebo za plně kvalifikovaná jména ve výsledném kódu:
+
+```php
+$namespace = new Nette\PhpGenerator\PhpNamespace('Foo');
+$namespace->addUse('Bar\AliasedClass');
+
+$class = $namespace->addClass('Demo');
+$class->addImplement('Foo\A') // bude zjednodušen na A
+	->addTrait('Bar\AliasedClass'); // bude zjednodušen na AliasedClass
+
+$method = $class->addMethod('method');
+$method->addComment('@return ' . $namespace->simplifyName('Foo\D')); // v komentářích zjednodušíme manuálně
+$method->addParameter('arg')
+	->setType('Bar\OtherClass'); // bude přeložen na \Bar\OtherClass
+
+echo $namespace;
+
+// nebo použijte PsrPrinter pro výstup v souladu s PSR-2 / PSR-12
+// echo (new Nette\PhpGenerator\PsrPrinter)->printNamespace($namespace);
+```
+
+Výsledek:
+
+```php
+namespace Foo;
+
+use Bar\AliasedClass;
+
+class Demo implements A
+{
+	use AliasedClass;
+
+	/**
+	 * @return D
+	 */
+	public function method(\Bar\OtherClass $arg)
+	{
+	}
+}
+```
+
+Automatické překládání lze vypnout tímto způsobem:
+
+```php
+$printer = new Nette\PhpGenerator\Printer; // nebo PsrPrinter
+$printer->setTypeResolving(false);
+echo $printer->printNamespace($namespace);
+```
+
+
+PHP soubory
+-----------
+
+Třídy, funkce a jmenné prostory lze seskupit do PHP souborů reprezentovaných třídou [PhpFile|api:Nette\PhpGenerator\PhpFile]:
+
+```php
+$file = new Nette\PhpGenerator\PhpFile;
+$file->addComment('This file is auto-generated.');
+$file->setStrictTypes(); // přidá declare(strict_types=1)
+
+$class = $file->addClass('Foo\A');
+$function = $file->addFunction('Foo\foo');
+
+// nebo
+// $namespace = $file->addNamespace('Foo');
+// $class = $namespace->addClass('A');
+// $function = $namespace->addFunction('foo');
+
+echo $file;
+
+// nebo použijte PsrPrinter pro výstup v souladu s PSR-2 / PSR-12
+// echo (new Nette\PhpGenerator\PsrPrinter)->printFile($file);
+```
+
+Výsledek:
+
+```php
+<?php
+
+/**
+ * This file is auto-generated.
+ */
+
+declare(strict_types=1);
+
+namespace Foo;
+
+class A
+{
+}
+
+function foo()
+{
+}
+```
+
+
+Generování podle existujících
+-----------------------------
+
+Kromě toho, že třídy a funkce můžete modelovat pomocí výše popsaného API, je můžete také nechat vygenerovat automaticky podle existujících vzorů:
+
+```php
+// vytvoří třídu stejnou jako třída PDO
+$class = Nette\PhpGenerator\ClassType::from(PDO::class);
+
+// vytvoří funkci totožnou s funkcí trim()
+$function = Nette\PhpGenerator\GlobalFunction::from('trim');
+
+// vytvoří closure podle uvedené
+$closure = Nette\PhpGenerator\Closure::from(
+	function (stdClass $a, $b = null) {}
+);
+```
+
+.{data-version:v3.4}
+Těla funkcí a metod jsou ve výchozím stavu prázdná. Pokud je chcete také načíst, použijte tento způsob
+(vyžaduje instalaci balíčku `nikic/php-parser` a PhpGenerator verze 3.4):
+
+```php
+$class = Nette\PhpGenerator\ClassType::from(Foo::class, withBodies: true);
+
+$function = Nette\PhpGenerator\GlobalFunction::from('foo', withBody: true);
+```
+
+
+Načítání z PHP souborů .{data-version:v3.6.1}
+---------------------------------------------
+
+Třídy nebo funkce můžete také načíst přímo ze souboru PHP, který ještě není inkludován, nebo z řetězce obsahujícího PHP kód:
+
+```php
+$class = Nette\PhpGenerator\ClassType::fromCode(<<<XX
+	<?php
+
+	class Demo
+	{
+		public $foo;
+	}
+	XX);
+```
+
+Načtení celého souboru PHP, který může obsahovat více tříd nebo dokonce více jmenných prostorů:
+
+```php
+$file = Nette\PhpGenerator\PhpFile::fromCode(file_get_contents('classes.php'));
+```
+
+Vyžaduje, aby byl nainstalován `nikic/php-parser`.
+
+
+Výpis proměnných
+----------------
+
+Třída `Dumper` převede proměnnou do parsovatelného PHP kódu. Poskytuje lepší a přehlednější výstup než standardní funkce `var_export()`.
+
+```php
+$dumper = new Nette\PhpGenerator\Dumper;
+
+$var = ['a', 'b', 123];
+
+echo $dumper->dump($var); // vypíše ['a', 'b', 123]
+```
+
+
+Tabulka kompatibility
+---------------------
+
+PhpGenerator 4.0 je kompatibilní s PHP 8.0 až 8.2
+PhpGenerator 3.6 je kompatibilní s PHP 7.2 až 8.2
+PhpGenerator 3.2 – 3.5 je kompatibilní s PHP 7.1 až 8.0
+PhpGenerator 3.1 je kompatibilní s PHP 7.1 až 7.3
+PhpGenerator 3.0 je kompatibilní s PHP 7.0 až 7.3
+PhpGenerator 2.6 je kompatibilní s PHP 5.6 až 7.3
+
+
+{{composer: nette/php-generator}}
+{{leftbar: /utils/@left-menu}}

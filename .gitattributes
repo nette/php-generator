@@ -3,6 +3,7 @@
 .github export-ignore
 ncs.* export-ignore
 phpstan.neon export-ignore
+docs/ export-ignore
 tests/ export-ignore
 
 *.sh eol=lf
