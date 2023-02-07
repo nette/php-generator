@@ -314,7 +314,7 @@ final class Extractor
 			$prop->setVisibility($this->toVisibility($node->flags));
 			$prop->setType($node->type ? $this->toPhp($node->type) : null);
 			if ($item->default) {
-				$prop->setValue(new Literal($this->getReformattedContents([$item->default], 1)));
+				$prop->setValue($this->formatValue($item->default, 1));
 			}
 
 			$prop->setReadOnly(method_exists($node, 'isReadonly') && $node->isReadonly());
@@ -337,8 +337,7 @@ final class Extractor
 	private function addConstantToClass(ClassLike $class, Node\Stmt\ClassConst $node): void
 	{
 		foreach ($node->consts as $item) {
-			$value = $this->getReformattedContents([$item->value], 1);
-			$const = $class->addConstant($item->name->toString(), new Literal($value));
+			$const = $class->addConstant($item->name->toString(), $this->formatValue($item->value, 1));
 			$const->setVisibility($this->toVisibility($node->flags));
 			$const->setFinal(method_exists($node, 'isFinal') && $node->isFinal());
 			$this->addCommentAndAttributes($const, $node);
@@ -351,7 +350,7 @@ final class Extractor
 		$value = match (true) {
 			$node->expr === null => null,
 			$node->expr instanceof Node\Scalar\LNumber, $node->expr instanceof Node\Scalar\String_ => $node->expr->value,
-			default => new Literal($this->getReformattedContents([$node->expr], 1)),
+			default => $this->formatValue($node->expr, 1),
 		};
 		$case = $class->addCase($node->name->toString(), $value);
 		$this->addCommentAndAttributes($case, $node);
@@ -371,7 +370,7 @@ final class Extractor
 			foreach ($group->attrs as $attribute) {
 				$args = [];
 				foreach ($attribute->args as $arg) {
-					$value = new Literal($this->getReformattedContents([$arg->value], 0));
+					$value = $this->formatValue($arg->value, 0);
 					if ($arg->name) {
 						$args[$arg->name->toString()] = $value;
 					} else {
@@ -399,7 +398,7 @@ final class Extractor
 			$param->setReference($item->byRef);
 			$function->setVariadic($item->variadic);
 			if ($item->default) {
-				$param->setDefaultValue(new Literal($this->getReformattedContents([$item->default], 2)));
+				$param->setDefaultValue($this->formatValue($item->default, 2));
 			}
 
 			$this->addCommentAndAttributes($param, $item);
@@ -409,6 +408,13 @@ final class Extractor
 		if ($node->getStmts()) {
 			$function->setBody($this->getReformattedContents($node->getStmts(), 2));
 		}
+	}
+
+
+	private function formatValue(Node\Expr $value, int $level): Literal
+	{
+		$value = $this->getReformattedContents([$value], $level);
+		return new Literal($value);
 	}
 
 
