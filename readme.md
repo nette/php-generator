@@ -72,6 +72,7 @@ We can add constants (class [Constant](https://api.nette.org/php-generator/maste
 ```php
 $class->addConstant('ID', 123)
 	->setProtected() // constant visiblity
+	->setType('int')
 	->setFinal();
 
 $class->addProperty('items', [1, 2, 3])
@@ -87,7 +88,7 @@ $class->addProperty('list')
 It generates:
 
 ```php
-final protected const ID = 123;
+final protected const int ID = 123;
 
 /** @var int[] */
 private static $items = [1, 2, 3];

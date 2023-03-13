@@ -180,7 +180,9 @@ class Printer
 			foreach ($class->getConstants() as $const) {
 				$def = ($const->isFinal() ? 'final ' : '')
 					. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
-					. 'const ' . $const->getName() . ' = ';
+					. 'const '
+					. ltrim($this->printType($const->getType(), nullable: false) . ' ')
+					. $const->getName() . ' = ';
 
 				$consts[] = $this->printDocComment($const)
 					. $this->printAttributes($const->getAttributes())
