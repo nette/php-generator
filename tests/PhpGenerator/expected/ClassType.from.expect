@@ -138,8 +138,9 @@ class Class9
 	 * Returns file handle
 	 */
 	#[ExampleAttribute]
-	public function getHandle(#[WithArguments(123)] $mode)
-	{
+	public function getHandle(
+		#[WithArguments(123)] $mode,
+	) {
 	}
 }
 

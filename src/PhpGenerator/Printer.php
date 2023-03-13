@@ -324,7 +324,7 @@ class Printer
 	{
 		$params = [];
 		$list = $function->getParameters();
-		$special = false;
+		$multiline = false;
 
 		foreach ($list as $param) {
 			$param->validate();
@@ -344,12 +344,13 @@ class Printer
 				. '$' . $param->getName()
 				. ($param->hasDefaultValue() && !$variadic ? ' = ' . $this->dump($param->getDefaultValue()) : '');
 
-			$special = $special || $promoted || $attrs;
+			$multiline = $multiline || $promoted || $attrs;
 		}
 
 		$line = implode(', ', $params);
+		$multiline = $multiline || count($params) > 1 && (strlen($line) + $column > $this->wrapLength);
 
-		return count($params) > 1 && ($special || strlen($line) + $column > $this->wrapLength)
+		return $multiline
 			? "(\n" . $this->indent(implode(",\n", $params)) . ",\n)"
 			: "($line)";
 	}
