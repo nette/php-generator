@@ -45,15 +45,17 @@ class Printer
 			. ($function->getReturnReference() ? '&' : '')
 			. $function->getName();
 		$returnType = $this->printReturnType($function);
+		$params = $this->printParameters($function, strlen($line) + strlen($returnType) + 2); // 2 = parentheses
 		$body = Helpers::simplifyTaggedNames($function->getBody(), $this->namespace);
 		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
+		$braceOnNextLine = $this->bracesOnNextLine && (!str_contains($params, "\n") || $returnType);
 
 		return $this->printDocComment($function)
 			. $this->printAttributes($function->getAttributes())
 			. $line
-			. $this->printParameters($function, strlen($line) + strlen($returnType) + 2) // 2 = parentheses
+			. $params
 			. $returnType
-			. ($this->bracesOnNextLine ? "\n" : ' ')
+			. ($braceOnNextLine ? "\n" : ' ')
 			. "{\n" . $this->indent($body) . "}\n";
 	}
 
@@ -117,7 +119,7 @@ class Printer
 		$params = $this->printParameters($method, strlen($line) + strlen($returnType) + strlen($this->indentation) + 2);
 		$body = Helpers::simplifyTaggedNames($method->getBody(), $this->namespace);
 		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
-		$braceOnNextLine = $this->bracesOnNextLine && !str_contains($params, "\n");
+		$braceOnNextLine = $this->bracesOnNextLine && (!str_contains($params, "\n") || $returnType);
 
 		return $this->printDocComment($method)
 			. $this->printAttributes($method->getAttributes())

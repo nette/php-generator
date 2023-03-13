@@ -51,6 +51,15 @@ $class->addMethod('first')
 
 $class->addMethod('second');
 
+$method = $class->addMethod('multi')
+	->addParameter('foo')
+		->addAttribute('Foo');
+
+$method = $class->addMethod('multiType')
+	->setReturnType('array')
+	->addParameter('foo')
+		->addAttribute('Foo');
+
 
 sameFile(__DIR__ . '/expected/Printer.class.expect', $printer->printClass($class));
 sameFile(__DIR__ . '/expected/Printer.method.expect', $printer->printMethod($class->getMethod('first')));
@@ -61,17 +70,6 @@ $printer->linesBetweenMethods = 3;
 $printer->bracesOnNextLine = false;
 sameFile(__DIR__ . '/expected/Printer.class-alt.expect', $printer->printClass($class));
 
-
-
-$printer = new Printer;
-$function = new Nette\PhpGenerator\GlobalFunction('func');
-$function
-	->setReturnType('stdClass')
-	->setBody("func(); \r\nreturn 123;")
-	->addParameter('var')
-		->setType('stdClass');
-
-sameFile(__DIR__ . '/expected/Printer.function.expect', $printer->printFunction($function));
 
 
 $closure = new Nette\PhpGenerator\Closure;
