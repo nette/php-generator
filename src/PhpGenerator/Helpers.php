@@ -169,16 +169,7 @@ final class Helpers
 	{
 		if ($type === '' || $type === null) {
 			return null;
-		}
-
-		if (!preg_match(<<<'XX'
-			~(?n)
-			(
-				\?? (?<type> [\w\\]+)|
-				(?<intersection> (?&type) (& (?&type))+  )|
-				(?<upart> (?&type) | \( (?&intersection) \) )  (\| (?&upart) )+
-			)$~xAD
-			XX, $type)) {
+		} elseif (!Nette\Utils\Validators::isTypeDeclaration($type)) {
 			throw new Nette\InvalidArgumentException("Value '$type' is not valid type.");
 		}
 

@@ -16,7 +16,7 @@
 	],
 	"require": {
 		"php": ">=8.0 <8.3",
-		"nette/utils": "^3.2.7 || ^4.0"
+		"nette/utils": "^3.2.9 || ^4.0"
 	},
 	"require-dev": {
 		"nette/tester": "^2.4",
