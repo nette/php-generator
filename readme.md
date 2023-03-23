@@ -766,7 +766,7 @@ $function = Nette\PhpGenerator\GlobalFunction::from('foo', withBody: true);
 Loading from PHP File
 ---------------------
 
-You can also load classes and functions directly from a PHP file that is not already loaded or string of PHP code:
+You can also load functions, classes, interfaces and enums directly from a string of PHP code. For example, we create `ClassType` object this way:
 
 ```php
 $class = Nette\PhpGenerator\ClassType::fromCode(<<<XX
@@ -779,13 +779,19 @@ $class = Nette\PhpGenerator\ClassType::fromCode(<<<XX
 	XX);
 ```
 
-Loading the entire PHP file, which may contain multiple classes or even multiple namespaces:
+When loading classes from PHP code, single line comments outside of method bodies are ignored (e.g. for properties, etc.) because this library does not have an API to work with them.
+
+You can also load the entire PHP file directly, which can contain any number of classes, functions or even multiple namespaces:
 
 ```php
 $file = Nette\PhpGenerator\PhpFile::fromCode(file_get_contents('classes.php'));
 ```
 
+The initial file comment and the `strict_types` declaration are also loaded. On the other hand, all other global code is ignored.
+
 This requires `nikic/php-parser` to be installed.
+
+*(If you need to manipulate global code in files or individual statements in method bodies, it is better to use the `nikic/php-parser` library directly.)*
 
 
 Variables Dumper
