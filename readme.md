@@ -504,6 +504,8 @@ class MyPrinter extends Nette\PhpGenerator\Printer
 	public int $linesBetweenUseTypes = 0;
 	/** position of the opening brace for functions and methods */
 	public bool $bracesOnNextLine = true;
+	/** place one parameter in one line, even if it has an attribute or is promoted */
+	public bool $singleParameterOnOneLine = false;
 	/** separator between the right parenthesis and return type of functions and methods */
 	public string $returnTypeColon = ': ';
 }

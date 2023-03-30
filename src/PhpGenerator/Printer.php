@@ -27,6 +27,7 @@ class Printer
 	public int $linesBetweenUseTypes = 0;
 	public string $returnTypeColon = ': ';
 	public bool $bracesOnNextLine = true;
+	public bool $singleParameterOnOneLine = false;
 	protected ?PhpNamespace $namespace = null;
 	protected ?Dumper $dumper;
 	private bool $resolveTypes = true;
@@ -332,7 +333,7 @@ class Printer
 			$special = $special || $param instanceof PromotedParameter || $param->getAttributes();
 		}
 
-		if (!$special) {
+		if (!$special || ($this->singleParameterOnOneLine && count($function->getParameters()) === 1)) {
 			$line = $this->formatParameters($function, false);
 			if (!str_contains($line, "\n") && strlen($line) + $column <= $this->wrapLength) {
 				return $line;
