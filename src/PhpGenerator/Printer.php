@@ -27,6 +27,7 @@ class Printer
 	public int $linesBetweenUseTypes = 0;
 	public string $returnTypeColon = ': ';
 	public bool $bracesOnNextLine = true;
+	public bool $singleParameterOnOneLine = false;
 	protected ?PhpNamespace $namespace = null;
 	protected ?Dumper $dumper;
 	private bool $resolveTypes = true;
@@ -329,6 +330,7 @@ class Printer
 		$params = [];
 		$list = $function->getParameters();
 		$multiline = false;
+		$single = $this->singleParameterOnOneLine && count($list) === 1;
 
 		foreach ($list as $param) {
 			$param->validate();
@@ -348,7 +350,7 @@ class Printer
 				. '$' . $param->getName()
 				. ($param->hasDefaultValue() && !$variadic ? ' = ' . $this->dump($param->getDefaultValue()) : '');
 
-			$multiline = $multiline || $promoted || $attrs;
+			$multiline = $multiline || (!$single && ($promoted || $attrs));
 		}
 
 		$line = implode(', ', $params);
