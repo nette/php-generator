@@ -11,19 +11,21 @@ require __DIR__ . '/../bootstrap.php';
 
 $function = new Closure;
 $function
-	->setReturnReference(true)
+	->setReturnReference()
 	->setBody('return $a + $b;');
 
 $function->addParameter('a');
 $function->addParameter('b');
 $function->addUse('this');
 $function->addUse('vars')
-	->setReference(true);
+	->setReference();
 
 same(
-	'function &($a, $b) use ($this, &$vars) {
-	return $a + $b;
-}',
+	<<<'XX'
+		function &($a, $b) use ($this, &$vars) {
+			return $a + $b;
+		}
+		XX,
 	(string) $function,
 );
 
@@ -36,9 +38,11 @@ Assert::type(Nette\PhpGenerator\Parameter::class, $uses[1]);
 $uses = $function->setUses([$uses[0]]);
 
 same(
-	'function &($a, $b) use ($this) {
-	return $a + $b;
-}',
+	<<<'XX'
+		function &($a, $b) use ($this) {
+			return $a + $b;
+		}
+		XX,
 	(string) $function,
 );
 
@@ -58,9 +62,11 @@ $function
 	->addUse('this');
 
 same(
-	'function () use ($this): array {
-	return [];
-}',
+	<<<'XX'
+		function () use ($this): array {
+			return [];
+		}
+		XX,
 	(string) $function,
 );
 
@@ -71,8 +77,10 @@ $function->setBody('return $a + $b;');
 $function->addAttribute('ExampleAttribute');
 
 same(
-	'#[ExampleAttribute] function () {
-	return $a + $b;
-}',
+	<<<'XX'
+		#[ExampleAttribute] function () {
+			return $a + $b;
+		}
+		XX,
 	(string) $function,
 );

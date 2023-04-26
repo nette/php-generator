@@ -14,7 +14,7 @@ $printer = new PsrPrinter;
 
 
 $class = (new ClassType('Example'))
-	->setFinal(true)
+	->setFinal()
 	->setExtends('ParentClass')
 	->addImplement('IExample')
 	->addComment("Description of class.\nThis is example\n");
@@ -42,7 +42,7 @@ $class->addProperty('short', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3,
 
 $class->addMethod('first')
 	->addComment('@return resource')
-	->setFinal(true)
+	->setFinal()
 	->setReturnType('stdClass')
 	->setBody("func();\nreturn ?;", [['aaaaaaaaaaaa' => 1, 'bbbbbbbbbbb' => 2, 'cccccccccccccc' => 3, 'dddddddddddd' => 4, 'eeeeeeeeeeee' => 5, 'ffffffff' => 6]])
 	->addParameter('var')

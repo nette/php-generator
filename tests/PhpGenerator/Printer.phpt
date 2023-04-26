@@ -15,7 +15,7 @@ $printer = new Printer;
 
 
 $class = (new ClassType('Example'))
-	->setFinal(true)
+	->setFinal()
 	->setExtends('ParentClass')
 	->addImplement('IExample')
 	->addComment("Description of class.\nThis is example\n");
@@ -43,7 +43,7 @@ $class->addProperty('short', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3,
 
 $class->addMethod('first')
 	->addComment('@return resource')
-	->setFinal(true)
+	->setFinal()
 	->setReturnType('stdClass')
 	->setBody("func(); \r\nreturn ?;", [['aaaaaaaaaaaa' => 1, 'bbbbbbbbbbb' => 2, 'cccccccccccccc' => 3, 'dddddddddddd' => 4, 'eeeeeeeeeeee' => 5, 'ffffffff' => 6]])
 	->addParameter('var')
@@ -85,6 +85,6 @@ sameFile(__DIR__ . '/expected/Printer.closure.expect', $printer->printClosure($c
 // printer validates class
 Assert::exception(function () {
 	$class = new ClassType;
-	$class->setFinal(true)->setAbstract(true);
+	$class->setFinal()->setAbstract();
 	(new Printer)->printClass($class);
 }, Nette\InvalidStateException::class, 'Anonymous class cannot be abstract or final.');

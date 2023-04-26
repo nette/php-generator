@@ -30,6 +30,8 @@ sameFile(__DIR__ . '/expected/Extractor.bodies.expect', (string) $file);
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/extractor.php')))->extractAll();
 sameFile(__DIR__ . '/expected/Extractor.expect', (string) $file);
 
-Assert::exception(function () {
-	(new Extractor(''));
-}, Nette\InvalidStateException::class, 'The input string is not a PHP code.');
+Assert::exception(
+	fn() => new Extractor(''),
+	Nette\InvalidStateException::class,
+	'The input string is not a PHP code.',
+);

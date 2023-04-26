@@ -12,40 +12,56 @@ require __DIR__ . '/../bootstrap.php';
 $namespace = new PhpNamespace('Foo');
 $namespace->addUse('Bar\C');
 
-Assert::exception(function () use ($namespace) {
-	$namespace->addTrait('C');
-}, Nette\InvalidStateException::class, "Name 'C' used already as alias for Bar\\C.");
+Assert::exception(
+	fn() => $namespace->addTrait('C'),
+	Nette\InvalidStateException::class,
+	"Name 'C' used already as alias for Bar\\C.",
+);
 
-Assert::exception(function () use ($namespace) {
-	$namespace->addTrait('c');
-}, Nette\InvalidStateException::class, "Name 'c' used already as alias for Bar\\C.");
+Assert::exception(
+	fn() => $namespace->addTrait('c'),
+	Nette\InvalidStateException::class,
+	"Name 'c' used already as alias for Bar\\C.",
+);
 
 $namespace->addClass('B');
-Assert::exception(function () use ($namespace) {
-	$namespace->addUse('Lorem\B', 'B');
-}, Nette\InvalidStateException::class, "Name 'B' used already for 'Foo\\B'.");
+Assert::exception(
+	fn() => $namespace->addUse('Lorem\B', 'B'),
+	Nette\InvalidStateException::class,
+	"Name 'B' used already for 'Foo\\B'.",
+);
 
-Assert::exception(function () use ($namespace) {
-	$namespace->addUse('lorem\b', 'b');
-}, Nette\InvalidStateException::class, "Name 'b' used already for 'Foo\\B'.");
+Assert::exception(
+	fn() => $namespace->addUse('lorem\b', 'b'),
+	Nette\InvalidStateException::class,
+	"Name 'b' used already for 'Foo\\B'.",
+);
 
 $namespace->addUseFunction('Bar\f1');
-Assert::exception(function () use ($namespace) {
-	$namespace->addFunction('f1');
-}, Nette\InvalidStateException::class, "Name 'f1' used already as alias for Bar\\f1.");
+Assert::exception(
+	fn() => $namespace->addFunction('f1'),
+	Nette\InvalidStateException::class,
+	"Name 'f1' used already as alias for Bar\\f1.",
+);
 
-Assert::exception(function () use ($namespace) {
-	$namespace->addFunction('F1');
-}, Nette\InvalidStateException::class, "Name 'F1' used already as alias for Bar\\f1.");
+Assert::exception(
+	fn() => $namespace->addFunction('F1'),
+	Nette\InvalidStateException::class,
+	"Name 'F1' used already as alias for Bar\\f1.",
+);
 
 $namespace->addFunction('f2');
-Assert::exception(function () use ($namespace) {
-	$namespace->addUseFunction('Bar\f2', 'f2');
-}, Nette\InvalidStateException::class, "Name 'f2' used already for 'Foo\\f2'.");
+Assert::exception(
+	fn() => $namespace->addUseFunction('Bar\f2', 'f2'),
+	Nette\InvalidStateException::class,
+	"Name 'f2' used already for 'Foo\\f2'.",
+);
 
-Assert::exception(function () use ($namespace) {
-	$namespace->addUseFunction('Bar\f2', 'F2');
-}, Nette\InvalidStateException::class, "Name 'F2' used already for 'Foo\\f2'.");
+Assert::exception(
+	fn() => $namespace->addUseFunction('Bar\f2', 'F2'),
+	Nette\InvalidStateException::class,
+	"Name 'F2' used already for 'Foo\\f2'.",
+);
 
 Assert::same(['C' => 'Bar\C'], $namespace->getUses());
 Assert::same(['f1' => 'Bar\f1'], $namespace->getUses($namespace::NameFunction));

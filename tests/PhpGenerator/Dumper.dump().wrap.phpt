@@ -16,14 +16,16 @@ require __DIR__ . '/../bootstrap.php';
 $dumper = new Dumper;
 $dumper->wrapLength = 21;
 same(
-	"[
-	'a' => [1, 2, 3],
-	'aaaaaaaaa' => [
-		1,
-		2,
-		3,
-	],
-]",
+	<<<'XX'
+		[
+			'a' => [1, 2, 3],
+			'aaaaaaaaa' => [
+				1,
+				2,
+				3,
+			],
+		]
+		XX,
 	$dumper->dump([
 		'a' => [1, 2, 3],
 		'aaaaaaaaa' => [1, 2, 3],
@@ -31,12 +33,14 @@ same(
 );
 
 same(
-	"[
-	'single' => 1 + 2,
-	'multi' => [
-		1,
-	],
-]",
+	<<<'XX'
+		[
+			'single' => 1 + 2,
+			'multi' => [
+				1,
+			],
+		]
+		XX,
 	$dumper->dump([
 		'single' => new Literal('1 + 2'),
 		'multi' => new Literal("[\n\t1,\n]\n"),
@@ -44,14 +48,16 @@ same(
 );
 
 same(
-	"(object) [
-	'a' => [1, 2, 3],
-	'aaaaaaaaa' => [
-		1,
-		2,
-		3,
-	],
-]",
+	<<<'XX'
+		(object) [
+			'a' => [1, 2, 3],
+			'aaaaaaaaa' => [
+				1,
+				2,
+				3,
+			],
+		]
+		XX,
 	$dumper->dump((object) [
 		'a' => [1, 2, 3],
 		'aaaaaaaaa' => [1, 2, 3],
@@ -61,9 +67,11 @@ same(
 
 $dumper = new Dumper;
 $dumper->wrapLength = 100;
-same("[
+same(<<<'XX'
 	[
-		'a',
-		'looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong',
-	],
-]", $dumper->dump([['a', 'looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong']]));
+		[
+			'a',
+			'looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong',
+		],
+	]
+	XX, $dumper->dump([['a', 'looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong']]));

@@ -15,11 +15,16 @@ $phpFile->addNamespace('Foo');
 $phpFile->addNamespace($namespace); // overwrite
 
 
-same('<?php
+same(
+	<<<'XX'
+		<?php
 
-namespace Foo;
+		namespace Foo;
 
-class Bar
-{
-}
-', (string) $phpFile);
+		class Bar
+		{
+		}
+
+		XX,
+	(string) $phpFile,
+);

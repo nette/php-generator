@@ -17,9 +17,11 @@ Assert::same('Foo', $namespace->getName());
 $classA = $namespace->addClass('A');
 Assert::same($namespace, $classA->getNamespace());
 
-Assert::exception(function () use ($namespace) {
-	$namespace->addClass('a');
-}, Nette\InvalidStateException::class, "Cannot add 'a', because it already exists.");
+Assert::exception(
+	fn() => $namespace->addClass('a'),
+	Nette\InvalidStateException::class,
+	"Cannot add 'a', because it already exists.",
+);
 
 $interfaceB = $namespace->addInterface('B');
 Assert::same($namespace, $interfaceB->getNamespace());
@@ -32,9 +34,11 @@ Assert::count(1, $namespace->getClasses());
 
 $function = $namespace->addFunction('foo');
 
-Assert::exception(function () use ($namespace) {
-	$namespace->addFunction('Foo');
-}, Nette\InvalidStateException::class, "Cannot add 'Foo', because it already exists.");
+Assert::exception(
+	fn() => $namespace->addFunction('Foo'),
+	Nette\InvalidStateException::class,
+	"Cannot add 'Foo', because it already exists.",
+);
 
 Assert::count(1, $namespace->getFunctions());
 Assert::same($function, $namespace->getFunctions()['foo']);

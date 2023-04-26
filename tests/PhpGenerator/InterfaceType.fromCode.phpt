@@ -22,6 +22,8 @@ Assert::match(<<<'XX'
 	XX, (string) $class);
 
 
-Assert::exception(function () {
-	InterfaceType::fromCode('<?php');
-}, Nette\InvalidStateException::class, 'The code does not contain any class.');
+Assert::exception(
+	fn() => InterfaceType::fromCode('<?php'),
+	Nette\InvalidStateException::class,
+	'The code does not contain any class.',
+);

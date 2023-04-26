@@ -9,44 +9,46 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-$extractor = new Extractor('<?php
-namespace NS;
+$extractor = new Extractor(<<<'XX'
+	<?php
+	namespace NS;
 
-abstract class Foo
-{
-	function bar1()
+	abstract class Foo
 	{
-		$a = 10;
-		echo 123;
+		function bar1()
+		{
+			$a = 10;
+			echo 123;
+		}
+
+		function bar2()
+		{
+			echo "hello";
+		}
+
+		abstract function bar3();
 	}
 
-	function bar2()
+	abstract class Another
 	{
-		echo "hello";
+		function bar3()
+		{
+			echo 123;
+		}
 	}
 
-	abstract function bar3();
-}
-
-abstract class Another
-{
-	function bar3()
+	enum Color
 	{
-		echo 123;
-	}
-}
+		case Red;
+		case Blue;
 
-enum Color
-{
-	case Red;
-	case Blue;
-
-	public function getName(): string
-	{
-		return $this->name;
+		public function getName(): string
+		{
+			return $this->name;
+		}
 	}
-}
-');
+
+	XX);
 
 $bodies = $extractor->extractMethodBodies('NS\Undefined');
 Assert::same([], $bodies);

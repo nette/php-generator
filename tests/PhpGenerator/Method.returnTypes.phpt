@@ -42,11 +42,13 @@ namespace {
 		->setBody('return new Foo();');
 
 	same(
-		'function create(): Foo
-{
-	return new Foo();
-}
-',
+		<<<'XX'
+			function create(): Foo
+			{
+				return new Foo();
+			}
+
+			XX,
 		(string) $method,
 	);
 

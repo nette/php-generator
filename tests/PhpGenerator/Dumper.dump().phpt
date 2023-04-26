@@ -207,10 +207,12 @@ Assert::same(
 	$dumper->dump(new DateTimeImmutable('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague'))),
 );
 same(
-	"\\Nette\\PhpGenerator\\Dumper::createObject(\\TestDateTime::class, [
-	'date' => '2016-06-22 20:52:43.123400',
-	'timezone_type' => 3,
-	'timezone' => 'Europe/Prague',
-])",
+	<<<'XX'
+		\Nette\PhpGenerator\Dumper::createObject(\TestDateTime::class, [
+			'date' => '2016-06-22 20:52:43.123400',
+			'timezone_type' => 3,
+			'timezone' => 'Europe/Prague',
+		])
+		XX,
 	$dumper->dump(new TestDateTime('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague'))),
 );

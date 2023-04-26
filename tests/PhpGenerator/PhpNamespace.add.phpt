@@ -19,16 +19,21 @@ $namespace = (new PhpNamespace('Foo'))
 	->add($classB = new ClassType('B', new PhpNamespace('X')));
 
 
-same('namespace Foo;
+same(
+	<<<'XX'
+		namespace Foo;
 
-class A
-{
-}
+		class A
+		{
+		}
 
-class B
-{
-}
-', (string) $namespace);
+		class B
+		{
+		}
+
+		XX,
+	(string) $namespace,
+);
 
 // namespaces are not changed
 Assert::null($classA->getNamespace());
