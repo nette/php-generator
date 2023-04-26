@@ -299,7 +299,7 @@ final class Extractor
 		}
 
 		foreach ($node->adaptations as $item) {
-			$trait->addResolution(trim($this->toPhp($item), ';'));
+			$trait->addResolution(rtrim($this->getReformattedContents([$item], 0), ';'));
 		}
 
 		$this->addCommentAndAttributes($trait, $node);

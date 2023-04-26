@@ -147,11 +147,12 @@ class Printer
 		$traits = [];
 		if ($class instanceof ClassType || $class instanceof TraitType || $class instanceof EnumType) {
 			foreach ($class->getTraits() as $trait) {
-				$resolutions = $trait->getResolutions();
+				$resolutions = implode(";\n", $trait->getResolutions());
+				$resolutions = Helpers::simplifyTaggedNames($resolutions, $this->namespace);
 				$traits[] = $this->printDocComment($trait)
 					. 'use ' . $resolver($trait->getName())
 					. ($resolutions
-						? " {\n" . $this->indentation . implode(";\n" . $this->indentation, $resolutions) . ";\n}\n"
+						? " {\n" . $this->indent($resolutions) . ";\n}\n"
 						: ";\n");
 			}
 		}

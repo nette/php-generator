@@ -101,8 +101,8 @@ class Class5
 {
 	use Trait1;
 	use Trait1b {
-		\Trait1b::f1 insteadof \Trait1;
+		Trait1b::f1 insteadof Trait1;
 		// not yet supported
-	\Trait1b::f1 as private;
+				Trait1b::f1 as private;
 	}
 }
