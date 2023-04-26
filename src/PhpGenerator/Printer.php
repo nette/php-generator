@@ -326,37 +326,51 @@ class Printer
 
 	protected function printParameters(Closure|GlobalFunction|Method $function, int $column = 0): string
 	{
-		$params = [];
-		$list = $function->getParameters();
-		$multiline = false;
-
-		foreach ($list as $param) {
+		$special = false;
+		foreach ($function->getParameters() as $param) {
 			$param->validate();
-			$variadic = $function->isVariadic() && $param === end($list);
-			$type = $param->getType();
+			$special = $special || $param instanceof PromotedParameter || $param->getAttributes();
+		}
+
+		if (!$special) {
+			$line = $this->formatParameters($function, false);
+			if (!str_contains($line, "\n") && strlen($line) + $column <= $this->wrapLength) {
+				return $line;
+			}
+		}
+
+		return $this->formatParameters($function, true);
+	}
+
+
+	private function formatParameters(Closure|GlobalFunction|Method $function, bool $multiline): string
+	{
+		$params = $function->getParameters();
+		$res = '';
+
+		foreach ($params as $param) {
+			$variadic = $function->isVariadic() && $param === end($params);
 			$promoted = $param instanceof PromotedParameter ? $param : null;
-			$params[] =
+			$attrs = $this->printAttributes($param->getAttributes(), inline: true);
+			$res .=
 				($promoted ? $this->printDocComment($promoted) : '')
-				. ($attrs = $this->printAttributes($param->getAttributes(), inline: true))
+				. ($attrs ? ($multiline ? substr($attrs, 0, -1) . "\n" : $attrs) : '')
 				. ($promoted ?
 					($promoted->getVisibility() ?: 'public')
-					. ($promoted->isReadOnly() && $type ? ' readonly' : '')
+					. ($promoted->isReadOnly() && $param->getType() ? ' readonly' : '')
 					. ' ' : '')
-				. ltrim($this->printType($type, $param->isNullable()) . ' ')
+				. ltrim($this->printType($param->getType(), $param->isNullable()) . ' ')
 				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')
 				. '$' . $param->getName()
-				. ($param->hasDefaultValue() && !$variadic ? ' = ' . $this->dump($param->getDefaultValue()) : '');
-
-			$multiline = $multiline || $promoted || $attrs;
+				. ($param->hasDefaultValue() && !$variadic ? ' = ' . $this->dump($param->getDefaultValue()) : '')
+				. ($multiline ? ",\n" : ', ');
 		}
 
-		$line = implode(', ', $params);
-		$multiline = $multiline || count($params) > 1 && (strlen($line) + $column > $this->wrapLength);
-
 		return $multiline
-			? "(\n" . $this->indent(implode(",\n", $params)) . ",\n)"
-			: "($line)";
+			? "(\n" . $this->indent($res) . ')'
+			: '(' . substr($res, 0, -2) . ')';
+
 	}
 
 

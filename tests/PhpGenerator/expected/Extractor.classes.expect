@@ -149,7 +149,8 @@ class Class9
 	 */
 	#[ExampleAttribute]
 	public function getHandle(
-		#[WithArguments(123)] $mode,
+		#[WithArguments(123)]
+		$mode,
 	) {
 	}
 }

@@ -62,13 +62,15 @@ final class Example extends ParentClass implements IExample
 
 
 	public function multi(
-		#[Foo] $foo,
+		#[Foo]
+		$foo,
 	) {
 	}
 
 
 	public function multiType(
-		#[Foo] $foo,
+		#[Foo]
+		$foo,
 	): array
 	{
 	}

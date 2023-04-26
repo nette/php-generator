@@ -21,7 +21,8 @@ class Example
 	 */
 	#[ExampleAttribute]
 	public function getHandle(
-		#[ExampleAttribute, WithArguments(123)] $mode,
+		#[ExampleAttribute, WithArguments(123)]
+		$mode,
 	) {
 	}
 }
