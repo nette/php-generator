@@ -84,3 +84,24 @@ same(
 		XX,
 	(string) $function,
 );
+
+
+
+$function = new Closure;
+$function->setBody('return $a + $b;');
+$function->addAttribute('Foo', ['a', str_repeat('b', 120)]);
+$function->addAttribute('Bar');
+
+same(
+	<<<'XX'
+		#[Foo(
+			'a',
+			'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+		)]
+		#[Bar]
+		function () {
+			return $a + $b;
+		}
+		XX,
+	(string) $function,
+);

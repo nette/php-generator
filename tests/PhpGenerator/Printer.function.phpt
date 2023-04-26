@@ -162,3 +162,22 @@ Assert::match(<<<'XX'
 	) {
 	}
 	XX, $printer->printFunction($function));
+
+
+// parameter: multiple & multiline
+$function = new GlobalFunction('func');
+$param = $function->addParameter('foo');
+$param->addAttribute('Bar');
+$param->addAttribute('Foo', ['a', str_repeat('x', 120)]);
+
+Assert::match(<<<'XX'
+	function func(
+		#[Bar]
+		#[Foo(
+			'a',
+			'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+		)]
+		$foo,
+	) {
+	}
+	XX, $printer->printFunction($function));
