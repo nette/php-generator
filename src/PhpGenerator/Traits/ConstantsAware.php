@@ -62,4 +62,9 @@ trait ConstantsAware
 		unset($this->consts[$name]);
 		return $this;
 	}
+
+    public function hasConstant(string $name): bool
+    {
+        return isset($this->consts[$name]);
+    }
 }
