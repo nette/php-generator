@@ -14,7 +14,7 @@ use Nette\Utils\Reflection;
 
 
 /**
- * Creates a representation based on reflection.
+ * Creates a representations based on reflection or source code.
  */
 final class Factory
 {

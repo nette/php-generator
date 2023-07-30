@@ -49,12 +49,7 @@ trait MethodsAware
 
 	public function getMethod(string $name): Method
 	{
-		$m = $this->methods[strtolower($name)] ?? null;
-		if (!$m) {
-			throw new Nette\InvalidArgumentException("Method '$name' not found.");
-		}
-
-		return $m;
+		return $this->methods[strtolower($name)] ?? throw new Nette\InvalidArgumentException("Method '$name' not found.");
 	}
 
 
