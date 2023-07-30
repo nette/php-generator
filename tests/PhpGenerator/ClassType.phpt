@@ -124,8 +124,11 @@ Assert::false($m->isPublic());
 $method = $class->addMethod('show')
 	->setAbstract();
 
-$method->addParameter('foo');
+$p = $method->addParameter('foo');
+Assert::true($method->hasParameter('foo'));
+Assert::same($p, $method->getParameter('foo'));
 $method->removeParameter('foo');
+Assert::false($method->hasParameter('foo'));
 
 $method->addParameter('item');
 

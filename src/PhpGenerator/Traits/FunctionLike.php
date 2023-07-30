@@ -85,6 +85,12 @@ trait FunctionLike
 	}
 
 
+	public function getParameter(string $name): Parameter
+	{
+		return $this->parameters[$name] ?? throw new Nette\InvalidArgumentException("Parameter '$name' not found.");
+	}
+
+
 	/**
 	 * @param  string  $name without $
 	 */
@@ -106,6 +112,12 @@ trait FunctionLike
 	{
 		unset($this->parameters[$name]);
 		return $this;
+	}
+
+
+	public function hasParameter(string $name): bool
+	{
+		return isset($this->parameters[$name]);
 	}
 
 
