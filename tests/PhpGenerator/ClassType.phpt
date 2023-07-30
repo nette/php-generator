@@ -41,6 +41,8 @@ $class->addConstant('ROLE', 'admin');
 $class->addConstant('ACTIVE', false)
 	->setFinal()
 	->setType('bool');
+Assert::true($class->hasConstant('ROLE'));
+Assert::false($class->hasConstant('xxx'));
 
 Assert::false($class->isFinal());
 Assert::true($class->isAbstract());
