@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Nette\PhpGenerator\Closure;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

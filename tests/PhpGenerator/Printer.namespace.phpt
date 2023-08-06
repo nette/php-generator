@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Nette\PhpGenerator\PhpNamespace;
 use Nette\PhpGenerator\Printer;
-
 require __DIR__ . '/../bootstrap.php';
 
 

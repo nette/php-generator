@@ -10,7 +10,6 @@ use Nette\PhpGenerator\Dumper;
 use Nette\PhpGenerator\Literal;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 ini_set('serialize_precision', '14');

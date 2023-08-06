@@ -6,7 +6,6 @@ use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Literal;
 use Nette\PhpGenerator\PsrPrinter;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

@@ -10,7 +10,6 @@ use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Extractor;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/fixtures/classes.82.php';
 

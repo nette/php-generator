@@ -6,7 +6,6 @@ use Nette\PhpGenerator\Closure;
 use Nette\PhpGenerator\Printer;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

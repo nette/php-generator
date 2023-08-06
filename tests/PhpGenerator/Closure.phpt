@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Nette\PhpGenerator\Closure;
 use Tester\Assert;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

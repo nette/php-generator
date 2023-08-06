@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
 
-
 require __DIR__ . '/../bootstrap.php';
 
 

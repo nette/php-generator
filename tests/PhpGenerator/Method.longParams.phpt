@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Nette\PhpGenerator\Method;
-
 require __DIR__ . '/../bootstrap.php';
 
 
