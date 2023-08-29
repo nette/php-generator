@@ -42,6 +42,7 @@ final class ClassType extends ClassLike
 	/** @deprecated  create object using 'new Nette\PhpGenerator\ClassType' */
 	public static function class(?string $name): self
 	{
+		trigger_error(__METHOD__ . "() is deprecated, create object using 'new Nette\\PhpGenerator\\ClassType", E_USER_DEPRECATED);
 		return new self($name);
 	}
 
@@ -49,6 +50,7 @@ final class ClassType extends ClassLike
 	/** @deprecated  create object using 'new Nette\PhpGenerator\InterfaceType' */
 	public static function interface(string $name): InterfaceType
 	{
+		trigger_error(__METHOD__ . "() is deprecated, create object using 'new Nette\\PhpGenerator\\InterfaceType'", E_USER_DEPRECATED);
 		return new InterfaceType($name);
 	}
 
@@ -56,6 +58,7 @@ final class ClassType extends ClassLike
 	/** @deprecated  create object using 'new Nette\PhpGenerator\TraitType' */
 	public static function trait(string $name): TraitType
 	{
+		trigger_error(__METHOD__ . "() is deprecated, create object using 'new Nette\\PhpGenerator\\TraitType'", E_USER_DEPRECATED);
 		return new TraitType($name);
 	}
 
@@ -63,6 +66,7 @@ final class ClassType extends ClassLike
 	/** @deprecated  create object using 'new Nette\PhpGenerator\EnumType' */
 	public static function enum(string $name): EnumType
 	{
+		trigger_error(__METHOD__ . "() is deprecated, create object using 'new Nette\\PhpGenerator\\EnumType'", E_USER_DEPRECATED);
 		return new EnumType($name);
 	}
 
