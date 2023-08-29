@@ -141,6 +141,7 @@ trait FunctionLike
 	}
 
 
+	/** @return ($asObject is true ? ?Type : ?string) */
 	public function getReturnType(bool $asObject = false): Type|string|null
 	{
 		return $asObject && $this->returnType

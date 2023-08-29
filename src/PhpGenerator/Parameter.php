@@ -52,6 +52,7 @@ class Parameter
 	}
 
 
+	/** @return ($asObject is true ? ?Type : ?string) */
 	public function getType(bool $asObject = false): Type|string|null
 	{
 		return $asObject && $this->type

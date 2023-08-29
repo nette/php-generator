@@ -97,7 +97,7 @@ final class PhpFile
 	}
 
 
-	/** @return ClassLike[] */
+	/** @return (ClassType|InterfaceType|TraitType|EnumType)[] */
 	public function getClasses(): array
 	{
 		$classes = [];

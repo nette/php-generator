@@ -50,7 +50,7 @@ final class PhpNamespace
 		self::NameConstant => [],
 	];
 
-	/** @var ClassLike[] */
+	/** @var (ClassType|InterfaceType|TraitType|EnumType)[] */
 	private array $classes = [];
 
 	/** @var GlobalFunction[] */
@@ -253,7 +253,7 @@ final class PhpNamespace
 	}
 
 
-	public function add(ClassLike $class): static
+	public function add(ClassType|InterfaceType|TraitType|EnumType $class): static
 	{
 		$name = $class->getName();
 		if ($name === null) {
@@ -327,7 +327,7 @@ final class PhpNamespace
 	}
 
 
-	/** @return ClassLike[] */
+	/** @return (ClassType|InterfaceType|TraitType|EnumType)[] */
 	public function getClasses(): array
 	{
 		$res = [];

@@ -357,7 +357,10 @@ final class Extractor
 	}
 
 
-	private function addCommentAndAttributes($element, Node $node): void
+	private function addCommentAndAttributes(
+		PhpFile|ClassLike|Constant|Property|GlobalFunction|Method|Parameter|EnumCase|TraitUse $element,
+		Node $node,
+	): void
 	{
 		if ($node->getDocComment()) {
 			$comment = $node->getDocComment()->getReformattedText();
