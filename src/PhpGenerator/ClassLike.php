@@ -17,7 +17,6 @@ use Nette;
  */
 abstract class ClassLike
 {
-	use Nette\SmartObject;
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 

@@ -14,9 +14,6 @@ use Nette;
 
 /**
  * Class description.
- *
- * @property-deprecated Method[] $methods
- * @property-deprecated Property[] $properties
  */
 final class ClassType extends ClassLike
 {

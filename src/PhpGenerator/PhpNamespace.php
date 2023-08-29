@@ -23,8 +23,6 @@ use Nette\InvalidStateException;
  */
 final class PhpNamespace
 {
-	use Nette\SmartObject;
-
 	public const
 		NameNormal = 'n',
 		NameFunction = 'f',

@@ -14,8 +14,6 @@ use Nette;
 
 /**
  * Interface description.
- *
- * @property-deprecated Method[] $methods
  */
 final class InterfaceType extends ClassLike
 {

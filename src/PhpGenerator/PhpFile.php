@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace Nette\PhpGenerator;
 
-use Nette;
-
 
 /**
  * Instance of PHP file.
@@ -22,7 +20,6 @@ use Nette;
  */
 final class PhpFile
 {
-	use Nette\SmartObject;
 	use Traits\CommentAware;
 
 	/** @var PhpNamespace[] */

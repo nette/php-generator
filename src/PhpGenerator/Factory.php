@@ -18,8 +18,6 @@ use Nette\Utils\Reflection;
  */
 final class Factory
 {
-	use Nette\SmartObject;
-
 	/** @var string[][]  */
 	private array $bodyCache = [];
 

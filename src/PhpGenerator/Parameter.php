@@ -9,18 +9,14 @@ declare(strict_types=1);
 
 namespace Nette\PhpGenerator;
 
-use Nette;
 use Nette\Utils\Type;
 
 
 /**
  * Function/Method parameter description.
- *
- * @property-deprecated mixed $defaultValue
  */
 class Parameter
 {
-	use Nette\SmartObject;
 	use Traits\NameAware;
 	use Traits\AttributeAware;
 	use Traits\CommentAware;

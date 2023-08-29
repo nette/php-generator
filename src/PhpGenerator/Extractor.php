@@ -22,8 +22,6 @@ use PhpParser\ParserFactory;
  */
 final class Extractor
 {
-	use Nette\SmartObject;
-
 	private string $code;
 
 	/** @var Node[] */

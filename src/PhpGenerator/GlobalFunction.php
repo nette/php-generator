@@ -9,17 +9,12 @@ declare(strict_types=1);
 
 namespace Nette\PhpGenerator;
 
-use Nette;
-
 
 /**
  * Global function.
- *
- * @property-deprecated string $body
  */
 final class GlobalFunction
 {
-	use Nette\SmartObject;
 	use Traits\FunctionLike;
 	use Traits\NameAware;
 	use Traits\CommentAware;

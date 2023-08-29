@@ -17,7 +17,6 @@ use Nette;
  */
 final class TraitUse
 {
-	use Nette\SmartObject;
 	use Traits\NameAware;
 	use Traits\CommentAware;
 

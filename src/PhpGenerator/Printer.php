@@ -18,8 +18,6 @@ use Nette\Utils\Strings;
  */
 class Printer
 {
-	use Nette\SmartObject;
-
 	public int $wrapLength = 120;
 	public string $indentation = "\t";
 	public int $linesBetweenProperties = 0;
