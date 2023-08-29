@@ -18,7 +18,7 @@ $method->addPromotedParameter('c')
 	->addComment('promo')
 	->addAttribute('Example');
 
-$method->addPromotedParameter('d', new Literal('new Draft(?)', [10]))
+$method->addPromotedParameter('d', Literal::new('Draft', [10]))
 	->setType('Draft')
 	->setReadOnly();
 

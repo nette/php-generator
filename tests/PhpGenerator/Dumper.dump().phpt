@@ -51,6 +51,12 @@ Assert::same("[strlen('hello')]", $dumper->dump([new Literal('strlen(?)', ['hell
 Assert::same("a\nb", $dumper->dump(new Literal("a\r\nb")));
 
 
+// Literal::new
+Assert::same('new stdClass()', $dumper->dump(Literal::new('stdClass')));
+Assert::same('new stdClass(10, 20)', $dumper->dump(Literal::new('stdClass', [10, 20])));
+Assert::same('new stdClass(10, c: 20)', $dumper->dump(Literal::new('stdClass', [10, 'c' => 20])));
+
+
 // arrays
 Assert::same('[]', $dumper->dump([]));
 Assert::same('[1, 2, 3]', $dumper->dump([1, 2, 3]));

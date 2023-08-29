@@ -3,7 +3,7 @@
  */
 #[ExampleAttribute]
 #[WithArgument(Foo::BAR)]
-#[NamedArguments(foo: 'bar', bar: [1, 2, 3])]
+#[Table(name: 'user', constraints: [new UniqueConstraint(name: 'ean', columns: ['ean'])])]
 class Example
 {
 	/** Commented */
