@@ -282,7 +282,7 @@ $function->addParameter('a');
 $function->addParameter('b');
 echo $function;
 
-// or use PsrPrinter for output conforming to PSR-2 / PSR-12
+// or use PsrPrinter for output conforming to PSR-2 / PSR-12 / PER
 // echo (new Nette\PhpGenerator\PsrPrinter)->printFunction($function);
 ```
 
@@ -310,7 +310,7 @@ $closure->addUse('c')
 	->setReference();
 echo $closure;
 
-// or use PsrPrinter for output conforming to PSR-2 / PSR-12
+// or use PsrPrinter for output conforming to PSR-2 / PSR-12 / PER
 // echo (new Nette\PhpGenerator\PsrPrinter)->printClosure($closure);
 ```
 
@@ -690,7 +690,7 @@ $method->addParameter('arg')
 
 echo $namespace;
 
-// or use PsrPrinter for output conforming to PSR-2 / PSR-12
+// or use PsrPrinter for output conforming to PSR-2 / PSR-12 / PER
 // echo (new Nette\PhpGenerator\PsrPrinter)->printNamespace($namespace);
 ```
 
@@ -743,7 +743,7 @@ $function = $file->addFunction('Foo\foo');
 
 echo $file;
 
-// or use PsrPrinter for output conforming to PSR-2 / PSR-12
+// or use PsrPrinter for output conforming to PSR-2 / PSR-12 / PER
 // echo (new Nette\PhpGenerator\PsrPrinter)->printFile($file);
 ```
 
