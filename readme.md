@@ -860,6 +860,7 @@ echo $dumper->dump($var); // prints ['a', 'b', 123]
 Compatibility Table
 -------------------
 
+- PhpGenerator 4.1 is compatible with PHP 8.0 to 8.3
 - PhpGenerator 4.0 is compatible with PHP 8.0 to 8.3
 - PhpGenerator 3.6 is compatible with PHP 7.2 to 8.2
 - PhpGenerator 3.2 – 3.5 is compatible with PHP 7.1 to 8.0
