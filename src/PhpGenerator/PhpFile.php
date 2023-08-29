@@ -150,14 +150,6 @@ final class PhpFile
 	}
 
 
-	/** @deprecated  use hasStrictTypes() */
-	public function getStrictTypes(): bool
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use hasStrictTypes().', E_USER_DEPRECATED);
-		return $this->strictTypes;
-	}
-
-
 	public function __toString(): string
 	{
 		return (new Printer)->printFile($this);

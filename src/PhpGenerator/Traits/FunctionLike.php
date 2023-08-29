@@ -174,12 +174,4 @@ trait FunctionLike
 	{
 		return $this->returnNullable;
 	}
-
-
-	/** @deprecated  use isReturnNullable() */
-	public function getReturnNullable(): bool
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use isReturnNullable().', E_USER_DEPRECATED);
-		return $this->returnNullable;
-	}
 }

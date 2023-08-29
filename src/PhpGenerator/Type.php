@@ -99,12 +99,4 @@ class Type
 	{
 		return implode('&', $types);
 	}
-
-
-	/** @deprecated  use get_debug_type() */
-	public static function getType(mixed $value): ?string
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use PHP function get_debug_type()', E_USER_DEPRECATED);
-		return is_resource($value) ? null : get_debug_type($value);
-	}
 }

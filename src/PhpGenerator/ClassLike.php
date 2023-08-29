@@ -39,22 +39,10 @@ abstract class ClassLike
 	private ?string $name;
 
 
-	public static function from(string|object $class, bool $withBodies = false, ?bool $materializeTraits = null): self
+	public static function from(string|object $class, bool $withBodies = false): self
 	{
-		if ($materializeTraits !== null) {
-			trigger_error(__METHOD__ . '() parameter $materializeTraits has been removed (is always false).', E_USER_DEPRECATED);
-		}
 		return (new Factory)
 			->fromClassReflection(new \ReflectionClass($class), $withBodies);
-	}
-
-
-	/** @deprecated  use from(..., withBodies: true) */
-	public static function withBodiesFrom(string|object $class): self
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use from(..., withBodies: true)', E_USER_DEPRECATED);
-		return (new Factory)
-			->fromClassReflection(new \ReflectionClass($class), withBodies: true);
 	}
 
 

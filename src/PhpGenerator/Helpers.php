@@ -50,30 +50,6 @@ final class Helpers
 		KEYWORDS = self::Keywords;
 
 
-	/** @deprecated  use (new Nette\PhpGenerator\Dumper)->dump() */
-	public static function dump(mixed $var): string
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use (new Nette\PhpGenerator\Dumper)->dump().', E_USER_DEPRECATED);
-		return (new Dumper)->dump($var);
-	}
-
-
-	/** @deprecated  use (new Nette\PhpGenerator\Dumper)->format() */
-	public static function format(string $statement, mixed ...$args): string
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use (new Nette\PhpGenerator\Dumper)->format().', E_USER_DEPRECATED);
-		return (new Dumper)->format($statement, ...$args);
-	}
-
-
-	/** @deprecated  use (new Nette\PhpGenerator\Dumper)->format() */
-	public static function formatArgs(string $statement, array $args): string
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use (new Nette\PhpGenerator\Dumper)->format().', E_USER_DEPRECATED);
-		return (new Dumper)->format($statement, ...$args);
-	}
-
-
 	public static function formatDocComment(string $content, bool $forceMultiLine = false): string
 	{
 		$s = trim($content);

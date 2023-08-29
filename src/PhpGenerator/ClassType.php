@@ -81,27 +81,9 @@ final class ClassType extends ClassLike
 	}
 
 
-	/** @deprecated */
-	public function setClass(): static
-	{
-		trigger_error(__METHOD__ . '() is deprecated.', E_USER_DEPRECATED);
-		$this->type = self::TYPE_CLASS;
-		return $this;
-	}
-
-
 	public function isClass(): bool
 	{
 		return $this->type === self::TYPE_CLASS;
-	}
-
-
-	/** @deprecated  create object using 'new Nette\PhpGenerator\InterfaceType' */
-	public function setInterface(): static
-	{
-		trigger_error(__METHOD__ . "() is deprecated, create object using 'new Nette\\PhpGenerator\\InterfaceType'", E_USER_DEPRECATED);
-		$this->type = self::TYPE_INTERFACE;
-		return $this;
 	}
 
 
@@ -111,32 +93,9 @@ final class ClassType extends ClassLike
 	}
 
 
-	/** @deprecated  create object using 'new Nette\PhpGenerator\TraitType' */
-	public function setTrait(): static
-	{
-		trigger_error(__METHOD__ . "() is deprecated, create object using 'new Nette\\PhpGenerator\\TraitType'", E_USER_DEPRECATED);
-		$this->type = self::TYPE_TRAIT;
-		return $this;
-	}
-
-
 	public function isTrait(): bool
 	{
 		return $this->type === self::TYPE_TRAIT;
-	}
-
-
-	/** @deprecated  create object using 'new Nette\PhpGenerator\InterfaceType' or 'TraitType' */
-	public function setType(string $type): static
-	{
-		$upper = ucfirst($type);
-		trigger_error(__METHOD__ . "() is deprecated, create object using 'new Nette\\PhpGenerator\\{$upper}Type'", E_USER_DEPRECATED);
-		if (!in_array($type, [self::TYPE_CLASS, self::TYPE_INTERFACE, self::TYPE_TRAIT], true)) {
-			throw new Nette\InvalidArgumentException('Argument must be class|interface|trait.');
-		}
-
-		$this->type = $type;
-		return $this;
 	}
 
 
