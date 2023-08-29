@@ -129,7 +129,8 @@ Assert::same($p, $method->getParameter('foo'));
 $method->removeParameter('foo');
 Assert::false($method->hasParameter('foo'));
 
-$method->addParameter('item');
+$method->addParameter('item')
+	->addComment('comment');
 
 $method->addParameter('res', null)
 		->setReference()

@@ -67,7 +67,7 @@ class Class2 extends Class1 implements Interface2
 	 * Func3
 	 * @return Class1
 	 */
-	private function &func3(array $a, Class2 $b, \Abc\Unknown $c, \Xyz\Unknown $d, ?callable $e, $f)
+	private function &func3(/** foo */array $a, Class2 $b, \Abc\Unknown $c, \Xyz\Unknown $d, ?callable $e, $f)
 	{
 	}
 

@@ -331,7 +331,7 @@ class Printer
 		$special = false;
 		foreach ($function->getParameters() as $param) {
 			$param->validate();
-			$special = $special || $param instanceof PromotedParameter || $param->getAttributes();
+			$special = $special || $param instanceof PromotedParameter || $param->getAttributes() || $param->getComment();
 		}
 
 		if (!$special || ($this->singleParameterOnOneLine && count($function->getParameters()) === 1)) {
@@ -352,15 +352,13 @@ class Printer
 
 		foreach ($params as $param) {
 			$variadic = $function->isVariadic() && $param === end($params);
-			$promoted = $param instanceof PromotedParameter ? $param : null;
 			$attrs = $this->printAttributes($param->getAttributes(), inline: true);
 			$res .=
-				($promoted ? $this->printDocComment($promoted) : '')
+				$this->printDocComment($param)
 				. ($attrs ? ($multiline ? substr($attrs, 0, -1) . "\n" : $attrs) : '')
-				. ($promoted ?
-					($promoted->getVisibility() ?: 'public')
-					. ($promoted->isReadOnly() && $param->getType() ? ' readonly' : '')
-					. ' ' : '')
+				. ($param instanceof PromotedParameter
+					? ($param->getVisibility() ?: 'public') . ($param->isReadOnly() && $param->getType() ? ' readonly' : '') . ' '
+					: '')
 				. ltrim($this->printType($param->getType(), $param->isNullable()) . ' ')
 				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')

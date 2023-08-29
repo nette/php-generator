@@ -23,6 +23,7 @@ class Parameter
 	use Nette\SmartObject;
 	use Traits\NameAware;
 	use Traits\AttributeAware;
+	use Traits\CommentAware;
 
 	private bool $reference = false;
 	private ?string $type = null;

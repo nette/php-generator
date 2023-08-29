@@ -18,7 +18,6 @@ use Nette;
 final class PromotedParameter extends Parameter
 {
 	use Traits\VisibilityAware;
-	use Traits\CommentAware;
 
 	private bool $readOnly = false;
 

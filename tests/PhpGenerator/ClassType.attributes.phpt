@@ -34,6 +34,7 @@ $method = $class->addMethod('getHandle')
 	->addAttribute('ExampleAttribute');
 
 $method->addParameter('mode')
+	->addComment('comment')
 	->addAttribute('ExampleAttribute')
 	->addAttribute('WithArguments', [123]);
 
