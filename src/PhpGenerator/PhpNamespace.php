@@ -103,7 +103,7 @@ final class PhpNamespace
 	public function addUse(string $name, ?string $alias = null, string $of = self::NameNormal): static
 	{
 		if (
-			!Helpers::isNamespaceIdentifier($name, true)
+			!Helpers::isNamespaceIdentifier($name, allowLeadingSlash: true)
 			|| (Helpers::isIdentifier($name) && isset(Helpers::Keywords[strtolower($name)]))
 		) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid class/function/constant name.");

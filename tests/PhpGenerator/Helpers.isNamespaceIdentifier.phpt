@@ -17,5 +17,5 @@ Assert::false(Helpers::isNamespaceIdentifier('Item\\\\Item'));
 Assert::false(Helpers::isNamespaceIdentifier('\\Item'));
 Assert::false(Helpers::isNamespaceIdentifier('Item\\'));
 
-Assert::true(Helpers::isNamespaceIdentifier('\\Item', true));
-Assert::false(Helpers::isNamespaceIdentifier('Item\\', true));
+Assert::true(Helpers::isNamespaceIdentifier('\\Item', allowLeadingSlash: true));
+Assert::false(Helpers::isNamespaceIdentifier('Item\\', allowLeadingSlash: true));

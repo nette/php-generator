@@ -83,9 +83,9 @@ class Type
 	public const STATIC = self::Static;
 
 
-	public static function nullable(string $type, bool $state = true): string
+	public static function nullable(string $type, bool $nullable = true): string
 	{
-		return ($state ? '?' : '') . ltrim($type, '?');
+		return ($nullable ? '?' : '') . ltrim($type, '?');
 	}
 
 

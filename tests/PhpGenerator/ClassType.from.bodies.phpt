@@ -9,9 +9,11 @@ require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/fixtures/bodies.php';
 
 
-Assert::exception(function () {
-	ClassType::from(PDO::class, withBodies: true);
-}, Nette\InvalidStateException::class, 'Source code of PDO not found.');
+Assert::exception(
+	fn() => ClassType::from(PDO::class, withBodies: true),
+	Nette\InvalidStateException::class,
+	'Source code of PDO not found.',
+);
 
 
 Assert::exception(

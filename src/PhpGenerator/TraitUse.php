@@ -30,7 +30,7 @@ final class TraitUse
 
 	public function __construct(string $name, ?ClassLike $parent = null)
 	{
-		if (!Nette\PhpGenerator\Helpers::isNamespaceIdentifier($name, true)) {
+		if (!Nette\PhpGenerator\Helpers::isNamespaceIdentifier($name, allowLeadingSlash: true)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid trait name.");
 		}
 

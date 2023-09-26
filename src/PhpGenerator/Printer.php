@@ -335,13 +335,13 @@ class Printer
 		}
 
 		if (!$special || ($this->singleParameterOnOneLine && count($function->getParameters()) === 1)) {
-			$line = $this->formatParameters($function, false);
+			$line = $this->formatParameters($function, multiline: false);
 			if (!str_contains($line, "\n") && strlen($line) + $column <= $this->wrapLength) {
 				return $line;
 			}
 		}
 
-		return $this->formatParameters($function, true);
+		return $this->formatParameters($function, multiline: true);
 	}
 
 

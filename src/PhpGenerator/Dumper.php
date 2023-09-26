@@ -55,7 +55,7 @@ final class Dumper
 			throw new Nette\InvalidArgumentException('Cannot dump resource.');
 
 		} else {
-			return var_export($var, true);
+			return var_export($var, return: true);
 		}
 	}
 
@@ -105,7 +105,7 @@ final class Dumper
 		if (empty($var)) {
 			return '[]';
 
-		} elseif ($level > $this->maxDepth || in_array($var, $parents, true)) {
+		} elseif ($level > $this->maxDepth || in_array($var, $parents, strict: true)) {
 			throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
 		}
 
@@ -140,10 +140,10 @@ final class Dumper
 	{
 		$class = $var::class;
 
-		if (in_array($class, [\DateTime::class, \DateTimeImmutable::class], true)) {
+		if (in_array($class, [\DateTime::class, \DateTimeImmutable::class], strict: true)) {
 			return $this->format("new \\$class(?, new \\DateTimeZone(?))", $var->format('Y-m-d H:i:s.u'), $var->getTimeZone()->getName());
 
-		} elseif ($var instanceof \Serializable) { // deprecated
+		} elseif ($var instanceof \Serializable) {
 			return 'unserialize(' . $this->dumpString(serialize($var)) . ')';
 
 		} elseif ($var instanceof \UnitEnum) {
@@ -162,7 +162,7 @@ final class Dumper
 		} elseif ((new \ReflectionObject($var))->isAnonymous()) {
 			throw new Nette\InvalidArgumentException('Cannot dump anonymous class.');
 
-		} elseif ($level > $this->maxDepth || in_array($var, $parents, true)) {
+		} elseif ($level > $this->maxDepth || in_array($var, $parents, strict: true)) {
 			throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
 		}
 
