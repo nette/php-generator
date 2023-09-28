@@ -85,7 +85,25 @@ class Type
 
 	public static function nullable(string $type, bool $nullable = true): string
 	{
-		return ($nullable ? '?' : '') . ltrim($type, '?');
+		if (! str_contains($type, '|')) {
+			return ($nullable ? '?' : '') . ltrim($type, '?');
+		}
+
+		// Union type
+		$types = explode('|', $type);
+		if (in_array('null', $types)) {
+			if ($nullable) {
+				return $type;
+			}
+			$types = array_diff($types, ['null']);
+		} else {
+			if (!$nullable) {
+				return $type;
+			}
+			$types[] = 'null';
+		}
+
+		return implode('|', $types);
 	}
 
 
