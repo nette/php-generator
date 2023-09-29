@@ -41,6 +41,6 @@ $method = $class->addMethod('getHandle')
 $method->addParameter('mode')
 	->addComment('comment')
 	->addAttribute('ExampleAttribute')
-	->addAttribute('WithArguments', [123]);
+	->addAttribute('WithArguments', [0]);
 
 sameFile(__DIR__ . '/expected/ClassType.attributes.expect', (string) $class);
