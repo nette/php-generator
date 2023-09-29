@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Nette\PhpGenerator;
 
+use Nette;
+
 
 /**
  * PHP return, property and parameter types.
@@ -85,7 +87,25 @@ class Type
 
 	public static function nullable(string $type, bool $nullable = true): string
 	{
-		return ($nullable ? '?' : '') . ltrim($type, '?');
+		if (str_contains($type, '&')) {
+			return $nullable
+				? throw new Nette\InvalidArgumentException('Intersection types cannot be nullable.')
+				: $type;
+		}
+
+		$nnType = preg_replace('#^\?|^null\||\|null(?=\||$)#i', '', $type);
+		$always = (bool) preg_match('#^(null|mixed)$#i', $nnType);
+		if ($nullable) {
+			return match (true) {
+				$always, $type !== $nnType => $type,
+				str_contains($type, '|') => $type . '|null',
+				default => '?' . $type,
+			};
+		} else {
+			return $always
+				? throw new Nette\InvalidArgumentException("Type $type cannot be not nullable.")
+				: $nnType;
+		}
 	}
 
 

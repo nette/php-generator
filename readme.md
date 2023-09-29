@@ -538,7 +538,8 @@ Each type or union/intersection type can be passed as a string, you can also use
 use Nette\PhpGenerator\Type;
 
 $member->setType('array'); // or Type::Array;
-$member->setType('array|string'); // or Type::union('array', 'string')
+$member->setType('?array'); // or Type::nullable(Type::Array);
+$member->setType('array|string'); // or Type::union(Type::Array, Type::String)
 $member->setType('Foo&Bar'); // or Type::intersection(Foo::class, Bar::class)
 $member->setType(null); // removes type
 ```
