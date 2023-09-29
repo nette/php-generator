@@ -22,7 +22,7 @@ class Example
 	#[ExampleAttribute]
 	public function getHandle(
 		/** comment */
-		#[ExampleAttribute, WithArguments(123)]
+		#[ExampleAttribute, WithArguments(0)]
 		$mode,
 	) {
 	}
