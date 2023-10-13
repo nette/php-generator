@@ -483,9 +483,9 @@ final class Extractor
 	private function toVisibility(int $flags): ?string
 	{
 		return match (true) {
-			(bool) ($flags & Node\Stmt\Class_::MODIFIER_PUBLIC) => ClassType::VisibilityPublic,
-			(bool) ($flags & Node\Stmt\Class_::MODIFIER_PROTECTED) => ClassType::VisibilityProtected,
-			(bool) ($flags & Node\Stmt\Class_::MODIFIER_PRIVATE) => ClassType::VisibilityPrivate,
+			(bool) ($flags & Node\Stmt\Class_::MODIFIER_PUBLIC) => Visibility::Public,
+			(bool) ($flags & Node\Stmt\Class_::MODIFIER_PROTECTED) => Visibility::Protected,
+			(bool) ($flags & Node\Stmt\Class_::MODIFIER_PRIVATE) => Visibility::Private,
 			default => null,
 		};
 	}

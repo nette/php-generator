@@ -177,8 +177,7 @@ Assert::same($parameters, $method->getParameters());
 
 Assert::exception(
 	fn() => (new ClassType)->addMethod('method')->setVisibility('unknown'),
-	Nette\InvalidArgumentException::class,
-	'Argument must be public|protected|private.',
+	ValueError::class,
 );
 
 
