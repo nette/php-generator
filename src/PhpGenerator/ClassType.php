@@ -29,7 +29,6 @@ final class ClassType extends ClassLike
 		TYPE_TRAIT = 'trait',
 		TYPE_ENUM = 'enum';
 
-	private string $type = self::TYPE_CLASS;
 	private bool $final = false;
 	private bool $abstract = false;
 	private ?string $extends = null;
@@ -82,28 +81,11 @@ final class ClassType extends ClassLike
 	}
 
 
-	public function isClass(): bool
-	{
-		return $this->type === self::TYPE_CLASS;
-	}
-
-
-	public function isInterface(): bool
-	{
-		return $this->type === self::TYPE_INTERFACE;
-	}
-
-
-	public function isTrait(): bool
-	{
-		return $this->type === self::TYPE_TRAIT;
-	}
-
-
 	/** @deprecated */
 	public function getType(): string
 	{
-		return $this->type;
+		trigger_error(__METHOD__ . "() is deprecated, method always returns 'class'", E_USER_DEPRECATED);
+		return self::TYPE_CLASS;
 	}
 
 
