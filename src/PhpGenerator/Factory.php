@@ -37,8 +37,8 @@ final class Factory
 		if ($materializeTraits !== null) {
 			trigger_error(__METHOD__ . '() parameter $materializeTraits has been removed (is always false).', E_USER_DEPRECATED);
 		}
-		if ($withBodies && $from->isAnonymous()) {
-			throw new Nette\NotSupportedException('The $withBodies parameter cannot be used for anonymous functions.');
+		if ($withBodies && ($from->isAnonymous() || $from->isInternal())) {
+			throw new Nette\NotSupportedException('The $withBodies parameter cannot be used for anonymous or internal classes.');
 		}
 
 		$enumIface = null;
@@ -183,8 +183,8 @@ final class Factory
 		$function->setReturnType((string) $from->getReturnType());
 
 		if ($withBody) {
-			if ($from->isClosure()) {
-				throw new Nette\NotSupportedException('The $withBody parameter cannot be used for closures.');
+			if ($from->isClosure() || $from->isInternal()) {
+				throw new Nette\NotSupportedException('The $withBody parameter cannot be used for closures or internal functions.');
 			}
 
 			$function->setBody($this->getExtractor($from)->extractFunctionBody($from->name));
