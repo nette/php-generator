@@ -515,6 +515,8 @@ class MyPrinter extends Nette\PhpGenerator\Printer
 	public bool $bracesOnNextLine = true;
 	// place one parameter in one line, even if it has an attribute or is promoted
 	public bool $singleParameterOnOneLine = false;
+	// omits namespaces that do not contain any class or function
+	public bool $omitEmptyNamespaces = true;
 	// separator between the right parenthesis and return type of functions and methods
 	public string $returnTypeColon = ': ';
 }

@@ -26,6 +26,7 @@ class Printer
 	public string $returnTypeColon = ': ';
 	public bool $bracesOnNextLine = true;
 	public bool $singleParameterOnOneLine = false;
+	public bool $omitEmptyNamespaces = true;
 	protected ?PhpNamespace $namespace = null;
 	protected ?Dumper $dumper;
 	private bool $resolveTypes = true;
@@ -274,6 +275,10 @@ class Printer
 
 		foreach ($namespace->getFunctions() as $function) {
 			$items[] = $this->printFunction($function, $namespace);
+		}
+
+		if (!$items && $this->omitEmptyNamespaces) {
+			return '';
 		}
 
 		$body = ($uses ? $uses . "\n" : '')
