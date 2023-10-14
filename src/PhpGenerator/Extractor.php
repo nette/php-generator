@@ -207,7 +207,11 @@ final class Extractor
 			}
 		};
 
-		if ($this->statements) {
+		if (
+			$this->statements
+			&& !$this->statements[0] instanceof Node\Stmt\ClassLike
+			&& !$this->statements[0] instanceof Node\Stmt\Function_
+		) {
 			$this->addCommentAndAttributes($phpFile, $this->statements[0]);
 		}
 
