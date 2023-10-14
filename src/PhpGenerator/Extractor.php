@@ -169,35 +169,6 @@ final class Extractor
 	public function extractAll(): PhpFile
 	{
 		$phpFile = new PhpFile;
-		$namespace = '';
-		$visitor = new class extends PhpParser\NodeVisitorAbstract {
-			public $callback;
-
-
-			public function enterNode(Node $node)
-			{
-				return ($this->callback)($node);
-			}
-		};
-
-		$visitor->callback = function (Node $node) use (&$namespace, $phpFile) {
-			if ($node instanceof Node\Stmt\Class_ && !$node->name) {
-				return PhpParser\NodeTraverser::DONT_TRAVERSE_CHILDREN;
-			}
-			match (true) {
-				$node instanceof Node\Stmt\DeclareDeclare
-					&& $node->key->name === 'strict_types'
-					&& $node->value instanceof Node\Scalar\LNumber => $phpFile->setStrictTypes((bool) $node->value->value),
-				$node instanceof Node\Stmt\Namespace_ => $namespace = $node->name?->toString(),
-				$node instanceof Node\Stmt\Use_ => $this->addUseToNamespace($phpFile->addNamespace($namespace), $node),
-				$node instanceof Node\Stmt\ClassLike => $this->addClassLikeToFile($phpFile, $node),
-				$node instanceof Node\Stmt\Function_ => $this->addFunctionToFile($phpFile, $node),
-				default => null,
-			};
-			if ($node instanceof Node\FunctionLike) {
-				return PhpParser\NodeTraverser::DONT_TRAVERSE_CHILDREN;
-			}
-		};
 
 		if (
 			$this->statements
@@ -207,9 +178,31 @@ final class Extractor
 			$this->addCommentAndAttributes($phpFile, $this->statements[0]);
 		}
 
-		$traverser = new PhpParser\NodeTraverser;
-		$traverser->addVisitor($visitor);
-		$traverser->traverse($this->statements);
+		$namespaces = ['' => $this->statements];
+		foreach ($this->statements as $node) {
+			if ($node instanceof Node\Stmt\Declare_
+				&& $node->declares[0] instanceof Node\Stmt\DeclareDeclare
+				&& $node->declares[0]->key->name === 'strict_types'
+				&& $node->declares[0]->value instanceof Node\Scalar\LNumber
+			) {
+				$phpFile->setStrictTypes((bool) $node->declares[0]->value->value);
+
+			} elseif ($node instanceof Node\Stmt\Namespace_) {
+				$namespaces[$node->name->toString()] = $node->stmts;
+			}
+		}
+
+		foreach ($namespaces as $name => $nodes) {
+			foreach ($nodes as $node) {
+				match (true) {
+					$node instanceof Node\Stmt\Use_ => $this->addUseToNamespace($phpFile->addNamespace($name), $node),
+					$node instanceof Node\Stmt\ClassLike => $this->addClassLikeToFile($phpFile, $node),
+					$node instanceof Node\Stmt\Function_ => $this->addFunctionToFile($phpFile, $node),
+					default => null,
+				};
+			}
+		}
+
 		return $phpFile;
 	}
 

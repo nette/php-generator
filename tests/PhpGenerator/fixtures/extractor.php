@@ -37,3 +37,9 @@ function foo(A $a): B|C
 	{
 	}
 }
+
+if (false) {
+	class Class2
+	{
+	}
+}
