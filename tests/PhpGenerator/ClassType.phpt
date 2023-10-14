@@ -48,7 +48,7 @@ Assert::true($class->isAbstract());
 Assert::same('ParentClass', $class->getExtends());
 Assert::same(['ObjectTrait' => $trait1, 'AnotherTrait' => $trait2], $class->getTraits());
 Assert::count(2, $class->getConstants());
-Assert::type(Nette\PhpGenerator\Constant::class, $class->getConstants()['ROLE']);
+Assert::type(Nette\PhpGenerator\Constant::class, $class->getConstant('ROLE'));
 
 $class->addConstant('FORCE_ARRAY', new Literal('Nette\Utils\Json::FORCE_ARRAY'))
 	->setVisibility('private')

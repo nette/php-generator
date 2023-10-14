@@ -42,6 +42,12 @@ trait ConstantsAware
 	}
 
 
+	public function getConstant(string $name): Constant
+	{
+		return $this->consts[$name] ?? throw new Nette\InvalidArgumentException("Constant '$name' not found.");
+	}
+
+
 	public function addConstant(string $name, mixed $value): Constant
 	{
 		if (isset($this->consts[$name])) {
