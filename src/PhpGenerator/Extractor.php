@@ -292,7 +292,7 @@ final class Extractor
 			$prop->setVisibility($this->toVisibility($node->flags));
 			$prop->setType($node->type ? $this->toPhp($node->type) : null);
 			if ($item->default) {
-				$prop->setValue($this->formatValue($item->default, 1));
+				$prop->setValue($this->toValue($item->default));
 			}
 
 			$prop->setReadOnly(method_exists($node, 'isReadonly') && $node->isReadonly());
@@ -315,7 +315,7 @@ final class Extractor
 	private function addConstantToClass(ClassLike $class, Node\Stmt\ClassConst $node): void
 	{
 		foreach ($node->consts as $item) {
-			$const = $class->addConstant($item->name->toString(), $this->formatValue($item->value, 1));
+			$const = $class->addConstant($item->name->toString(), $this->toValue($item->value));
 			$const->setVisibility($this->toVisibility($node->flags));
 			$const->setFinal(method_exists($node, 'isFinal') && $node->isFinal());
 			$this->addCommentAndAttributes($const, $node);
@@ -328,7 +328,7 @@ final class Extractor
 		$value = match (true) {
 			$node->expr === null => null,
 			$node->expr instanceof Node\Scalar\LNumber, $node->expr instanceof Node\Scalar\String_ => $node->expr->value,
-			default => $this->formatValue($node->expr, 1),
+			default => $this->toValue($node->expr),
 		};
 		$case = $class->addCase($node->name->toString(), $value);
 		$this->addCommentAndAttributes($case, $node);
@@ -358,11 +358,10 @@ final class Extractor
 			foreach ($group->attrs as $attribute) {
 				$args = [];
 				foreach ($attribute->args as $arg) {
-					$value = $this->formatValue($arg->value, 0);
 					if ($arg->name) {
-						$args[$arg->name->toString()] = $value;
+						$args[$arg->name->toString()] = $this->toValue($arg->value);
 					} else {
-						$args[] = $value;
+						$args[] = $this->toValue($arg->value);
 					}
 				}
 
@@ -386,7 +385,7 @@ final class Extractor
 			$param->setReference($item->byRef);
 			$function->setVariadic($item->variadic);
 			if ($item->default) {
-				$param->setDefaultValue($this->formatValue($item->default, 2));
+				$param->setDefaultValue($this->toValue($item->default));
 			}
 
 			$this->addCommentAndAttributes($param, $item);
@@ -400,10 +399,42 @@ final class Extractor
 	}
 
 
-	private function formatValue(Node\Expr $value, int $level): Literal
+	private function toValue(Node\Expr $node): mixed
 	{
-		$value = $this->getReformattedContents([$value], $level);
-		return new Literal($value);
+		if ($node instanceof Node\Expr\ConstFetch) {
+			return match ($node->name->toLowerString()) {
+				'null' => null,
+				'true' => true,
+				'false' => false,
+				default => new Literal($this->getReformattedContents([$node], 0)),
+			};
+		} elseif ($node instanceof Node\Scalar\LNumber
+			|| $node instanceof Node\Scalar\DNumber
+			|| $node instanceof Node\Scalar\String_
+		) {
+			return $node->value;
+
+		} elseif ($node instanceof Node\Expr\Array_) {
+			$res = [];
+			foreach ($node->items as $item) {
+				if ($item->unpack) {
+					$res[] = new Literal($this->getReformattedContents([$item], 0));
+
+				} elseif ($item->key) {
+					$key = $item->key instanceof Node\Identifier
+						? $item->key->name
+						: $this->toValue($item->key);
+					$res[$key] = $this->toValue($item->value);
+
+				} else {
+					$res[] = $this->toValue($item->value);
+				}
+			}
+			return $res;
+
+		} else {
+			return new Literal($this->getReformattedContents([$node], 0));
+		}
 	}
 
 
