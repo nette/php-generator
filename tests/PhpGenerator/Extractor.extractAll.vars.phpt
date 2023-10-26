@@ -23,6 +23,7 @@ $file = (new Extractor(<<<'XX'
 		public $array = [1, 2, ['x' => [3]], ...self::Foo];
 		public $concat = 'x' . 'y';
 		public $math = 10 * 3;
+		public $constKey = [self::class => 'foo'];
 
 		public function foo($a = [1, 2, 3], $b = new stdClass(1, 2))
 		{
@@ -69,4 +70,8 @@ Assert::same(
 Assert::equal(
 	new Literal('new /*(n*/\stdClass(1, 2)'),
 	$method->getParameter('b')->getDefaultValue(),
+);
+Assert::equal(
+	['\Class1::class' => 'foo'],
+	$method->getParameter('constKey')->getDefaultValue(),
 );
