@@ -418,12 +418,17 @@ final class Extractor
 			$res = [];
 			foreach ($node->items as $item) {
 				if ($item->unpack) {
-					$res[] = new Literal($this->getReformattedContents([$item], 0));
+					return new Literal($this->getReformattedContents([$node], 0));
 
 				} elseif ($item->key) {
 					$key = $item->key instanceof Node\Identifier
 						? $item->key->name
 						: $this->toValue($item->key);
+
+					if ($key instanceof Literal) {
+						return new Literal($this->getReformattedContents([$node], 0));
+					}
+
 					$res[$key] = $this->toValue($item->value);
 
 				} else {

@@ -20,7 +20,9 @@ $file = (new Extractor(<<<'XX'
 		public $null = null;
 		public $scalar = [true, false, 1, 1.0, 'hello'];
 		public $const = [PHP_VERSION, self::Foo];
-		public $array = [1, 2, ['x' => [3]], ...self::Foo];
+		public $array = [1, 2, ['x' => [3]]];
+		public $arraySpec1 = [...self::Foo];
+		public $arraySpec2 = [self::class => 1];
 		public $concat = 'x' . 'y';
 		public $math = 10 * 3;
 
@@ -49,8 +51,16 @@ Assert::equal(
 	$class->getProperty('const')->getValue(),
 );
 Assert::equal(
-	[1, 2, ['x' => [3]], new Literal('...self::Foo')],
+	[1, 2, ['x' => [3]]],
 	$class->getProperty('array')->getValue(),
+);
+Assert::equal(
+	new Literal('[...self::Foo]'),
+	$class->getProperty('arraySpec1')->getValue(),
+);
+Assert::equal(
+	new Literal('[self::class => 1]'),
+	$class->getProperty('arraySpec2')->getValue(),
 );
 Assert::equal(
 	new Literal("'x' . 'y'"),
