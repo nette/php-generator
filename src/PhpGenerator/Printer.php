@@ -277,10 +277,6 @@ class Printer
 			$items[] = $this->printFunction($function, $namespace);
 		}
 
-		if (!$items && $this->omitEmptyNamespaces) {
-			return '';
-		}
-
 		$body = ($uses ? $uses . "\n" : '')
 			. implode("\n", $items);
 
@@ -300,7 +296,9 @@ class Printer
 	{
 		$namespaces = [];
 		foreach ($file->getNamespaces() as $namespace) {
-			$namespaces[] = $this->printNamespace($namespace);
+			if (!$this->omitEmptyNamespaces || $namespace->getClasses() || $namespace->getFunctions()) {
+				$namespaces[] = $this->printNamespace($namespace);
+			}
 		}
 
 		return "<?php\n"
