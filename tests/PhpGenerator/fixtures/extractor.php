@@ -18,7 +18,7 @@ class Class1
 	function comment2()
 	{
 		// comment
-		'bar';
+		"bar";
 	}
 
 	function comment3()
