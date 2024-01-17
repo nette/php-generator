@@ -22,6 +22,7 @@ final class Dumper
 	public int $maxDepth = 50;
 	public int $wrapLength = 120;
 	public string $indentation = "\t";
+	public bool $customObjects = true;
 
 
 	/**
@@ -169,8 +170,11 @@ final class Dumper
 
 			throw new Nette\InvalidStateException('Cannot dump object of type Closure.');
 
-		} else {
+		} elseif ($this->customObjects) {
 			return $this->dumpCustomObject($var, $parents, $level);
+
+		} else {
+			throw new Nette\InvalidStateException("Cannot dump object of type $class.");
 		}
 	}
 

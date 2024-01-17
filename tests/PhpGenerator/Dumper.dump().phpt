@@ -198,3 +198,13 @@ same(
 		XX,
 	$dumper->dump(new TestDateTime('2016-06-22 20:52:43.1234', new DateTimeZone('Europe/Prague'))),
 );
+
+
+// disallow custom objects
+$dumper = new Dumper;
+$dumper->customObjects = false;
+Assert::exception(
+	fn() => $dumper->dump(new TestSer),
+	Nette\InvalidStateException::class,
+	'Cannot dump object of type TestSer.',
+);
