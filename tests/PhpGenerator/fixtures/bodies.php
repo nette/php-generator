@@ -77,29 +77,6 @@ abstract class Class7
 		comment */
 		// Alias Method will not be resolved in comment
 		if ($member instanceof Method) {
-			$s1 = '
-a
-	b
-		c
-';
-			$s2 = "
-a
-	{$b}
-		$c
-";
-
-			$s3 = <<<DOC
-a
-	{$b}
-		$c
-DOC
-;
-			$s3 = <<<'DOC'
-a
-	b
-		c
-DOC
-;
 		// inline HTML is not supported
 			?>
 a

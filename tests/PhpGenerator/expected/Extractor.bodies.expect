@@ -90,13 +90,6 @@ abstract class Class7
 		comment */
 		// Alias Method will not be resolved in comment
 		if ($member instanceof Method) {
-			$s1 = "\na\n\tb\n\t\tc\n";
-			$s2 = "\na\n\t{$b}\n\t\t$c\n";
-
-			$s3 = "a\n\t{$b}\n\t\t$c"
-		;
-			$s3 = "a\n\tb\n\t\tc"
-		;
 		// inline HTML is not supported
 			?>
 		a

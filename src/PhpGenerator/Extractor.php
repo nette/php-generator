@@ -95,7 +95,7 @@ final class Extractor
 	private function getReformattedContents(array $nodes, int $level): string
 	{
 		$body = $this->getNodeContents(...$nodes);
-		$body = $this->performReplacements($body, $this->prepareReplacements($nodes));
+		$body = $this->performReplacements($body, $this->prepareReplacements($nodes, $level));
 		return Helpers::unindent($body, $level);
 	}
 
@@ -104,11 +104,12 @@ final class Extractor
 	 * @param  Node[]  $nodes
 	 * @return array<array{int, int, string}>
 	 */
-	private function prepareReplacements(array $nodes): array
+	private function prepareReplacements(array $nodes, int $level): array
 	{
 		$start = $this->getNodeStartPos($nodes[0]);
 		$replacements = [];
-		(new NodeFinder)->find($nodes, function (Node $node) use (&$replacements, $start) {
+		$indent = "\n" . str_repeat("\t", $level);
+		(new NodeFinder)->find($nodes, function (Node $node) use (&$replacements, $start, $level, $indent) {
 			if ($node instanceof Node\Name\FullyQualified) {
 				if ($node->getAttribute('originalName') instanceof Node\Name) {
 					$of = match (true) {
@@ -122,30 +123,64 @@ final class Extractor
 						Helpers::tagName($node->toCodeString(), $of),
 					];
 				}
-			} elseif ($node instanceof Node\Scalar\String_ || $node instanceof Node\Scalar\EncapsedStringPart) {
-				// multi-line strings => singleline
-				$token = $this->getNodeContents($node);
-				if (str_contains($token, "\n")) {
-					$quote = $node instanceof Node\Scalar\String_ ? '"' : '';
-					$replacements[] = [
-						$node->getStartFilePos() - $start,
-						$node->getEndFilePos() - $start,
-						$quote . addcslashes($node->value, "\x00..\x1F") . $quote,
-					];
+
+			} elseif (
+				$node instanceof Node\Scalar\String_
+				&& in_array($node->getAttribute('kind'), [Node\Scalar\String_::KIND_SINGLE_QUOTED, Node\Scalar\String_::KIND_DOUBLE_QUOTED], true)
+				&& str_contains($node->getAttribute('rawValue'), "\n")
+			) { // multi-line strings -> single line
+				$replacements[] = [
+					$node->getStartFilePos() - $start,
+					$node->getEndFilePos() - $start,
+					'"' . addcslashes($node->value, "\x00..\x1F") . '"',
+				];
+
+			} elseif (
+				$node instanceof Node\Scalar\String_
+				&& in_array($node->getAttribute('kind'), [Node\Scalar\String_::KIND_NOWDOC, Node\Scalar\String_::KIND_HEREDOC], true)
+				&& Helpers::unindent($node->getAttribute('docIndentation'), $level) === $node->getAttribute('docIndentation')
+			) { // fix indentation of NOWDOW/HEREDOC
+				$replacements[] = [
+					$node->getStartFilePos() - $start,
+					$node->getEndFilePos() - $start,
+					str_replace("\n", $indent, $this->getNodeContents($node)),
+				];
+
+			} elseif (
+				$node instanceof Node\Scalar\Encapsed
+				&& $node->getAttribute('kind') === Node\Scalar\String_::KIND_DOUBLE_QUOTED
+			) { // multi-line strings -> single line
+				foreach ($node->parts as $part) {
+					if ($part instanceof Node\Scalar\EncapsedStringPart) {
+						$replacements[] = [
+							$part->getStartFilePos() - $start,
+							$part->getEndFilePos() - $start,
+							addcslashes($part->value, "\x00..\x1F\""),
+						];
+					}
 				}
-			} elseif ($node instanceof Node\Scalar\Encapsed) {
-				// HEREDOC => "string"
-				if ($node->getAttribute('kind') === Node\Scalar\String_::KIND_HEREDOC) {
-					$replacements[] = [
-						$node->getStartFilePos() - $start,
-						$node->parts[0]->getStartFilePos() - $start - 1,
-						'"',
-					];
-					$replacements[] = [
-						end($node->parts)->getEndFilePos() - $start + 1,
-						$node->getEndFilePos() - $start,
-						'"',
-					];
+			} elseif (
+				$node instanceof Node\Scalar\Encapsed && $node->getAttribute('kind') === Node\Scalar\String_::KIND_HEREDOC
+				&& Helpers::unindent($node->getAttribute('docIndentation'), $level) === $node->getAttribute('docIndentation')
+			) { // fix indentation of HEREDOC
+				$replacements[] = [
+					$tmp = $node->getStartFilePos() - $start + strlen($node->getAttribute('docLabel')) + 3, // <<<
+					$tmp,
+					$indent,
+				];
+				$replacements[] = [
+					$tmp = $node->getEndFilePos() - $start - strlen($node->getAttribute('docLabel')),
+					$tmp,
+					$indent,
+				];
+				foreach ($node->parts as $part) {
+					if ($part instanceof Node\Scalar\EncapsedStringPart) {
+						$replacements[] = [
+							$part->getStartFilePos() - $start,
+							$part->getEndFilePos() - $start,
+							str_replace("\n", $indent, $this->getNodeContents($part)),
+						];
+					}
 				}
 			}
 		});
