@@ -14,13 +14,13 @@ $extractor = new Extractor(<<<'XX'
 	{
 		$s = '
 	a
-		b
+		b"\'
 			c
 	';
 
 		$d = "
 	a
-		b
+		b\"'
 			c
 	";
 
@@ -91,9 +91,9 @@ $extractor = new Extractor(<<<'XX'
 
 Assert::match(
 	<<<'XX'
-		$s = "\na\n\tb\n\t\tc\n";
+		$s = "\na\n\tb\"'\n\t\tc\n";
 
-		$d = "\na\n\tb\n\t\tc\n";
+		$d = "\na\n\tb\"'\n\t\tc\n";
 
 		$id = "\na\n\t{$b}\n\t\t$c\n";
 		XX,

@@ -132,7 +132,7 @@ final class Extractor
 				$replacements[] = [
 					$node->getStartFilePos() - $start,
 					$node->getEndFilePos() - $start,
-					'"' . addcslashes($node->value, "\x00..\x1F") . '"',
+					'"' . addcslashes($node->value, "\x00..\x1F\"") . '"',
 				];
 
 			} elseif (
