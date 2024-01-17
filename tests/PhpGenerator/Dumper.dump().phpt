@@ -154,29 +154,6 @@ Assert::exception(function () {
 
 
 
-// serializable
-if (PHP_VERSION_ID < 80100) {
-	class Test3 implements Serializable
-	{
-		private $a;
-
-
-		public function serialize()
-		{
-			return '';
-		}
-
-
-		public function unserialize($s)
-		{
-		}
-	}
-
-	Assert::same('unserialize(\'C:5:"Test3":0:{}\')', $dumper->dump(new Test3));
-	Assert::equal(new Test3, eval('return ' . $dumper->dump(new Test3) . ';'));
-}
-
-
 // __serialize
 class TestSer
 {

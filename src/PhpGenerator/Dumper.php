@@ -143,9 +143,6 @@ final class Dumper
 		if (in_array($class, [\DateTime::class, \DateTimeImmutable::class], strict: true)) {
 			return $this->format("new \\$class(?, new \\DateTimeZone(?))", $var->format('Y-m-d H:i:s.u'), $var->getTimeZone()->getName());
 
-		} elseif ($var instanceof \Serializable) {
-			return 'unserialize(' . $this->dumpString(serialize($var)) . ')';
-
 		} elseif ($var instanceof \UnitEnum) {
 			return '\\' . $var::class . '::' . $var->name;
 
