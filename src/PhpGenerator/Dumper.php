@@ -49,10 +49,10 @@ final class Dumper
 			return $this->dumpLiteral($var, $level);
 
 		} elseif (is_object($var)) {
-			return $this->dumpObject($var, $parents, $level);
+			return $this->dumpObject($var, $parents, $level, $column);
 
 		} elseif (is_resource($var)) {
-			throw new Nette\InvalidArgumentException('Cannot dump resource.');
+			throw new Nette\InvalidStateException('Cannot dump value of type resource.');
 
 		} else {
 			return var_export($var, return: true);
@@ -106,7 +106,7 @@ final class Dumper
 			return '[]';
 
 		} elseif ($level > $this->maxDepth || in_array($var, $parents, strict: true)) {
-			throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
+			throw new Nette\InvalidStateException('Nesting level too deep or recursive dependency.');
 		}
 
 		$space = str_repeat($this->indentation, $level);
@@ -136,12 +136,25 @@ final class Dumper
 
 
 	/** @param  array<mixed[]|object>  $parents */
-	private function dumpObject(object $var, array $parents, int $level): string
+	private function dumpObject(object $var, array $parents, int $level, int $column): string
 	{
-		$class = $var::class;
+		if ($level > $this->maxDepth || in_array($var, $parents, strict: true)) {
+			throw new Nette\InvalidStateException('Nesting level too deep or recursive dependency.');
+		}
 
-		if (in_array($class, [\DateTime::class, \DateTimeImmutable::class], strict: true)) {
-			return $this->format("new \\$class(?, new \\DateTimeZone(?))", $var->format('Y-m-d H:i:s.u'), $var->getTimeZone()->getName());
+		$class = $var::class;
+		$parents[] = $var;
+
+		if ($class === \stdClass::class) {
+			$var = (array) $var;
+			return '(object) ' . $this->dumpArray($var, $parents, $level, $column + 10);
+
+		} elseif ($class === \DateTime::class || $class === \DateTimeImmutable::class) {
+			return $this->format(
+				"new \\$class(?, new \\DateTimeZone(?))",
+				$var->format('Y-m-d H:i:s.u'),
+				$var->getTimeZone()->getName(),
+			);
 
 		} elseif ($var instanceof \UnitEnum) {
 			return '\\' . $var::class . '::' . $var->name;
@@ -154,14 +167,24 @@ final class Dumper
 					: implode('::', (array) $inner) . '(...)';
 			}
 
-			throw new Nette\InvalidArgumentException('Cannot dump closure.');
+			throw new Nette\InvalidStateException('Cannot dump object of type Closure.');
 
-		} elseif ((new \ReflectionObject($var))->isAnonymous()) {
-			throw new Nette\InvalidArgumentException('Cannot dump anonymous class.');
-
-		} elseif ($level > $this->maxDepth || in_array($var, $parents, strict: true)) {
-			throw new Nette\InvalidArgumentException('Nesting level too deep or recursive dependency.');
+		} else {
+			return $this->dumpCustomObject($var, $parents, $level);
 		}
+	}
+
+
+	/** @param  array<mixed[]|object>  $parents */
+	private function dumpCustomObject(object $var, array $parents, int $level): string
+	{
+		if ((new \ReflectionObject($var))->isAnonymous()) {
+			throw new Nette\InvalidStateException('Cannot dump an instance of an anonymous class.');
+		}
+
+		$class = $var::class;
+		$space = str_repeat($this->indentation, $level);
+		$out = "\n";
 
 		if (method_exists($var, '__serialize')) {
 			$arr = $var->__serialize();
@@ -174,10 +197,6 @@ final class Dumper
 			}
 		}
 
-		$space = str_repeat($this->indentation, $level);
-		$out = "\n";
-		$parents[] = $var;
-
 		foreach ($arr as $k => &$v) {
 			if (!isset($props) || isset($props[$k])) {
 				$out .= $space . $this->indentation
@@ -187,11 +206,7 @@ final class Dumper
 			}
 		}
 
-		array_pop($parents);
-		$out .= $space;
-		return $class === \stdClass::class
-			? "(object) [$out]"
-			: '\\' . self::class . "::createObject(\\$class::class, [$out])";
+		return '\\' . self::class . "::createObject(\\$class::class, [$out$space])";
 	}
 
 

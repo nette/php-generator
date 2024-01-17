@@ -13,7 +13,7 @@ require __DIR__ . '/../bootstrap.php';
 
 
 $dumper = new Dumper;
-$dumper->wrapLength = 21;
+$dumper->wrapLength = 28;
 same(
 	<<<'XX'
 		[

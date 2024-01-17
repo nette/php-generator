@@ -70,12 +70,12 @@ Assert::same("[0 => 'a', -2 => 'b', 1 => 'c']", $dumper->dump(['a', -2 => 'b', 1
 
 // stdClass
 Assert::same(
-	"(object) [\n\t'a' => 1,\n\t'b' => 2,\n]",
+	"(object) ['a' => 1, 'b' => 2]",
 	$dumper->dump((object) ['a' => 1, 'b' => 2]),
 );
 
 Assert::same(
-	"(object) [\n\t'a' => (object) [\n\t\t'b' => 2,\n\t],\n]",
+	"(object) ['a' => (object) ['b' => 2]]",
 	$dumper->dump((object) ['a' => (object) ['b' => 2]]),
 );
 
@@ -128,7 +128,7 @@ Assert::exception(function () {
 	$dumper = new Dumper;
 	$dumper->dump(new class {
 	});
-}, Nette\InvalidArgumentException::class, 'Cannot dump anonymous class.');
+}, Nette\InvalidStateException::class, 'Cannot dump an instance of an anonymous class.');
 
 
 
@@ -150,7 +150,7 @@ Assert::same(
 Assert::exception(function () {
 	$dumper = new Dumper;
 	$dumper->dump(function () {});
-}, Nette\InvalidArgumentException::class, 'Cannot dump closure.');
+}, Nette\InvalidStateException::class, 'Cannot dump object of type Closure.');
 
 
 

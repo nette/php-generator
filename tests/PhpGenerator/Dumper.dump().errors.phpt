@@ -17,7 +17,7 @@ Assert::exception(function () {
 	$rec[] = &$rec;
 	$dumper = new Dumper;
 	$dumper->dump($rec);
-}, Nette\InvalidArgumentException::class, 'Nesting level too deep or recursive dependency.');
+}, Nette\InvalidStateException::class, 'Nesting level too deep or recursive dependency.');
 
 
 Assert::exception(function () {
@@ -25,4 +25,4 @@ Assert::exception(function () {
 	$rec->x = &$rec;
 	$dumper = new Dumper;
 	$dumper->dump($rec);
-}, Nette\InvalidArgumentException::class, 'Nesting level too deep or recursive dependency.');
+}, Nette\InvalidStateException::class, 'Nesting level too deep or recursive dependency.');
