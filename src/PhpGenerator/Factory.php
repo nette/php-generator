@@ -218,8 +218,6 @@ final class Factory
 			} else {
 				$param->setDefaultValue($from->getDefaultValue());
 			}
-
-			$param->setNullable($param->isNullable() && $param->getDefaultValue() !== null);
 		}
 
 		$param->setAttributes($this->getAttributes($from));

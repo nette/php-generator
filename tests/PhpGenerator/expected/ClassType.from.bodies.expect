@@ -38,7 +38,7 @@ abstract class Class7
 	}
 
 
-	public function resolving($a = Abc\a\FOO, self $b = null, $c = self::FOO)
+	public function resolving($a = Abc\a\FOO, ?self $b = null, $c = self::FOO)
 	{
 		// constants
 		echo FOO;
