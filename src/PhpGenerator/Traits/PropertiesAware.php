@@ -49,9 +49,9 @@ trait PropertiesAware
 
 
 	/** @param  string  $name  without $ */
-	public function addProperty(string $name, mixed $value = null): Property
+	public function addProperty(string $name, mixed $value = null, bool $overwrite = false): Property
 	{
-		if (isset($this->properties[$name])) {
+		if (!$overwrite && isset($this->properties[$name])) {
 			throw new Nette\InvalidStateException("Cannot add property '$name', because it already exists.");
 		}
 		return $this->properties[$name] = func_num_args() > 1

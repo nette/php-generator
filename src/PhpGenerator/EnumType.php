@@ -99,9 +99,9 @@ final class EnumType extends ClassLike
 
 
 	/** Adds case to enum */
-	public function addCase(string $name, string|int|Literal|null $value = null): EnumCase
+	public function addCase(string $name, string|int|Literal|null $value = null, bool $overwrite = false): EnumCase
 	{
-		if (isset($this->cases[$name])) {
+		if (!$overwrite && isset($this->cases[$name])) {
 			throw new Nette\InvalidStateException("Cannot add cases '$name', because it already exists.");
 		}
 		return $this->cases[$name] = (new EnumCase($name))
@@ -116,7 +116,7 @@ final class EnumType extends ClassLike
 	}
 
 
-	public function addMember(Method|Constant|EnumCase|TraitUse $member): static
+	public function addMember(Method|Constant|EnumCase|TraitUse $member, bool $overwrite = false): static
 	{
 		$name = $member->getName();
 		[$type, $n] = match (true) {
@@ -125,7 +125,7 @@ final class EnumType extends ClassLike
 			$member instanceof TraitUse => ['traits', $name],
 			$member instanceof EnumCase => ['cases', $name],
 		};
-		if (isset($this->$type[$n])) {
+		if (!$overwrite && isset($this->$type[$n])) {
 			throw new Nette\InvalidStateException("Cannot add member '$name', because it already exists.");
 		}
 		$this->$type[$n] = $member;

@@ -217,6 +217,21 @@ Assert::exception(
 );
 
 
+// overwrite
+$class = new ClassType('Example');
+$class->addConstant('a', 1);
+$new = $class->addConstant('a', 1, overwrite: true);
+Assert::same($new, $class->getConstant('a'));
+
+$class->addProperty('a');
+$new = $class->addProperty('a', overwrite: true);
+Assert::same($new, $class->getProperty('a'));
+
+$class->addMethod('a');
+$new = $class->addMethod('a', overwrite: true);
+Assert::same($new, $class->getMethod('a'));
+
+
 // remove members
 $class = new ClassType('Example');
 $class->addConstant('a', 1);

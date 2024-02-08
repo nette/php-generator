@@ -53,10 +53,10 @@ trait MethodsAware
 	}
 
 
-	public function addMethod(string $name): Method
+	public function addMethod(string $name, bool $overwrite = false): Method
 	{
 		$lower = strtolower($name);
-		if (isset($this->methods[$lower])) {
+		if (!$overwrite && isset($this->methods[$lower])) {
 			throw new Nette\InvalidStateException("Cannot add method '$name', because it already exists.");
 		}
 		$method = new Method($name);

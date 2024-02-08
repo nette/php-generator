@@ -177,7 +177,7 @@ final class ClassType extends ClassLike
 	}
 
 
-	public function addMember(Method|Property|Constant|TraitUse $member): static
+	public function addMember(Method|Property|Constant|TraitUse $member, bool $overwrite = false): static
 	{
 		$name = $member->getName();
 		[$type, $n] = match (true) {
@@ -186,7 +186,7 @@ final class ClassType extends ClassLike
 			$member instanceof Property => ['properties', $name],
 			$member instanceof TraitUse => ['traits', $name],
 		};
-		if (isset($this->$type[$n])) {
+		if (!$overwrite && isset($this->$type[$n])) {
 			throw new Nette\InvalidStateException("Cannot add member '$name', because it already exists.");
 		}
 		$this->$type[$n] = $member;

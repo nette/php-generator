@@ -29,3 +29,6 @@ Assert::exception(
 	Nette\InvalidStateException::class,
 	"Cannot add member 'FOO', because it already exists.",
 );
+
+$class->addMember($new = new Nette\PhpGenerator\Method('FOO'), overwrite: true);
+Assert::same($new, $class->getMethod('FOO'));
