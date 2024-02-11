@@ -35,7 +35,7 @@ final class Dumper
 
 
 	/** @param  array<mixed[]|object>  $parents */
-	private function dumpVar(mixed &$var, array $parents = [], int $level = 0, int $column = 0): string
+	private function dumpVar(mixed $var, array $parents = [], int $level = 0, int $column = 0): string
 	{
 		if ($var === null) {
 			return 'null';
@@ -101,7 +101,7 @@ final class Dumper
 	 * @param  mixed[]  $var
 	 * @param  array<mixed[]|object>  $parents
 	 */
-	private function dumpArray(array &$var, array $parents, int $level, int $column): string
+	private function dumpArray(array $var, array $parents, int $level, int $column): string
 	{
 		if (empty($var)) {
 			return '[]';
@@ -117,7 +117,7 @@ final class Dumper
 		$counter = 0;
 		$hideKeys = is_int(($tmp = array_keys($var))[0]) && $tmp === range($tmp[0], $tmp[0] + count($var) - 1);
 
-		foreach ($var as $k => &$v) {
+		foreach ($var as $k => $v) {
 			$keyPart = $hideKeys && $k === $counter
 				? ''
 				: $this->dumpVar($k) . ' => ';
@@ -130,7 +130,6 @@ final class Dumper
 				. ",\n$space";
 		}
 
-		array_pop($parents);
 		$wrap = str_contains($outInline, "\n") || $level * self::IndentLength + $column + strlen($outInline) + 3 > $this->wrapLength; // 3 = [],
 		return '[' . ($wrap ? $outWrapped : $outInline) . ']';
 	}
@@ -201,7 +200,7 @@ final class Dumper
 			}
 		}
 
-		foreach ($arr as $k => &$v) {
+		foreach ($arr as $k => $v) {
 			if (!isset($props) || isset($props[$k])) {
 				$out .= $space . $this->indentation
 					. ($keyPart = $this->dumpVar($k) . ' => ')
@@ -266,11 +265,11 @@ final class Dumper
 
 
 	/** @param  mixed[]  $var */
-	private function dumpArguments(array &$var, int $column, bool $named): string
+	private function dumpArguments(array $var, int $column, bool $named): string
 	{
 		$outInline = $outWrapped = '';
 
-		foreach ($var as $k => &$v) {
+		foreach ($var as $k => $v) {
 			$k = !$named || is_int($k) ? '' : $k . ': ';
 			$outInline .= $outInline === '' ? '' : ', ';
 			$outInline .= $k . $this->dumpVar($v, [$var], 0, $column + strlen($outInline));
