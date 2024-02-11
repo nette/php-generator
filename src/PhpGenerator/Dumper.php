@@ -13,7 +13,7 @@ use Nette;
 
 
 /**
- * PHP code generator utils.
+ * Generates a PHP representation of a variable.
  */
 final class Dumper
 {
@@ -35,7 +35,7 @@ final class Dumper
 
 
 	/** @param  array<mixed[]|object>  $parents */
-	private function dumpVar(mixed &$var, array $parents = [], int $level = 0, int $column = 0): string
+	private function dumpVar(mixed $var, array $parents = [], int $level = 0, int $column = 0): string
 	{
 		if ($var === null) {
 			return 'null';
@@ -101,7 +101,7 @@ final class Dumper
 	 * @param  mixed[]  $var
 	 * @param  array<mixed[]|object>  $parents
 	 */
-	private function dumpArray(array &$var, array $parents, int $level, int $column): string
+	private function dumpArray(array $var, array $parents, int $level, int $column): string
 	{
 		if (empty($var)) {
 			return '[]';
@@ -114,7 +114,7 @@ final class Dumper
 		$hideKeys = is_int(($keys = array_keys($var))[0]) && $keys === range($keys[0], $keys[0] + count($var) - 1);
 		$pairs = [];
 
-		foreach ($var as $k => &$v) {
+		foreach ($var as $k => $v) {
 			$keyPart = $hideKeys && ($k !== $keys[0] || $k === 0)
 				? ''
 				: $this->dumpVar($k) . ' => ';
@@ -134,6 +134,8 @@ final class Dumper
 	{
 		if ($level > $this->maxDepth || in_array($var, $parents, strict: true)) {
 			throw new Nette\InvalidStateException('Nesting level too deep or recursive dependency.');
+		} elseif ((new \ReflectionObject($var))->isAnonymous()) {
+			throw new Nette\InvalidStateException('Cannot dump an instance of an anonymous class.');
 		}
 
 		$class = $var::class;
@@ -175,10 +177,6 @@ final class Dumper
 	/** @param  array<mixed[]|object>  $parents */
 	private function dumpCustomObject(object $var, array $parents, int $level): string
 	{
-		if ((new \ReflectionObject($var))->isAnonymous()) {
-			throw new Nette\InvalidStateException('Cannot dump an instance of an anonymous class.');
-		}
-
 		$class = $var::class;
 		$space = str_repeat($this->indentation, $level);
 		$out = "\n";
@@ -194,7 +192,7 @@ final class Dumper
 			}
 		}
 
-		foreach ($arr as $k => &$v) {
+		foreach ($arr as $k => $v) {
 			if (!isset($props) || isset($props[$k])) {
 				$out .= $space . $this->indentation
 					. ($keyPart = $this->dumpVar($k) . ' => ')
