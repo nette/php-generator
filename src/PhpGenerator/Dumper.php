@@ -114,15 +114,13 @@ final class Dumper
 		$outInline = '';
 		$outWrapped = "\n$space";
 		$parents[] = $var;
-		$counter = 0;
-		$hideKeys = is_int(($tmp = array_keys($var))[0]) && $tmp === range($tmp[0], $tmp[0] + count($var) - 1);
+		$hideKeys = is_int(($keys = array_keys($var))[0]) && $keys === range($keys[0], $keys[0] + count($var) - 1);
 
 		foreach ($var as $k => &$v) {
-			$keyPart = $hideKeys && $k === $counter
+			$keyPart = $hideKeys && ($k !== $keys[0] || $k === 0)
 				? ''
 				: $this->dumpVar($k) . ' => ';
-			$counter = is_int($k) ? max($k + 1, $counter) : $counter;
-			$outInline .= ($outInline === '' ? '' : ', ') . $keyPart;
+			$outInline .= ($k === $keys[0] ? '' : ', ') . $keyPart;
 			$outInline .= $this->dumpVar($v, $parents, 0, $column + strlen($outInline));
 			$outWrapped .= $this->indentation
 				. $keyPart
