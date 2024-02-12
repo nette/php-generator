@@ -110,27 +110,22 @@ final class Dumper
 			throw new Nette\InvalidStateException('Nesting level too deep or recursive dependency.');
 		}
 
-		$space = str_repeat($this->indentation, $level);
-		$outInline = '';
-		$outWrapped = "\n$space";
 		$parents[] = $var;
 		$hideKeys = is_int(($keys = array_keys($var))[0]) && $keys === range($keys[0], $keys[0] + count($var) - 1);
+		$pairs = [];
 
 		foreach ($var as $k => &$v) {
 			$keyPart = $hideKeys && ($k !== $keys[0] || $k === 0)
 				? ''
 				: $this->dumpVar($k) . ' => ';
-			$outInline .= ($k === $keys[0] ? '' : ', ') . $keyPart;
-			$outInline .= $this->dumpVar($v, $parents, 0, $column + strlen($outInline));
-			$outWrapped .= $this->indentation
-				. $keyPart
-				. $this->dumpVar($v, $parents, $level + 1, strlen($keyPart))
-				. ",\n$space";
+			$pairs[] = $keyPart . $this->dumpVar($v, $parents, $level + 1, strlen($keyPart) + 1); // 1 = comma after item
 		}
 
-		array_pop($parents);
-		$wrap = str_contains($outInline, "\n") || $level * self::IndentLength + $column + strlen($outInline) + 3 > $this->wrapLength; // 3 = [],
-		return '[' . ($wrap ? $outWrapped : $outInline) . ']';
+		$line = '[' . implode(', ', $pairs) . ']';
+		$space = str_repeat($this->indentation, $level);
+		return !str_contains($line, "\n") && $level * self::IndentLength + $column + strlen($line) <= $this->wrapLength
+			? $line
+			: "[\n$space" . $this->indentation . implode(",\n$space" . $this->indentation, $pairs) . ",\n$space]";
 	}
 
 
@@ -263,21 +258,19 @@ final class Dumper
 	}
 
 
-	/** @param  mixed[]  $var */
-	private function dumpArguments(array &$var, int $column, bool $named): string
+	/** @param  mixed[]  $args */
+	private function dumpArguments(array $args, int $column, bool $named): string
 	{
-		$outInline = $outWrapped = '';
-
-		foreach ($var as $k => &$v) {
-			$k = !$named || is_int($k) ? '' : $k . ': ';
-			$outInline .= $outInline === '' ? '' : ', ';
-			$outInline .= $k . $this->dumpVar($v, [$var], 0, $column + strlen($outInline));
-			$outWrapped .= "\n" . $this->indentation . $k . $this->dumpVar($v, [$var], 1) . ',';
+		$pairs = [];
+		foreach ($args as $k => $v) {
+			$name = $named && !is_int($k) ? $k . ': ' : '';
+			$pairs[] = $name . $this->dumpVar($v, [$args], 0, $column + strlen($name) + 1); // 1 = ) after args
 		}
 
-		return count($var) > 1 && (str_contains($outInline, "\n") || $column + strlen($outInline) > $this->wrapLength)
-			? $outWrapped . "\n"
-			: $outInline;
+		$line = implode(', ', $pairs);
+		return count($args) < 2 || (!str_contains($line, "\n") && $column + strlen($line) <= $this->wrapLength)
+			? $line
+			: "\n" . $this->indentation . implode(",\n" . $this->indentation, $pairs) . ",\n";
 	}
 
 
