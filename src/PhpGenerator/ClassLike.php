@@ -39,15 +39,27 @@ abstract class ClassLike
 
 	public static function from(string|object $class, bool $withBodies = false): static
 	{
-		return (new Factory)
+		$class = (new Factory)
 			->fromClassReflection(new \ReflectionClass($class), $withBodies);
+
+        if (!$class instanceof static) {
+            throw new Nette\InvalidArgumentException("Object '$class' is not an instance of " . static::class);
+        }
+
+        return $class;
 	}
 
 
 	public static function fromCode(string $code): static
 	{
-		return (new Factory)
+		$class = (new Factory)
 			->fromClassCode($code);
+
+        if (!$class instanceof static) {
+            throw new Nette\InvalidArgumentException("Object '$class' is not an instance of " . static::class);
+        }
+
+        return $class;
 	}
 
 
