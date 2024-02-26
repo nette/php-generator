@@ -7,15 +7,16 @@
 declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\InterfaceType;
 use Nette\PhpGenerator\Factory;
 
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/fixtures/classes.php';
 
-$res[] = ClassType::from(Abc\Interface1::class);
-$res[] = ClassType::from(Abc\Interface2::class);
-$res[] = ClassType::from(Abc\Interface3::class);
-$res[] = ClassType::from(Abc\Interface4::class);
+$res[] = InterfaceType::from(Abc\Interface1::class);
+$res[] = InterfaceType::from(Abc\Interface2::class);
+$res[] = InterfaceType::from(Abc\Interface3::class);
+$res[] = InterfaceType::from(Abc\Interface4::class);
 $res[] = ClassType::from(Abc\Class1::class);
 $res[] = ClassType::from(new Abc\Class2);
 $obj = new Abc\Class3;

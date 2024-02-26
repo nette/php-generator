@@ -37,15 +37,14 @@ abstract class ClassLike
 	private ?PhpNamespace $namespace;
 	private ?string $name;
 
-
-	public static function from(string|object $class, bool $withBodies = false): self
+	public static function from(string|object $class, bool $withBodies = false): static
 	{
 		return (new Factory)
 			->fromClassReflection(new \ReflectionClass($class), $withBodies);
 	}
 
 
-	public static function fromCode(string $code): self
+	public static function fromCode(string $code): static
 	{
 		return (new Factory)
 			->fromClassCode($code);

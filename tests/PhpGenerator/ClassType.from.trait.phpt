@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\ClassLike;
 
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/fixtures/traits.php';
@@ -19,11 +19,11 @@ $classes = [
 	Class5::class,
 ];
 
-$res = array_map(fn($class) => ClassType::from($class), $classes);
+$res = array_map(fn($class) => ClassLike::from($class), $classes);
 
 sameFile(__DIR__ . '/expected/ClassType.from.trait-use.expect', implode("\n", $res));
 
 
-$res = array_map(fn($class) => ClassType::from($class, withBodies: true), $classes);
+$res = array_map(fn($class) => ClassLike::from($class, withBodies: true), $classes);
 
 sameFile(__DIR__ . '/expected/ClassType.from.trait-use.bodies.expect', implode("\n", $res));
