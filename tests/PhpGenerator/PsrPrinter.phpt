@@ -47,7 +47,10 @@ $class->addMethod('first')
 	->addParameter('var')
 		->setType('stdClass');
 
-$class->addMethod('second');
+$class->addMethod('braces1')
+	->setReturnType('stdClass')
+	->addParameter('var')
+		->addAttribute('attr');
 
 
 sameFile(__DIR__ . '/expected/PsrPrinter.class.expect', $printer->printClass($class));

@@ -48,7 +48,7 @@ class Printer
 		$params = $this->printParameters($function, strlen($line) + strlen($returnType) + 2); // 2 = parentheses
 		$body = Helpers::simplifyTaggedNames($function->getBody(), $this->namespace);
 		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
-		$braceOnNextLine = $this->bracesOnNextLine && (!str_contains($params, "\n") || $returnType);
+		$braceOnNextLine = $this->isBraceOnNextLine(str_contains($params, "\n"), (bool) $returnType);
 
 		return $this->printDocComment($function)
 			. $this->printAttributes($function->getAttributes())
@@ -119,7 +119,7 @@ class Printer
 		$params = $this->printParameters($method, strlen($line) + strlen($returnType) + strlen($this->indentation) + 2);
 		$body = Helpers::simplifyTaggedNames($method->getBody(), $this->namespace);
 		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
-		$braceOnNextLine = $this->bracesOnNextLine && (!str_contains($params, "\n") || $returnType);
+		$braceOnNextLine = $this->isBraceOnNextLine(str_contains($params, "\n"), (bool) $returnType);
 
 		return $this->printDocComment($method)
 			. $this->printAttributes($method->getAttributes())
@@ -465,5 +465,11 @@ class Printer
 		return $this->linesBetweenProperties
 			? implode(str_repeat("\n", $this->linesBetweenProperties), $props)
 			: preg_replace('#^(\w.*\n)\n(?=\w.*;)#m', '$1', implode("\n", $props));
+	}
+
+
+	protected function isBraceOnNextLine(bool $multiLine, bool $hasReturnType): bool
+	{
+		return $this->bracesOnNextLine && (!$multiLine || $hasReturnType);
 	}
 }

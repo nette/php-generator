@@ -54,7 +54,9 @@ final class Example extends ParentClass implements IExample
         ];
     }
 
-    public function second()
-    {
+    public function braces1(
+        #[attr]
+        $var,
+    ): stdClass {
     }
 }
