@@ -37,27 +37,27 @@ abstract class ClassLike
 	private ?string $name;
 
 
-	public static function from(string|object $class, bool $withBodies = false): self
+	public static function from(string|object $class, bool $withBodies = false): static
 	{
 		$instance = (new Factory)
 			->fromClassReflection(new \ReflectionClass($class), $withBodies);
 
 		if (!$instance instanceof static) {
 			$class = is_object($class) ? $class::class : $class;
-			trigger_error("$class cannot be represented with " . static::class . '. Call ' . $instance::class . '::' . __FUNCTION__ . '() or ' . __METHOD__ . '() instead.', E_USER_WARNING);
+			throw new Nette\InvalidArgumentException("$class cannot be represented with " . static::class . '. Call ' . $instance::class . '::' . __FUNCTION__ . '() or ' . __METHOD__ . '() instead.');
 		}
 
 		return $instance;
 	}
 
 
-	public static function fromCode(string $code): self
+	public static function fromCode(string $code): static
 	{
 		$instance = (new Factory)
 			->fromClassCode($code);
 
 		if (!$instance instanceof static) {
-			trigger_error('Provided code cannot be represented with ' . static::class . '. Call ' . $instance::class . '::' . __FUNCTION__ . '() or ' . __METHOD__ . '() instead.', E_USER_WARNING);
+			throw new Nette\InvalidArgumentException('Provided code cannot be represented with ' . static::class . '. Call ' . $instance::class . '::' . __FUNCTION__ . '() or ' . __METHOD__ . '() instead.');
 		}
 
 		return $instance;
