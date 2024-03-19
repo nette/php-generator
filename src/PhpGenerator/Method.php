@@ -28,7 +28,7 @@ final class Method
 	private bool $abstract = false;
 
 
-	public static function from(string|array $method): static
+	public static function from(string|array|\Closure $method): static
 	{
 		return (new Factory)->fromMethodReflection(Nette\Utils\Callback::toReflection($method));
 	}
