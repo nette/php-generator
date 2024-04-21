@@ -116,6 +116,9 @@ final class EnumType extends ClassLike
 	}
 
 
+	/**
+	 * Adds a member. If it already exists, throws an exception or overwrites it if $overwrite is true.
+	 */
 	public function addMember(Method|Constant|EnumCase|TraitUse $member, bool $overwrite = false): static
 	{
 		$name = $member->getName();

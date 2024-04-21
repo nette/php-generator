@@ -22,6 +22,9 @@ final class TraitType extends ClassLike
 	use Traits\PropertiesAware;
 	use Traits\TraitsAware;
 
+	/**
+	 * Adds a member. If it already exists, throws an exception or overwrites it if $overwrite is true.
+	 */
 	public function addMember(Method|Property|Constant|TraitUse $member, bool $overwrite = false): static
 	{
 		$name = $member->getName();

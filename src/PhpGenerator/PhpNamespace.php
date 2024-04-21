@@ -88,6 +88,7 @@ final class PhpNamespace
 
 
 	/**
+	 * Adds a use statement to the namespace for class, function or constant.
 	 * @throws InvalidStateException
 	 */
 	public function addUse(string $name, ?string $alias = null, string $of = self::NameNormal): static
@@ -140,12 +141,18 @@ final class PhpNamespace
 	}
 
 
+	/**
+	 * Adds a use statement to the namespace for function.
+	 */
 	public function addUseFunction(string $name, ?string $alias = null): static
 	{
 		return $this->addUse($name, $alias, self::NameFunction);
 	}
 
 
+	/**
+	 * Adds a use statement to the namespace for constant.
+	 */
 	public function addUseConstant(string $name, ?string $alias = null): static
 	{
 		return $this->addUse($name, $alias, self::NameConstant);
@@ -164,6 +171,9 @@ final class PhpNamespace
 	}
 
 
+	/**
+	 * Resolves relative name to full name.
+	 */
 	public function resolveName(string $name, string $of = self::NameNormal): string
 	{
 		if (isset(Helpers::Keywords[strtolower($name)]) || $name === '') {
@@ -185,12 +195,18 @@ final class PhpNamespace
 	}
 
 
+	/**
+	 * Simplifies type hint with relative names.
+	 */
 	public function simplifyType(string $type, string $of = self::NameNormal): string
 	{
 		return preg_replace_callback('~[\w\x7f-\xff\\\\]+~', fn($m) => $this->simplifyName($m[0], $of), $type);
 	}
 
 
+	/**
+	 * Simplifies the full name of a class, function, or constant to a relative name.
+	 */
 	public function simplifyName(string $name, string $of = self::NameNormal): string
 	{
 		if (isset(Helpers::Keywords[strtolower($name)]) || $name === '') {
@@ -235,6 +251,9 @@ final class PhpNamespace
 	}
 
 
+	/**
+	 * Adds a class-like type to the namespace. If it already exists, throws an exception.
+	 */
 	public function add(ClassType|InterfaceType|TraitType|EnumType $class): static
 	{
 		$name = $class->getName();
@@ -254,6 +273,9 @@ final class PhpNamespace
 	}
 
 
+	/**
+	 * Adds a class to the namespace. If it already exists, throws an exception.
+	 */
 	public function addClass(string $name): ClassType
 	{
 		$this->add($class = new ClassType($name, $this));
@@ -261,6 +283,9 @@ final class PhpNamespace
 	}
 
 
+	/**
+	 * Adds an interface to the namespace. If it already exists, throws an exception.
+	 */
 	public function addInterface(string $name): InterfaceType
 	{
 		$this->add($iface = new InterfaceType($name, $this));
@@ -268,6 +293,9 @@ final class PhpNamespace
 	}
 
 
+	/**
+	 * Adds a trait to the namespace. If it already exists, throws an exception.
+	 */
 	public function addTrait(string $name): TraitType
 	{
 		$this->add($trait = new TraitType($name, $this));
@@ -275,6 +303,9 @@ final class PhpNamespace
 	}
 
 
+	/**
+	 * Adds an enum to the namespace. If it already exists, throws an exception.
+	 */
 	public function addEnum(string $name): EnumType
 	{
 		$this->add($enum = new EnumType($name, $this));
@@ -282,6 +313,9 @@ final class PhpNamespace
 	}
 
 
+	/**
+	 * Removes a class-like type from namespace.
+	 */
 	public function removeClass(string $name): static
 	{
 		unset($this->classes[strtolower($name)]);
@@ -289,6 +323,9 @@ final class PhpNamespace
 	}
 
 
+	/**
+	 * Adds a function to the namespace. If it already exists, throws an exception.
+	 */
 	public function addFunction(string $name): GlobalFunction
 	{
 		$lower = strtolower($name);
@@ -302,6 +339,9 @@ final class PhpNamespace
 	}
 
 
+	/**
+	 * Removes a function type from namespace.
+	 */
 	public function removeFunction(string $name): static
 	{
 		unset($this->functions[strtolower($name)]);
@@ -309,7 +349,10 @@ final class PhpNamespace
 	}
 
 
-	/** @return (ClassType|InterfaceType|TraitType|EnumType)[] */
+	/**
+	 * Returns all class-like types in the namespace.
+	 * @return (ClassType|InterfaceType|TraitType|EnumType)[]
+	 */
 	public function getClasses(): array
 	{
 		$res = [];
@@ -321,7 +364,10 @@ final class PhpNamespace
 	}
 
 
-	/** @return GlobalFunction[] */
+	/**
+	 * Returns all functions in the namespace.
+	 * @return GlobalFunction[]
+	 */
 	public function getFunctions(): array
 	{
 		$res = [];

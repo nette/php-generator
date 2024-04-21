@@ -51,6 +51,9 @@ final class InterfaceType extends ClassLike
 	}
 
 
+	/**
+	 * Adds a member. If it already exists, throws an exception or overwrites it if $overwrite is true.
+	 */
 	public function addMember(Method|Constant $member, bool $overwrite = false): static
 	{
 		$name = $member->getName();

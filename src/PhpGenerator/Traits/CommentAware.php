@@ -31,6 +31,9 @@ trait CommentAware
 	}
 
 
+	/**
+	 * Adds a new line to the comment.
+	 */
 	public function addComment(string $val): static
 	{
 		$this->comment .= $this->comment ? "\n$val" : $val;

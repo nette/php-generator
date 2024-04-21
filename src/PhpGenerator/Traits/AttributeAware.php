@@ -30,6 +30,7 @@ trait AttributeAware
 
 
 	/**
+	 * Replaces all attributes.
 	 * @param  Attribute[]  $attrs
 	 */
 	public function setAttributes(array $attrs): static

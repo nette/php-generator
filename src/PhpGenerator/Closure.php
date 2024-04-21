@@ -35,6 +35,7 @@ final class Closure
 
 
 	/**
+	 * Replaces all uses.
 	 * @param  Parameter[]  $uses
 	 */
 	public function setUses(array $uses): static
