@@ -110,6 +110,17 @@ final class PhpFile
 	}
 
 
+	/**
+	 * Removes the namespace from the file.
+	 */
+	public function removeNamespace(string|PhpNamespace $namespace): static
+	{
+		$name = $namespace instanceof PhpNamespace ? $namespace->getName() : $namespace;
+		unset($this->namespaces[$name]);
+		return $this;
+	}
+
+
 	/** @return PhpNamespace[] */
 	public function getNamespaces(): array
 	{

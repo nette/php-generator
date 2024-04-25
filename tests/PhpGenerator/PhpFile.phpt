@@ -18,6 +18,10 @@ $file->addComment('This file is auto-generated. DO NOT EDIT!');
 $file->addComment('Hey there, I\'m here to document things.');
 
 
+$namespace = $file->addNamespace('Deleted');
+$namespace->addClass('Foo');
+$file->removeNamespace('Deleted');
+
 $namespaceFoo = $file->addNamespace('Foo');
 
 $classA = $namespaceFoo->addClass('A');
