@@ -39,4 +39,11 @@ trait CommentAware
 		$this->comment .= $this->comment ? "\n$val" : $val;
 		return $this;
 	}
+
+
+	public function removeComment(): static
+	{
+		$this->comment = null;
+		return $this;
+	}
 }

@@ -59,7 +59,9 @@ $class->addProperty('handle')
 	->addComment('@var resource  orignal file handle');
 
 $class->addProperty('order')
-	->setValue(new Literal('RecursiveIteratorIterator::SELF_FIRST'));
+	->setValue(new Literal('RecursiveIteratorIterator::SELF_FIRST'))
+	->addComment('foo')
+	->removeComment();
 
 $class->addProperty('typed1')
 	->setType(Type::Array)
