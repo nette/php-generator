@@ -25,8 +25,10 @@ Assert::exception(
 $interfaceB = $namespace->addInterface('B');
 Assert::same($namespace, $interfaceB->getNamespace());
 
+Assert::same($classA, $namespace->getClass('a'));
+
 Assert::count(2, $namespace->getClasses());
-Assert::type(Nette\PhpGenerator\ClassType::class, $namespace->getClasses()['A']);
+Assert::same($classA, $namespace->getClasses()['A']);
 $namespace->removeClass('a');
 Assert::count(1, $namespace->getClasses());
 
@@ -38,6 +40,8 @@ Assert::exception(
 	Nette\InvalidStateException::class,
 	"Cannot add 'Foo', because it already exists.",
 );
+
+Assert::same($function, $namespace->getFunction('foo'));
 
 Assert::count(1, $namespace->getFunctions());
 Assert::same($function, $namespace->getFunctions()['foo']);

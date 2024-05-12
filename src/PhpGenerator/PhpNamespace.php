@@ -314,6 +314,30 @@ final class PhpNamespace
 
 
 	/**
+	 * Returns a class-like type from the namespace.
+	 */
+	public function getClass(string $name): ClassType|InterfaceType|TraitType|EnumType
+	{
+		return $this->classes[strtolower($name)] ?? throw new Nette\InvalidArgumentException("Class '$name' not found.");
+	}
+
+
+	/**
+	 * Returns all class-like types in the namespace.
+	 * @return (ClassType|InterfaceType|TraitType|EnumType)[]
+	 */
+	public function getClasses(): array
+	{
+		$res = [];
+		foreach ($this->classes as $class) {
+			$res[$class->getName()] = $class;
+		}
+
+		return $res;
+	}
+
+
+	/**
 	 * Removes a class-like type from namespace.
 	 */
 	public function removeClass(string $name): static
@@ -340,27 +364,11 @@ final class PhpNamespace
 
 
 	/**
-	 * Removes a function type from namespace.
+	 * Returns a function from the namespace.
 	 */
-	public function removeFunction(string $name): static
+	public function getFunction(string $name): GlobalFunction
 	{
-		unset($this->functions[strtolower($name)]);
-		return $this;
-	}
-
-
-	/**
-	 * Returns all class-like types in the namespace.
-	 * @return (ClassType|InterfaceType|TraitType|EnumType)[]
-	 */
-	public function getClasses(): array
-	{
-		$res = [];
-		foreach ($this->classes as $class) {
-			$res[$class->getName()] = $class;
-		}
-
-		return $res;
+		return $this->functions[strtolower($name)] ?? throw new Nette\InvalidArgumentException("Function '$name' not found.");
 	}
 
 
@@ -376,6 +384,16 @@ final class PhpNamespace
 		}
 
 		return $res;
+	}
+
+
+	/**
+	 * Removes a function type from namespace.
+	 */
+	public function removeFunction(string $name): static
+	{
+		unset($this->functions[strtolower($name)]);
+		return $this;
 	}
 
 
