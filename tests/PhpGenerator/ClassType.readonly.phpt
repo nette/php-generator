@@ -15,9 +15,9 @@ require __DIR__ . '/fixtures/classes.82.php';
 
 $class = ClassType::from(new Abc\Class13);
 Assert::true($class->getProperty('foo')->isReadOnly());
-Assert::false($class->getMethod('__construct')->getParameter('bar')->isReadOnly());
+Assert::true($class->getMethod('__construct')->getParameter('bar')->isReadOnly());
 
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.82.php')))->extractAll();
 $class = $file->getClasses()[Abc\Class13::class];
 Assert::true($class->getProperty('foo')->isReadOnly());
-Assert::false($class->getMethod('__construct')->getParameter('bar')->isReadOnly());
+Assert::true($class->getMethod('__construct')->getParameter('bar')->isReadOnly());

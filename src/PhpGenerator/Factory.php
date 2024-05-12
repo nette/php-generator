@@ -200,7 +200,7 @@ final class Factory
 	public function fromParameterReflection(\ReflectionParameter $from): Parameter
 	{
 		$param = $from->isPromoted()
-			? new PromotedParameter($from->name)
+			? (new PromotedParameter($from->name))->setReadOnly(PHP_VERSION_ID >= 80100 && $from->getDeclaringClass()->getProperty($from->name)->isReadonly())
 			: new Parameter($from->name);
 		$param->setReference($from->isPassedByReference());
 		$param->setType((string) $from->getType());

@@ -23,6 +23,8 @@ final class Method
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 
+	public const Constructor = '__construct';
+
 	private bool $static = false;
 	private bool $final = false;
 	private bool $abstract = false;

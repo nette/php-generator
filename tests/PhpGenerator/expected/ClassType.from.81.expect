@@ -16,3 +16,19 @@ class Class11
 	{
 	}
 }
+
+#[\Attribute]
+class Attr
+{
+}
+
+class Class12
+{
+	private readonly string $bar;
+
+
+	public function __construct(
+		public readonly string $foo,
+	) {
+	}
+}

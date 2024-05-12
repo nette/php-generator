@@ -193,6 +193,10 @@ class Printer
 			}
 
 			foreach ($class->getMethods() as $method) {
+				if ($readOnlyClass && $method->getName() === Method::Constructor) {
+					$method = clone $method;
+					array_map(fn($param) => $param instanceof PromotedParameter ? $param->setReadOnly(false) : null, $method->getParameters());
+				}
 				$methods[] = $this->printMethod($method, $namespace, $class->isInterface());
 			}
 		}
