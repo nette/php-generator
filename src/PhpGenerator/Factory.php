@@ -257,7 +257,7 @@ final class Factory
 		$prop->setType((string) $from->getType());
 
 		$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
-		$prop->setReadOnly(PHP_VERSION_ID >= 80100 && $from->isReadOnly() && !(PHP_VERSION_ID >= 80200 && $from->getDeclaringClass()->isReadOnly()));
+		$prop->setReadOnly(PHP_VERSION_ID >= 80100 && $from->isReadOnly());
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$prop->setAttributes($this->getAttributes($from));
 		return $prop;

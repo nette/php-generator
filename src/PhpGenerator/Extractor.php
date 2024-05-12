@@ -329,7 +329,7 @@ final class Extractor
 				$prop->setValue($this->toValue($item->default));
 			}
 
-			$prop->setReadOnly(method_exists($node, 'isReadonly') && $node->isReadonly());
+			$prop->setReadOnly((method_exists($node, 'isReadonly') && $node->isReadonly()) || ($class instanceof ClassType && $class->isReadOnly()));
 			$this->addCommentAndAttributes($prop, $node);
 		}
 	}

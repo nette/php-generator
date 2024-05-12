@@ -170,6 +170,7 @@ class Printer
 			}
 		}
 
+		$readOnlyClass = $class instanceof ClassType && $class->isReadOnly();
 		$consts = [];
 		$methods = [];
 		if (
@@ -203,7 +204,7 @@ class Printer
 				$type = $property->getType();
 				$def = (($property->getVisibility() ?: 'public')
 					. ($property->isStatic() ? ' static' : '')
-					. ($property->isReadOnly() && $type ? ' readonly' : '')
+					. (!$readOnlyClass && $property->isReadOnly() && $type ? ' readonly' : '')
 					. ' '
 					. ltrim($this->printType($type, $property->isNullable()) . ' ')
 					. '$' . $property->getName());
