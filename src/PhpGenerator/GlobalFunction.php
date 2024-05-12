@@ -32,4 +32,10 @@ final class GlobalFunction
 	{
 		return (new Printer)->printFunction($this);
 	}
+
+
+	public function __clone(): void
+	{
+		$this->parameters = array_map(fn($param) => clone $param, $this->parameters);
+	}
 }

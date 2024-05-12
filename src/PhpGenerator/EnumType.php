@@ -136,8 +136,9 @@ final class EnumType extends ClassLike
 	}
 
 
-	public function __clone()
+	public function __clone(): void
 	{
+		parent::__clone();
 		$clone = fn($item) => clone $item;
 		$this->consts = array_map($clone, $this->consts);
 		$this->methods = array_map($clone, $this->methods);

@@ -57,4 +57,10 @@ final class Closure
 	{
 		return $this->uses[] = new Parameter($name);
 	}
+
+
+	public function __clone(): void
+	{
+		$this->parameters = array_map(fn($param) => clone $param, $this->parameters);
+	}
 }
