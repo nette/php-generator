@@ -230,7 +230,7 @@ final class Factory
 		$const = new Constant($from->name);
 		$const->setValue($from->getValue());
 		$const->setVisibility($this->getVisibility($from));
-		$const->setFinal(PHP_VERSION_ID >= 80100 ? $from->isFinal() : false);
+		$const->setFinal(PHP_VERSION_ID >= 80100 && $from->isFinal());
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$const->setAttributes($this->getAttributes($from));
 		return $const;

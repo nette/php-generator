@@ -27,7 +27,7 @@ trait ConstantsAware
 	{
 		(function (Constant ...$consts) {})(...$consts);
 		$this->consts = [];
-		foreach ($consts as $k => $const) {
+		foreach ($consts as $const) {
 			$this->consts[$const->getName()] = $const;
 		}
 

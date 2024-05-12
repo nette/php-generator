@@ -134,9 +134,9 @@ final class PhpFile
 	/**
 	 * Adds declare(strict_types=1) to output.
 	 */
-	public function setStrictTypes(bool $on = true): static
+	public function setStrictTypes(bool $state = true): static
 	{
-		$this->strictTypes = $on;
+		$this->strictTypes = $state;
 		return $this;
 	}
 

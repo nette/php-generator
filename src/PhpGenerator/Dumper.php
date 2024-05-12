@@ -75,7 +75,7 @@ final class Dumper
 		$escaped = preg_replace_callback(
 			$utf8 ? '#[\p{C}\\\\]#u' : '#[\x00-\x1F\x7F-\xFF\\\\]#',
 			fn($m) => $special[$m[0]] ?? (strlen($m[0]) === 1
-					? '\x' . str_pad(strtoupper(dechex(ord($m[0]))), 2, '0', STR_PAD_LEFT) . ''
+					? '\x' . str_pad(strtoupper(dechex(ord($m[0]))), 2, '0', STR_PAD_LEFT)
 					: '\u{' . strtoupper(ltrim(dechex(self::utf8Ord($m[0])), '0')) . '}'),
 			$s,
 		);
