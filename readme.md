@@ -1,13 +1,21 @@
-Nette PHP Generator [![Latest Stable Version](https://poser.pugx.org/nette/php-generator/v/stable)](https://github.com/nette/php-generator/releases) [![Downloads this Month](https://img.shields.io/packagist/dm/nette/php-generator.svg)](https://packagist.org/packages/nette/php-generator)
-===================
+[![Nette PHP Generator](https://github.com/nette/php-generator/assets/194960/8a2c83bd-daea-475f-994c-9c951de88501)](https://doc.nette.org/en/php-generator)
+
+[![Latest Stable Version](https://poser.pugx.org/nette/php-generator/v/stable)](https://github.com/nette/php-generator/releases) [![Downloads this Month](https://img.shields.io/packagist/dm/nette/php-generator.svg)](https://packagist.org/packages/nette/php-generator)
+
+ <!---->
 
 Are you looking for a tool to generate PHP code for [classes](#classes), [functions](#global-functions), or complete [PHP files](#php-files)?
+
+<h3>
 
 ✅ Supports all the latest PHP features like [enums](#enums), [attributes](#attributes), etc.<br>
 ✅ Allows you to easily modify [existing classes](#generating-from-existing-ones)<br>
 ✅ Output compliant with [PSR-12 / PER coding style](#printer-and-psr-compliance)<br>
 ✅ Highly mature, stable, and widely used library
 
+</h3>
+
+ <!---->
 
 Installation
 ------------
@@ -18,8 +26,9 @@ Download and install the library using the [Composer](https://doc.nette.org/en/b
 composer require nette/php-generator
 ```
 
-For PHP compatibility, see the [table](#compatibility-table). Documentation even for older versions can be found on the [library's website](https://doc.nette.org/php-generator).
+PhpGenerator 4.1 is compatible with PHP 8.0 to 8.3. Documentation can be found on the [library's website](https://doc.nette.org/php-generator).
 
+ <!---->
 
 [Support Me](https://github.com/sponsors/dg)
 --------------------------------------------
@@ -30,6 +39,7 @@ Do you like PHP Generator? Are you looking forward to the new features?
 
 Thank you!
 
+ <!---->
 
 Classes
 -------
@@ -175,6 +185,7 @@ $methodRecount = $methodCount->cloneWithName('recount');
 $class->addMember($methodRecount);
 ```
 
+ <!---->
 
 Interfaces or Traits
 --------------------
@@ -210,6 +221,7 @@ class Demo
 }
 ```
 
+ <!---->
 
 Enums
 -----
@@ -247,6 +259,7 @@ $enum->addCase('Diamonds', '♦');
 
 For each *case*, you can add a comment or [attributes](#attributes) using `addComment()` or `addAttribute()`.
 
+ <!---->
 
 Anonymous Classes
 -----------------
@@ -272,6 +285,7 @@ $obj = new class ($val) {
 };
 ```
 
+ <!---->
 
 Global Functions
 ----------------
@@ -298,6 +312,7 @@ function foo($a, $b)
 }
 ```
 
+ <!---->
 
 Anonymous Functions
 -------------------
@@ -325,6 +340,7 @@ function ($a, $b) use (&$c) {
 }
 ```
 
+ <!---->
 
 Short Arrow Functions
 ---------------------
@@ -346,6 +362,7 @@ The result is:
 fn($a, $b) => $a + $b
 ```
 
+ <!---->
 
 Method and Function Signatures
 ------------------------------
@@ -386,6 +403,7 @@ function count(...$items)
 }
 ```
 
+ <!---->
 
 Method and Function Bodies
 --------------------------
@@ -476,6 +494,7 @@ function foo($a)
 }
 ```
 
+ <!---->
 
 Printer and PSR Compliance
 --------------------------
@@ -531,6 +550,7 @@ The standard `Printer` formats the code as we do throughout Nette. Since Nette w
 The major difference is the use of tabs instead of spaces. We know that by using tabs in our projects, we allow for width customization, which is [essential for people with visual impairments](https://doc.nette.org/en/contributing/coding-standard#toc-tabs-instead-of-spaces).
 An example of a minor difference is placing the curly brace on a separate line for functions and methods, always. The PSR recommendation seems illogical to us and [leads to reduced code clarity](https://doc.nette.org/en/contributing/coding-standard#toc-wrapping-and-braces).
 
+ <!---->
 
 Types
 -----
@@ -549,6 +569,7 @@ $member->setType(null); // removes the type
 
 The same applies to the `setReturnType()` method.
 
+ <!---->
 
 Literals
 --------
@@ -595,6 +616,7 @@ Literal::new(Demo::class, [$a, 'foo' => $b]);
 // generates for example: new Demo(10, foo: 20)
 ```
 
+ <!---->
 
 Attributes
 ----------
@@ -641,6 +663,7 @@ class Demo
 }
 ```
 
+ <!---->
 
 Namespace
 ---------
@@ -687,6 +710,7 @@ echo $namespace->resolveName('Bar'); // 'Foo\Bar'
 echo $namespace->resolveName('range', $namespace::NameFunction); // 'iter\range'
 ```
 
+ <!---->
 
 Class Names Resolving
 ---------------------
@@ -741,6 +765,7 @@ $printer->setTypeResolving(false);
 echo $printer->printNamespace($namespace);
 ```
 
+ <!---->
 
 PHP Files
 ---------
@@ -790,6 +815,7 @@ function foo()
 
 **Please note:** No additional code can be added to the files outside of functions and classes.
 
+ <!---->
 
 Generating from Existing Ones
 -----------------------------
@@ -818,6 +844,7 @@ $class = Nette\PhpGenerator\ClassType::from(Foo::class, withBodies: true);
 $function = Nette\PhpGenerator\GlobalFunction::from('foo', withBody: true);
 ```
 
+ <!---->
 
 Loading from PHP Files
 ----------------------
@@ -849,6 +876,7 @@ It requires `nikic/php-parser` to be installed.
 
 *(If you need to manipulate global code in files or individual statements in method bodies, it's better to use the `nikic/php-parser` library directly.)*
 
+ <!---->
 
 Variable Dumping
 ----------------
@@ -862,15 +890,3 @@ $var = ['a', 'b', 123];
 
 echo $dumper->dump($var); // outputs ['a', 'b', 123]
 ```
-
-
-Compatibility Table
--------------------
-
-- PhpGenerator 4.1 is compatible with PHP 8.0 to 8.3
-- PhpGenerator 4.0 is compatible with PHP 8.0 to 8.3
-- PhpGenerator 3.6 is compatible with PHP 7.2 to 8.2
-- PhpGenerator 3.2 – 3.5 is compatible with PHP 7.1 to 8.0
-- PhpGenerator 3.1 is compatible with PHP 7.1 to 7.3
-- PhpGenerator 3.0 is compatible with PHP 7.0 to 7.3
-- PhpGenerator 2.6 is compatible with PHP 5.6 to 7.3
