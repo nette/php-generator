@@ -401,13 +401,9 @@ class Printer
 			$type = $this->namespace->simplifyType($type);
 		}
 
-		if ($nullable && strcasecmp($type, 'mixed')) {
-			$type = str_contains($type, '|')
-				? $type . '|null'
-				: '?' . $type;
-		}
-
-		return $type;
+		return $nullable
+			? Type::nullable($type)
+			: $type;
 	}
 
 
