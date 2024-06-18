@@ -27,7 +27,7 @@ abstract class Example extends ParentClass implements IExample, IOne
 	public $order = RecursiveIteratorIterator::SELF_FIRST;
 	public readonly array $typed1;
 	public ?array $typed2 = null;
-	public array $typed3 = null;
+	public ?array $typed3 = null;
 	public static $sections = ['first' => true];
 
 

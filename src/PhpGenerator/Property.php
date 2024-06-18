@@ -83,7 +83,7 @@ final class Property
 
 	public function isNullable(): bool
 	{
-		return $this->nullable;
+		return $this->nullable || ($this->initialized && $this->value === null);
 	}
 
 
