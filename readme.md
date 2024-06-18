@@ -26,7 +26,7 @@ Download and install the library using the [Composer](https://doc.nette.org/en/b
 composer require nette/php-generator
 ```
 
-PhpGenerator 4.1 is compatible with PHP 8.0 to 8.3. Documentation can be found on the [library's website](https://doc.nette.org/php-generator).
+PhpGenerator 4.1 is compatible with PHP 8.0 to 8.4. Documentation can be found on the [library's website](https://doc.nette.org/php-generator).
 
  <!---->
 
