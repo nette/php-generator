@@ -66,7 +66,7 @@ class Parameter
 
 	public function isNullable(): bool
 	{
-		return $this->nullable;
+		return $this->nullable || ($this->hasDefaultValue && $this->defaultValue === null);
 	}
 
 

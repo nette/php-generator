@@ -72,7 +72,7 @@ class Class2 extends Class1 implements Interface2
 	}
 
 
-	private function func4(array $a = [], Class2 $b = null, $c = Unknown::ABC)
+	private function func4(array $a = [], ?Class2 $b = null, $c = Unknown::ABC)
 	{
 	}
 
@@ -94,7 +94,7 @@ class Class4
 
 class Class5
 {
-	public function func1(\A $a, ?\B $b, ?\C $c = null, \D $d = null, ?int $i = 1, ?array $arr = [])
+	public function func1(\A $a, ?\B $b, ?\C $c = null, ?\D $d = null, ?int $i = 1, ?array $arr = [])
 	{
 	}
 
