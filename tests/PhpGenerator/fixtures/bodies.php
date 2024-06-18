@@ -36,7 +36,7 @@ abstract class Class7
 		throw new Nette\InvalidArgumentException('Argument must be Method|Property|Constant.');
 	}
 
-	function resolving($a = a\FOO, self $b = null, $c = self::FOO)
+	function resolving($a = a\FOO, ?self $b = null, $c = self::FOO)
 	{
 		// constants
 		echo FOO;
