@@ -352,7 +352,6 @@ class Printer
 		return $multiline
 			? "(\n" . $this->indent($res) . ')'
 			: '(' . substr($res, 0, -2) . ')';
-
 	}
 
 
