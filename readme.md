@@ -878,6 +878,39 @@ It requires `nikic/php-parser` to be installed.
 
  <!---->
 
+Class Manipulator
+-----------------
+
+The [ClassManipulator](https://api.nette.org/php-generator/master/Nette/PhpGenerator/ClassManipulator.html) class provides tools for manipulating classes.
+
+```php
+$class = new Nette\PhpGenerator\ClassType('Demo');
+$manipulator = new Nette\PhpGenerator\ClassManipulator($class);
+```
+
+The `inheritMethod()` method copies a method from a parent class or implemented interface into your class. This allows you to override the method or extend its signature:
+
+```php
+$method = $manipulator->inheritMethod('bar');
+$method->setBody('...');
+```
+
+The `inheritProperty()` method copies a property from a parent class into your class. This is useful when you want to have the same property in your class, but possibly with a different default value:
+
+```php
+$property = $manipulator->inheritProperty('foo');
+$property->setValue('new value');
+```
+
+The `implementInterface()` method automatically implements all methods from the given interface in your class:
+
+```php
+$manipulator->implementInterface(SomeInterface::class);
+// Now your class implements SomeInterface and includes all its methods
+```
+
+ <!---->
+
 Variable Dumping
 ----------------
 

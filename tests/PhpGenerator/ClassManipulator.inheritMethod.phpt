@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Nette\PhpGenerator\ClassManipulator;
+use Nette\PhpGenerator\ClassType;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
@@ -16,9 +18,10 @@ class Foo
 
 
 // missing parent
-$class = new Nette\PhpGenerator\ClassType('Test');
+$class = new ClassType('Test');
+$manipulator = new ClassManipulator($class);
 Assert::exception(
-	fn() => $class->inheritMethod('bar'),
+	fn() => $manipulator->inheritMethod('bar'),
 	Nette\InvalidStateException::class,
 	"Class 'Test' has neither setExtends() nor setImplements() set.",
 );
@@ -26,16 +29,17 @@ Assert::exception(
 $class->setExtends('Unknown1');
 $class->addImplement('Unknown2');
 Assert::exception(
-	fn() => $class->inheritMethod('bar'),
+	fn() => $manipulator->inheritMethod('bar'),
 	Nette\InvalidStateException::class,
 	"Method 'bar' has not been found in any ancestor: Unknown1, Unknown2",
 );
 
 
 // implement method
-$class = new Nette\PhpGenerator\ClassType('Test');
+$class = new ClassType('Test');
 $class->setExtends(Foo::class);
-$method = $class->inheritMethod('bar');
+$manipulator = new ClassManipulator($class);
+$method = $manipulator->inheritMethod('bar');
 Assert::match(<<<'XX'
 	public function bar(int $a, ...$b): void
 	{
@@ -43,9 +47,9 @@ Assert::match(<<<'XX'
 
 	XX, (string) $method);
 
-Assert::same($method, $class->inheritMethod('bar', returnIfExists: true));
+Assert::same($method, $manipulator->inheritMethod('bar', returnIfExists: true));
 Assert::exception(
-	fn() => $class->inheritMethod('bar', returnIfExists: false),
+	fn() => $manipulator->inheritMethod('bar', returnIfExists: false),
 	Nette\InvalidStateException::class,
 	"Cannot inherit method 'bar', because it already exists.",
 );
