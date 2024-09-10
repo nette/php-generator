@@ -67,4 +67,10 @@ trait TraitsAware
 		unset($this->traits[$name]);
 		return $this;
 	}
+
+
+	public function hasTrait(string $name): bool
+	{
+		return isset($this->traits[$name]);
+	}
 }
