@@ -387,11 +387,11 @@ $method->addParameter('items', []) // $items = []
 // function count(&$items = [])
 ```
 
-To define the so-called variadics parameters (or also the splat, spread, ellipsis, unpacking or three dots operator), use `setVariadics()`:
+To define the so-called variadics parameters (or also the splat, spread, ellipsis, unpacking or three dots operator), use `setVariadic()`:
 
 ```php
 $method = $class->addMethod('count');
-$method->setVariadics(true);
+$method->setVariadic(true);
 $method->addParameter('items');
 ```
 
