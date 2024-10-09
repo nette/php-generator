@@ -56,7 +56,7 @@ final class Example extends ParentClass implements IExample
 
     public function braces1(
         #[attr]
-        $var,
+        $var
     ): stdClass {
     }
 }

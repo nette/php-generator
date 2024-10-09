@@ -33,7 +33,7 @@ $function->addParameter('foo')
 Assert::match(<<<'XX'
 	function multi(
 		#[Foo]
-		$foo,
+		$foo
 	) {
 	}
 	XX, $printer->printFunction($function));
@@ -48,7 +48,7 @@ $function
 Assert::match(<<<'XX'
 	function multiType(
 		#[Foo]
-		$foo,
+		$foo
 	): array
 	{
 	}
@@ -121,7 +121,7 @@ $param->addAttribute('Foo', [1, 2, 3]);
 Assert::match(<<<'XX'
 	function func(
 		#[Foo(1, 2, 3)]
-		$foo,
+		$foo
 	) {
 	}
 	XX, $printer->printFunction($function));
@@ -136,7 +136,7 @@ $param->addAttribute('Bar');
 Assert::match(<<<'XX'
 	function func(
 		#[Foo(1, 2, 3), Bar]
-		$foo,
+		$foo
 	) {
 	}
 	XX, $printer->printFunction($function));
@@ -157,7 +157,7 @@ Assert::match(<<<'XX'
 			'a',
 			'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
 		)]
-		$foo,
+		$foo
 	) {
 	}
 	XX, $printer->printFunction($function));
@@ -176,7 +176,7 @@ Assert::match(<<<'XX'
 			'a',
 			'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
 		)]
-		$foo,
+		$foo
 	) {
 	}
 	XX, $printer->printFunction($function));

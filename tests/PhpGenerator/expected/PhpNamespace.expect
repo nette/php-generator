@@ -18,7 +18,7 @@ class A implements A, C
 		parent $c,
 		array $d,
 		?callable $e,
-		C|string $f,
+		C|string $f
 	): static|A
 	{
 	}

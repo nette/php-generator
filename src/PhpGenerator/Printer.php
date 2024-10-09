@@ -331,9 +331,10 @@ class Printer
 	{
 		$params = $function->getParameters();
 		$res = '';
+        $lastParam = end($params);
 
 		foreach ($params as $param) {
-			$variadic = $function->isVariadic() && $param === end($params);
+            $variadic = $function->isVariadic() && $param === $lastParam;
 			$attrs = $this->printAttributes($param->getAttributes(), inline: true);
 			$res .=
 				$this->printDocComment($param)
@@ -346,12 +347,13 @@ class Printer
 				. ($variadic ? '...' : '')
 				. '$' . $param->getName()
 				. ($param->hasDefaultValue() && !$variadic ? ' = ' . $this->dump($param->getDefaultValue()) : '')
-				. ($multiline ? ",\n" : ', ');
+                . ($param !== $lastParam ? ',' : '')
+				. ($multiline ? "\n" : ' ');
 		}
 
 		return $multiline
 			? "(\n" . $this->indent($res) . ')'
-			: '(' . substr($res, 0, -2) . ')';
+			: '(' . rtrim($res) . ')';
 	}
 
 

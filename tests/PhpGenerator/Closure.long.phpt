@@ -33,7 +33,7 @@ same(
 			$abcdq,
 			$abcdr,
 			$abcds,
-			$abcdt,
+			$abcdt
 		) use (
 			$abcde,
 			$abcdf,

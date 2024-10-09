@@ -34,7 +34,7 @@ class Class12
 
 
 	public function __construct(
-		private readonly string $foo,
+		private readonly string $foo
 	) {
 		$this->bar = "foobar";
 	}

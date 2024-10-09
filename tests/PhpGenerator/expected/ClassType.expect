@@ -52,6 +52,6 @@ abstract class Example extends ParentClass implements IExample, IOne
 		/** comment */
 		$item,
 		array|null &$res = null,
-		stdClass|string|null $bar = null,
+		stdClass|string|null $bar = null
 	);
 }

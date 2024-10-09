@@ -67,7 +67,7 @@ class Class2 extends Class1 implements Interface2
 		Unknown $c,
 		\Xyz\Unknown $d,
 		?callable $e,
-		$f,
+		$f
 	) {
 	}
 
@@ -129,7 +129,7 @@ class Class8
 	public function __construct(
 		public $a,
 		private int|string $b = 10,
-		$c = null,
+		$c = null
 	) {
 	}
 }
@@ -157,7 +157,7 @@ class Class9
 	#[ExampleAttribute]
 	public function getHandle(
 		#[WithArguments(123)]
-		$mode,
+		$mode
 	) {
 	}
 }

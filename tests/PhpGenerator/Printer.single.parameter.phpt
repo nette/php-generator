@@ -65,7 +65,7 @@ $method
 
 Assert::match(<<<'XX'
 	public function singleMethod(
-		public $looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong,
+		public $looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong
 	): array
 	{
 	}
@@ -81,7 +81,7 @@ Assert::match(<<<'XX'
 	function singleMethod(
 		#[Foo('
 		')]
-		$foo,
+		$foo
 	) {
 	}
 	XX, $printer->printMethod($method));
