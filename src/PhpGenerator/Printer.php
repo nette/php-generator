@@ -46,8 +46,7 @@ class Printer
 			. $function->getName();
 		$returnType = $this->printReturnType($function);
 		$params = $this->printParameters($function, strlen($line) + strlen($returnType) + 2); // 2 = parentheses
-		$body = Helpers::simplifyTaggedNames($function->getBody(), $this->namespace);
-		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
+		$body = $this->printFunctionBody($function);
 		$braceOnNextLine = $this->isBraceOnNextLine(str_contains($params, "\n"), (bool) $returnType);
 
 		return $this->printDocComment($function)
@@ -71,8 +70,7 @@ class Printer
 		$useStr = strlen($tmp = implode(', ', $uses)) > $this->wrapLength && count($uses) > 1
 			? "\n" . $this->indentation . implode(",\n" . $this->indentation, $uses) . ",\n"
 			: $tmp;
-		$body = Helpers::simplifyTaggedNames($closure->getBody(), $this->namespace);
-		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
+		$body = $this->printFunctionBody($closure);
 
 		return $this->printAttributes($closure->getAttributes(), inline: true)
 			. 'function '
@@ -93,14 +91,14 @@ class Printer
 			}
 		}
 
-		$body = Helpers::simplifyTaggedNames($closure->getBody(), $this->namespace);
+		$body = $this->printFunctionBody($closure);
 
 		return $this->printAttributes($closure->getAttributes())
 			. 'fn'
 			. ($closure->getReturnReference() ? '&' : '')
 			. $this->printParameters($closure)
 			. $this->printReturnType($closure)
-			. ' => ' . trim(Strings::normalize($body)) . ';';
+			. ' => ' . rtrim($body, "\n") . ';';
 	}
 
 
@@ -117,8 +115,7 @@ class Printer
 			. $method->getName();
 		$returnType = $this->printReturnType($method);
 		$params = $this->printParameters($method, strlen($line) + strlen($returnType) + strlen($this->indentation) + 2);
-		$body = Helpers::simplifyTaggedNames($method->getBody(), $this->namespace);
-		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
+		$body = $this->printFunctionBody($method);
 		$braceOnNextLine = $this->isBraceOnNextLine(str_contains($params, "\n"), (bool) $returnType);
 
 		return $this->printDocComment($method)
@@ -129,6 +126,14 @@ class Printer
 			. ($method->isAbstract() || $isInterface
 				? ";\n"
 				: ($braceOnNextLine ? "\n" : ' ') . "{\n" . $this->indent($body) . "}\n");
+	}
+
+
+	private function printFunctionBody(Closure|GlobalFunction|Method $function): string
+	{
+		$code = Helpers::simplifyTaggedNames($function->getBody(), $this->namespace);
+		$code = Strings::normalize($code);
+		return ltrim(rtrim($code) . "\n");
 	}
 
 
