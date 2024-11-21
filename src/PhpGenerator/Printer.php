@@ -46,8 +46,7 @@ class Printer
 			. $function->getName();
 		$returnType = $this->printReturnType($function);
 		$params = $this->printParameters($function, strlen($line) + strlen($returnType) + 2); // 2 = parentheses
-		$body = Helpers::simplifyTaggedNames($function->getBody(), $this->namespace);
-		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
+		$body = $this->printFunctionBody($function) . "\n";
 		$braceOnNextLine = $this->isBraceOnNextLine(str_contains($params, "\n"), (bool) $returnType);
 
 		return $this->printDocComment($function)
@@ -71,8 +70,7 @@ class Printer
 		$useStr = strlen($tmp = implode(', ', $uses)) > $this->wrapLength && count($uses) > 1
 			? "\n" . $this->indentation . implode(",\n" . $this->indentation, $uses) . ",\n"
 			: $tmp;
-		$body = Helpers::simplifyTaggedNames($closure->getBody(), $this->namespace);
-		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
+		$body = $this->printFunctionBody($closure) . "\n";
 
 		return $this->printAttributes($closure->getAttributes(), inline: true)
 			. 'function '
@@ -93,14 +91,14 @@ class Printer
 			}
 		}
 
-		$body = Helpers::simplifyTaggedNames($closure->getBody(), $this->namespace);
+		$body = $this->printFunctionBody($closure);
 
 		return $this->printAttributes($closure->getAttributes())
 			. 'fn'
 			. ($closure->getReturnReference() ? '&' : '')
 			. $this->printParameters($closure)
 			. $this->printReturnType($closure)
-			. ' => ' . trim(Strings::normalize($body)) . ';';
+			. ' => ' . $body . ';';
 	}
 
 
@@ -117,8 +115,7 @@ class Printer
 			. $method->getName();
 		$returnType = $this->printReturnType($method);
 		$params = $this->printParameters($method, strlen($line) + strlen($returnType) + strlen($this->indentation) + 2);
-		$body = Helpers::simplifyTaggedNames($method->getBody(), $this->namespace);
-		$body = ltrim(rtrim(Strings::normalize($body)) . "\n");
+		$body = $this->printFunctionBody($method) . "\n";
 		$braceOnNextLine = $this->isBraceOnNextLine(str_contains($params, "\n"), (bool) $returnType);
 
 		return $this->printDocComment($method)
@@ -131,6 +128,12 @@ class Printer
 				: ($braceOnNextLine ? "\n" : ' ') . "{\n" . $this->indent($body) . "}\n");
 	}
 
+    protected function printFunctionBody(Closure|GlobalFunction|Method $function): string
+    {
+        return trim(Strings::normalize(
+            Helpers::simplifyTaggedNames($function->getBody(), $this->namespace)
+        ));
+    }
 
 	public function printClass(
 		ClassType|InterfaceType|TraitType|EnumType $class,
@@ -193,9 +196,11 @@ class Printer
 		}
 
 		$properties = [];
-		if ($class instanceof ClassType || $class instanceof TraitType) {
+		if ($class instanceof ClassType || $class instanceof TraitType || $class instanceof InterfaceType) {
 			foreach ($class->getProperties() as $property) {
-				$properties[] = $this->printProperty($property, $readOnlyClass);
+                if (!$class instanceof InterfaceType || ($property->hasGetHook() || $property->hasSetHook())) {
+                    $properties[] = $this->printProperty($property, $readOnlyClass, $class->isInterface());
+                }
 			}
 		}
 
@@ -370,7 +375,7 @@ class Printer
 	}
 
 
-	private function printProperty(Property $property, bool $readOnlyClass = false): string
+	private function printProperty(Property $property, bool $readOnlyClass = false, bool $isInterface = false): string
 	{
 		$property->validate();
 		$type = $property->getType();
@@ -381,13 +386,18 @@ class Printer
 			. ltrim($this->printType($type, $property->isNullable()) . ' ')
 			. '$' . $property->getName());
 
+		$hooks = $this->printHooks($property, $isInterface);
+
+        $defaultValue = $isInterface || ($property->getValue() === null && !$property->isInitialized())
+            ? ''
+            : ' = ' . $this->dump($property->getValue(), strlen($def) + 3); // 3 = ' = '
+
 		return $this->printDocComment($property)
 			. $this->printAttributes($property->getAttributes())
 			. $def
-			. ($property->getValue() === null && !$property->isInitialized()
-				? ''
-				: ' = ' . $this->dump($property->getValue(), strlen($def) + 3)) // 3 = ' = '
-			. ";\n";
+            . $defaultValue
+			. ($hooks ?? ';')
+			. "\n";
 	}
 
 
@@ -484,4 +494,31 @@ class Printer
 	{
 		return $this->bracesOnNextLine && (!$multiLine || $hasReturnType);
 	}
+
+    private function printHooks(Property $property, bool $isInterface = false): ?string
+    {
+        $getHook = $property->getGetHook();
+        $setHook = $property->getSetHook();
+
+        if ($getHook === null && $setHook === null) {
+            return null;
+        }
+
+        $out = " {" . ($isInterface ? ' ' : "\n");
+        
+        if ($getHook !== null) {
+            $out .= $isInterface ? "get; " : $this->indent(
+                "get {\n" . $this->indent($this->printFunctionBody($getHook)) . "\n}\n"
+            );
+        }
+
+        if ($setHook !== null) {
+            $params = $this->printParameters($setHook);
+            $out .= $isInterface ? "set; " : $this->indent(
+                'set ' . $params . ' {' . "\n" . $this->indent($this->printFunctionBody($setHook)) . "\n}\n"
+            );
+        }
+
+        return $out . '}';
+    }
 }

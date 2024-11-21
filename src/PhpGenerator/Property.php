@@ -29,6 +29,8 @@ final class Property
 	private bool $nullable = false;
 	private bool $initialized = false;
 	private bool $readOnly = false;
+	private ?Closure $getHook = null;
+	private ?Closure $setHook = null;
 
 
 	public function setValue(mixed $val): static
@@ -112,6 +114,37 @@ final class Property
 		return $this->readOnly;
 	}
 
+	public function setGetHook(?Closure $hook = null): static
+	{
+		$this->getHook = $hook;
+		return $this;
+	}
+
+	public function getGetHook(): ?Closure
+	{
+		return $this->getHook;
+	}
+
+	public function hasGetHook(): bool
+	{
+		return $this->getHook !== null;
+	}
+
+	public function setSetHook(?Closure $hook = null): static
+	{
+		$this->setHook = $hook;
+		return $this;
+	}
+
+	public function getSetHook(): ?Closure
+	{
+		return $this->setHook;
+	}
+
+	public function hasSetHook(): bool
+	{
+		return $this->setHook !== null;
+	}
 
 	/** @throws Nette\InvalidStateException */
 	public function validate(): void
