@@ -17,23 +17,7 @@ use Nette;
  */
 final class PromotedParameter extends Parameter
 {
-	use Traits\VisibilityAware;
-
-	private bool $readOnly = false;
-
-
-	public function setReadOnly(bool $state = true): static
-	{
-		$this->readOnly = $state;
-		return $this;
-	}
-
-
-	public function isReadOnly(): bool
-	{
-		return $this->readOnly;
-	}
-
+	use Traits\PropertyLike;
 
 	/** @throws Nette\InvalidStateException */
 	public function validate(): void

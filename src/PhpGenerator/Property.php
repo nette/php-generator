@@ -19,7 +19,7 @@ use Nette\Utils\Type;
 final class Property
 {
 	use Traits\NameAware;
-	use Traits\VisibilityAware;
+	use Traits\PropertyLike;
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 
@@ -28,7 +28,6 @@ final class Property
 	private ?string $type = null;
 	private bool $nullable = false;
 	private bool $initialized = false;
-	private bool $readOnly = false;
 
 
 	public function setValue(mixed $val): static
@@ -97,19 +96,6 @@ final class Property
 	public function isInitialized(): bool
 	{
 		return $this->initialized || $this->value !== null;
-	}
-
-
-	public function setReadOnly(bool $state = true): static
-	{
-		$this->readOnly = $state;
-		return $this;
-	}
-
-
-	public function isReadOnly(): bool
-	{
-		return $this->readOnly;
 	}
 
 
