@@ -4,7 +4,7 @@ readonly class Class13
 
 
 	public function __construct(
-		public bool $bar = true,
+		private bool $bar = true,
 	) {
 	}
 

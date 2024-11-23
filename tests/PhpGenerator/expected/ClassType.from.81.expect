@@ -28,7 +28,7 @@ class Class12
 
 
 	public function __construct(
-		public readonly string $foo,
+		private readonly string $foo,
 	) {
 	}
 }

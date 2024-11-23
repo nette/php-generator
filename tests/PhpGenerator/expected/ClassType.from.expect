@@ -111,7 +111,7 @@ class Class8
 {
 	public function __construct(
 		public $a,
-		public string|int $b = 10,
+		private string|int $b = 10,
 		$c = null,
 	) {
 	}
