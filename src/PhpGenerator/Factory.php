@@ -204,6 +204,7 @@ final class Factory
 			$param = (new PromotedParameter($from->name))
 				->setVisibility($this->getVisibility($property))
 				->setReadOnly(PHP_VERSION_ID >= 80100 && $property->isReadonly());
+			$this->addHooks($property, $param);
 		} else {
 			$param = new Parameter($from->name);
 		}
@@ -260,12 +261,55 @@ final class Factory
 		$prop->setStatic($from->isStatic());
 		$prop->setVisibility($this->getVisibility($from));
 		$prop->setType((string) $from->getType());
-
 		$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
 		$prop->setReadOnly(PHP_VERSION_ID >= 80100 && $from->isReadOnly());
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$prop->setAttributes($this->getAttributes($from));
+
+		if (PHP_VERSION_ID >= 80400) {
+			$this->addHooks($from, $prop);
+			$isInterface = $from->getDeclaringClass()->isInterface();
+			$prop->setFinal($from->isFinal() && !$prop->isPrivate(PropertyAccessMode::Set));
+			$prop->setAbstract($from->isAbstract() && !$isInterface);
+		}
 		return $prop;
+	}
+
+
+	private function addHooks(\ReflectionProperty $from, Property|PromotedParameter $prop): void
+	{
+		if (PHP_VERSION_ID < 80400) {
+			return;
+		}
+
+		$getV = $this->getVisibility($from);
+		$setV = $from->isPrivateSet()
+			? Visibility::Private
+			: ($from->isProtectedSet() ? Visibility::Protected : $getV);
+		$defaultSetV = $from->isReadOnly() && $getV !== Visibility::Private
+			? Visibility::Protected
+			: $getV;
+		if ($setV !== $defaultSetV) {
+			$prop->setVisibility($getV === Visibility::Public ? null : $getV, $setV);
+		}
+
+		foreach ($from->getHooks() as $type => $hook) {
+			$params = $hook->getParameters();
+			if (
+				count($params) === 1
+				&& $params[0]->getName() === 'value'
+				&& $params[0]->getType() == $from->getType() // intentionally ==
+			) {
+				$params = [];
+			}
+			$prop->addHook($type)
+				->setParameters(array_map([$this, 'fromParameterReflection'], $params))
+				->setAbstract($hook->isAbstract())
+				->setFinal($hook->isFinal())
+				->setReturnReference($hook->returnsReference())
+				->setComment(Helpers::unformatDocComment((string) $hook->getDocComment()))
+				->setAttributes($this->getAttributes($hook));
+		}
 	}
 
 

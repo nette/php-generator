@@ -1,0 +1,163 @@
+class PropertyHookSignatures
+{
+	public string $basic {
+		get {
+		}
+	}
+
+	public string $fullGet {
+		get {
+		}
+	}
+
+	protected string $refGet {
+		&get {
+		}
+	}
+
+	protected string $finalGet {
+		final get {
+		}
+	}
+
+	public string $basicSet {
+		set {
+		}
+	}
+
+	public string $fullSet {
+		set {
+		}
+	}
+
+	public string $setWithParam {
+		set(string $foo) {
+		}
+	}
+
+	public string $setWithParam2 {
+		set(string|int $value) {
+		}
+	}
+
+	public string $finalSet {
+		final set {
+		}
+	}
+
+	public string $combined {
+		set {
+		}
+		get {
+		}
+	}
+
+	final public string $combinedFinal {
+		/** comment set */
+		#[Set]
+		set {
+		}
+		/** comment get */
+		#[Get]
+		get {
+		}
+	}
+
+	public string $virtualProp {
+		set {
+		}
+		&get {
+		}
+	}
+}
+
+abstract class AbstractHookSignatures
+{
+	abstract public string $abstractGet { get; }
+	abstract protected string $abstractSet { set; }
+	abstract public string $abstractBoth { set; get; }
+
+	abstract public string $mixedGet {
+		set {
+		}
+		get;
+	}
+
+	abstract public string $mixedSet {
+		set;
+		get {
+		}
+	}
+}
+
+interface InterfaceHookSignatures
+{
+	public string $get { get; }
+
+	public string $set { #[Set]
+	set; }
+	public string $both { set; get; }
+	public string $refGet { &get; }
+}
+
+class AsymmetricVisibilitySignatures
+{
+	private(set) string $first;
+	protected(set) string $second;
+	protected private(set) string $third;
+	private(set) string $fourth;
+	protected(set) string $fifth;
+	public readonly string $implicit;
+	private(set) readonly string $readFirst;
+	private(set) readonly string $readSecond;
+	protected readonly string $readThird;
+	public(set) readonly string $readFourth;
+	private(set) string $firstFinal;
+	final protected(set) string $secondFinal;
+	protected private(set) string $thirdFinal;
+	private(set) string $fourthFinal;
+	final protected(set) string $fifthFinal;
+}
+
+class CombinedSignatures
+{
+	protected(set) string $prop2 {
+		final set {
+		}
+		get {
+		}
+	}
+
+	protected private(set) string $prop3 {
+		set {
+		}
+		final get {
+		}
+	}
+}
+
+class ConstructorAllSignatures
+{
+	public function __construct(
+		private(set) string $prop1,
+		protected(set) string $prop2,
+		protected private(set) string $prop3,
+		private(set) string $prop4,
+		protected(set) string $prop5,
+		private(set) readonly string $readProp1,
+		private(set) readonly string $readProp2,
+		protected readonly string $readProp3,
+		public(set) readonly string $readProp4,
+		public string $hookProp1 {
+			get {
+			}
+		},
+		protected(set) string $mixedProp1 {
+			set {
+			}
+			get {
+			}
+		},
+	) {
+	}
+}
