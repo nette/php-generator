@@ -699,6 +699,21 @@ class Demo
 }
 ```
 
+Properties and property hooks can be abstract or final:
+
+```php
+$class->addProperty('id')
+    ->setType('int')
+    ->addHook('get')
+        ->setAbstract();
+
+$class->addProperty('role')
+    ->setType('string')
+    ->addHook('set', 'strtolower($value)')
+        ->setFinal();
+```
+
+
  <!---->
 
 Namespace

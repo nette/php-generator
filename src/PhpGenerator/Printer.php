@@ -380,12 +380,14 @@ class Printer
 	{
 		$property->validate();
 		$type = $property->getType();
-		$def = (($property->getVisibility() ?: 'public')
+		$def = ($property->isAbstract() && !$isInterface ? 'abstract ' : '')
+			. ($property->isFinal() ? 'final ' : '')
+			. ($property->getVisibility() ?: 'public')
 			. ($property->isStatic() ? ' static' : '')
 			. (!$readOnlyClass && $property->isReadOnly() && $type ? ' readonly' : '')
 			. ' '
 			. ltrim($this->printType($type, $property->isNullable()) . ' ')
-			. '$' . $property->getName());
+			. '$' . $property->getName();
 
 		$defaultValue = $property->getValue() === null && !$property->isInitialized()
 			? ''

@@ -116,7 +116,7 @@ final class ClassManipulator
 	private function implementProperty(\ReflectionProperty $rp): Property
 	{
 		$property = (new Factory)->fromPropertyReflection($rp);
-		$property->setHooks([]);
+		$property->setHooks([])->setAbstract(false);
 		$this->class->addMember($property);
 		return $property;
 	}
