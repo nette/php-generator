@@ -8,7 +8,7 @@ Are you looking for a tool to generate PHP code for [classes](#classes), [functi
 
 <h3>
 
-✅ Supports all the latest PHP features like [enums](#enums), [attributes](#attributes), etc.<br>
+✅ Supports all the latest PHP features like [property hooks](#property-hooks), [enums](#enums), [attributes](#attributes), etc.<br>
 ✅ Allows you to easily modify [existing classes](#generating-from-existing-ones)<br>
 ✅ Output compliant with [PSR-12 / PER coding style](#printer-and-psr-compliance)<br>
 ✅ Highly mature, stable, and widely used library
@@ -660,6 +660,42 @@ class Demo
 		$items,
 	) {
 	}
+}
+```
+
+ <!---->
+
+Property Hooks
+--------------
+
+You can also define property hooks (represented by the class [PropertyHook](https://api.nette.org/php-generator/master/Nette/PhpGenerator/PropertyHook.html)) for get and set operations, a feature introduced in PHP 8.4:
+
+```php
+$class = new Nette\PhpGenerator\ClassType('Demo');
+$prop = $class->addProperty('firstName')
+    ->setType('string');
+
+$prop->addHook('set', 'strtolower($value)')
+    ->addParameter('value')
+	    ->setType('string');
+
+$prop->addHook('get')
+	->setBody('return ucfirst($this->firstName);');
+
+echo $class;
+```
+
+This generates:
+
+```php
+class Demo
+{
+    public string $firstName {
+        set(string $value) => strtolower($value);
+        get {
+            return ucfirst($this->firstName);
+        }
+    }
 }
 ```
 

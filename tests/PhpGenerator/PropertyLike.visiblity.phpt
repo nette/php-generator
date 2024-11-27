@@ -61,8 +61,7 @@ Assert::false($changing->isPrivate());
 // Test invalid visibility
 Assert::exception(
 	fn() => $changing->setVisibility('invalid'),
-	Nette\InvalidArgumentException::class,
-	'Argument must be public|protected|private.',
+	ValueError::class,
 );
 
 same(<<<'XX'

@@ -129,7 +129,7 @@ class Printer
 	}
 
 
-	private function printFunctionBody(Closure|GlobalFunction|Method $function): string
+	private function printFunctionBody(Closure|GlobalFunction|Method|PropertyHook $function): string
 	{
 		$code = Helpers::simplifyTaggedNames($function->getBody(), $this->namespace);
 		$code = Strings::normalize($code);
@@ -313,7 +313,7 @@ class Printer
 	}
 
 
-	protected function printParameters(Closure|GlobalFunction|Method $function, int $column = 0): string
+	protected function printParameters(Closure|GlobalFunction|Method|PropertyHook $function, int $column = 0): string
 	{
 		$special = false;
 		foreach ($function->getParameters() as $param) {
@@ -332,13 +332,13 @@ class Printer
 	}
 
 
-	private function formatParameters(Closure|GlobalFunction|Method $function, bool $multiline): string
+	private function formatParameters(Closure|GlobalFunction|Method|PropertyHook $function, bool $multiline): string
 	{
 		$params = $function->getParameters();
 		$res = '';
 
 		foreach ($params as $param) {
-			$variadic = $function->isVariadic() && $param === end($params);
+			$variadic = !$function instanceof PropertyHook && $function->isVariadic() && $param === end($params);
 			$attrs = $this->printAttributes($param->getAttributes(), inline: true);
 			$res .=
 				$this->printDocComment($param)
@@ -351,6 +351,7 @@ class Printer
 				. ($variadic ? '...' : '')
 				. '$' . $param->getName()
 				. ($param->hasDefaultValue() && !$variadic ? ' = ' . $this->dump($param->getDefaultValue()) : '')
+				. ($param instanceof PromotedParameter ? $this->printHooks($param) : '')
 				. ($multiline ? ",\n" : ', ');
 		}
 
@@ -386,13 +387,16 @@ class Printer
 			. ltrim($this->printType($type, $property->isNullable()) . ' ')
 			. '$' . $property->getName());
 
+		$defaultValue = $property->getValue() === null && !$property->isInitialized()
+			? ''
+			: ' = ' . $this->dump($property->getValue(), strlen($def) + 3); // 3 = ' = '
+
 		return $this->printDocComment($property)
 			. $this->printAttributes($property->getAttributes())
 			. $def
-			. ($property->getValue() === null && !$property->isInitialized()
-				? ''
-				: ' = ' . $this->dump($property->getValue(), strlen($def) + 3)) // 3 = ' = '
-			. ";\n";
+			. $defaultValue
+			. ($this->printHooks($property) ?: ';')
+			. "\n";
 	}
 
 
@@ -449,6 +453,30 @@ class Printer
 		return $inline
 			? '#[' . implode(', ', $items) . '] '
 			: '#[' . implode("]\n#[", $items) . "]\n";
+	}
+
+
+	private function printHooks(Property|PromotedParameter $property): string
+	{
+		$hooks = $property->getHooks();
+		if (!$hooks) {
+			return '';
+		}
+
+		foreach ($property->getHooks() as $type => $hook) {
+			$hooks[$type] = $this->printDocComment($hook)
+				. $this->printAttributes($hook->getAttributes())
+				. ($hook->isFinal() ? 'final ' : '')
+				. ($hook->getReturnReference() ? '&' : '')
+				. $type
+				. ($hook->getParameters() ? $this->printParameters($hook) : '')
+				. ' '
+				. ($hook->isShort()
+					? '=> ' . $hook->getBody() . ';'
+					: "{\n" . $this->indent($this->printFunctionBody($hook)) . '}');
+		}
+
+		return " {\n" . $this->indent(implode("\n", $hooks)) . "\n}";
 	}
 
 

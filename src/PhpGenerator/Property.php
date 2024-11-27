@@ -106,4 +106,10 @@ final class Property
 			throw new Nette\InvalidStateException("Property \$$this->name: Read-only properties are only supported on typed property.");
 		}
 	}
+
+
+	public function __clone(): void
+	{
+		$this->hooks = array_map(fn($item) => $item ? clone $item : $item, $this->hooks);
+	}
 }
