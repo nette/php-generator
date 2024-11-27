@@ -9,8 +9,10 @@ declare(strict_types=1);
 
 namespace Nette\PhpGenerator\Traits;
 
+use Nette\PhpGenerator\PropertyAccessMode;
 use Nette\PhpGenerator\PropertyHook;
 use Nette\PhpGenerator\PropertyHookType;
+use Nette\PhpGenerator\Visibility;
 
 
 /**
@@ -18,12 +20,78 @@ use Nette\PhpGenerator\PropertyHookType;
  */
 trait PropertyLike
 {
-	use VisibilityAware;
-
+	/** @var array{'set' => ?string, 'get' => ?string} */
+	private array $visibility = [PropertyAccessMode::Set => null, PropertyAccessMode::Get => null];
 	private bool $readOnly = false;
 
 	/** @var array<string, ?PropertyHook> */
 	private array $hooks = [PropertyHookType::Set => null, PropertyHookType::Get => null];
+
+
+	/**
+	 * @param  'public'|'protected'|'private'|null  $get
+	 * @param  'public'|'protected'|'private'|null  $set
+	 */
+	public function setVisibility(?string $get, ?string $set = null): static
+	{
+		$this->visibility = [
+			PropertyAccessMode::Set => $set === null ? $set : Visibility::from($set),
+			PropertyAccessMode::Get => $get === null ? $get : Visibility::from($get),
+		];
+		return $this;
+	}
+
+
+	/** @param  'set'|'get'  $mode */
+	public function getVisibility(string $mode = PropertyAccessMode::Get): ?string
+	{
+		return $this->visibility[PropertyAccessMode::from($mode)];
+	}
+
+
+	/** @param  'set'|'get'  $mode */
+	public function setPublic(string $mode = PropertyAccessMode::Get): static
+	{
+		$this->visibility[PropertyAccessMode::from($mode)] = Visibility::Public;
+		return $this;
+	}
+
+
+	/** @param  'set'|'get'  $mode */
+	public function isPublic(string $mode = PropertyAccessMode::Get): bool
+	{
+		return in_array($this->visibility[PropertyAccessMode::from($mode)], [Visibility::Public, null], true);
+	}
+
+
+	/** @param  'set'|'get'  $mode */
+	public function setProtected(string $mode = PropertyAccessMode::Get): static
+	{
+		$this->visibility[PropertyAccessMode::from($mode)] = Visibility::Protected;
+		return $this;
+	}
+
+
+	/** @param  'set'|'get'  $mode */
+	public function isProtected(string $mode = PropertyAccessMode::Get): bool
+	{
+		return $this->visibility[PropertyAccessMode::from($mode)] === Visibility::Protected;
+	}
+
+
+	/** @param  'set'|'get'  $mode */
+	public function setPrivate(string $mode = PropertyAccessMode::Get): static
+	{
+		$this->visibility[PropertyAccessMode::from($mode)] = Visibility::Private;
+		return $this;
+	}
+
+
+	/** @param  'set'|'get'  $mode */
+	public function isPrivate(string $mode = PropertyAccessMode::Get): bool
+	{
+		return $this->visibility[PropertyAccessMode::from($mode)] === Visibility::Private;
+	}
 
 
 	public function setReadOnly(bool $state = true): static

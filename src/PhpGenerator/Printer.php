@@ -344,7 +344,7 @@ class Printer
 				$this->printDocComment($param)
 				. ($attrs ? ($multiline ? substr($attrs, 0, -1) . "\n" : $attrs) : '')
 				. ($param instanceof PromotedParameter
-					? ($param->getVisibility() ?: 'public') . ($param->isReadOnly() && $param->getType() ? ' readonly' : '') . ' '
+					? $this->printPropertyVisibility($param) . ($param->isReadOnly() && $param->getType() ? ' readonly' : '') . ' '
 					: '')
 				. ltrim($this->printType($param->getType(), $param->isNullable()) . ' ')
 				. ($param->isReference() ? '&' : '')
@@ -382,7 +382,7 @@ class Printer
 		$type = $property->getType();
 		$def = ($property->isAbstract() && !$isInterface ? 'abstract ' : '')
 			. ($property->isFinal() ? 'final ' : '')
-			. ($property->getVisibility() ?: 'public')
+			. $this->printPropertyVisibility($property)
 			. ($property->isStatic() ? ' static' : '')
 			. (!$readOnlyClass && $property->isReadOnly() && $type ? ' readonly' : '')
 			. ' '
@@ -399,6 +399,16 @@ class Printer
 			. $defaultValue
 			. ($this->printHooks($property, $isInterface) ?: ';')
 			. "\n";
+	}
+
+
+	private function printPropertyVisibility(Property|PromotedParameter $param): string
+	{
+		$get = $param->getVisibility(PropertyAccessMode::Get);
+		$set = $param->getVisibility(PropertyAccessMode::Set);
+		return $set
+			? ($get ? "$get $set(set)" : "$set(set)")
+			: $get ?? 'public';
 	}
 
 

@@ -713,6 +713,38 @@ $class->addProperty('role')
         ->setFinal();
 ```
 
+ <!---->
+
+Asymmetric Visibility
+---------------------
+
+PHP 8.4 introduces asymmetric visibility for properties. You can set different access levels for reading and writing.
+The visibility can be set using either the `setVisibility()` method with two parameters, or by using `setPublic()`, `setProtected()`, or `setPrivate()` with the `mode` parameter that specifies whether the visibility applies to getting or setting the property. The default mode is 'get'.
+
+```php
+$class = new Nette\PhpGenerator\ClassType('Demo');
+
+$class->addProperty('name')
+    ->setType('string')
+    ->setVisibility('public', 'private'); // public for read, private for write
+
+$class->addProperty('id')
+    ->setType('int')
+    ->setProtected('set'); // protected for write
+
+echo $class;
+```
+
+This generates:
+
+```php
+class Demo
+{
+    public private(set) string $name;
+
+    protected(set) int $id;
+}
+```
 
  <!---->
 
