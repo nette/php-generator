@@ -80,16 +80,24 @@ final class ClassManipulator
 	/**
 	 * Implements all methods from the given interface.
 	 */
-	public function implementInterface(string $interfaceName): void
+	public function implement(string $name): void
 	{
-		$interface = new \ReflectionClass($interfaceName);
-		if (!$interface->isInterface()) {
-			throw new Nette\InvalidArgumentException("Class '$interfaceName' is not an interface.");
+		$definition = new \ReflectionClass($name);
+		if (!$definition->isInterface()) {
+			throw new Nette\InvalidArgumentException("Class '$name' is not an interface.");
 		}
 
-		$this->class->addImplement($interfaceName);
-		foreach ($interface->getMethods() as $method) {
+		$this->class->addImplement($name);
+		foreach ($definition->getMethods() as $method) {
 			$this->inheritMethod($method->getName(), returnIfExists: true);
 		}
+	}
+
+
+	/** @deprecated use implement() */
+	public function implementInterface(string $interfaceName): void
+	{
+		trigger_error(__METHOD__ . '() is deprecated, use implement()', E_USER_DEPRECATED);
+		$this->implement($interfaceName);
 	}
 }

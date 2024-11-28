@@ -902,10 +902,10 @@ $property = $manipulator->inheritProperty('foo');
 $property->setValue('new value');
 ```
 
-The `implementInterface()` method automatically implements all methods from the given interface in your class:
+The `implement()` method automatically implements all methods from the given interface in your class:
 
 ```php
-$manipulator->implementInterface(SomeInterface::class);
+$manipulator->implement(SomeInterface::class);
 // Now your class implements SomeInterface and includes all its methods
 ```
 

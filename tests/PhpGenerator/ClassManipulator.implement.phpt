@@ -18,12 +18,12 @@ $class = new ClassType('TestClass');
 $manipulator = new ClassManipulator($class);
 
 // Test valid interface implementation
-$manipulator->implementInterface(TestInterface::class);
+$manipulator->implement(TestInterface::class);
 Assert::true(in_array(TestInterface::class, $class->getImplements(), true));
 Assert::true($class->hasMethod('testMethod'));
 
 // Test exception for non-interface
 Assert::exception(
-	fn() => $manipulator->implementInterface(stdClass::class),
+	fn() => $manipulator->implement(stdClass::class),
 	InvalidArgumentException::class,
 );
