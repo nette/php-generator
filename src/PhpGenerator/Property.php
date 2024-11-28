@@ -14,7 +14,7 @@ use Nette\Utils\Type;
 
 
 /**
- * Class property description.
+ * Definition of a class property.
  */
 final class Property
 {

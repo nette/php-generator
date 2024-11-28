@@ -13,7 +13,7 @@ use Nette;
 
 
 /**
- * Interface description.
+ * Definition of an interface with methods and constants.
  */
 final class InterfaceType extends ClassLike
 {

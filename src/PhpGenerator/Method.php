@@ -13,7 +13,7 @@ use Nette;
 
 
 /**
- * Class method.
+ * Definition of a class method.
  */
 final class Method
 {
