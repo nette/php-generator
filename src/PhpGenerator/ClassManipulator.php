@@ -68,9 +68,7 @@ final class ClassManipulator
 			} catch (\ReflectionException) {
 				continue;
 			}
-			$method = (new Factory)->fromMethodReflection($rm);
-			$this->class->addMember($method);
-			return $method;
+			return $this->implementMethod($rm);
 		}
 
 		throw new Nette\InvalidStateException("Method '$name' has not been found in any ancestor: " . implode(', ', $parents));
@@ -78,19 +76,33 @@ final class ClassManipulator
 
 
 	/**
-	 * Implements all methods from the given interface.
+	 * Implements all methods from the given interface or abstract class.
 	 */
 	public function implement(string $name): void
 	{
 		$definition = new \ReflectionClass($name);
-		if (!$definition->isInterface()) {
-			throw new Nette\InvalidArgumentException("Class '$name' is not an interface.");
+		if ($definition->isInterface()) {
+			$this->class->addImplement($name);
+		} elseif ($definition->isAbstract()) {
+			$this->class->setExtends($name);
+		} else {
+			throw new Nette\InvalidArgumentException("'$name' is not an interface or abstract class.");
 		}
 
-		$this->class->addImplement($name);
 		foreach ($definition->getMethods() as $method) {
-			$this->inheritMethod($method->getName(), returnIfExists: true);
+			if (!$this->class->hasMethod($method->getName()) && $method->isAbstract()) {
+				$this->implementMethod($method);
+			}
 		}
+	}
+
+
+	private function implementMethod(\ReflectionMethod $rm): Method
+	{
+		$method = (new Factory)->fromMethodReflection($rm);
+		$method->setAbstract(false);
+		$this->class->addMember($method);
+		return $method;
 	}
 
 
