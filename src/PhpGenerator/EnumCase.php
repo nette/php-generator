@@ -13,7 +13,7 @@ use Nette;
 
 
 /**
- * Enum case.
+ * Definition of an enum case.
  */
 final class EnumCase
 {

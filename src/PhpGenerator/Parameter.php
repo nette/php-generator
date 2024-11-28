@@ -14,7 +14,7 @@ use Nette\Utils\Type;
 
 
 /**
- * Function/Method parameter description.
+ * Definition of a function/method parameter.
  *
  * @property-deprecated mixed $defaultValue
  */

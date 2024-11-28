@@ -13,7 +13,7 @@ use Nette;
 
 
 /**
- * Promoted parameter in constructor.
+ * Definition of a promoted constructor parameter.
  */
 final class PromotedParameter extends Parameter
 {

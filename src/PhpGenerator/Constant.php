@@ -13,7 +13,7 @@ use Nette;
 
 
 /**
- * Class constant.
+ * Definition of a class constant.
  */
 final class Constant
 {

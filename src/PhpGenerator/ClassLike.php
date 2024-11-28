@@ -13,7 +13,7 @@ use Nette;
 
 
 /**
- * Class/Interface/Trait/Enum description.
+ * Base definition of class, interface, trait or enum type.
  */
 abstract class ClassLike
 {

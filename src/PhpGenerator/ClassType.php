@@ -13,7 +13,7 @@ use Nette;
 
 
 /**
- * Class description.
+ * Definition of a class with properties, methods, constants, traits and PHP attributes.
  *
  * @property-deprecated Method[] $methods
  * @property-deprecated Property[] $properties

@@ -13,7 +13,7 @@ use Nette;
 
 
 /**
- * Closure.
+ * Definition of a closure.
  *
  * @property-deprecated string $body
  */
