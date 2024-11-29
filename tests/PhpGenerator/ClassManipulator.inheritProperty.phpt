@@ -21,14 +21,14 @@ $manipulator = new ClassManipulator($class);
 Assert::exception(
 	fn() => $manipulator->inheritProperty('bar'),
 	Nette\InvalidStateException::class,
-	"Class 'Test' has not setExtends() set.",
+	"Class 'Test' has neither setExtends() nor setImplements() set.",
 );
 
 $class->setExtends('Unknown');
 Assert::exception(
 	fn() => $manipulator->inheritProperty('bar'),
 	Nette\InvalidStateException::class,
-	"Property 'bar' has not been found in ancestor Unknown",
+	"Property 'bar' has not been found in any ancestor: Unknown",
 );
 
 

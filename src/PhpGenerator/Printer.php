@@ -198,9 +198,9 @@ class Printer
 		}
 
 		$properties = [];
-		if ($class instanceof ClassType || $class instanceof TraitType) {
+		if ($class instanceof ClassType || $class instanceof TraitType || $class instanceof InterfaceType) {
 			foreach ($class->getProperties() as $property) {
-				$properties[] = $this->printProperty($property, $readOnlyClass);
+				$properties[] = $this->printProperty($property, $readOnlyClass, $class instanceof InterfaceType);
 			}
 		}
 
@@ -376,7 +376,7 @@ class Printer
 	}
 
 
-	private function printProperty(Property $property, bool $readOnlyClass = false): string
+	private function printProperty(Property $property, bool $readOnlyClass = false, bool $isInterface = false): string
 	{
 		$property->validate();
 		$type = $property->getType();
@@ -395,7 +395,7 @@ class Printer
 			. $this->printAttributes($property->getAttributes())
 			. $def
 			. $defaultValue
-			. ($this->printHooks($property) ?: ';')
+			. ($this->printHooks($property, $isInterface) ?: ';')
 			. "\n";
 	}
 
@@ -456,27 +456,34 @@ class Printer
 	}
 
 
-	private function printHooks(Property|PromotedParameter $property): string
+	private function printHooks(Property|PromotedParameter $property, bool $isInterface = false): string
 	{
 		$hooks = $property->getHooks();
 		if (!$hooks) {
 			return '';
 		}
 
+		$simple = true;
 		foreach ($property->getHooks() as $type => $hook) {
+			$simple = $simple && ($hook->isAbstract() || $isInterface);
 			$hooks[$type] = $this->printDocComment($hook)
 				. $this->printAttributes($hook->getAttributes())
-				. ($hook->isFinal() ? 'final ' : '')
-				. ($hook->getReturnReference() ? '&' : '')
-				. $type
-				. ($hook->getParameters() ? $this->printParameters($hook) : '')
-				. ' '
-				. ($hook->isShort()
-					? '=> ' . $hook->getBody() . ';'
-					: "{\n" . $this->indent($this->printFunctionBody($hook)) . '}');
+				. ($hook->isAbstract() || $isInterface
+					? ($hook->getReturnReference() ? '&' : '')
+						. $type . ';'
+					: ($hook->isFinal() ? 'final ' : '')
+						. ($hook->getReturnReference() ? '&' : '')
+						. $type
+						. ($hook->getParameters() ? $this->printParameters($hook) : '')
+						. ' '
+						. ($hook->isShort()
+							? '=> ' . $hook->getBody() . ';'
+							: "{\n" . $this->indent($this->printFunctionBody($hook)) . '}'));
 		}
 
-		return " {\n" . $this->indent(implode("\n", $hooks)) . "\n}";
+		return $simple
+			? ' { ' . implode(' ', $hooks) . ' }'
+			: " {\n" . $this->indent(implode("\n", $hooks)) . "\n}";
 	}
 
 

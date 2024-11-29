@@ -25,25 +25,25 @@ final class ClassManipulator
 	 */
 	public function inheritProperty(string $name, bool $returnIfExists = false): Property
 	{
-		$extends = $this->class->getExtends();
 		if ($this->class->hasProperty($name)) {
 			return $returnIfExists
 				? $this->class->getProperty($name)
 				: throw new Nette\InvalidStateException("Cannot inherit property '$name', because it already exists.");
-
-		} elseif (!$extends) {
-			throw new Nette\InvalidStateException("Class '{$this->class->getName()}' has not setExtends() set.");
 		}
 
-		try {
-			$rp = new \ReflectionProperty($extends, $name);
-		} catch (\ReflectionException) {
-			throw new Nette\InvalidStateException("Property '$name' has not been found in ancestor {$extends}");
+		$parents = [...(array) $this->class->getExtends(), ...$this->class->getImplements()]
+			?: throw new Nette\InvalidStateException("Class '{$this->class->getName()}' has neither setExtends() nor setImplements() set.");
+
+		foreach ($parents as $parent) {
+			try {
+				$rp = new \ReflectionProperty($parent, $name);
+			} catch (\ReflectionException) {
+				continue;
+			}
+			return $this->implementProperty($rp);
 		}
 
-		$property = (new Factory)->fromPropertyReflection($rp);
-		$this->class->addMember($property);
-		return $property;
+		throw new Nette\InvalidStateException("Property '$name' has not been found in any ancestor: " . implode(', ', $parents));
 	}
 
 
@@ -52,15 +52,14 @@ final class ClassManipulator
 	 */
 	public function inheritMethod(string $name, bool $returnIfExists = false): Method
 	{
-		$parents = [...(array) $this->class->getExtends(), ...$this->class->getImplements()];
 		if ($this->class->hasMethod($name)) {
 			return $returnIfExists
 				? $this->class->getMethod($name)
 				: throw new Nette\InvalidStateException("Cannot inherit method '$name', because it already exists.");
-
-		} elseif (!$parents) {
-			throw new Nette\InvalidStateException("Class '{$this->class->getName()}' has neither setExtends() nor setImplements() set.");
 		}
+
+		$parents = [...(array) $this->class->getExtends(), ...$this->class->getImplements()]
+			?: throw new Nette\InvalidStateException("Class '{$this->class->getName()}' has neither setExtends() nor setImplements() set.");
 
 		foreach ($parents as $parent) {
 			try {
@@ -94,6 +93,14 @@ final class ClassManipulator
 				$this->implementMethod($method);
 			}
 		}
+
+		if (PHP_VERSION_ID >= 80400) {
+			foreach ($definition->getProperties() as $property) {
+				if (!$this->class->hasProperty($property->getName()) && $property->isAbstract()) {
+					$this->implementProperty($property);
+				}
+			}
+		}
 	}
 
 
@@ -103,6 +110,15 @@ final class ClassManipulator
 		$method->setAbstract(false);
 		$this->class->addMember($method);
 		return $method;
+	}
+
+
+	private function implementProperty(\ReflectionProperty $rp): Property
+	{
+		$property = (new Factory)->fromPropertyReflection($rp);
+		$property->setHooks([]);
+		$this->class->addMember($property);
+		return $property;
 	}
 
 

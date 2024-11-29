@@ -7,6 +7,7 @@
 declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\InterfaceType;
 use Nette\PhpGenerator\PropertyHookType;
 
 require __DIR__ . '/../bootstrap.php';
@@ -95,3 +96,27 @@ same(<<<'XX'
 	}
 
 	XX, (string) $class);
+
+
+$interface = new InterfaceType('Demo');
+
+$interface->addProperty('first')
+	->setType('int')
+	->setPublic()
+	->addHook('get');
+
+$prop = $interface->addProperty('second')
+	->setType('Value')
+	->setPublic();
+
+$prop->addHook('get');
+$prop->addHook('set');
+
+same(<<<'XX'
+	interface Demo
+	{
+		public int $first { get; }
+		public Value $second { set; get; }
+	}
+
+	XX, (string) $interface);

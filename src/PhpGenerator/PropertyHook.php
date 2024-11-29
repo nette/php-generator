@@ -18,6 +18,7 @@ final class PropertyHook
 	private string $body = '';
 	private bool $short = false;
 	private bool $final = false;
+	private bool $abstract = false;
 
 	/** @var Parameter[] */
 	private array $parameters = [];
@@ -62,6 +63,19 @@ final class PropertyHook
 	public function isFinal(): bool
 	{
 		return $this->final;
+	}
+
+
+	public function setAbstract(bool $state = true): static
+	{
+		$this->abstract = $state;
+		return $this;
+	}
+
+
+	public function isAbstract(): bool
+	{
+		return $this->abstract;
 	}
 
 
