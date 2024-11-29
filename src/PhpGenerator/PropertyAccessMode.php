@@ -9,25 +9,12 @@ declare(strict_types=1);
 
 namespace Nette\PhpGenerator;
 
-use Nette;
-
 
 /**
  * Property access mode.
  */
-/*enum*/ final class PropertyAccessMode
+enum PropertyAccessMode: string
 {
-	use Nette\StaticClass;
-
-	public const Set = 'set';
-	public const Get = 'get';
-
-
-	/** @internal */
-	public static function from(string $value): string
-	{
-		return $value === self::Set || $value === self::Get
-			? $value
-			: throw new \ValueError("'$value' is not a valid value of access mode");
-	}
+	case Set = 'set';
+	case Get = 'get';
 }

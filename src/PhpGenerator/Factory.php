@@ -117,7 +117,7 @@ final class Factory
 			}
 
 			$modifier = $declaringMethod->getModifiers() !== $method->getModifiers()
-				? ' ' . $this->getVisibility($method)
+				? ' ' . $this->getVisibility($method)->value
 				: null;
 			$alias = $declaringMethod->name !== $method->name ? ' ' . $method->name : '';
 			if ($modifier || $alias) {
@@ -361,7 +361,7 @@ final class Factory
 	}
 
 
-	private function getVisibility(\ReflectionProperty|\ReflectionMethod|\ReflectionClassConstant $from): string
+	private function getVisibility(\ReflectionProperty|\ReflectionMethod|\ReflectionClassConstant $from): Visibility
 	{
 		return $from->isPrivate()
 			? Visibility::Private

@@ -9,26 +9,13 @@ declare(strict_types=1);
 
 namespace Nette\PhpGenerator;
 
-use Nette;
-
 
 /**
  * Member visibility.
  */
-/*enum*/ final class Visibility
+enum Visibility: string
 {
-	use Nette\StaticClass;
-
-	public const Public = 'public';
-	public const Protected = 'protected';
-	public const Private = 'private';
-
-
-	/** @internal */
-	public static function from(string $value): string
-	{
-		return $value === self::Public || $value === self::Protected || $value === self::Private
-			? $value
-			: throw new \ValueError("'$value' is not a valid value of visibility");
-	}
+	case Public = 'public';
+	case Protected = 'protected';
+	case Private = 'private';
 }

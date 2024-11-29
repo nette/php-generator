@@ -13,7 +13,7 @@ use Nette\PhpGenerator\PropertyAccessMode;
 use Nette\PhpGenerator\PropertyHook;
 use Nette\PhpGenerator\PropertyHookType;
 use Nette\PhpGenerator\Visibility;
-use function array_filter, in_array;
+use function array_filter, in_array, is_string;
 
 
 /**
@@ -21,78 +21,74 @@ use function array_filter, in_array;
  */
 trait PropertyLike
 {
-	/** @var array{set: ?string, get: ?string} */
-	private array $visibility = [PropertyAccessMode::Set => null, PropertyAccessMode::Get => null];
+	/** @var array{set: ?Visibility, get: ?Visibility} */
+	private array $visibility = ['set' => null, 'get' => null];
 	private bool $final = false;
 	private bool $readOnly = false;
 
 	/** @var array<string, ?PropertyHook> */
-	private array $hooks = [PropertyHookType::Set => null, PropertyHookType::Get => null];
+	private array $hooks = ['set' => null, 'get' => null];
 
 
-	/**
-	 * @param  'public'|'protected'|'private'|null  $get
-	 * @param  'public'|'protected'|'private'|null  $set
-	 */
-	public function setVisibility(?string $get, ?string $set = null): static
+	public function setVisibility(Visibility|string|null $get, Visibility|string|null $set = null): static
 	{
 		$this->visibility = [
-			PropertyAccessMode::Set => $set === null ? $set : Visibility::from($set),
-			PropertyAccessMode::Get => $get === null ? $get : Visibility::from($get),
+			'set' => $set instanceof Visibility || $set === null ? $set : Visibility::from($set),
+			'get' => $get instanceof Visibility || $get === null ? $get : Visibility::from($get),
 		];
 		return $this;
 	}
 
 
-	/** @param  'set'|'get'  $mode */
-	public function getVisibility(string $mode = PropertyAccessMode::Get): ?string
+	public function getVisibility(PropertyAccessMode|string $mode = PropertyAccessMode::Get): ?string
 	{
-		return $this->visibility[PropertyAccessMode::from($mode)];
+		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
+		return $this->visibility[$mode->value]?->value;
 	}
 
 
-	/** @param  'set'|'get'  $mode */
-	public function setPublic(string $mode = PropertyAccessMode::Get): static
+	public function setPublic(PropertyAccessMode|string $mode = PropertyAccessMode::Get): static
 	{
-		$this->visibility[PropertyAccessMode::from($mode)] = Visibility::Public;
+		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
+		$this->visibility[$mode->value] = Visibility::Public;
 		return $this;
 	}
 
 
-	/** @param  'set'|'get'  $mode */
-	public function isPublic(string $mode = PropertyAccessMode::Get): bool
+	public function isPublic(PropertyAccessMode|string $mode = PropertyAccessMode::Get): bool
 	{
-		return in_array($this->visibility[PropertyAccessMode::from($mode)], [Visibility::Public, null], true);
+		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
+		return in_array($this->visibility[$mode->value], [Visibility::Public, null], true);
 	}
 
 
-	/** @param  'set'|'get'  $mode */
-	public function setProtected(string $mode = PropertyAccessMode::Get): static
+	public function setProtected(PropertyAccessMode|string $mode = PropertyAccessMode::Get): static
 	{
-		$this->visibility[PropertyAccessMode::from($mode)] = Visibility::Protected;
+		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
+		$this->visibility[$mode->value] = Visibility::Protected;
 		return $this;
 	}
 
 
-	/** @param  'set'|'get'  $mode */
-	public function isProtected(string $mode = PropertyAccessMode::Get): bool
+	public function isProtected(PropertyAccessMode|string $mode = PropertyAccessMode::Get): bool
 	{
-		return $this->visibility[PropertyAccessMode::from($mode)] === Visibility::Protected;
+		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
+		return $this->visibility[$mode->value] === Visibility::Protected;
 	}
 
 
-	/** @param  'set'|'get'  $mode */
-	public function setPrivate(string $mode = PropertyAccessMode::Get): static
+	public function setPrivate(PropertyAccessMode|string $mode = PropertyAccessMode::Get): static
 	{
-		$this->visibility[PropertyAccessMode::from($mode)] = Visibility::Private;
+		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
+		$this->visibility[$mode->value] = Visibility::Private;
 		return $this;
 	}
 
 
-	/** @param  'set'|'get'  $mode */
-	public function isPrivate(string $mode = PropertyAccessMode::Get): bool
+	public function isPrivate(PropertyAccessMode|string $mode = PropertyAccessMode::Get): bool
 	{
-		return $this->visibility[PropertyAccessMode::from($mode)] === Visibility::Private;
+		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
+		return $this->visibility[$mode->value] === Visibility::Private;
 	}
 
 
@@ -141,24 +137,24 @@ trait PropertyLike
 	}
 
 
-	/** @param  'set'|'get'  $type */
-	public function addHook(string $type, string $shortBody = ''): PropertyHook
+	public function addHook(PropertyHookType|string $type, string $shortBody = ''): PropertyHook
 	{
-		return $this->hooks[PropertyHookType::from($type)] = (new PropertyHook)
+		$type = is_string($type) ? PropertyHookType::from($type) : $type;
+		return $this->hooks[$type->value] = (new PropertyHook)
 			->setBody($shortBody, short: true);
 	}
 
 
-	/** @param  'set'|'get'  $type */
-	public function getHook(string $type): ?PropertyHook
+	public function getHook(PropertyHookType|string $type): ?PropertyHook
 	{
-		return $this->hooks[PropertyHookType::from($type)] ?? null;
+		$type = is_string($type) ? PropertyHookType::from($type) : $type;
+		return $this->hooks[$type->value] ?? null;
 	}
 
 
-	/** @param  'set'|'get'  $type */
-	public function hasHook(string $type): bool
+	public function hasHook(PropertyHookType|string $type): bool
 	{
-		return isset($this->hooks[PropertyHookType::from($type)]);
+		$type = is_string($type) ? PropertyHookType::from($type) : $type;
+		return isset($this->hooks[$type->value]);
 	}
 }

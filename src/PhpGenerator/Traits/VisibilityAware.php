@@ -17,21 +17,21 @@ use Nette\PhpGenerator\Visibility;
  */
 trait VisibilityAware
 {
-	/** public|protected|private */
-	private ?string $visibility = null;
+	private ?Visibility $visibility = null;
 
 
-	/** @param  'public'|'protected'|'private'|null  $value */
-	public function setVisibility(?string $value): static
+	public function setVisibility(Visibility|string|null $value): static
 	{
-		$this->visibility = $value === null ? $value : Visibility::from($value);
+		$this->visibility = $value instanceof Visibility || $value === null
+			? $value
+			: Visibility::from($value);
 		return $this;
 	}
 
 
 	public function getVisibility(): ?string
 	{
-		return $this->visibility;
+		return $this->visibility?->value;
 	}
 
 

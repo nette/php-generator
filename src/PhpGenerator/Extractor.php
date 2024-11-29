@@ -548,7 +548,7 @@ final class Extractor
 	}
 
 
-	private function toVisibility(int $flags): ?string
+	private function toVisibility(int $flags): ?Visibility
 	{
 		return match (true) {
 			(bool) ($flags & Modifiers::PUBLIC) => Visibility::Public,
@@ -559,7 +559,7 @@ final class Extractor
 	}
 
 
-	private function toSetterVisibility(int $flags): ?string
+	private function toSetterVisibility(int $flags): ?Visibility
 	{
 		return match (true) {
 			!class_exists(Node\PropertyHook::class) => null,
