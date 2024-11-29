@@ -21,15 +21,15 @@ abstract class ClassLike
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 
-	/** @deprecated use Visibility::Public */
+	#[\Deprecated('Use Visibility::Public')]
 	public const VisibilityPublic = Visibility::Public,
 		VISIBILITY_PUBLIC = Visibility::Public;
 
-	/** @deprecated use Visibility::Protected */
+	#[\Deprecated('Use Visibility::Protected')]
 	public const VisibilityProtected = Visibility::Protected,
 		VISIBILITY_PROTECTED = Visibility::Protected;
 
-	/** @deprecated use Visibility::Private */
+	#[\Deprecated('Use Visibility::Private')]
 	public const VisibilityPrivate = Visibility::Private,
 		VISIBILITY_PRIVATE = Visibility::Private;
 

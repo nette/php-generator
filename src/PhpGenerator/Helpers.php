@@ -41,7 +41,7 @@ final class Helpers
 		'__LINE__' => 1, '__METHOD__' => 1, '__NAMESPACE__' => 1, '__PROPERTY__' => 1, '__TRAIT__' => 1,
 	];
 
-	/** @deprecated  */
+	#[\Deprecated]
 	public const
 		PHP_IDENT = self::ReIdentifier,
 		KEYWORDS = self::Keywords;

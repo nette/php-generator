@@ -23,7 +23,7 @@ final class ClassType extends ClassLike
 	use Traits\PropertiesAware;
 	use Traits\TraitsAware;
 
-	/** @deprecated */
+	#[\Deprecated]
 	public const
 		TYPE_CLASS = 'class',
 		TYPE_INTERFACE = 'interface',
