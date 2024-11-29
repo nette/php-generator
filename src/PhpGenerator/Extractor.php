@@ -15,7 +15,7 @@ use PhpParser\Modifiers;
 use PhpParser\Node;
 use PhpParser\NodeFinder;
 use PhpParser\ParserFactory;
-use function addcslashes, array_map, assert, class_exists, end, in_array, is_array, method_exists, rtrim, str_contains, str_repeat, str_replace, str_starts_with, strlen, substr, substr_replace, usort;
+use function addcslashes, array_map, assert, class_exists, end, in_array, is_array, rtrim, str_contains, str_repeat, str_replace, str_starts_with, strlen, substr, substr_replace, usort;
 
 
 /**
@@ -293,7 +293,7 @@ final class Extractor
 			$class = $phpFile->addClass($node->namespacedName->toString());
 			$class->setFinal($node->isFinal());
 			$class->setAbstract($node->isAbstract());
-			$class->setReadOnly(method_exists($node, 'isReadonly') && $node->isReadonly());
+			$class->setReadOnly($node->isReadonly());
 			if ($node->extends) {
 				$class->setExtends($node->extends->toString());
 			}
@@ -363,11 +363,11 @@ final class Extractor
 				$prop->setValue($this->toValue($item->default));
 			}
 
-			$prop->setReadOnly((method_exists($node, 'isReadonly') && $node->isReadonly()) || ($class instanceof ClassType && $class->isReadOnly()));
+			$prop->setReadOnly($node->isReadonly() || ($class instanceof ClassType && $class->isReadOnly()));
 			$this->addCommentAndAttributes($prop, $node);
 
-			$prop->setAbstract((bool) ($node->flags & Node\Stmt\Class_::MODIFIER_ABSTRACT));
-			$prop->setFinal((bool) ($node->flags & Node\Stmt\Class_::MODIFIER_FINAL));
+			$prop->setAbstract((bool) ($node->flags & Modifiers::ABSTRACT));
+			$prop->setFinal((bool) ($node->flags & Modifiers::FINAL));
 			$this->addHooksToProperty($prop, $node);
 		}
 	}
@@ -411,7 +411,7 @@ final class Extractor
 		foreach ($node->consts as $item) {
 			$const = $class->addConstant($item->name->toString(), $this->toValue($item->value));
 			$const->setVisibility($this->toVisibility($node->flags));
-			$const->setFinal(method_exists($node, 'isFinal') && $node->isFinal());
+			$const->setFinal($node->isFinal());
 			$this->addCommentAndAttributes($const, $node);
 		}
 	}
@@ -479,7 +479,7 @@ final class Extractor
 			if ($getVisibility || $setVisibility || $final) {
 				$param = $function->addPromotedParameter($item->var->name)
 					->setVisibility($getVisibility, $setVisibility)
-					->setReadonly((bool) ($item->flags & Node\Stmt\Class_::MODIFIER_READONLY))
+					->setReadonly($item->isReadonly())
 					->setFinal($final);
 				$this->addHooksToProperty($param, $item);
 			} else {
@@ -549,9 +549,9 @@ final class Extractor
 	private function toVisibility(int $flags): ?string
 	{
 		return match (true) {
-			(bool) ($flags & Node\Stmt\Class_::MODIFIER_PUBLIC) => Visibility::Public,
-			(bool) ($flags & Node\Stmt\Class_::MODIFIER_PROTECTED) => Visibility::Protected,
-			(bool) ($flags & Node\Stmt\Class_::MODIFIER_PRIVATE) => Visibility::Private,
+			(bool) ($flags & Modifiers::PUBLIC) => Visibility::Public,
+			(bool) ($flags & Modifiers::PROTECTED) => Visibility::Protected,
+			(bool) ($flags & Modifiers::PRIVATE) => Visibility::Private,
 			default => null,
 		};
 	}
