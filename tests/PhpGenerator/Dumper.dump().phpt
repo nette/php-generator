@@ -34,8 +34,8 @@ Assert::same("'Hello'", $dumper->dump('Hello'));
 Assert::same('"\t\n\r\e"', $dumper->dump("\t\n\r\e"));
 Assert::same('"\u{FEFF}"', $dumper->dump("\xEF\xBB\xBF")); // BOM
 Assert::same('\'$"\\\\\'', $dumper->dump('$"\\'));
-Assert::same('\'$"\\ \x00\'', $dumper->dump('$"\\ \x00')); // no escape
-Assert::same('"\\$\\"\\\\ \x00"', $dumper->dump("$\"\\ \x00"));
+Assert::same('\'$"\ \x00\'', $dumper->dump('$"\ \x00')); // no escape
+Assert::same('"\$\"\\\ \x00"', $dumper->dump("$\"\\ \x00"));
 Assert::same(
 	"'I\u{F1}t\u{EB}rn\u{E2}ti\u{F4}n\u{E0}liz\u{E6}ti\u{F8}n'",
 	$dumper->dump("I\u{F1}t\u{EB}rn\u{E2}ti\u{F4}n\u{E0}liz\u{E6}ti\u{F8}n"), // Iñtërnâtiônàlizætiøn

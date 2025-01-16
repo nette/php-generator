@@ -8,7 +8,6 @@
 declare(strict_types=1);
 
 return [
-	// constant NULL, FALSE in src/PhpGenerator/Type.php
-	'constant_case' => false,
+	// constants in src/PhpGenerator/Type.php
 	'lowercase_static_reference' => false,
 ];
