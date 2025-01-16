@@ -75,7 +75,7 @@ final class Helpers
 
 	public static function simplifyTaggedNames(string $code, ?PhpNamespace $namespace): string
 	{
-		return preg_replace_callback('~/\*\(([ncf])\*/([\w\x7f-\xff\\\\]++)~', function ($m) use ($namespace) {
+		return preg_replace_callback('~/\*\(([ncf])\*/([\w\x7f-\xff\\\]++)~', function ($m) use ($namespace) {
 			[, $of, $name] = $m;
 			return $namespace
 				? $namespace->simplifyType($name, $of)
@@ -106,7 +106,7 @@ final class Helpers
 
 	public static function isNamespaceIdentifier(mixed $value, bool $allowLeadingSlash = false): bool
 	{
-		$re = '#^' . ($allowLeadingSlash ? '\\\\?' : '') . self::ReIdentifier . '(\\\\' . self::ReIdentifier . ')*$#D';
+		$re = '#^' . ($allowLeadingSlash ? '\\\?' : '') . self::ReIdentifier . '(\\\\' . self::ReIdentifier . ')*$#D';
 		return is_string($value) && preg_match($re, $value);
 	}
 

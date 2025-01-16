@@ -74,7 +74,7 @@ $interfaceF
 $traitG = $file->addTrait('Baz\G');
 Assert::same($file->addNamespace('Baz'), $traitG->getNamespace());
 
-$file->addFunction('Baz\\f2')
+$file->addFunction('Baz\f2')
 	->setReturnType('Foo\B');
 
 
@@ -112,7 +112,7 @@ Assert::same([
 	'FooBar\I',
 ], array_keys($file->getClasses()));
 
-Assert::same(['Baz\\f2', 'f1'], array_keys($file->getFunctions()));
+Assert::same(['Baz\f2', 'f1'], array_keys($file->getFunctions()));
 
 
 

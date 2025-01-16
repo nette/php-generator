@@ -13,9 +13,9 @@ Assert::true(Helpers::isNamespaceIdentifier("\x7F"));
 Assert::true(Helpers::isNamespaceIdentifier("\x7F\\\x7F"));
 Assert::false(Helpers::isNamespaceIdentifier('0Item'));
 Assert::true(Helpers::isNamespaceIdentifier('Item\Item'));
-Assert::false(Helpers::isNamespaceIdentifier('Item\\\\Item'));
-Assert::false(Helpers::isNamespaceIdentifier('\\Item'));
+Assert::false(Helpers::isNamespaceIdentifier('Item\\\Item'));
+Assert::false(Helpers::isNamespaceIdentifier('\Item'));
 Assert::false(Helpers::isNamespaceIdentifier('Item\\'));
 
-Assert::true(Helpers::isNamespaceIdentifier('\\Item', allowLeadingSlash: true));
+Assert::true(Helpers::isNamespaceIdentifier('\Item', allowLeadingSlash: true));
 Assert::false(Helpers::isNamespaceIdentifier('Item\\', allowLeadingSlash: true));
