@@ -124,12 +124,12 @@ final class Factory
 			$resolutions = [];
 		}
 
-        if ($withBodies) {
-            $hookBodies = $this->getExtractor($declaringClass->getFileName())->extractPropertyHookBodies($declaringClass->name);
-            foreach ($class->getProperties() as $property) {
-            	foreach ($hookBodies[$property->getName()] ?? [] as $hookType => $body) {
-            		$property->getHook($hookType)?->setBody($body, short: true);
-            	}
+		if ($withBodies) {
+			$hookBodies = $this->getExtractor($declaringClass->getFileName())->extractPropertyHookBodies($declaringClass->name);
+			foreach ($class->getProperties() as $property) {
+				foreach ($hookBodies[$property->getName()] ?? [] as $hookType => $body) {
+					$property->getHook($hookType)?->setBody($body, short: true);
+				}
 			}
 		}
 

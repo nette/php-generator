@@ -79,27 +79,27 @@ final class Extractor
 	}
 
 
-    /** @return array<string, array<string, string>> */
-    public function extractPropertyHookBodies(string $className): array
-    {
-    	$nodeFinder = new NodeFinder();
-    	$classNode = $nodeFinder->findFirst(
-    		$this->statements,
-    		fn(Node $node) => $node instanceof Node\Stmt\ClassLike && $node->namespacedName->toString() === $className,
-    	);
+	/** @return array<string, array<string, string>> */
+	public function extractPropertyHookBodies(string $className): array
+	{
+		$nodeFinder = new NodeFinder();
+		$classNode = $nodeFinder->findFirst(
+			$this->statements,
+			fn(Node $node) => $node instanceof Node\Stmt\ClassLike && $node->namespacedName->toString() === $className,
+		);
 
-    	$res = [];
-    	foreach ($nodeFinder->findInstanceOf($classNode, Node\Stmt\Property::class) as $propertyNode) {
-    		foreach ($propertyNode->props as $propNode) {
-    			$propName = $propNode->name->toString();
-    			foreach ($propertyNode->hooks as $hookNode) {
-    				$hookType = $hookNode->name->toString();
-    				$res[$propName][$hookType] = $this->getReformattedContents([$hookNode->body], 1);
-    			}
-    		}
-    	}
-    	return $res;
-    }
+		$res = [];
+		foreach ($nodeFinder->findInstanceOf($classNode, Node\Stmt\Property::class) as $propertyNode) {
+			foreach ($propertyNode->props as $propNode) {
+				$propName = $propNode->name->toString();
+				foreach ($propertyNode->hooks as $hookNode) {
+					$hookType = $hookNode->name->toString();
+					$res[$propName][$hookType] = $this->getReformattedContents([$hookNode->body], 1);
+				}
+			}
+		}
+		return $res;
+	}
 
 
 	public function extractFunctionBody(string $name): ?string
