@@ -22,9 +22,9 @@ jobs:
             - run: composer install --no-progress --prefer-dist
             - run: vendor/bin/tester tests -s -C
             - if: failure()
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
-                  name: output
+                  name: output-${{ matrix.php }}
                   path: tests/**/output
 
 
