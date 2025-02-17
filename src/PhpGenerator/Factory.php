@@ -31,8 +31,8 @@ final class Factory
 		bool $withBodies = false,
 	): ClassLike
 	{
-		if ($withBodies && ($from->isAnonymous() || $from->isInternal())) {
-			throw new Nette\NotSupportedException('The $withBodies parameter cannot be used for anonymous or internal classes.');
+		if ($withBodies && ($from->isAnonymous() || $from->isInternal() || $from->isInterface())) {
+			throw new Nette\NotSupportedException('The $withBodies parameter cannot be used for anonymous or internal classes or interfaces.');
 		}
 
 		$enumIface = null;

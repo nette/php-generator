@@ -12,7 +12,7 @@ require __DIR__ . '/fixtures/bodies.php';
 Assert::exception(
 	fn() => ClassType::from(PDO::class, withBodies: true),
 	Nette\NotSupportedException::class,
-	'The $withBodies parameter cannot be used for anonymous or internal classes.',
+	'The $withBodies parameter cannot be used for anonymous or internal classes or interfaces.',
 );
 
 
@@ -23,7 +23,7 @@ Assert::exception(
 		}
 	}, withBodies: true),
 	Nette\NotSupportedException::class,
-	'The $withBodies parameter cannot be used for anonymous or internal classes.',
+	'The $withBodies parameter cannot be used for anonymous or internal classes or interfaces.',
 );
 
 
