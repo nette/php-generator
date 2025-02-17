@@ -81,7 +81,13 @@ final class Factory
 				&& !$prop->isPromoted()
 				&& !$class->isEnum()
 			) {
-				$props[] = $this->fromPropertyReflection($prop);
+				$props[] = $p = $this->fromPropertyReflection($prop);
+				if ($withBodies) {
+					$hookBodies ??= $this->getExtractor($declaringClass->getFileName())->extractPropertyHookBodies($declaringClass->name);
+					foreach ($hookBodies[$prop->getName()] ?? [] as $hookType => [$body, $short]) {
+						$p->getHook($hookType)->setBody($body, short: $short);
+					}
+				}
 			}
 		}
 

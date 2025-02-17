@@ -1,0 +1,88 @@
+class PropertyHookSignatures
+{
+	public string $basic {
+		get => 'x';
+	}
+
+	public string $fullGet {
+		get {
+			return 'x';
+		}
+	}
+
+	protected string $refGet {
+		&get {
+			return 'x';
+		}
+	}
+
+	protected string $finalGet {
+		final get => 'x';
+	}
+
+	public string $basicSet {
+		set => 'x';
+	}
+
+	public string $fullSet {
+		set {
+		}
+	}
+
+	public string $setWithParam {
+		set(string $foo) {
+		}
+	}
+
+	public string $setWithParam2 {
+		set(string|int $value) => '';
+	}
+
+	public string $finalSet {
+		final set {
+		}
+	}
+
+	public string $combined {
+		set {
+		}
+		get => 'x';
+	}
+
+	final public string $combinedFinal {
+		/** comment set */
+		#[Set]
+		set {
+		}
+		/** comment get */
+		#[Get]
+		get => 'x';
+	}
+
+	public string $virtualProp {
+		set {
+		}
+		&get => 'x';
+	}
+}
+
+abstract class AbstractHookSignatures
+{
+	abstract public string $abstractGet { get; }
+	abstract protected string $abstractSet { set; }
+	abstract public string $abstractBoth { set; get; }
+
+	abstract public string $mixedGet {
+		set => 'x';
+		get;
+	}
+
+	abstract public string $mixedSet {
+		set;
+		get => 'x';
+	}
+}
+
+class PropertyHookSignaturesChild extends PropertyHookSignatures
+{
+}
