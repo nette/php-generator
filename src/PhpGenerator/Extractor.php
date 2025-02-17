@@ -79,6 +79,36 @@ final class Extractor
 	}
 
 
+	/** @return array<string, array<string, array{string, bool}>> */
+	public function extractPropertyHookBodies(string $className): array
+	{
+		if (!class_exists(Node\PropertyHook::class)) {
+			return [];
+		}
+
+		$nodeFinder = new NodeFinder;
+		$classNode = $nodeFinder->findFirst(
+			$this->statements,
+			fn(Node $node) => $node instanceof Node\Stmt\ClassLike && $node->namespacedName->toString() === $className,
+		);
+
+		$res = [];
+		foreach ($nodeFinder->findInstanceOf($classNode, Node\Stmt\Property::class) as $propertyNode) {
+			foreach ($propertyNode->props as $propNode) {
+				$propName = $propNode->name->toString();
+				foreach ($propertyNode->hooks as $hookNode) {
+					$body = $hookNode->body;
+					if ($body !== null) {
+						$contents = $this->getReformattedContents(is_array($body) ? $body : [$body], 3);
+						$res[$propName][$hookNode->name->toString()] = [$contents, !is_array($body)];
+					}
+				}
+			}
+		}
+		return $res;
+	}
+
+
 	public function extractFunctionBody(string $name): ?string
 	{
 		$functionNode = (new NodeFinder)->findFirst(
@@ -94,6 +124,9 @@ final class Extractor
 	/** @param  Node[]  $nodes */
 	private function getReformattedContents(array $nodes, int $level): string
 	{
+		if (!$nodes) {
+			return '';
+		}
 		$body = $this->getNodeContents(...$nodes);
 		$body = $this->performReplacements($body, $this->prepareReplacements($nodes, $level));
 		return Helpers::unindent($body, $level);
