@@ -22,6 +22,8 @@ final class GlobalFunction
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 
+	private bool $wrapInExistingCheck = false;
+
 	public static function from(string|\Closure $function, bool $withBody = false): self
 	{
 		return (new Factory)->fromFunctionReflection(Nette\Utils\Callback::toReflection($function), $withBody);
@@ -37,5 +39,17 @@ final class GlobalFunction
 	public function __clone(): void
 	{
 		$this->parameters = array_map(fn($param) => clone $param, $this->parameters);
+	}
+
+
+	public function wrapInExistingCheck(bool $wrap = true): self
+	{
+		$this->wrapInExistingCheck = $wrap;
+		return $this;
+	}
+
+	public function getWrapInExistingCheck(): bool
+	{
+		return $this->wrapInExistingCheck;
 	}
 }
