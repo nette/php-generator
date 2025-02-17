@@ -18,5 +18,6 @@ $res[] = InterfaceType::from(Abc\InterfaceHookSignatures::class);
 $res[] = ClassType::from(Abc\AsymmetricVisibilitySignatures::class);
 $res[] = ClassType::from(Abc\CombinedSignatures::class);
 $res[] = ClassType::from(Abc\ConstructorAllSignatures::class);
+$res[] = ClassType::from(Abc\PropertyHookSignaturesChild::class);
 
 sameFile(__DIR__ . '/expected/ClassType.from.84.expect', implode("\n", $res));

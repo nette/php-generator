@@ -168,3 +168,7 @@ class ConstructorAllSignatures
 		},
 	) {}
 }
+
+class PropertyHookSignaturesChild extends PropertyHookSignatures
+{
+}
