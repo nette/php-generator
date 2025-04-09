@@ -297,6 +297,7 @@ $function = new Nette\PhpGenerator\GlobalFunction('foo');
 $function->setBody('return $a + $b;');
 $function->addParameter('a');
 $function->addParameter('b');
+$function->wrapInExistingCheck();
 echo $function;
 
 // or use the PsrPrinter for output compliant with PSR-2 / PSR-12 / PER
@@ -306,9 +307,12 @@ echo $function;
 The result is:
 
 ```php
-function foo($a, $b)
+if (! function_exists('foo'))
 {
-	return $a + $b;
+    function foo($a, $b)
+    {
+        return $a + $b;
+    }
 }
 ```
 

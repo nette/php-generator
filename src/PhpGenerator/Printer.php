@@ -49,13 +49,17 @@ class Printer
 		$body = $this->printFunctionBody($function);
 		$braceOnNextLine = $this->isBraceOnNextLine(str_contains($params, "\n"), (bool) $returnType);
 
-		return $this->printDocComment($function)
+		$functionPrint = $this->printDocComment($function)
 			. $this->printAttributes($function->getAttributes())
 			. $line
 			. $params
 			. $returnType
 			. ($braceOnNextLine ? "\n" : ' ')
 			. "{\n" . $this->indent($body) . "}\n";
+
+		$wrapper = "if (! function_exists('{$function->getName()}'))\n{\n{$this->indent($functionPrint)}}\n";
+
+		return $function->getWrapInExistingCheck() ? $wrapper : $functionPrint;
 	}
 
 
