@@ -29,7 +29,10 @@
 		"nikic/php-parser": "to use ClassType::from(withBodies: true) & ClassType::fromCode()"
 	},
 	"autoload": {
-		"classmap": ["src/"]
+		"classmap": ["src/"],
+		"psr-4": {
+			"Nette\\": "src"
+		}
 	},
 	"minimum-stability": "dev",
 	"scripts": {
