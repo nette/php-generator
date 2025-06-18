@@ -48,7 +48,7 @@ final class Extractor
 			throw new Nette\InvalidStateException('The input string is not a PHP code.');
 		}
 
-		$this->code = Nette\Utils\Strings::normalizeNewlines($code);
+		$this->code = Nette\Utils\Strings::unixNewLines($code);
 		$parser = (new ParserFactory)->createForNewestSupportedVersion();
 		$stmts = $parser->parse($this->code);
 
@@ -314,6 +314,8 @@ final class Extractor
 			foreach ($node->implements as $item) {
 				$class->addImplement($item->toString());
 			}
+		} else {
+			throw new Nette\ShouldNotHappenException;
 		}
 
 		$this->addCommentAndAttributes($class, $node);
