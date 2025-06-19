@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Nette\PhpGenerator;
 
+use function count;
+
 
 /**
  * Definition of a PHP file.

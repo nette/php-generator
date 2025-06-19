@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\PhpGenerator;
 
 use Nette;
+use const PHP_VERSION_ID;
 
 
 final class ClassManipulator

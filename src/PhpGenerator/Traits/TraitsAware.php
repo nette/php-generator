@@ -11,6 +11,7 @@ namespace Nette\PhpGenerator\Traits;
 
 use Nette;
 use Nette\PhpGenerator\TraitUse;
+use function array_map, func_get_arg, func_num_args, is_array;
 
 
 /**

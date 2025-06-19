@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Nette\PhpGenerator;
 
 use Nette;
+use function is_string, preg_match, preg_replace, preg_replace_callback, str_contains, str_repeat, str_replace, strrpos, strtolower, substr, trim;
 
 
 /**

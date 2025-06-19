@@ -14,6 +14,7 @@ use Nette;
 use Nette\PhpGenerator\Dumper;
 use Nette\PhpGenerator\Parameter;
 use Nette\Utils\Type;
+use function func_num_args;
 
 
 /**

@@ -13,6 +13,7 @@ use Nette\PhpGenerator\PropertyAccessMode;
 use Nette\PhpGenerator\PropertyHook;
 use Nette\PhpGenerator\PropertyHookType;
 use Nette\PhpGenerator\Visibility;
+use function array_filter, in_array;
 
 
 /**

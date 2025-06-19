@@ -11,6 +11,7 @@ namespace Nette\PhpGenerator;
 
 use Nette;
 use Nette\Utils\Strings;
+use function array_filter, array_map, count, end, get_debug_type, implode, is_scalar, ltrim, preg_replace, rtrim, str_contains, str_repeat, str_replace, strlen, substr;
 
 
 /**

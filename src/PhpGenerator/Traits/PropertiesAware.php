@@ -11,6 +11,7 @@ namespace Nette\PhpGenerator\Traits;
 
 use Nette;
 use Nette\PhpGenerator\Property;
+use function func_num_args;
 
 
 /**

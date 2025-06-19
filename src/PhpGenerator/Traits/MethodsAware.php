@@ -11,6 +11,7 @@ namespace Nette\PhpGenerator\Traits;
 
 use Nette;
 use Nette\PhpGenerator\Method;
+use function strtolower;
 
 
 /**

@@ -11,6 +11,8 @@ namespace Nette\PhpGenerator;
 
 use Nette;
 use Nette\InvalidStateException;
+use function strlen;
+use const ARRAY_FILTER_USE_BOTH;
 
 
 /**
