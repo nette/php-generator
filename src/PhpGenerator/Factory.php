@@ -342,6 +342,7 @@ final class Factory
 	}
 
 
+	/** @return Attribute[] */
 	private function getAttributes($from): array
 	{
 		return array_map(function ($attr) {
@@ -357,7 +358,7 @@ final class Factory
 	}
 
 
-	private function getVisibility($from): string
+	private function getVisibility(\ReflectionProperty|\ReflectionMethod|\ReflectionClassConstant $from): string
 	{
 		return $from->isPrivate()
 			? Visibility::Private

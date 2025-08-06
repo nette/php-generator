@@ -21,7 +21,7 @@ use function array_filter, in_array;
  */
 trait PropertyLike
 {
-	/** @var array{'set' => ?string, 'get' => ?string} */
+	/** @var array{set: ?string, get: ?string} */
 	private array $visibility = [PropertyAccessMode::Set => null, PropertyAccessMode::Get => null];
 	private bool $final = false;
 	private bool $readOnly = false;

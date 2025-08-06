@@ -17,6 +17,7 @@ class Literal
 {
 	/**
 	 * Creates a literal representing the creation of an object using the new operator.
+	 * @param  mixed[]  $args
 	 */
 	public static function new(string $class, array $args = []): self
 	{

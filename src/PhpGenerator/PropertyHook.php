@@ -79,7 +79,10 @@ final class PropertyHook
 	}
 
 
-	/** @internal */
+	/**
+	 * @param  Parameter[]  $val
+	 * @internal
+	 */
 	public function setParameters(array $val): static
 	{
 		(function (Parameter ...$val) {})(...$val);
@@ -92,7 +95,10 @@ final class PropertyHook
 	}
 
 
-	/** @internal */
+	/**
+	 * @return  Parameter[]
+	 * @internal
+	 */
 	public function getParameters(): array
 	{
 		return $this->parameters;
