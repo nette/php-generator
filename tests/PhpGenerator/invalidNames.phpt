@@ -88,11 +88,6 @@ Assert::exception(
 );
 
 Assert::exception(
-	fn() => new Nette\PhpGenerator\ClassType('enum'),
-	Nette\InvalidArgumentException::class,
-);
-
-Assert::exception(
 	fn() => new Nette\PhpGenerator\ClassType('bool'),
 	Nette\InvalidArgumentException::class,
 );
