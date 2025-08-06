@@ -121,12 +121,4 @@ final class ClassManipulator
 		$this->class->addMember($property);
 		return $property;
 	}
-
-
-	/** @deprecated use implement() */
-	public function implementInterface(string $interfaceName): void
-	{
-		trigger_error(__METHOD__ . '() is deprecated, use implement()', E_USER_DEPRECATED);
-		$this->implement($interfaceName);
-	}
 }
