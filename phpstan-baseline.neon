@@ -1,121 +1,271 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Match expression does not handle remaining value\: true$#'
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Attribute \.\.\.\$attrs\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: src/PhpGenerator/ClassLike.php
 
 		-
-			message: '#^Method Nette\\PhpGenerator\\ClassType\:\:addTrait\(\) has parameter \$deprecatedParam with no value type specified in iterable type array\.$#'
+			message: '#^Parameter \#1 \$class of method Nette\\PhpGenerator\\Printer\:\:printClass\(\) expects Nette\\PhpGenerator\\ClassType\|Nette\\PhpGenerator\\EnumType\|Nette\\PhpGenerator\\InterfaceType\|Nette\\PhpGenerator\\TraitType, \$this\(Nette\\PhpGenerator\\ClassLike\) given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PhpGenerator/ClassLike.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Constant \.\.\.\$consts\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: src/PhpGenerator/ClassType.php
 
 		-
-			message: '#^Method Nette\\PhpGenerator\\EnumType\:\:addTrait\(\) has parameter \$deprecatedParam with no value type specified in iterable type array\.$#'
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Method \.\.\.\$methods\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/ClassType.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Property \.\.\.\$props\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/ClassType.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\TraitUse \.\.\.\$traits\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/ClassType.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Attribute \.\.\.\$attrs\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/Closure.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Parameter \.\.\.\$uses\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/Closure.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Parameter \.\.\.\$val\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/Closure.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Attribute \.\.\.\$attrs\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/Constant.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Attribute \.\.\.\$attrs\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/EnumCase.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Constant \.\.\.\$consts\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: src/PhpGenerator/EnumType.php
 
 		-
-			message: '#^Access to an undefined property PhpParser\\Node\:\:\$attrGroups\.$#'
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\EnumCase \.\.\.\$cases\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
-			path: src/PhpGenerator/Extractor.php
+			path: src/PhpGenerator/EnumType.php
 
 		-
-			message: '#^Access to an undefined property PhpParser\\Node\\Expr\:\:\$value\.$#'
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Method \.\.\.\$methods\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
-			path: src/PhpGenerator/Extractor.php
+			path: src/PhpGenerator/EnumType.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\TraitUse \.\.\.\$traits\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/EnumType.php
 
 		-
 			message: '#^Call to an undefined method Nette\\PhpGenerator\\ClassLike\:\:addConstant\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/PhpGenerator/Extractor.php
 
 		-
 			message: '#^Call to an undefined method Nette\\PhpGenerator\\ClassLike\:\:addMethod\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/PhpGenerator/Extractor.php
 
 		-
 			message: '#^Call to an undefined method Nette\\PhpGenerator\\ClassLike\:\:addProperty\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/PhpGenerator/Extractor.php
 
 		-
 			message: '#^Call to an undefined method Nette\\PhpGenerator\\ClassLike\:\:addTrait\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/PhpGenerator/Extractor.php
 
 		-
-			message: '#^Method Nette\\PhpGenerator\\Extractor\:\:addCommentAndAttributes\(\) has parameter \$element with no type specified\.$#'
-			count: 1
-			path: src/PhpGenerator/Extractor.php
-
-		-
-			message: '#^Property class@anonymous/PhpGenerator/Extractor\.php\:176\:\:\$callback has no type specified\.$#'
+			message: '#^Parameter \#1 \$class of method Nette\\PhpGenerator\\Extractor\:\:addEnumCaseToClass\(\) expects Nette\\PhpGenerator\\EnumType, Nette\\PhpGenerator\\ClassLike given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/PhpGenerator/Extractor.php
 
 		-
 			message: '#^Variable \$trait might not be defined\.$#'
-			count: 2
+			identifier: variable.undefined
+			count: 1
 			path: src/PhpGenerator/Extractor.php
 
 		-
-			message: '#^Call to an undefined method ReflectionClass\<object\>\:\:hasCase\(\)\.$#'
-			count: 1
-			path: src/PhpGenerator/Factory.php
-
-		-
-			message: '#^Elseif branch is unreachable because previous condition is always true\.$#'
-			count: 1
-			path: src/PhpGenerator/Factory.php
-
-		-
 			message: '#^Method Nette\\PhpGenerator\\Factory\:\:getAttributes\(\) has parameter \$from with no type specified\.$#'
-			count: 1
-			path: src/PhpGenerator/Factory.php
-
-		-
-			message: '#^Method Nette\\PhpGenerator\\Factory\:\:getAttributes\(\) return type has no value type specified in iterable type array\.$#'
-			count: 1
-			path: src/PhpGenerator/Factory.php
-
-		-
-			message: '#^Method Nette\\PhpGenerator\\Factory\:\:getExtractor\(\) has parameter \$from with no type specified\.$#'
-			count: 1
-			path: src/PhpGenerator/Factory.php
-
-		-
-			message: '#^Method Nette\\PhpGenerator\\Factory\:\:getVisibility\(\) has parameter \$from with no type specified\.$#'
-			count: 1
-			path: src/PhpGenerator/Factory.php
-
-		-
-			message: '#^Parameter \#1 \$name of method Nette\\PhpGenerator\\ClassType\:\:setExtends\(\) expects string\|null, array\<int, string\> given\.$#'
-			count: 1
-			path: src/PhpGenerator/Factory.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: missingType.parameter
 			count: 1
 			path: src/PhpGenerator/Factory.php
 
 		-
 			message: '#^Variable \$bodies on left side of \?\?\= always exists and is not nullable\.$#'
+			identifier: nullCoalesce.variable
 			count: 1
 			path: src/PhpGenerator/Factory.php
 
 		-
-			message: '#^Method Nette\\PhpGenerator\\Helpers\:\:formatArgs\(\) has parameter \$args with no value type specified in iterable type array\.$#'
+			message: '#^Variable \$cache on left side of \?\?\= always exists and is not nullable\.$#'
+			identifier: nullCoalesce.variable
 			count: 1
-			path: src/PhpGenerator/Helpers.php
+			path: src/PhpGenerator/Factory.php
 
 		-
-			message: '#^Method Nette\\PhpGenerator\\Method\:\:from\(\) has parameter \$method with no value type specified in iterable type array\.$#'
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Attribute \.\.\.\$attrs\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/GlobalFunction.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Parameter \.\.\.\$val\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/GlobalFunction.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Constant \.\.\.\$consts\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/InterfaceType.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Method \.\.\.\$methods\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/InterfaceType.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Property \.\.\.\$props\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/InterfaceType.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Attribute \.\.\.\$attrs\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: src/PhpGenerator/Method.php
 
 		-
-			message: '#^Method Nette\\PhpGenerator\\TraitType\:\:addTrait\(\) has parameter \$deprecatedParam with no value type specified in iterable type array\.$#'
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Parameter \.\.\.\$val\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/Method.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Attribute \.\.\.\$attrs\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/Parameter.php
+
+		-
+			message: '#^Instanceof between Nette\\PhpGenerator\\EnumType and Nette\\PhpGenerator\\EnumType will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/PhpGenerator/Printer.php
+
+		-
+			message: '#^Method Nette\\PhpGenerator\\Printer\:\:printDocComment\(\) has parameter \$commentable with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/PhpGenerator/Printer.php
+
+		-
+			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, array\<string, Nette\\PhpGenerator\\PropertyHook\|string\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/PhpGenerator/Printer.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 1
+			path: src/PhpGenerator/Printer.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\PropertyHook \.\.\.\$hooks\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/PromotedParameter.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Attribute \.\.\.\$attrs\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/Property.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\PropertyHook \.\.\.\$hooks\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/Property.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Attribute \.\.\.\$attrs\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/PropertyHook.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Parameter \.\.\.\$val\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/PropertyHook.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Constant \.\.\.\$consts\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/TraitType.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Method \.\.\.\$methods\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/TraitType.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\Property \.\.\.\$props\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: src/PhpGenerator/TraitType.php
+
+		-
+			message: '#^Expression "\(function \(\\Nette\\PhpGenerator\\TraitUse \.\.\.\$traits\) \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
 			count: 1
 			path: src/PhpGenerator/TraitType.php
