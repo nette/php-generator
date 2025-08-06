@@ -20,6 +20,9 @@ sameFile(__DIR__ . '/expected/Extractor.classes.82.expect', (string) $file);
 if (class_exists(PhpParser\Node\PropertyHook::class)) {
 	$file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.84.php')))->extractAll();
 	sameFile(__DIR__ . '/expected/Extractor.classes.84.expect', (string) $file);
+
+	$file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/classes.85.php')))->extractAll();
+	sameFile(__DIR__ . '/expected/Extractor.classes.85.expect', (string) $file);
 }
 
 $file = (new Extractor(file_get_contents(__DIR__ . '/fixtures/enum.php')))->extractAll();

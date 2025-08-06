@@ -1,0 +1,4 @@
+class Class85
+{
+	private(set) static string $foo;
+}
