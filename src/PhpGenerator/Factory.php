@@ -77,8 +77,10 @@ final class Factory
 		}
 
 		if ($from->isInterface()) {
+			assert($class instanceof InterfaceType);
 			$class->setExtends(array_values($ifaces));
 		} elseif ($ifaces) {
+			assert($class instanceof ClassType || $class instanceof EnumType);
 			$ifaces = array_diff($ifaces, [\BackedEnum::class, \UnitEnum::class]);
 			$class->setImplements(array_values($ifaces));
 		}
@@ -86,6 +88,7 @@ final class Factory
 		$class->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$class->setAttributes($this->formatAttributes($from->getAttributes()));
 		if ($from->getParentClass()) {
+			assert($class instanceof ClassType);
 			$class->setExtends($from->getParentClass()->name);
 			$class->setImplements(array_values(array_diff($class->getImplements(), $from->getParentClass()->getInterfaceNames())));
 		}
@@ -116,6 +119,7 @@ final class Factory
 		}
 
 		if ($props) {
+			assert($class instanceof ClassType || $class instanceof InterfaceType || $class instanceof TraitType);
 			$class->setProperties($props);
 		}
 
@@ -148,10 +152,12 @@ final class Factory
 			}
 		}
 
+		assert($class instanceof ClassType || $class instanceof InterfaceType || $class instanceof TraitType || $class instanceof EnumType);
 		$class->setMethods($methods);
 
 		// Traits
 		foreach ($from->getTraitNames() as $trait) {
+			assert($class instanceof ClassType || $class instanceof TraitType || $class instanceof EnumType);
 			$trait = $class->addTrait($trait);
 			foreach ($resolutions as $resolution) {
 				$trait->addResolution($resolution);
@@ -173,6 +179,7 @@ final class Factory
 			$class->setConstants($consts);
 		}
 		if ($cases) {
+			assert($class instanceof EnumType);
 			$class->setCases($cases);
 		}
 	}
@@ -204,6 +211,7 @@ final class Factory
 		$function->setReturnReference($from->returnsReference());
 		$function->setVariadic($from->isVariadic());
 		if (!$from->isClosure()) {
+			assert($function instanceof GlobalFunction);
 			$function->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		}
 
@@ -400,7 +408,7 @@ final class Factory
 	private function getExtractor(string $file): Extractor
 	{
 		$cache = &$this->extractorCache[$file];
-		$cache ??= new Extractor(file_get_contents($file));
+		$cache ??= new Extractor(file_get_contents($file) ?: throw new Nette\InvalidStateException("Unable to read file '$file'."));
 		return $cache;
 	}
 }

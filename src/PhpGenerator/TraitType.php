@@ -45,10 +45,9 @@ final class TraitType extends ClassLike
 	public function __clone(): void
 	{
 		parent::__clone();
-		$clone = fn($item) => clone $item;
-		$this->consts = array_map($clone, $this->consts);
-		$this->methods = array_map($clone, $this->methods);
-		$this->properties = array_map($clone, $this->properties);
-		$this->traits = array_map($clone, $this->traits);
+		$this->consts = array_map(fn(Constant $c) => clone $c, $this->consts);
+		$this->methods = array_map(fn(Method $m) => clone $m, $this->methods);
+		$this->properties = array_map(fn(Property $p) => clone $p, $this->properties);
+		$this->traits = array_map(fn(TraitUse $t) => clone $t, $this->traits);
 	}
 }
