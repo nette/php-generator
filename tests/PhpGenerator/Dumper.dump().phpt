@@ -116,9 +116,7 @@ class Test2 extends Test
 }
 
 Assert::same(
-	PHP_VERSION_ID < 80100
-		? "\\Nette\\PhpGenerator\\Dumper::createObject(\\Test2::class, [\n\t\"\\x00Test2\\x00c\" => 4,\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n])"
-		: "\\Nette\\PhpGenerator\\Dumper::createObject(\\Test2::class, [\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n\t\"\\x00Test2\\x00c\" => 4,\n])",
+	"\\Nette\\PhpGenerator\\Dumper::createObject(\\Test2::class, [\n\t'a' => 1,\n\t\"\\x00*\\x00b\" => 2,\n\t\"\\x00Test2\\x00c\" => 4,\n])",
 	$dumper->dump(new Test2),
 );
 Assert::equal(new Test2, eval('return ' . $dumper->dump(new Test2) . ';'));
@@ -134,16 +132,12 @@ Assert::exception(function () {
 
 // closures
 Assert::same(
-	PHP_VERSION_ID < 80100
-		? "\\Closure::fromCallable('strlen')"
-		: 'strlen(...)',
+	'strlen(...)',
 	$dumper->dump(Closure::fromCallable('strlen')),
 );
 
 Assert::same(
-	PHP_VERSION_ID < 80100
-		? "\\Closure::fromCallable(['Nette\\PhpGenerator\\ClassLike', 'from'])"
-		: 'Nette\PhpGenerator\ClassLike::from(...)',
+	'Nette\PhpGenerator\ClassLike::from(...)',
 	$dumper->dump(Closure::fromCallable([Nette\PhpGenerator\ClassLike::class, 'from'])),
 );
 

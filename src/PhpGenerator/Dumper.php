@@ -11,7 +11,7 @@ namespace Nette\PhpGenerator;
 
 use Nette;
 use function addcslashes, array_keys, array_shift, count, dechex, implode, in_array, is_array, is_int, is_object, is_resource, is_string, ltrim, method_exists, ord, preg_match, preg_replace, preg_replace_callback, preg_split, range, serialize, str_contains, str_pad, str_repeat, str_replace, strlen, strrpos, strtoupper, substr, trim, unserialize, var_export;
-use const PHP_VERSION_ID, PREG_SPLIT_DELIM_CAPTURE, STR_PAD_LEFT;
+use const PREG_SPLIT_DELIM_CAPTURE, STR_PAD_LEFT;
 
 
 /**
@@ -160,9 +160,7 @@ final class Dumper
 		} elseif ($var instanceof \Closure) {
 			$inner = Nette\Utils\Callback::unwrap($var);
 			if (Nette\Utils\Callback::isStatic($inner)) {
-				return PHP_VERSION_ID < 80100
-					? '\Closure::fromCallable(' . $this->dump($inner) . ')'
-					: implode('::', (array) $inner) . '(...)';
+				return implode('::', (array) $inner) . '(...)';
 			}
 
 			throw new Nette\InvalidStateException('Cannot dump object of type Closure.');

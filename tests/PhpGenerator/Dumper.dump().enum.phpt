@@ -2,7 +2,6 @@
 
 /**
  * Test: Nette\PhpGenerator\Dumper::dump() enum
- * @phpVersion 8.1
  */
 
 declare(strict_types=1);

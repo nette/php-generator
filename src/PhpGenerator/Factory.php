@@ -38,7 +38,7 @@ final class Factory
 		}
 
 		$enumIface = null;
-		if (PHP_VERSION_ID >= 80100 && $from->isEnum()) {
+		if ($from->isEnum()) {
 			$class = new EnumType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
 			$from = new \ReflectionEnum($from->getName());
 			$enumIface = $from->isBacked() ? \BackedEnum::class : \UnitEnum::class;
@@ -214,7 +214,7 @@ final class Factory
 			$property = $from->getDeclaringClass()->getProperty($from->name);
 			$param = (new PromotedParameter($from->name))
 				->setVisibility($this->getVisibility($property))
-				->setReadOnly(PHP_VERSION_ID >= 80100 && $property->isReadonly())
+				->setReadOnly($property->isReadonly())
 				->setFinal(PHP_VERSION_ID >= 80500 && $property->isFinal() && !$property->isPrivateSet());
 			$this->addHooks($property, $param);
 		} else {
@@ -248,7 +248,7 @@ final class Factory
 		$const = new Constant($from->name);
 		$const->setValue($from->getValue());
 		$const->setVisibility($this->getVisibility($from));
-		$const->setFinal(PHP_VERSION_ID >= 80100 && $from->isFinal());
+		$const->setFinal($from->isFinal());
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$const->setAttributes($this->getAttributes($from));
 		return $const;
@@ -274,7 +274,7 @@ final class Factory
 		$prop->setVisibility($this->getVisibility($from));
 		$prop->setType((string) $from->getType());
 		$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
-		$prop->setReadOnly(PHP_VERSION_ID >= 80100 && $from->isReadOnly());
+		$prop->setReadOnly($from->isReadOnly());
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$prop->setAttributes($this->getAttributes($from));
 
