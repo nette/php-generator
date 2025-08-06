@@ -7,6 +7,9 @@ use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
+if (!class_exists(PhpParser\Node\PropertyHook::class)) {
+	Tester\Environment::skip('Requires newer PhpParser.');
+}
 
 $extractor = new Extractor(<<<'XX'
 	<?php

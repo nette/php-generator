@@ -128,7 +128,10 @@ final class Factory
 		$class->setMethods($methods);
 
 		foreach ($from->getTraitNames() as $trait) {
-			$class->addTrait($trait, $resolutions);
+			$trait = $class->addTrait($trait);
+			foreach ($resolutions as $resolution) {
+				$trait->addResolution($resolution);
+			}
 			$resolutions = [];
 		}
 

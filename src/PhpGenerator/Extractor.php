@@ -70,7 +70,6 @@ final class Extractor
 
 		$res = [];
 		foreach ($nodeFinder->findInstanceOf($classNode, Node\Stmt\ClassMethod::class) as $methodNode) {
-			assert($methodNode instanceof Node\Stmt\ClassMethod);
 			if ($methodNode->stmts) {
 				$res[$methodNode->name->toString()] = $this->getReformattedContents($methodNode->stmts, 2);
 			}
@@ -110,7 +109,7 @@ final class Extractor
 	}
 
 
-	public function extractFunctionBody(string $name): ?string
+	public function extractFunctionBody(string $name): string
 	{
 		$functionNode = (new NodeFinder)->findFirst(
 			$this->statements,
@@ -250,7 +249,6 @@ final class Extractor
 		$namespaces = ['' => $this->statements];
 		foreach ($this->statements as $node) {
 			if ($node instanceof Node\Stmt\Declare_
-				&& $node->declares[0] instanceof Node\Stmt\DeclareDeclare
 				&& $node->declares[0]->key->name === 'strict_types'
 				&& $node->declares[0]->value instanceof Node\Scalar\LNumber
 			) {
@@ -344,6 +342,7 @@ final class Extractor
 		foreach ($node->traits as $item) {
 			$trait = $class->addTrait($item->toString());
 		}
+		assert($trait instanceof TraitUse);
 
 		foreach ($node->adaptations as $item) {
 			$trait->addResolution(rtrim($this->getReformattedContents([$item], 0), ';'));
@@ -528,10 +527,7 @@ final class Extractor
 					return new Literal($this->getReformattedContents([$node], 0));
 
 				} elseif ($item->key) {
-					$key = $item->key instanceof Node\Identifier
-						? $item->key->name
-						: $this->toValue($item->key);
-
+					$key = $this->toValue($item->key);
 					if ($key instanceof Literal) {
 						return new Literal($this->getReformattedContents([$node], 0));
 					}
