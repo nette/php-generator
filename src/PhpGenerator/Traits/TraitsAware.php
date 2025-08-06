@@ -56,6 +56,7 @@ trait TraitsAware
 		}
 		$this->traits[$name] = $trait = new TraitUse($name);
 		if (func_num_args() > 1 && is_array(func_get_arg(1))) { // back compatibility
+			trigger_error('Passing second argument to ' . __METHOD__ . '() is deprecated, use addResolution() instead.');
 			array_map(fn($item) => $trait->addResolution($item), func_get_arg(1));
 		}
 
