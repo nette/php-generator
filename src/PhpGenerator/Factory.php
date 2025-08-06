@@ -211,7 +211,8 @@ final class Factory
 			$property = $from->getDeclaringClass()->getProperty($from->name);
 			$param = (new PromotedParameter($from->name))
 				->setVisibility($this->getVisibility($property))
-				->setReadOnly(PHP_VERSION_ID >= 80100 && $property->isReadonly());
+				->setReadOnly(PHP_VERSION_ID >= 80100 && $property->isReadonly())
+				->setFinal(PHP_VERSION_ID >= 80500 && $property->isFinal() && !$property->isPrivateSet());
 			$this->addHooks($property, $param);
 		} else {
 			$param = new Parameter($from->name);

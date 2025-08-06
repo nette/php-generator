@@ -7,4 +7,9 @@ namespace Abc;
 class Class85
 {
 	private(set) static string $foo;
+
+	function __construct(
+		final $final,
+	) {
+	}
 }

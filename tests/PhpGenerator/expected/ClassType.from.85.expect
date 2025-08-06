@@ -1,4 +1,10 @@
 class Class85
 {
 	private(set) static string $foo;
+
+
+	public function __construct(
+		final public $final,
+	) {
+	}
 }

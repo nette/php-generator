@@ -28,7 +28,6 @@ final class Property
 	private ?string $type = null;
 	private bool $nullable = false;
 	private bool $initialized = false;
-	private bool $final = false;
 	private bool $abstract = false;
 
 
@@ -98,19 +97,6 @@ final class Property
 	public function isInitialized(): bool
 	{
 		return $this->initialized || $this->value !== null;
-	}
-
-
-	public function setFinal(bool $state = true): static
-	{
-		$this->final = $state;
-		return $this;
-	}
-
-
-	public function isFinal(): bool
-	{
-		return $this->final;
 	}
 
 

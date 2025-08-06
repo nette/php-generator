@@ -79,6 +79,14 @@ $method->addPromotedParameter('second')
 		->addParameter('value')
 			->setType('string');
 
+$method->addPromotedParameter('third')
+	->setPublic()
+	->setProtected('set')
+	->setFinal()
+	->setType('string')
+	->addComment('hello')
+	->addAttribute('Example');
+
 same(<<<'XX'
 	class Demo
 	{
@@ -91,6 +99,9 @@ same(<<<'XX'
 			public string $second {
 				final set(string $value) => $value;
 			},
+			/** hello */
+			#[Example]
+			final public protected(set) string $third,
 		) {
 		}
 	}

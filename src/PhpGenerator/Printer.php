@@ -345,7 +345,10 @@ class Printer
 				$this->printDocComment($param)
 				. ($attrs ? ($multiline ? substr($attrs, 0, -1) . "\n" : $attrs) : '')
 				. ($param instanceof PromotedParameter
-					? $this->printPropertyVisibility($param) . ($param->isReadOnly() && $param->getType() ? ' readonly' : '') . ' '
+					? ($param->isFinal() ? 'final ' : '')
+						. $this->printPropertyVisibility($param)
+						. ($param->isReadOnly() && $param->getType() ? ' readonly' : '')
+						. ' '
 					: '')
 				. ltrim($this->printType($param->getType(), $param->isNullable()) . ' ')
 				. ($param->isReference() ? '&' : '')

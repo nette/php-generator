@@ -476,10 +476,12 @@ final class Extractor
 		foreach ($node->getParams() as $item) {
 			$getVisibility = $this->toVisibility($item->flags);
 			$setVisibility = $this->toSetterVisibility($item->flags);
-			if ($getVisibility || $setVisibility) {
+			$final = (bool) ($item->flags & Modifiers::FINAL);
+			if ($getVisibility || $setVisibility || $final) {
 				$param = $function->addPromotedParameter($item->var->name)
 					->setVisibility($getVisibility, $setVisibility)
-					->setReadonly((bool) ($item->flags & Node\Stmt\Class_::MODIFIER_READONLY));
+					->setReadonly((bool) ($item->flags & Node\Stmt\Class_::MODIFIER_READONLY))
+					->setFinal($final);
 				$this->addHooksToProperty($param, $item);
 			} else {
 				$param = $function->addParameter($item->var->name);
