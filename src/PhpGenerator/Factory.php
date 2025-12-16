@@ -61,7 +61,7 @@ final class Factory
 			$class->setReadOnly(PHP_VERSION_ID >= 80200 && $from->isReadOnly());
 		}
 
-		$class->setNamespace(new PhpNamespace($from->getNamespaceName()));
+		(new PhpNamespace($from->getNamespaceName()))->add($class);
 		return $class;
 	}
 

@@ -7,6 +7,7 @@
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Factory;
 use Nette\PhpGenerator\InterfaceType;
+use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/fixtures/classes.php';
@@ -29,3 +30,7 @@ $res[] = ClassType::from(Abc\Class9::class);
 $res[] = ClassType::from(Abc\Class10::class);
 
 sameFile(__DIR__ . '/expected/ClassType.from.expect', implode("\n", $res));
+
+// class is in namespace
+$c = ClassType::from(Abc\Class10::class);
+Assert::same($c, $c->getNamespace()->getClass('Class10'));

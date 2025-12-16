@@ -269,6 +269,7 @@ final class PhpNamespace
 			$this->functions[$lower] = $item;
 		} else {
 			$this->classes[$lower] = $item;
+			$item->setNamespace($this);
 		}
 
 		return $this;

@@ -38,8 +38,9 @@ test('adding classes preserves their original namespaces', function () {
 		(string) $namespace,
 	);
 
-	Assert::null($classA->getNamespace());
-	Assert::same('X', $classB->getNamespace()->getName());
+	// namespaces are updated to target namespace
+	Assert::same($namespace, $classA->getNamespace());
+	Assert::same($namespace, $classB->getNamespace());
 });
 
 
