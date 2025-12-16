@@ -114,6 +114,14 @@ abstract class ClassLike
 	}
 
 
+	public function getFullName(): ?string
+	{
+		return $this->name && ($namespace = $this->namespace?->getName())
+			? $namespace . '\\' . $this->name
+			: $this->name;
+	}
+
+
 	public function isClass(): bool
 	{
 		return $this instanceof ClassType;
