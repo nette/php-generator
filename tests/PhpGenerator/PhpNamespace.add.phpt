@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\GlobalFunction;
 use Nette\PhpGenerator\PhpNamespace;
 use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
@@ -14,7 +15,8 @@ testException('adding class without name throws exception', function () {
 test('adding classes preserves their original namespaces', function () {
 	$namespace = (new PhpNamespace('Foo'))
 		->add($classA = new ClassType('A'))
-		->add($classB = new ClassType('B', new PhpNamespace('X')));
+		->add($classB = new ClassType('B', new PhpNamespace('X')))
+		->add(new GlobalFunction('myFunc'));
 
 	same(
 		<<<'XX'
@@ -25,6 +27,10 @@ test('adding classes preserves their original namespaces', function () {
 			}
 
 			class B
+			{
+			}
+
+			function myFunc()
 			{
 			}
 
