@@ -254,23 +254,25 @@ final class PhpNamespace
 
 
 	/**
-	 * Adds a class-like type to the namespace. If it already exists, throws an exception.
+	 * Adds a class-like type or function to the namespace. If it already exists, throws an exception.
 	 */
-	public function add(ClassType|InterfaceType|TraitType|EnumType $class): static
+	public function add(ClassType|InterfaceType|TraitType|EnumType|GlobalFunction $item): static
 	{
-		$name = $class->getName();
-		if ($name === null) {
-			throw new Nette\InvalidArgumentException('Class does not have a name.');
-		}
-
+		$name = $item->getName() ?? throw new Nette\InvalidArgumentException('Class does not have a name.');
 		$lower = strtolower($name);
-		if (isset($this->classes[$lower]) && $this->classes[$lower] !== $class) {
+		[$list, $type] = $item instanceof GlobalFunction ? [$this->functions, self::NameFunction] : [$this->classes, self::NameNormal];
+		if (isset($list[$lower]) && $list[$lower] !== $item) {
 			throw new Nette\InvalidStateException("Cannot add '$name', because it already exists.");
-		} elseif ($orig = array_change_key_case($this->aliases[self::NameNormal])[$lower] ?? null) {
+		} elseif ($orig = array_change_key_case($this->aliases[$type])[$lower] ?? null) {
 			throw new Nette\InvalidStateException("Name '$name' used already as alias for $orig.");
 		}
 
-		$this->classes[$lower] = $class;
+		if ($item instanceof GlobalFunction) {
+			$this->functions[$lower] = $item;
+		} else {
+			$this->classes[$lower] = $item;
+		}
+
 		return $this;
 	}
 
@@ -354,14 +356,8 @@ final class PhpNamespace
 	 */
 	public function addFunction(string $name): GlobalFunction
 	{
-		$lower = strtolower($name);
-		if (isset($this->functions[$lower])) {
-			throw new Nette\InvalidStateException("Cannot add '$name', because it already exists.");
-		} elseif ($orig = array_change_key_case($this->aliases[self::NameFunction])[$lower] ?? null) {
-			throw new Nette\InvalidStateException("Name '$name' used already as alias for $orig.");
-		}
-
-		return $this->functions[$lower] = new GlobalFunction($name);
+		$this->add($function = new GlobalFunction($name));
+		return $function;
 	}
 
 
