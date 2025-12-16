@@ -37,24 +37,38 @@ final class Factory
 			throw new Nette\NotSupportedException('The $withBodies parameter cannot be used for anonymous or internal classes or interfaces.');
 		}
 
-		$enumIface = null;
-		if ($from->isEnum()) {
-			$class = new EnumType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
+		$class = $this->createClassObject($from);
+		$this->setupInheritance($class, $from);
+		$this->populateMembers($class, $from, $withBodies);
+		return $class;
+	}
+
+
+	private function createClassObject(\ReflectionClass &$from): ClassLike
+	{
+		if ($from->isAnonymous()) {
+			return new ClassType;
+		} elseif ($from->isEnum()) {
 			$from = new \ReflectionEnum($from->getName());
-			$enumIface = $from->isBacked() ? \BackedEnum::class : \UnitEnum::class;
-		} elseif ($from->isAnonymous()) {
-			$class = new ClassType;
+			$class = new EnumType($from->getName());
 		} elseif ($from->isInterface()) {
-			$class = new InterfaceType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
+			$class = new InterfaceType($from->getName());
 		} elseif ($from->isTrait()) {
-			$class = new TraitType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
+			$class = new TraitType($from->getName());
 		} else {
-			$class = new ClassType($from->getShortName(), new PhpNamespace($from->getNamespaceName()));
+			$class = new ClassType($from->getShortName());
 			$class->setFinal($from->isFinal() && $class->isClass());
 			$class->setAbstract($from->isAbstract() && $class->isClass());
 			$class->setReadOnly(PHP_VERSION_ID >= 80200 && $from->isReadOnly());
 		}
 
+		$class->setNamespace(new PhpNamespace($from->getNamespaceName()));
+		return $class;
+	}
+
+
+	private function setupInheritance(ClassLike $class, \ReflectionClass $from): void
+	{
 		$ifaces = $from->getInterfaceNames();
 		foreach ($ifaces as $iface) {
 			$ifaces = array_filter($ifaces, fn(string $item): bool => !is_subclass_of($iface, $item));
@@ -63,7 +77,7 @@ final class Factory
 		if ($from->isInterface()) {
 			$class->setExtends($ifaces);
 		} elseif ($ifaces) {
-			$ifaces = array_diff($ifaces, [$enumIface]);
+			$ifaces = array_diff($ifaces, [\BackedEnum::class, \UnitEnum::class]);
 			$class->setImplements($ifaces);
 		}
 
@@ -73,7 +87,12 @@ final class Factory
 			$class->setExtends($from->getParentClass()->name);
 			$class->setImplements(array_diff($class->getImplements(), $from->getParentClass()->getInterfaceNames()));
 		}
+	}
 
+
+	private function populateMembers(ClassLike $class, \ReflectionClass $from, bool $withBodies): void
+	{
+		// Properties
 		$props = [];
 		foreach ($from->getProperties() as $prop) {
 			$declaringClass = Reflection::getPropertyDeclaringClass($prop);
@@ -97,6 +116,7 @@ final class Factory
 			$class->setProperties($props);
 		}
 
+		// Methods and trait resolutions
 		$methods = $resolutions = [];
 		foreach ($from->getMethods() as $method) {
 			$declaringMethod = Reflection::getMethodDeclaringMethod($method);
@@ -104,7 +124,7 @@ final class Factory
 
 			if (
 				$declaringClass->name === $from->name
-				&& (!$enumIface || !method_exists($enumIface, $method->name))
+				&& (!$from->isEnum() || !method_exists($from->isBacked() ? \BackedEnum::class : \UnitEnum::class, $method->name))
 			) {
 				$methods[] = $m = $this->fromMethodReflection($method);
 				if ($withBodies) {
@@ -127,6 +147,7 @@ final class Factory
 
 		$class->setMethods($methods);
 
+		// Traits
 		foreach ($from->getTraitNames() as $trait) {
 			$trait = $class->addTrait($trait);
 			foreach ($resolutions as $resolution) {
@@ -135,6 +156,7 @@ final class Factory
 			$resolutions = [];
 		}
 
+		// Constants and enum cases
 		$consts = $cases = [];
 		foreach ($from->getReflectionConstants() as $const) {
 			if ($class->isEnum() && $from->hasCase($const->name)) {
@@ -150,8 +172,6 @@ final class Factory
 		if ($cases) {
 			$class->setCases($cases);
 		}
-
-		return $class;
 	}
 
 
