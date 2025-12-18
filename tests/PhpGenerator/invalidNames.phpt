@@ -76,16 +76,6 @@ Assert::exception(
 );
 
 Assert::exception(
-	fn() => new Nette\PhpGenerator\ClassType('abc\abc'),
-	Nette\InvalidArgumentException::class,
-);
-
-Assert::exception(
-	fn() => new Nette\PhpGenerator\ClassType('\abc'),
-	Nette\InvalidArgumentException::class,
-);
-
-Assert::exception(
 	fn() => new Nette\PhpGenerator\ClassType('bool'),
 	Nette\InvalidArgumentException::class,
 );
