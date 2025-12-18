@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Nette\PhpGenerator;
 
 use Nette;
-use function array_map, is_object, strtolower;
+use function array_map, is_object, str_contains, strtolower;
 
 
 /**
@@ -67,8 +67,13 @@ abstract class ClassLike
 
 	public function __construct(string $name, ?PhpNamespace $namespace = null)
 	{
-		$this->setName($name);
-		$this->namespace = $namespace;
+		if (str_contains($name, '\\')) {
+			$this->namespace = new PhpNamespace(Helpers::extractNamespace($name));
+			$this->setName(Helpers::extractShortName($name));
+		} else {
+			$this->namespace = $namespace;
+			$this->setName($name);
+		}
 	}
 
 
