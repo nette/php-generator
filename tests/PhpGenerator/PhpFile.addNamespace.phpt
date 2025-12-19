@@ -11,7 +11,7 @@ $namespace->addClass('Bar');
 
 $phpFile = new PhpFile;
 $phpFile->addNamespace('Foo');
-$phpFile->addNamespace($namespace); // overwrite
+@$phpFile->addNamespace($namespace); // deprecated overwrite
 
 
 same(
