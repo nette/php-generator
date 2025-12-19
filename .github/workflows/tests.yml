@@ -20,7 +20,7 @@ jobs:
                   coverage: none
 
             - run: composer install --no-progress --prefer-dist
-            - run: vendor/bin/tester tests -s -C
+            - run: composer tester
             - if: failure()
               uses: actions/upload-artifact@v4
               with:
@@ -39,12 +39,13 @@ jobs:
                   coverage: none
 
             - run: composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable
-            - run: vendor/bin/tester tests -s -C
+            - run: composer tester
 
 
     code_coverage:
         name: Code Coverage
         runs-on: ubuntu-latest
+        continue-on-error: true
         steps:
             - uses: actions/checkout@v4
             - uses: shivammathur/setup-php@v2
@@ -53,7 +54,7 @@ jobs:
                   coverage: none
 
             - run: composer install --no-progress --prefer-dist
-            - run: vendor/bin/tester -p phpdbg tests -s -C --coverage ./coverage.xml --coverage-src ./src
+            - run: composer tester -- -p phpdbg --coverage ./coverage.xml --coverage-src ./src
             - run: wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.4.3/php-coveralls.phar
             - env:
                   COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -28,4 +28,5 @@ function sameFile(string $file, $actual): void
 
 
 Tester\Environment::setup();
+Tester\Environment::setupFunctions();
 date_default_timezone_set('Europe/Prague');

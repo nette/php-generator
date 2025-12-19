@@ -26,7 +26,7 @@ Assert::exception(
 
 
 $res = ClassType::from(Abc\Class7::class, withBodies: true);
-sameFile(__DIR__ . '/expected/ClassType.from.bodies.expect', (string) $res);
+Assert::matchFile(__DIR__ . '/expected/ClassType.from.bodies.expect', (string) $res);
 
 
 if (PHP_VERSION_ID >= 80400) {
