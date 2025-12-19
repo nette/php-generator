@@ -11,130 +11,134 @@ use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
 
-$file = new PhpFile;
+test('comprehensive file construction with multiple namespaces, classes, interfaces, traits, and functions', function () {
+	$file = new PhpFile;
 
 
-$file->addComment('This file is auto-generated. DO NOT EDIT!');
-$file->addComment('Hey there, I\'m here to document things.');
+	$file->addComment('This file is auto-generated. DO NOT EDIT!');
+	$file->addComment('Hey there, I\'m here to document things.');
 
 
-$namespace = $file->addNamespace('Deleted');
-$namespace->addClass('Foo');
-$file->removeNamespace('Deleted');
+	$namespace = $file->addNamespace('Deleted');
+	$namespace->addClass('Foo');
+	$file->removeNamespace('Deleted');
 
-$namespaceFoo = $file->addNamespace('Foo');
+	$namespaceFoo = $file->addNamespace('Foo');
 
-$classA = $namespaceFoo->addClass('A');
-Assert::same($namespaceFoo, $classA->getNamespace());
+	$classA = $namespaceFoo->addClass('A');
+	Assert::same($namespaceFoo, $classA->getNamespace());
 
-$interfaceB = $namespaceFoo->addInterface('B');
-Assert::same($namespaceFoo, $interfaceB->getNamespace());
+	$interfaceB = $namespaceFoo->addInterface('B');
+	Assert::same($namespaceFoo, $interfaceB->getNamespace());
 
-$traitC = $namespaceFoo->addTrait('C');
-Assert::same($namespaceFoo, $traitC->getNamespace());
+	$traitC = $namespaceFoo->addTrait('C');
+	Assert::same($namespaceFoo, $traitC->getNamespace());
 
-$classA
-	->addImplement('Foo\A')
-	->addImplement('Bar\C');
+	$classA
+		->addImplement('Foo\A')
+		->addImplement('Bar\C');
 
-$classA->addTrait('Foo\C');
-$classA->addTrait('Bar\D');
-
-
-$namespaceBar = $file->addNamespace('Bar');
-
-$classB = $namespaceBar->addClass('B');
-Assert::same($classB->getNamespace(), $namespaceBar);
-
-$interfaceC = $namespaceBar->addInterface('C');
-Assert::same($interfaceC->getNamespace(), $namespaceBar);
-
-$traitD = $namespaceBar->addTrait('D');
-Assert::same($traitD->getNamespace(), $namespaceBar);
-
-$enumEN = $namespaceBar->addEnum('EN');
-Assert::same($enumEN->getNamespace(), $namespaceBar);
-
-$classB
-	->setExtends('Foo\A')
-	->addImplement('Foo\B')
-	->addTrait('Foo\C');
+	$classA->addTrait('Foo\C');
+	$classA->addTrait('Bar\D');
 
 
-$classE = $file->addClass('Baz\E');
-Assert::same($file->addNamespace('Baz'), $classE->getNamespace());
+	$namespaceBar = $file->addNamespace('Bar');
 
-$interfaceF = $file->addInterface('Baz\F');
-Assert::same($file->addNamespace('Baz'), $interfaceF->getNamespace());
+	$classB = $namespaceBar->addClass('B');
+	Assert::same($classB->getNamespace(), $namespaceBar);
 
-$interfaceF
-	->addExtend('Foo\B')
-	->addExtend('Bar\C');
+	$interfaceC = $namespaceBar->addInterface('C');
+	Assert::same($interfaceC->getNamespace(), $namespaceBar);
 
-$traitG = $file->addTrait('Baz\G');
-Assert::same($file->addNamespace('Baz'), $traitG->getNamespace());
+	$traitD = $namespaceBar->addTrait('D');
+	Assert::same($traitD->getNamespace(), $namespaceBar);
 
-$file->addFunction('Baz\f2')
-	->setReturnType('Foo\B');
+	$enumEN = $namespaceBar->addEnum('EN');
+	Assert::same($enumEN->getNamespace(), $namespaceBar);
 
-
-sameFile(__DIR__ . '/expected/PhpFile.regular.expect', (string) $file);
-
-$file->addClass('H');
-
-$file->addClass('FooBar\I');
-
-$file->addFunction('f1')
-	->setBody('return 1;');
-
-sameFile(__DIR__ . '/expected/PhpFile.bracketed.expect', (string) $file);
-
-Assert::same([
-	'Foo',
-	'Bar',
-	'Baz',
-	'',
-	'FooBar',
-], array_keys($file->getNamespaces()));
-
-Assert::same([
-	'Foo\A',
-	'Foo\B',
-	'Foo\C',
-	'Bar\B',
-	'Bar\C',
-	'Bar\D',
-	'Bar\EN',
-	'Baz\E',
-	'Baz\F',
-	'Baz\G',
-	'H',
-	'FooBar\I',
-], array_keys($file->getClasses()));
-
-Assert::same(['Baz\f2', 'f1'], array_keys($file->getFunctions()));
+	$classB
+		->setExtends('Foo\A')
+		->addImplement('Foo\B')
+		->addTrait('Foo\C');
 
 
+	$classE = $file->addClass('Baz\E');
+	Assert::same($file->addNamespace('Baz'), $classE->getNamespace());
+
+	$interfaceF = $file->addInterface('Baz\F');
+	Assert::same($file->addNamespace('Baz'), $interfaceF->getNamespace());
+
+	$interfaceF
+		->addExtend('Foo\B')
+		->addExtend('Bar\C');
+
+	$traitG = $file->addTrait('Baz\G');
+	Assert::same($file->addNamespace('Baz'), $traitG->getNamespace());
+
+	$file->addFunction('Baz\f2')
+		->setReturnType('Foo\B');
 
 
-$file = new PhpFile;
-$file->addClass('CA');
-$file->addUse('A')
-	->addUse('B', 'C');
+	sameFile(__DIR__ . '/expected/PhpFile.regular.expect', (string) $file);
 
-sameFile(__DIR__ . '/expected/PhpFile.globalNamespace.expect', (string) $file);
+	$file->addClass('H');
+
+	$file->addClass('FooBar\I');
+
+	$file->addFunction('f1')
+		->setBody('return 1;');
+
+	sameFile(__DIR__ . '/expected/PhpFile.bracketed.expect', (string) $file);
+
+	Assert::same([
+		'Foo',
+		'Bar',
+		'Baz',
+		'',
+		'FooBar',
+	], array_keys($file->getNamespaces()));
+
+	Assert::same([
+		'Foo\A',
+		'Foo\B',
+		'Foo\C',
+		'Bar\B',
+		'Bar\C',
+		'Bar\D',
+		'Bar\EN',
+		'Baz\E',
+		'Baz\F',
+		'Baz\G',
+		'H',
+		'FooBar\I',
+	], array_keys($file->getClasses()));
+
+	Assert::same(['Baz\f2', 'f1'], array_keys($file->getFunctions()));
+});
 
 
+test('file with global namespace and use statements', function () {
+	$file = new PhpFile;
+	$file->addClass('CA');
+	$file->addUse('A')
+		->addUse('B', 'C');
 
-$file = new PhpFile;
-$file->addComment('This file is auto-generated. DO NOT EDIT!');
-$file->setStrictTypes();
-$file->addClass('A');
-
-sameFile(__DIR__ . '/expected/PhpFile.strictTypes.expect', (string) $file);
+	sameFile(__DIR__ . '/expected/PhpFile.globalNamespace.expect', (string) $file);
+});
 
 
+test('file with strict types declaration', function () {
+	$file = new PhpFile;
+	$file->addComment('This file is auto-generated. DO NOT EDIT!');
+	$file->setStrictTypes();
+	$file->addClass('A');
 
-$file = PhpFile::fromCode(file_get_contents(__DIR__ . '/fixtures/classes.php'));
-Assert::type(PhpFile::class, $file);
-sameFile(__DIR__ . '/expected/Extractor.classes.expect', (string) $file);
+	sameFile(__DIR__ . '/expected/PhpFile.strictTypes.expect', (string) $file);
+});
+
+
+test('fromCode extracts file from PHP code', function () {
+	$file = PhpFile::fromCode(file_get_contents(__DIR__ . '/fixtures/classes.php'));
+	Assert::type(PhpFile::class, $file);
+	sameFile(__DIR__ . '/expected/Extractor.classes.expect', (string) $file);
+});

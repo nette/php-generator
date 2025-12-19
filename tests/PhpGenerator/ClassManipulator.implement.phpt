@@ -36,40 +36,41 @@ abstract class TestAbstract extends ParentAbstract
 }
 
 
-$class = new ClassType('TestClass');
-$manipulator = new ClassManipulator($class);
+test('implement adds interface methods', function () {
+	$class = new ClassType('TestClass');
+	$manipulator = new ClassManipulator($class);
 
-// Test interface implementation
-$manipulator->implement(TestInterface::class);
-Assert::match(<<<'XX'
-	class TestClass implements TestInterface
-	{
-		function interfaceMethod()
+	$manipulator->implement(TestInterface::class);
+	Assert::match(<<<'XX'
+		class TestClass implements TestInterface
 		{
+			function interfaceMethod()
+			{
+			}
 		}
-	}
 
-	XX, (string) $class);
+		XX, (string) $class);
+});
 
 
-// Test abstract class extension
-$class = new ClassType('TestClass');
-$manipulator = new ClassManipulator($class);
-$manipulator->implement(TestAbstract::class);
-Assert::match(<<<'XX'
-	class TestClass extends TestAbstract
-	{
-		public function abstractMethod()
+test('implement extends abstract class and adds abstract methods', function () {
+	$class = new ClassType('TestClass');
+	$manipulator = new ClassManipulator($class);
+	$manipulator->implement(TestAbstract::class);
+	Assert::match(<<<'XX'
+		class TestClass extends TestAbstract
 		{
+			public function abstractMethod()
+			{
+			}
 		}
-	}
 
-	XX, (string) $class);
+		XX, (string) $class);
+});
 
 
-// Test exception for regular class
-Assert::exception(
-	fn() => $manipulator->implement(stdClass::class),
-	InvalidArgumentException::class,
-	"'stdClass' is not an interface or abstract class.",
-);
+testException('implement throws exception for regular class', function () {
+	$class = new ClassType('TestClass');
+	$manipulator = new ClassManipulator($class);
+	$manipulator->implement(stdClass::class);
+}, InvalidArgumentException::class, "'stdClass' is not an interface or abstract class.");
