@@ -8,7 +8,7 @@
 namespace Nette\PhpGenerator;
 
 use Nette;
-use function array_diff, array_map, strtolower;
+use function array_diff, array_map, func_num_args, strtolower;
 
 
 /**
@@ -37,13 +37,11 @@ final class ClassType extends ClassLike
 	private array $implements = [];
 
 
-	public function __construct(?string $name = null, ?PhpNamespace $namespace = null)
+	public function __construct(?string $name = null)
 	{
+		parent::__construct($name ?? 'foo', func_num_args() > 1 ? func_get_arg(1) : null); // backward compatibility
 		if ($name === null) {
-			parent::__construct('foo', $namespace);
 			$this->setName(null);
-		} else {
-			parent::__construct($name, $namespace);
 		}
 	}
 
