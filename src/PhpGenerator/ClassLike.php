@@ -64,13 +64,13 @@ abstract class ClassLike
 	}
 
 
-	public function __construct(string $name, ?PhpNamespace $namespace = null)
+	public function __construct(string $name)
 	{
 		if (str_contains($name, '\\')) {
 			$this->namespace = new PhpNamespace(Helpers::extractNamespace($name));
 			$this->setName(Helpers::extractShortName($name));
 		} else {
-			$this->namespace = $namespace;
+			$this->namespace = func_num_args() > 1 ? func_get_arg(1) : null; // backward compatibility
 			$this->setName($name);
 		}
 	}
@@ -82,7 +82,15 @@ abstract class ClassLike
 	}
 
 
-	/** @deprecated  an object can be in multiple namespaces */
+	/** @internal */
+	public function setNamespace(?PhpNamespace $namespace): static
+	{
+		$this->namespace = $namespace;
+		return $this;
+	}
+
+
+	/** @internal */
 	public function getNamespace(): ?PhpNamespace
 	{
 		return $this->namespace;

@@ -39,13 +39,11 @@ final class ClassType extends ClassLike
 	private array $implements = [];
 
 
-	public function __construct(?string $name = null, ?PhpNamespace $namespace = null)
+	public function __construct(?string $name = null)
 	{
+		parent::__construct($name ?? 'foo', func_num_args() > 1 ? func_get_arg(1) : null); // backward compatibility
 		if ($name === null) {
-			parent::__construct('foo', $namespace);
 			$this->setName(null);
-		} else {
-			parent::__construct($name, $namespace);
 		}
 	}
 
