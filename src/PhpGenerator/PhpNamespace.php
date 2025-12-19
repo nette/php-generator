@@ -280,7 +280,7 @@ final class PhpNamespace
 	 */
 	public function addClass(string $name): ClassType
 	{
-		$this->add($class = new ClassType($name, $this));
+		$this->add($class = (new ClassType($name))->setNamespace($this));
 		return $class;
 	}
 
@@ -290,7 +290,7 @@ final class PhpNamespace
 	 */
 	public function addInterface(string $name): InterfaceType
 	{
-		$this->add($iface = new InterfaceType($name, $this));
+		$this->add($iface = (new InterfaceType($name))->setNamespace($this));
 		return $iface;
 	}
 
@@ -300,7 +300,7 @@ final class PhpNamespace
 	 */
 	public function addTrait(string $name): TraitType
 	{
-		$this->add($trait = new TraitType($name, $this));
+		$this->add($trait = (new TraitType($name))->setNamespace($this));
 		return $trait;
 	}
 
@@ -310,7 +310,7 @@ final class PhpNamespace
 	 */
 	public function addEnum(string $name): EnumType
 	{
-		$this->add($enum = new EnumType($name, $this));
+		$this->add($enum = (new EnumType($name))->setNamespace($this));
 		return $enum;
 	}
 
