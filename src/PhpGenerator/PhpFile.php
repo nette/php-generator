@@ -121,10 +121,12 @@ final class PhpFile
 	 */
 	public function addNamespace(string|PhpNamespace $namespace): PhpNamespace
 	{
-		$res = $namespace instanceof PhpNamespace
-			? ($this->namespaces[$namespace->getName()] = $namespace)
-			: ($this->namespaces[$namespace] ??= new PhpNamespace($namespace));
-
+		if ($namespace instanceof PhpNamespace) {
+			trigger_error('Passing PhpNamespace object to ' . __METHOD__ . '() is deprecated, use add() instead.', E_USER_DEPRECATED);
+			$res = $this->namespaces[$namespace->getName()] = $namespace;
+		} else {
+			$res = $this->namespaces[$namespace] ??= new PhpNamespace($namespace);
+		}
 		$this->refreshBracketedSyntax();
 		return $res;
 	}
@@ -135,7 +137,13 @@ final class PhpFile
 	 */
 	public function removeNamespace(string|PhpNamespace $namespace): static
 	{
-		$name = $namespace instanceof PhpNamespace ? $namespace->getName() : $namespace;
+		if ($namespace instanceof PhpNamespace) {
+			trigger_error('Passing PhpNamespace object to ' . __METHOD__ . '() is deprecated, use string name instead.', E_USER_DEPRECATED);
+			$name = $namespace->getName();
+		} else {
+			$name = $namespace;
+		}
+
 		unset($this->namespaces[$name]);
 		return $this;
 	}
