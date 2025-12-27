@@ -58,7 +58,7 @@ trait PropertyLike
 	public function isPublic(PropertyAccessMode|string $mode = PropertyAccessMode::Get): bool
 	{
 		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
-		return in_array($this->visibility[$mode->value], [Visibility::Public, null], true);
+		return in_array($this->visibility[$mode->value], [Visibility::Public, null], strict: true);
 	}
 
 

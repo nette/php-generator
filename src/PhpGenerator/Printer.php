@@ -146,7 +146,7 @@ class Printer
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		$class->validate();
 		$resolver = $this->namespace
-			? [$namespace, 'simplifyType']
+			? $namespace->simplifyType(...)
 			: fn($s) => $s;
 
 		$traits = [];
@@ -179,23 +179,16 @@ class Printer
 		$readOnlyClass = $class instanceof ClassType && $class->isReadOnly();
 		$consts = [];
 		$methods = [];
-		if (
-			$class instanceof ClassType
-			|| $class instanceof InterfaceType
-			|| $class instanceof TraitType
-			|| $class instanceof EnumType
-		) {
-			foreach ($class->getConstants() as $const) {
-				$consts[] = $this->printConstant($const);
-			}
+		foreach ($class->getConstants() as $const) {
+			$consts[] = $this->printConstant($const);
+		}
 
-			foreach ($class->getMethods() as $method) {
-				if ($readOnlyClass && $method->getName() === Method::Constructor) {
-					$method = clone $method;
-					array_map(fn($param) => $param instanceof PromotedParameter ? $param->setReadOnly(false) : null, $method->getParameters());
-				}
-				$methods[] = $this->printMethod($method, $namespace, $class->isInterface());
+		foreach ($class->getMethods() as $method) {
+			if ($readOnlyClass && $method->getName() === Method::Constructor) {
+				$method = clone $method;
+				array_map(fn($param) => $param instanceof PromotedParameter ? $param->setReadOnly(false) : null, $method->getParameters());
 			}
+			$methods[] = $this->printMethod($method, $namespace, $class->isInterface());
 		}
 
 		$properties = [];

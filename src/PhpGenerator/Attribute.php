@@ -17,21 +17,14 @@ use Nette;
  */
 final class Attribute
 {
-	private string $name;
-
-	/** @var mixed[] */
-	private array $args;
-
-
-	/** @param  mixed[]  $args */
-	public function __construct(string $name, array $args)
-	{
+	public function __construct(
+		private readonly string $name,
+		/** @var mixed[] */
+		private readonly array $args,
+	) {
 		if (!Helpers::isNamespaceIdentifier($name)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid attribute name.");
 		}
-
-		$this->name = $name;
-		$this->args = $args;
 	}
 
 
