@@ -161,7 +161,7 @@ final class Dumper
 				throw new Nette\InvalidStateException("Cannot dump object of type $class in {$this->context->name} context.");
 			}
 
-			$var = (array) $var;
+			$var = get_mangled_object_vars($var);
 			return '(object) ' . $this->dumpArray($var, $parents, $level, $column + 10);
 
 		} elseif ($class === \DateTime::class || $class === \DateTimeImmutable::class) {
@@ -208,7 +208,7 @@ final class Dumper
 		if (method_exists($var, '__serialize')) {
 			$arr = $var->__serialize();
 		} else {
-			$arr = (array) $var;
+			$arr = get_mangled_object_vars($var);
 			if (method_exists($var, '__sleep')) {
 				foreach ($var->__sleep() as $v) {
 					$props[$v] = $props["\x00*\x00$v"] = $props["\x00$class\x00$v"] = true;

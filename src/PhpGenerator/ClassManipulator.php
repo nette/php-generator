@@ -14,10 +14,10 @@ use const PHP_VERSION_ID;
 /**
  * Provides advanced manipulation of a ClassType, such as inheriting members from parent classes or implementing interfaces.
  */
-final class ClassManipulator
+final readonly class ClassManipulator
 {
 	public function __construct(
-		private readonly ClassType $class,
+		private ClassType $class,
 	) {
 	}
 

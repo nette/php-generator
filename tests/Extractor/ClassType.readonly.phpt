@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * @phpVersion 8.2
- */
-
 use Nette\PhpGenerator\{ClassType, Extractor};
 use Tester\Assert;
 

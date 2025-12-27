@@ -1,9 +1,5 @@
 <?php declare(strict_types=1);
 
-/**
- * @phpVersion 8.2
- */
-
 use Nette\PhpGenerator\{ClassType, TraitType};
 
 require __DIR__ . '/../bootstrap.php';

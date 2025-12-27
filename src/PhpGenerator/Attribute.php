@@ -13,12 +13,12 @@ use Nette;
 /**
  * Definition of a PHP attribute.
  */
-final class Attribute
+final readonly class Attribute
 {
 	public function __construct(
-		private readonly string $name,
+		private string $name,
 		/** @var mixed[] */
-		private readonly array $args,
+		private array $args,
 	) {
 		if (!Helpers::isNamespaceIdentifier($name)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid attribute name.");
