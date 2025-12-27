@@ -146,7 +146,7 @@ class Printer
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		$class->validate();
 		$resolver = $this->namespace
-			? [$namespace, 'simplifyType']
+			? $namespace->simplifyType(...)
 			: fn($s) => $s;
 
 		$traits = [];

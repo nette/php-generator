@@ -16,7 +16,7 @@ use const PHP_VERSION_ID;
 final class ClassManipulator
 {
 	public function __construct(
-		private ClassType $class,
+		private readonly ClassType $class,
 	) {
 	}
 
