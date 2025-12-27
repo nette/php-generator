@@ -24,9 +24,9 @@ class Literal
 
 
 	public function __construct(
-		private string $value,
+		private readonly string $value,
 		/** @var ?mixed[] */
-		private ?array $args = null,
+		private readonly ?array $args = null,
 	) {
 	}
 

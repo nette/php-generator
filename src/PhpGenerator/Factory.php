@@ -156,7 +156,7 @@ final class Factory
 	public function fromMethodReflection(\ReflectionMethod $from): Method
 	{
 		$method = new Method($from->name);
-		$method->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
+		$method->setParameters(array_map($this->fromParameterReflection(...), $from->getParameters()));
 		$method->setStatic($from->isStatic());
 		$isInterface = $from->getDeclaringClass()->isInterface();
 		$method->setVisibility($isInterface ? null : $this->getVisibility($from));
@@ -175,7 +175,7 @@ final class Factory
 	public function fromFunctionReflection(\ReflectionFunction $from, bool $withBody = false): GlobalFunction|Closure
 	{
 		$function = $from->isClosure() ? new Closure : new GlobalFunction($from->name);
-		$function->setParameters(array_map([$this, 'fromParameterReflection'], $from->getParameters()));
+		$function->setParameters(array_map($this->fromParameterReflection(...), $from->getParameters()));
 		$function->setReturnReference($from->returnsReference());
 		$function->setVariadic($from->isVariadic());
 		if (!$from->isClosure()) {
@@ -313,7 +313,7 @@ final class Factory
 				$params = [];
 			}
 			$prop->addHook($type)
-				->setParameters(array_map([$this, 'fromParameterReflection'], $params))
+				->setParameters(array_map($this->fromParameterReflection(...), $params))
 				->setAbstract($hook->isAbstract())
 				->setFinal($hook->isFinal())
 				->setReturnReference($hook->returnsReference())
