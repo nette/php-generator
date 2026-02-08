@@ -23,7 +23,7 @@ trait TraitsAware
 
 	/**
 	 * Replaces all traits.
-	 * @param  TraitUse[]  $traits
+	 * @param list<TraitUse>  $traits
 	 */
 	public function setTraits(array $traits): static
 	{
@@ -37,7 +37,7 @@ trait TraitsAware
 	}
 
 
-	/** @return TraitUse[] */
+	/** @return array<string, TraitUse> */
 	public function getTraits(): array
 	{
 		return $this->traits;

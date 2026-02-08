@@ -271,6 +271,7 @@ final class Dumper
 
 
 	/**
+	 * @param  class-string  $class
 	 * @param  mixed[]  $props
 	 * @internal
 	 */

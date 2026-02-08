@@ -23,7 +23,7 @@ trait MethodsAware
 
 	/**
 	 * Replaces all methods.
-	 * @param  Method[]  $methods
+	 * @param list<Method>  $methods
 	 */
 	public function setMethods(array $methods): static
 	{
@@ -37,7 +37,7 @@ trait MethodsAware
 	}
 
 
-	/** @return Method[] */
+	/** @return array<string, Method> */
 	public function getMethods(): array
 	{
 		$res = [];

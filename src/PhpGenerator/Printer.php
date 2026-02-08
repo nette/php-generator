@@ -290,6 +290,7 @@ class Printer
 	}
 
 
+	/** @param  PhpNamespace::Name*  $of */
 	protected function printUses(PhpNamespace $namespace, string $of = PhpNamespace::NameNormal): string
 	{
 		$prefix = [
@@ -426,6 +427,7 @@ class Printer
 	}
 
 
+	/** @param  PhpFile|ClassLike|GlobalFunction|Method|Property|Constant|Parameter|EnumCase|TraitUse|PropertyHook  $commentable */
 	protected function printDocComment(/*Traits\CommentAware*/ $commentable): string
 	{
 		$multiLine = $commentable instanceof GlobalFunction
@@ -444,7 +446,7 @@ class Printer
 	}
 
 
-	/** @param  Attribute[]  $attrs */
+	/** @param  list<Attribute>  $attrs */
 	protected function printAttributes(array $attrs, bool $inline = false): string
 	{
 		if (!$attrs) {

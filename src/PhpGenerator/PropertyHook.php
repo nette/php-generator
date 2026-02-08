@@ -18,7 +18,7 @@ final class PropertyHook
 	private bool $final = false;
 	private bool $abstract = false;
 
-	/** @var Parameter[] */
+	/** @var array<string, Parameter> */
 	private array $parameters = [];
 	private bool $returnReference = false;
 
@@ -78,7 +78,7 @@ final class PropertyHook
 
 
 	/**
-	 * @param  Parameter[]  $val
+	 * @param  list<Parameter>  $val
 	 * @internal
 	 */
 	public function setParameters(array $val): static
@@ -94,7 +94,7 @@ final class PropertyHook
 
 
 	/**
-	 * @return  Parameter[]
+	 * @return  array<string, Parameter>
 	 * @internal
 	 */
 	public function getParameters(): array

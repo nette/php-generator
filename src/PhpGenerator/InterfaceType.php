@@ -19,13 +19,11 @@ final class InterfaceType extends ClassLike
 	use Traits\MethodsAware;
 	use Traits\PropertiesAware;
 
-	/** @var string[] */
+	/** @var list<string> */
 	private array $extends = [];
 
 
-	/**
-	 * @param  string|string[]  $names
-	 */
+	/** @param string|list<string>  $names */
 	public function setExtends(string|array $names): static
 	{
 		$names = (array) $names;
@@ -35,7 +33,7 @@ final class InterfaceType extends ClassLike
 	}
 
 
-	/** @return string[] */
+	/** @return list<string> */
 	public function getExtends(): array
 	{
 		return $this->extends;

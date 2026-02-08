@@ -18,10 +18,10 @@ use const PHP_VERSION_ID;
  */
 final class Factory
 {
-	/** @var string[][]  */
+	/** @var array<string, array<string, string>> */
 	private array $bodyCache = [];
 
-	/** @var Extractor[]  */
+	/** @var array<string, Extractor> */
 	private array $extractorCache = [];
 
 
@@ -220,6 +220,7 @@ final class Factory
 	}
 
 
+	/** @param callable(): mixed  $from */
 	public function fromCallable(callable $from): Method|GlobalFunction|Closure
 	{
 		$ref = Nette\Utils\Callback::toReflection($from);
@@ -366,7 +367,10 @@ final class Factory
 	}
 
 
-	/** @return Attribute[] */
+	/**
+	 * @param  list<\ReflectionAttribute<object>>  $attrs
+	 * @return list<Attribute>
+	 */
 	private function formatAttributes(array $attrs): array
 	{
 		$res = [];

@@ -16,10 +16,11 @@ final class Closure
 	use Traits\FunctionLike;
 	use Traits\AttributeAware;
 
-	/** @var Parameter[] */
+	/** @var list<Parameter> */
 	private array $uses = [];
 
 
+	/** @param \Closure(): mixed  $closure */
 	public static function from(\Closure $closure): self
 	{
 		return (new Factory)->fromFunctionReflection(new \ReflectionFunction($closure));
@@ -34,7 +35,7 @@ final class Closure
 
 	/**
 	 * Replaces all uses.
-	 * @param  Parameter[]  $uses
+	 * @param  list<Parameter>  $uses
 	 */
 	public function setUses(array $uses): static
 	{
@@ -44,7 +45,7 @@ final class Closure
 	}
 
 
-	/** @return Parameter[] */
+	/** @return list<Parameter> */
 	public function getUses(): array
 	{
 		return $this->uses;

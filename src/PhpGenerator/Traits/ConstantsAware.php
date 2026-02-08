@@ -22,7 +22,7 @@ trait ConstantsAware
 
 	/**
 	 * Replaces all constants.
-	 * @param  Constant[]  $consts
+	 * @param list<Constant>  $consts
 	 */
 	public function setConstants(array $consts): static
 	{
@@ -36,7 +36,7 @@ trait ConstantsAware
 	}
 
 
-	/** @return Constant[] */
+	/** @return array<string, Constant> */
 	public function getConstants(): array
 	{
 		return $this->consts;

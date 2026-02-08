@@ -23,7 +23,7 @@ trait PropertiesAware
 
 	/**
 	 * Replaces all properties.
-	 * @param  Property[]  $props
+	 * @param list<Property>  $props
 	 */
 	public function setProperties(array $props): static
 	{
@@ -37,7 +37,7 @@ trait PropertiesAware
 	}
 
 
-	/** @return Property[] */
+	/** @return array<string, Property> */
 	public function getProperties(): array
 	{
 		return $this->properties;
