@@ -35,7 +35,7 @@ final class ClassType extends ClassLike
 	private ?string $extends = null;
 	private bool $readOnly = false;
 
-	/** @var string[] */
+	/** @var list<string> */
 	private array $implements = [];
 
 
@@ -105,9 +105,7 @@ final class ClassType extends ClassLike
 	}
 
 
-	/**
-	 * @param  string[]  $names
-	 */
+	/** @param list<string>  $names */
 	public function setImplements(array $names): static
 	{
 		$this->validateNames($names);
@@ -116,7 +114,7 @@ final class ClassType extends ClassLike
 	}
 
 
-	/** @return string[] */
+	/** @return list<string> */
 	public function getImplements(): array
 	{
 		return $this->implements;

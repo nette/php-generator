@@ -37,6 +37,7 @@ abstract class ClassLike
 	private ?string $name;
 
 
+	/** @param class-string|object  $class */
 	public static function from(string|object $class, bool $withBodies = false): static
 	{
 		$instance = (new Factory)
@@ -125,7 +126,7 @@ abstract class ClassLike
 	}
 
 
-	/** @param  string[]  $names */
+	/** @param list<string>  $names */
 	protected function validateNames(array $names): void
 	{
 		foreach ($names as $name) {

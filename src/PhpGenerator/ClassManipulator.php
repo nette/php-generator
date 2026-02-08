@@ -77,6 +77,7 @@ final class ClassManipulator
 
 	/**
 	 * Implements all methods from the given interface or abstract class.
+	 * @param class-string  $name
 	 */
 	public function implement(string $name): void
 	{

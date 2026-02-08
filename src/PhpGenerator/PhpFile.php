@@ -24,7 +24,7 @@ final class PhpFile
 {
 	use Traits\CommentAware;
 
-	/** @var PhpNamespace[] */
+	/** @var array<string, PhpNamespace> */
 	private array $namespaces = [];
 	private bool $strictTypes = false;
 
@@ -123,14 +123,14 @@ final class PhpFile
 	}
 
 
-	/** @return PhpNamespace[] */
+	/** @return array<string, PhpNamespace> */
 	public function getNamespaces(): array
 	{
 		return $this->namespaces;
 	}
 
 
-	/** @return (ClassType|InterfaceType|TraitType|EnumType)[] */
+	/** @return array<string, ClassType|InterfaceType|TraitType|EnumType> */
 	public function getClasses(): array
 	{
 		$classes = [];
@@ -145,7 +145,7 @@ final class PhpFile
 	}
 
 
-	/** @return GlobalFunction[] */
+	/** @return array<string, GlobalFunction> */
 	public function getFunctions(): array
 	{
 		$functions = [];

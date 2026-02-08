@@ -26,7 +26,7 @@ final class Extractor
 {
 	private string $code;
 
-	/** @var Node[] */
+	/** @var list<Node> */
 	private array $statements;
 	private PhpParser\PrettyPrinterAbstract $printer;
 

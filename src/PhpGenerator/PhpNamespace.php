@@ -50,10 +50,10 @@ final class PhpNamespace
 		self::NameConstant => [],
 	];
 
-	/** @var (ClassType|InterfaceType|TraitType|EnumType)[] */
+	/** @var array<string, ClassType|InterfaceType|TraitType|EnumType> */
 	private array $classes = [];
 
-	/** @var GlobalFunction[] */
+	/** @var array<string, GlobalFunction> */
 	private array $functions = [];
 
 
@@ -161,7 +161,7 @@ final class PhpNamespace
 	}
 
 
-	/** @return string[] */
+	/** @return array<string, string> */
 	public function getUses(string $of = self::NameNormal): array
 	{
 		uasort($this->aliases[$of], fn(string $a, string $b): int => strtr($a, '\\', ' ') <=> strtr($b, '\\', ' '));
@@ -326,7 +326,7 @@ final class PhpNamespace
 
 	/**
 	 * Returns all class-like types in the namespace.
-	 * @return (ClassType|InterfaceType|TraitType|EnumType)[]
+	 * @return array<string, ClassType|InterfaceType|TraitType|EnumType>
 	 */
 	public function getClasses(): array
 	{
@@ -376,7 +376,7 @@ final class PhpNamespace
 
 	/**
 	 * Returns all functions in the namespace.
-	 * @return GlobalFunction[]
+	 * @return array<string, GlobalFunction>
 	 */
 	public function getFunctions(): array
 	{

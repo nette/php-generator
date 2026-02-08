@@ -21,7 +21,7 @@ final class EnumType extends ClassLike
 	use Traits\MethodsAware;
 	use Traits\TraitsAware;
 
-	/** @var string[] */
+	/** @var list<string> */
 	private array $implements = [];
 
 	/** @var array<string, EnumCase> */
@@ -42,9 +42,7 @@ final class EnumType extends ClassLike
 	}
 
 
-	/**
-	 * @param  string[]  $names
-	 */
+	/** @param list<string>  $names */
 	public function setImplements(array $names): static
 	{
 		$this->validateNames($names);
@@ -53,7 +51,7 @@ final class EnumType extends ClassLike
 	}
 
 
-	/** @return string[] */
+	/** @return list<string> */
 	public function getImplements(): array
 	{
 		return $this->implements;

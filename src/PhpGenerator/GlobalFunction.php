@@ -22,6 +22,7 @@ final class GlobalFunction
 	use Traits\CommentAware;
 	use Traits\AttributeAware;
 
+	/** @param string|(\Closure(): mixed)  $function */
 	public static function from(string|\Closure $function, bool $withBody = false): self
 	{
 		return (new Factory)->fromFunctionReflection(Nette\Utils\Callback::toReflection($function), $withBody);

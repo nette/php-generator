@@ -24,7 +24,7 @@ trait FunctionLike
 {
 	private string $body = '';
 
-	/** @var Parameter[] */
+	/** @var array<string, Parameter> */
 	private array $parameters = [];
 	private bool $variadic = false;
 	private ?string $returnType = null;
@@ -64,9 +64,7 @@ trait FunctionLike
 	}
 
 
-	/**
-	 * @param  Parameter[]  $val
-	 */
+	/** @param list<Parameter>  $val */
 	public function setParameters(array $val): static
 	{
 		(function (Parameter ...$val) {})(...$val);
@@ -79,7 +77,7 @@ trait FunctionLike
 	}
 
 
-	/** @return Parameter[] */
+	/** @return array<string, Parameter> */
 	public function getParameters(): array
 	{
 		return $this->parameters;

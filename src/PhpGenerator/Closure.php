@@ -22,6 +22,7 @@ final class Closure
 	private array $uses = [];
 
 
+	/** @param \Closure(): mixed  $closure */
 	public static function from(\Closure $closure): self
 	{
 		return (new Factory)->fromFunctionReflection(new \ReflectionFunction($closure));
