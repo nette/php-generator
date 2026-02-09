@@ -23,6 +23,7 @@ final class Dumper
 	public int $wrapLength = 120;
 	public string $indentation = "\t";
 	public bool $customObjects = true;
+	public DumpContext $context = DumpContext::Expression;
 
 
 	/**
@@ -142,10 +143,17 @@ final class Dumper
 		$parents[] = $var;
 
 		if ($class === \stdClass::class) {
+			if (!in_array($this->context, [DumpContext::Expression, DumpContext::Parameter, DumpContext::Attribute], strict: true)) {
+				throw new Nette\InvalidStateException("Cannot dump object of type $class in {$this->context->name} context.");
+			}
+
 			$var = (array) $var;
 			return '(object) ' . $this->dumpArray($var, $parents, $level, $column + 10);
 
 		} elseif ($class === \DateTime::class || $class === \DateTimeImmutable::class) {
+			if (!in_array($this->context, [DumpContext::Expression, DumpContext::Parameter, DumpContext::Attribute], strict: true)) {
+				throw new Nette\InvalidStateException("Cannot dump object of type $class in {$this->context->name} context.");
+			}
 			assert($var instanceof \DateTimeInterface);
 			return $this->format(
 				"new \\$class(?, new \\DateTimeZone(?))",
@@ -165,6 +173,9 @@ final class Dumper
 			throw new Nette\InvalidStateException('Cannot dump object of type Closure.');
 
 		} elseif ($this->customObjects) {
+			if ($this->context !== DumpContext::Expression) {
+				throw new Nette\InvalidStateException("Cannot dump object of type $class in {$this->context->name} context.");
+			}
 			return $this->dumpCustomObject($var, $parents, $level);
 
 		} else {
