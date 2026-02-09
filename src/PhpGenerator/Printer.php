@@ -170,7 +170,7 @@ class Printer
 				$cases[] = $this->printDocComment($case)
 					. $this->printAttributes($case->getAttributes())
 					. 'case ' . $case->getName()
-					. ($case->getValue() === null ? '' : ' = ' . $this->dump($case->getValue()))
+					. ($case->getValue() === null ? '' : ' = ' . $this->dump($case->getValue(), context: DumpContext::Constant))
 					. ";\n";
 			}
 		}
@@ -352,7 +352,7 @@ class Printer
 				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')
 				. '$' . $param->getName()
-				. ($param->hasDefaultValue() && !$variadic ? ' = ' . $this->dump($param->getDefaultValue()) : '')
+				. ($param->hasDefaultValue() && !$variadic ? ' = ' . $this->dump($param->getDefaultValue(), context: DumpContext::Parameter) : '')
 				. ($param instanceof PromotedParameter ? $this->printHooks($param) : '')
 				. ($multiline ? ",\n" : ', ');
 		}
@@ -374,7 +374,7 @@ class Printer
 		return $this->printDocComment($const)
 			. $this->printAttributes($const->getAttributes())
 			. $def
-			. $this->dump($const->getValue(), strlen($def)) . ";\n";
+			. $this->dump($const->getValue(), strlen($def), DumpContext::Constant) . ";\n";
 	}
 
 
@@ -393,7 +393,7 @@ class Printer
 
 		$defaultValue = $property->getValue() === null && !$property->isInitialized()
 			? ''
-			: ' = ' . $this->dump($property->getValue(), strlen($def) + 3); // 3 = ' = '
+			: ' = ' . $this->dump($property->getValue(), strlen($def) + 3, DumpContext::Property); // 3 = ' = '
 
 		return $this->printDocComment($property)
 			. $this->printAttributes($property->getAttributes())
@@ -457,6 +457,7 @@ class Printer
 		}
 
 		$this->dumper->indentation = $this->indentation;
+		$this->dumper->context = DumpContext::Attribute;
 		$items = [];
 		foreach ($attrs as $attr) {
 			$args = $this->dumper->format('...?:', $attr->getArguments());
@@ -519,10 +520,11 @@ class Printer
 	}
 
 
-	protected function dump(mixed $var, int $column = 0): string
+	protected function dump(mixed $var, int $column = 0, DumpContext $context = DumpContext::Expression): string
 	{
 		$this->dumper->indentation = $this->indentation;
 		$this->dumper->wrapLength = $this->wrapLength;
+		$this->dumper->context = $context;
 		$s = $this->dumper->dump($var, $column);
 		$s = Helpers::simplifyTaggedNames($s, $this->namespace);
 		return $s;
