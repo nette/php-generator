@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Nette\PhpGenerator;
 
 use Nette;
-use function addcslashes, array_keys, array_shift, count, dechex, implode, in_array, is_array, is_int, is_object, is_resource, is_string, ltrim, method_exists, ord, preg_match, preg_replace, preg_replace_callback, preg_split, range, serialize, str_contains, str_pad, str_repeat, str_replace, strlen, strrpos, strtoupper, substr, trim, unserialize, var_export;
+use function addcslashes, array_keys, array_shift, count, dechex, get_mangled_object_vars, implode, in_array, is_array, is_int, is_object, is_resource, is_string, ltrim, method_exists, ord, preg_match, preg_replace, preg_replace_callback, preg_split, range, serialize, str_contains, str_pad, str_repeat, str_replace, strlen, strrpos, strtoupper, substr, trim, unserialize, var_export;
 use const PREG_SPLIT_DELIM_CAPTURE, STR_PAD_LEFT;
 
 
@@ -144,7 +144,7 @@ final class Dumper
 		$parents[] = $var;
 
 		if ($class === \stdClass::class) {
-			$var = (array) $var;
+			$var = get_mangled_object_vars($var);
 			return '(object) ' . $this->dumpArray($var, $parents, $level, $column + 10);
 
 		} elseif ($class === \DateTime::class || $class === \DateTimeImmutable::class) {
@@ -185,7 +185,7 @@ final class Dumper
 		if (method_exists($var, '__serialize')) {
 			$arr = $var->__serialize();
 		} else {
-			$arr = (array) $var;
+			$arr = get_mangled_object_vars($var);
 			if (method_exists($var, '__sleep')) {
 				foreach ($var->__sleep() as $v) {
 					$props[$v] = $props["\x00*\x00$v"] = $props["\x00$class\x00$v"] = true;
