@@ -22,7 +22,11 @@ final class Dumper
 	public int $wrapLength = 120;
 	public string $indentation = "\t";
 	public bool $customObjects = true;
+	public bool $references = false;
 	public DumpContext $context = DumpContext::Expression;
+
+	/** @var array<string, int> */
+	private array $refMap = [];
 
 
 	/**
@@ -31,7 +35,11 @@ final class Dumper
 	 */
 	public function dump(mixed $var, int $column = 0): string
 	{
-		return $this->dumpVar($var, [], 0, $column);
+		$refMap = $this->refMap; // dump() is re-entered via Literal::formatWith()
+		$res = $this->dumpReferences($var)
+			?? $this->dumpVar($var, column: $column);
+		$this->refMap = $refMap;
+		return $res;
 	}
 
 
@@ -107,7 +115,7 @@ final class Dumper
 		if (empty($var)) {
 			return '[]';
 
-		} elseif ($level > $this->maxDepth || in_array($var, $parents, true)) {
+		} elseif ($level > $this->maxDepth || (!$this->references && in_array($var, $parents, true))) {
 			throw new Nette\InvalidStateException('Nesting level too deep or recursive dependency.');
 		}
 
@@ -119,7 +127,13 @@ final class Dumper
 			$keyPart = $hideKeys && ($k !== $keys[0] || $k === 0)
 				? ''
 				: $this->dumpVar($k) . ' => ';
-			$pairs[] = $keyPart . $this->dumpVar($v, $parents, $level + 1, strlen($keyPart) + 1); // 1 = comma after item
+
+			$isRef = $this->references
+				&& ($refId = (\ReflectionReference::fromArrayElement($var, $k))?->getId())
+				&& isset($this->refMap[$refId]);
+			$pairs[] = $keyPart . ($isRef
+				? '&$r[' . $this->refMap[$refId] . ']'
+				: $this->dumpVar($v, $parents, $level + 1, strlen($keyPart) + 1)); // 1 = comma after item
 		}
 
 		$line = '[' . implode(', ', $pairs) . ']';
@@ -221,6 +235,55 @@ final class Dumper
 		$s = Nette\Utils\Strings::unixNewLines($s);
 		$s = Nette\Utils\Strings::indent(trim($s), $level, $this->indentation);
 		return ltrim($s, $this->indentation);
+	}
+
+
+	private function dumpReferences(mixed $var): ?string
+	{
+		$this->refMap = $refs = [];
+		if (!$this->references || !is_array($var)) {
+			return null;
+		}
+
+		$this->collectReferences($var, $refs);
+		$refs = array_filter($refs, fn($ref) => $ref[0] >= 2);
+		if (!$refs) {
+			return null;
+		} elseif ($this->context !== DumpContext::Expression) {
+			throw new Nette\InvalidStateException("Cannot dump references in {$this->context->name} context.");
+		}
+
+		$n = 0;
+		foreach ($refs as $refId => $_) {
+			$this->refMap[$refId] = ++$n;
+		}
+
+		$preamble = '';
+		foreach ($this->refMap as $refId => $n) {
+			$preamble .= '$r[' . $n . '] = ' . $this->dumpVar($refs[$refId][1]) . '; ';
+		}
+
+		return '(static function () { ' . $preamble . 'return ' . $this->dumpVar($var) . '; })()';
+	}
+
+
+	/**
+	 * @param  mixed[]  $var
+	 * @param  array<string, array{int, mixed}>  $refs
+	 */
+	private function collectReferences(array $var, array &$refs): void
+	{
+		foreach ($var as $k => $v) {
+			$refId = (\ReflectionReference::fromArrayElement($var, $k))?->getId();
+			if ($refId !== null) {
+				$refs[$refId] ??= [0, $v];
+				$refs[$refId][0]++;
+			}
+
+			if (is_array($v) && ($refId === null || $refs[$refId][0] === 1)) {
+				$this->collectReferences($v, $refs);
+			}
+		}
 	}
 
 
