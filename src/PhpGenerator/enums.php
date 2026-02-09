@@ -37,3 +37,16 @@ enum PropertyHookType: string
 	case Set = 'set';
 	case Get = 'get';
 }
+
+
+/**
+ * Location where a dumped value will appear in generated code.
+ */
+enum DumpContext
+{
+	case Expression;
+	case Constant;
+	case Property;
+	case Parameter;
+	case Attribute;
+}
