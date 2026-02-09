@@ -91,7 +91,6 @@ abstract class ClassLike
 	}
 
 
-	/** @internal */
 	public function getNamespace(): ?PhpNamespace
 	{
 		return $this->namespace;
