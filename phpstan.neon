@@ -4,8 +4,6 @@ parameters:
 	paths:
 		- src
 
-	checkMissingCallableSignature: true
-
 	ignoreErrors:
 		# Intentional runtime type validation pattern: (function (Type ...$items) {})(...$items)
 		- identifier: expr.resultUnused
