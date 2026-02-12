@@ -1,12 +1,40 @@
 parameters:
-	level: 6
+	level: 8
 
 	paths:
 		- src
 
 	ignoreErrors:
-		# Intentional runtime type validation pattern: (function (Type ...$items) {})(...$items)
-		- identifier: expr.resultUnused
+		# addMember() uses dynamic property assignment through match expression — type-safe by design
+		-
+			identifier: assign.propertyType
+			path: src/PhpGenerator/ClassType.php
+		-
+			identifier: assign.propertyType
+			path: src/PhpGenerator/TraitType.php
+		-
+			identifier: assign.propertyType
+			path: src/PhpGenerator/InterfaceType.php
+		-
+			identifier: assign.propertyType
+			path: src/PhpGenerator/EnumType.php
+
+		# Exhaustive match arms — last branch is always true by definition
+		-
+			identifier: instanceof.alwaysTrue
+			path: src/PhpGenerator/ClassType.php
+		-
+			identifier: instanceof.alwaysTrue
+			path: src/PhpGenerator/TraitType.php
+		-
+			identifier: instanceof.alwaysTrue
+			path: src/PhpGenerator/InterfaceType.php
+		-
+			identifier: instanceof.alwaysTrue
+			path: src/PhpGenerator/EnumType.php
+		-
+			identifier: instanceof.alwaysTrue
+			path: src/PhpGenerator/Printer.php
 
 includes:
 	- phpstan-baseline.neon

@@ -7,6 +7,18 @@ parameters:
 			path: src/PhpGenerator/ClassLike.php
 
 		-
+			message: '#^Method Nette\\PhpGenerator\\Closure\:\:from\(\) should return Nette\\PhpGenerator\\Closure but returns Nette\\PhpGenerator\\Closure\|Nette\\PhpGenerator\\GlobalFunction\.$#'
+			identifier: return.type
+			count: 1
+			path: src/PhpGenerator/Closure.php
+
+		-
+			message: '#^Call to an undefined method object\:\:__unserialize\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/PhpGenerator/Dumper.php
+
+		-
 			message: '#^Call to an undefined method Nette\\PhpGenerator\\ClassLike\:\:addConstant\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -61,7 +73,38 @@ parameters:
 			path: src/PhpGenerator/Factory.php
 
 		-
-			message: '#^Method Nette\\PhpGenerator\\Printer\:\:printDocComment\(\) has parameter \$commentable with no type specified\.$#'
-			identifier: missingType.parameter
+			message: '#^Method Nette\\PhpGenerator\\GlobalFunction\:\:from\(\) should return Nette\\PhpGenerator\\GlobalFunction but returns Nette\\PhpGenerator\\Closure\|Nette\\PhpGenerator\\GlobalFunction\.$#'
+			identifier: return.type
 			count: 1
-			path: src/PhpGenerator/Printer.php
+			path: src/PhpGenerator/GlobalFunction.php
+
+		-
+			message: '#^Parameter \#1 \$callable of static method Nette\\Utils\\Callback\:\:toReflection\(\) expects callable\(\)\: mixed, \(Closure\(\)\: mixed\)\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PhpGenerator/GlobalFunction.php
+
+		-
+			message: '#^Parameter \#1 \$from of method Nette\\PhpGenerator\\Factory\:\:fromFunctionReflection\(\) expects ReflectionFunction, ReflectionFunction\|ReflectionMethod given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PhpGenerator/GlobalFunction.php
+
+		-
+			message: '#^Parameter \#1 \$callable of static method Nette\\Utils\\Callback\:\:toReflection\(\) expects callable\(\)\: mixed, array\{object\|string, string\}\|\(Closure\(\)\: mixed\)\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PhpGenerator/Method.php
+
+		-
+			message: '#^Parameter \#1 \$from of method Nette\\PhpGenerator\\Factory\:\:fromMethodReflection\(\) expects ReflectionMethod, ReflectionFunction\|ReflectionMethod given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PhpGenerator/Method.php
+
+		-
+			message: '#^Method Nette\\PhpGenerator\\Helpers\:\:unindent\(\) should return string but returns string\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/PhpGenerator/Helpers.php
+
