@@ -62,6 +62,7 @@ final class Helpers
 	}
 
 
+	/** @param  PhpNamespace::Name*  $of */
 	public static function tagName(string $name, string $of = PhpNamespace::NameNormal): string
 	{
 		return isset(self::Keywords[strtolower($name)])
@@ -129,6 +130,7 @@ final class Helpers
 
 
 	/**
+	 * @param  class-string  $class
 	 * @param  mixed[]  $props
 	 * @internal
 	 */

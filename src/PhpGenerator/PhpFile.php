@@ -184,6 +184,7 @@ final class PhpFile
 
 	/**
 	 * Adds a use statement to the file, to the global namespace.
+	 * @param  PhpNamespace::Name*  $of
 	 */
 	public function addUse(string $name, ?string $alias = null, string $of = PhpNamespace::NameNormal): static
 	{

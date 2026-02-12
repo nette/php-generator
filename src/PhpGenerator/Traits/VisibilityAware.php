@@ -20,6 +20,7 @@ trait VisibilityAware
 	private ?Visibility $visibility = null;
 
 
+	/** @param  Visibility|'public'|'protected'|'private'|null  $value */
 	public function setVisibility(Visibility|string|null $value): static
 	{
 		$this->visibility = $value instanceof Visibility || $value === null
@@ -29,6 +30,7 @@ trait VisibilityAware
 	}
 
 
+	/** @return 'public'|'protected'|'private'|null */
 	public function getVisibility(): ?string
 	{
 		return $this->visibility?->value;

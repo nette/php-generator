@@ -18,7 +18,7 @@ final class Closure
 	use Traits\FunctionLike;
 	use Traits\AttributeAware;
 
-	/** @var Parameter[] */
+	/** @var list<Parameter> */
 	private array $uses = [];
 
 
@@ -37,7 +37,7 @@ final class Closure
 
 	/**
 	 * Replaces all uses.
-	 * @param  Parameter[]  $uses
+	 * @param  list<Parameter>  $uses
 	 */
 	public function setUses(array $uses): static
 	{
@@ -47,7 +47,7 @@ final class Closure
 	}
 
 
-	/** @return Parameter[] */
+	/** @return list<Parameter> */
 	public function getUses(): array
 	{
 		return $this->uses;

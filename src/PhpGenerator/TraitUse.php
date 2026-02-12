@@ -20,7 +20,7 @@ final class TraitUse
 	use Traits\NameAware;
 	use Traits\CommentAware;
 
-	/** @var string[] */
+	/** @var list<string> */
 	private array $resolutions = [];
 
 
@@ -41,7 +41,7 @@ final class TraitUse
 	}
 
 
-	/** @return string[] */
+	/** @return list<string> */
 	public function getResolutions(): array
 	{
 		return $this->resolutions;

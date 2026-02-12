@@ -75,7 +75,7 @@ final class EnumType extends ClassLike
 
 	/**
 	 * Sets cases to enum
-	 * @param  EnumCase[]  $cases
+	 * @param  list<EnumCase>  $cases
 	 */
 	public function setCases(array $cases): static
 	{
@@ -89,7 +89,7 @@ final class EnumType extends ClassLike
 	}
 
 
-	/** @return EnumCase[] */
+	/** @return array<string, EnumCase> */
 	public function getCases(): array
 	{
 		return $this->cases;
