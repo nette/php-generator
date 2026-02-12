@@ -24,6 +24,7 @@ use function count;
 final class PhpFile
 {
 	use Traits\CommentAware;
+	use Traits\AttributeAware;
 
 	/** @var array<string, PhpNamespace> */
 	private array $namespaces = [];

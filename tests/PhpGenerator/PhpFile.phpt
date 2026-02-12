@@ -137,6 +137,58 @@ test('file with strict types declaration', function () {
 });
 
 
+test('file with attributes', function () {
+	$file = new PhpFile;
+	$file->addAttribute('FileAttribute');
+	$file->addAttribute('AnotherAttribute', ['key' => 'value']);
+	$file->addClass('A');
+
+	same(
+		<<<'XX'
+			<?php
+
+			#[FileAttribute]
+			#[AnotherAttribute(key: 'value')]
+
+			class A
+			{
+			}
+
+			XX,
+		(string) $file,
+	);
+});
+
+
+test('file with comment, attributes and strict types', function () {
+	$file = new PhpFile;
+	$file->addComment('This file is auto-generated.');
+	$file->addAttribute('FileAttribute');
+	$file->setStrictTypes();
+	$file->addClass('A');
+
+	same(
+		<<<'XX'
+			<?php
+
+			/**
+			 * This file is auto-generated.
+			 */
+
+			#[FileAttribute]
+
+			declare(strict_types=1);
+
+			class A
+			{
+			}
+
+			XX,
+		(string) $file,
+	);
+});
+
+
 test('fromCode extracts file from PHP code', function () {
 	$file = PhpFile::fromCode(file_get_contents(__DIR__ . '/fixtures/classes.php'));
 	Assert::type(PhpFile::class, $file);

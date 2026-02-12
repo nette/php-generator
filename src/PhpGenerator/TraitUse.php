@@ -19,6 +19,7 @@ final class TraitUse
 {
 	use Traits\NameAware;
 	use Traits\CommentAware;
+	use Traits\AttributeAware;
 
 	/** @var list<string> */
 	private array $resolutions = [];

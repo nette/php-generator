@@ -25,6 +25,9 @@ $class
 		],
 	]);
 
+$class->addTrait('ExampleTrait')
+	->addAttribute('TraitAttribute');
+
 $class->addConstant('FOO', 123)
 	->addComment('Commented')
 	->addAttribute('ExampleAttribute')

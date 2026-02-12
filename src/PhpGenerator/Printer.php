@@ -155,6 +155,7 @@ class Printer
 				$resolutions = implode(";\n", $trait->getResolutions());
 				$resolutions = Helpers::simplifyTaggedNames($resolutions, $this->namespace);
 				$traits[] = $this->printDocComment($trait)
+					. $this->printAttributes($trait->getAttributes())
 					. 'use ' . $resolver($trait->getName())
 					. ($resolutions
 						? " {\n" . $this->indent($resolutions) . ";\n}\n"
@@ -284,6 +285,7 @@ class Printer
 		return "<?php\n"
 			. ($file->getComment() ? "\n" . $this->printDocComment($file) : '')
 			. "\n"
+			. ($file->getAttributes() ? $this->printAttributes($file->getAttributes()) . "\n" : '')
 			. ($file->hasStrictTypes() ? "declare(strict_types=1);\n\n" : '')
 			. implode("\n\n", $namespaces);
 	}

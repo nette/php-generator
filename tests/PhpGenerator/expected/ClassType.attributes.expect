@@ -6,6 +6,9 @@
 #[Table(name: 'user', constraints: [new UniqueConstraint(name: 'ean', columns: ['ean'])])]
 class Example
 {
+	#[TraitAttribute]
+	use ExampleTrait;
+
 	/** Commented */
 	#[ExampleAttribute]
 	#[WithArguments(true)]
