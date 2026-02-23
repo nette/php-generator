@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * First comment
  */
-
-declare(strict_types=1);
 
 /**
  * Second comment

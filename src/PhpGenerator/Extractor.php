@@ -237,11 +237,18 @@ final class Extractor
 		$phpFile = new PhpFile;
 
 		if (
-			$this->statements
-			&& !$this->statements[0] instanceof Node\Stmt\ClassLike
-			&& !$this->statements[0] instanceof Node\Stmt\Function_
+			($firstStmt = $this->statements[0] ?? null)
+			&& ($firstStmt = $firstStmt instanceof Node\Stmt\Declare_ ? $this->statements[1] ?? null : $firstStmt)
+			&& !$firstStmt instanceof Node\Stmt\ClassLike
+			&& !$firstStmt instanceof Node\Stmt\Function_
 		) {
-			$this->addCommentAndAttributes($phpFile, $this->statements[0]);
+			$comments = $firstStmt->getComments();
+			foreach ($comments as $i => $comment) {
+				if ($comment instanceof PhpParser\Comment\Doc) {
+					$phpFile->setComment(Helpers::unformatDocComment($comment->getReformattedText()));
+					break;
+				}
+			}
 		}
 
 		$namespaces = ['' => $this->statements];
@@ -437,7 +444,7 @@ final class Extractor
 
 
 	private function addCommentAndAttributes(
-		PhpFile|ClassLike|Constant|Property|GlobalFunction|Method|Parameter|EnumCase|TraitUse|PropertyHook $element,
+		ClassLike|Constant|Property|GlobalFunction|Method|Parameter|EnumCase|TraitUse|PropertyHook $element,
 		Node $node,
 	): void
 	{

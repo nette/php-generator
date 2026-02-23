@@ -5,7 +5,6 @@
  */
 
 use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\InterfaceType;
 
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/fixtures/classes.85.php';

@@ -26,7 +26,9 @@ abstract class ParentAbstract
 	abstract public array $abstractProperty { get; }
 	public array $concreteProperty;
 	abstract public function abstractMethod();
-	public function concreteMethod() {}
+	public function concreteMethod()
+	{
+	}
 }
 
 abstract class TestAbstract extends ParentAbstract

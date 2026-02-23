@@ -20,6 +20,17 @@ Assert::same('doc comment', $file->getClasses()['Class1']->getComment());
 
 
 $file = (new Extractor(<<<'XX'
+	<?php declare(strict_types=1);
+
+	/** doc comment */
+
+	namespace Abc;
+	XX))->extractAll();
+
+Assert::same('doc comment', $file->getComment());
+
+
+$file = (new Extractor(<<<'XX'
 	<?php
 
 	/** doc comment */
