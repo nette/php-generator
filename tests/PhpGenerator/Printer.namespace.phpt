@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 use Nette\PhpGenerator\PhpNamespace;
 use Nette\PhpGenerator\Printer;

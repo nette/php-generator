@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: PHP 8.4 abstract/final property
  */
-
-declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
 

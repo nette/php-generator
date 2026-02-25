@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\PhpGenerator - PHP7 return type declarations
  */
-
-declare(strict_types=1);
 
 namespace A
 {

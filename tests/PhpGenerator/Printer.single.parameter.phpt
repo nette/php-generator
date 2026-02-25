@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 use Nette\PhpGenerator\Literal;
 use Nette\PhpGenerator\Printer;

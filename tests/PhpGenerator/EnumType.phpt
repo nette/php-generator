@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\PhpGenerator for enum.
  */
-
-declare(strict_types=1);
 
 use Nette\PhpGenerator\EnumType;
 use Tester\Assert;

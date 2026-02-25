@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\PhpGenerator for files.
  */
-
-declare(strict_types=1);
 
 use Nette\PhpGenerator\PhpFile;
 use Tester\Assert;

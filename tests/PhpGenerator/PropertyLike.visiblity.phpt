@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: PropertyLike visibility
  */
-
-declare(strict_types=1);
 
 use Nette\PhpGenerator\ClassType;
 use Tester\Assert;

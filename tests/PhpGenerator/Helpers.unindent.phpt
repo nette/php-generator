@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\PhpGenerator\Helpers::unindent()
  */
-
-declare(strict_types=1);
 
 use Nette\PhpGenerator\Helpers;
 use Tester\Assert;

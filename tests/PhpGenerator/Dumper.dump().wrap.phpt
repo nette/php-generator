@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\PhpGenerator\Dumper::dump()
  */
-
-declare(strict_types=1);
 
 use Nette\PhpGenerator\Dumper;
 use Nette\PhpGenerator\Literal;

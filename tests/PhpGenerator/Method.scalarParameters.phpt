@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test: Nette\PhpGenerator - PHP7 scalar type hints
  */
-
-declare(strict_types=1);
 
 
 use Nette\PhpGenerator\Method;
