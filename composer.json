@@ -22,7 +22,9 @@
 		"nette/tester": "^2.6",
 		"nikic/php-parser": "^5.0",
 		"tracy/tracy": "^2.8",
-		"phpstan/phpstan-nette": "^2.0@stable",
+		"phpstan/phpstan": "^2.1.40@stable",
+		"phpstan/extension-installer": "^1.4@stable",
+		"nette/phpstan-rules": "^1.0",
 		"jetbrains/phpstorm-attributes": "^1.2"
 	},
 	"suggest": {
@@ -42,6 +44,11 @@
 	"extra": {
 		"branch-alias": {
 			"dev-master": "4.2-dev"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"phpstan/extension-installer": true
 		}
 	}
 }
