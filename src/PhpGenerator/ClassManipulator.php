@@ -34,6 +34,7 @@ final class ClassManipulator
 			?: throw new Nette\InvalidStateException("Class '{$this->class->getName()}' has neither setExtends() nor setImplements() set.");
 
 		foreach ($parents as $parent) {
+			/** @var class-string $parent */
 			try {
 				$rp = new \ReflectionProperty($parent, $name);
 			} catch (\ReflectionException) {

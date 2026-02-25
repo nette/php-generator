@@ -48,7 +48,9 @@ final class Factory
 		if ($from->isAnonymous()) {
 			return new ClassType;
 		} elseif ($from->isEnum()) {
-			$from = new \ReflectionEnum($from->getName());
+			$name = $from->getName();
+			/** @var class-string<\UnitEnum> $name */
+			$from = new \ReflectionEnum($name);
 			$class = new EnumType($from->getName());
 		} elseif ($from->isInterface()) {
 			$class = new InterfaceType($from->getName());
@@ -75,8 +77,10 @@ final class Factory
 		}
 
 		if ($from->isInterface()) {
+			assert($class instanceof InterfaceType);
 			$class->setExtends(array_values($ifaces));
 		} elseif ($ifaces) {
+			assert($class instanceof ClassType || $class instanceof EnumType);
 			$ifaces = array_diff($ifaces, [\BackedEnum::class, \UnitEnum::class]);
 			$class->setImplements(array_values($ifaces));
 		}
@@ -84,6 +88,7 @@ final class Factory
 		$class->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$class->setAttributes($this->formatAttributes($from->getAttributes()));
 		if ($from->getParentClass()) {
+			assert($class instanceof ClassType);
 			$class->setExtends($from->getParentClass()->name);
 			$class->setImplements(array_values(array_diff($class->getImplements(), $from->getParentClass()->getInterfaceNames())));
 		}
@@ -106,14 +111,17 @@ final class Factory
 				$props[] = $p = $this->fromPropertyReflection($prop);
 				if ($withBodies && ($file = $declaringClass->getFileName())) {
 					$hookBodies ??= $this->getExtractor($file)->extractPropertyHookBodies($declaringClass->name);
-					foreach ($hookBodies[$prop->getName()] ?? [] as $hookType => [$body, $short]) {
-						$p->getHook($hookType)->setBody($body, short: $short);
+					/** @var array<'set'|'get', array{string, bool}> $propHookBodies */
+					$propHookBodies = $hookBodies[$prop->getName()] ?? [];
+					foreach ($propHookBodies as $hookType => [$body, $short]) {
+						$p->getHook($hookType)?->setBody($body, short: $short);
 					}
 				}
 			}
 		}
 
 		if ($props) {
+			assert($class instanceof ClassType || $class instanceof InterfaceType || $class instanceof TraitType);
 			$class->setProperties($props);
 		}
 
@@ -146,10 +154,12 @@ final class Factory
 			}
 		}
 
+		assert($class instanceof ClassType || $class instanceof InterfaceType || $class instanceof TraitType || $class instanceof EnumType);
 		$class->setMethods($methods);
 
 		// Traits
 		foreach ($from->getTraitNames() as $trait) {
+			assert($class instanceof ClassType || $class instanceof TraitType || $class instanceof EnumType);
 			$trait = $class->addTrait($trait);
 			foreach ($resolutions as $resolution) {
 				$trait->addResolution($resolution);
@@ -171,6 +181,7 @@ final class Factory
 			$class->setConstants($consts);
 		}
 		if ($cases) {
+			assert($class instanceof EnumType);
 			$class->setCases($cases);
 		}
 	}
@@ -202,6 +213,7 @@ final class Factory
 		$function->setReturnReference($from->returnsReference());
 		$function->setVariadic($from->isVariadic());
 		if (!$from->isClosure()) {
+			assert($function instanceof GlobalFunction);
 			$function->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		}
 
@@ -233,10 +245,11 @@ final class Factory
 	public function fromParameterReflection(\ReflectionParameter $from): Parameter
 	{
 		if ($from->isPromoted()) {
-			$property = $from->getDeclaringClass()->getProperty($from->name);
+			$property = $from->getDeclaringClass()?->getProperty($from->name);
+			\assert($property instanceof \ReflectionProperty);
 			$param = (new PromotedParameter($from->name))
 				->setVisibility($this->getVisibility($property))
-				->setReadOnly($property->isReadonly())
+				->setReadOnly($property->isReadOnly())
 				->setFinal(PHP_VERSION_ID >= 80500 && $property->isFinal() && !$property->isPrivateSet());
 			$this->addHooks($property, $param);
 		} else {
@@ -247,7 +260,7 @@ final class Factory
 
 		if ($from->isDefaultValueAvailable()) {
 			if ($from->isDefaultValueConstant()) {
-				$parts = explode('::', $from->getDefaultValueConstantName());
+				$parts = explode('::', $from->getDefaultValueConstantName() ?? '');
 				if (count($parts) > 1) {
 					$parts[0] = Helpers::tagName($parts[0]);
 				}
@@ -327,6 +340,7 @@ final class Factory
 			$prop->setVisibility($getV === Visibility::Public ? null : $getV, $setV);
 		}
 
+		/** @var 'set'|'get' $type */
 		foreach ($from->getHooks() as $type => $hook) {
 			$params = $hook->getParameters();
 			if (
@@ -398,7 +412,7 @@ final class Factory
 	private function getExtractor(string $file): Extractor
 	{
 		$cache = &$this->extractorCache[$file];
-		$cache ??= new Extractor(file_get_contents($file));
+		$cache ??= new Extractor(file_get_contents($file) ?: throw new Nette\InvalidStateException("Unable to read file '$file'."));
 		return $cache;
 	}
 }

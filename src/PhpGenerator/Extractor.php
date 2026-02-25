@@ -13,7 +13,7 @@ use PhpParser\Modifiers;
 use PhpParser\Node;
 use PhpParser\NodeFinder;
 use PhpParser\ParserFactory;
-use function addcslashes, array_map, assert, class_exists, end, in_array, is_array, rtrim, str_contains, str_repeat, str_replace, str_starts_with, strlen, substr, substr_replace, usort;
+use function addcslashes, array_map, assert, class_exists, end, in_array, is_array, is_string, rtrim, str_contains, str_repeat, str_replace, str_starts_with, strlen, substr, substr_replace, usort;
 
 
 /**
@@ -49,6 +49,7 @@ final class Extractor
 		$this->code = Nette\Utils\Strings::unixNewLines($code);
 		$parser = (new ParserFactory)->createForNewestSupportedVersion();
 		$stmts = $parser->parse($this->code);
+		assert($stmts !== null);
 
 		$traverser = new PhpParser\NodeTraverser;
 		$traverser->addVisitor(new PhpParser\NodeVisitor\ParentConnectingVisitor);
@@ -63,8 +64,11 @@ final class Extractor
 		$nodeFinder = new NodeFinder;
 		$classNode = $nodeFinder->findFirst(
 			$this->statements,
-			fn(Node $node) => $node instanceof Node\Stmt\ClassLike && $node->namespacedName->toString() === $className,
+			fn(Node $node) => $node instanceof Node\Stmt\ClassLike && $node->namespacedName !== null && $node->namespacedName->toString() === $className,
 		);
+		if (!$classNode) {
+			return [];
+		}
 
 		$res = [];
 		foreach ($nodeFinder->findInstanceOf($classNode, Node\Stmt\ClassMethod::class) as $methodNode) {
@@ -87,8 +91,11 @@ final class Extractor
 		$nodeFinder = new NodeFinder;
 		$classNode = $nodeFinder->findFirst(
 			$this->statements,
-			fn(Node $node) => $node instanceof Node\Stmt\ClassLike && $node->namespacedName->toString() === $className,
+			fn(Node $node) => $node instanceof Node\Stmt\ClassLike && $node->namespacedName !== null && $node->namespacedName->toString() === $className,
 		);
+		if (!$classNode) {
+			return [];
+		}
 
 		$res = [];
 		foreach ($nodeFinder->findInstanceOf($classNode, Node\Stmt\Property::class) as $propertyNode) {
@@ -111,7 +118,7 @@ final class Extractor
 	{
 		$functionNode = (new NodeFinder)->findFirst(
 			$this->statements,
-			fn(Node $node) => $node instanceof Node\Stmt\Function_ && $node->namespacedName->toString() === $name,
+			fn(Node $node) => $node instanceof Node\Stmt\Function_ && $node->namespacedName !== null && $node->namespacedName->toString() === $name,
 		);
 		assert($functionNode instanceof Node\Stmt\Function_);
 
@@ -260,7 +267,7 @@ final class Extractor
 				$phpFile->setStrictTypes((bool) $node->declares[0]->value->value);
 
 			} elseif ($node instanceof Node\Stmt\Namespace_) {
-				$namespaces[$node->name->toString()] = $node->stmts;
+				$namespaces[$node->name?->toString() ?? ''] = $node->stmts;
 			}
 		}
 
@@ -294,6 +301,7 @@ final class Extractor
 
 	private function addClassLikeToFile(PhpFile $phpFile, Node\Stmt\ClassLike $node): ClassLike
 	{
+		assert($node->namespacedName !== null);
 		if ($node instanceof Node\Stmt\Class_) {
 			$class = $phpFile->addClass($node->namespacedName->toString());
 			$class->setFinal($node->isFinal());
@@ -387,7 +395,9 @@ final class Extractor
 		}
 
 		foreach ($node->hooks as $hookNode) {
-			$hook = $prop->addHook($hookNode->name->toString());
+			/** @var 'set'|'get' $hookType */
+			$hookType = $hookNode->name->toString();
+			$hook = $prop->addHook($hookType);
 			$hook->setFinal((bool) ($hookNode->flags & Modifiers::FINAL));
 			$this->setupFunction($hook, $hookNode);
 			if ($hookNode->body === null) {
@@ -438,6 +448,7 @@ final class Extractor
 
 	private function addFunctionToFile(PhpFile $phpFile, Node\Stmt\Function_ $node): void
 	{
+		assert($node->namespacedName !== null);
 		$function = $phpFile->addFunction($node->namespacedName->toString());
 		$this->setupFunction($function, $node);
 	}
@@ -480,13 +491,15 @@ final class Extractor
 		}
 
 		foreach ($node->getParams() as $item) {
+			assert($item->var instanceof Node\Expr\Variable && is_string($item->var->name));
 			$getVisibility = $this->toVisibility($item->flags);
 			$setVisibility = $this->toSetterVisibility($item->flags);
 			$final = (bool) ($item->flags & Modifiers::FINAL);
 			if ($getVisibility || $setVisibility || $final) {
+				assert($function instanceof Method);
 				$param = $function->addPromotedParameter($item->var->name)
 					->setVisibility($getVisibility, $setVisibility)
-					->setReadonly($item->isReadonly())
+					->setReadOnly($item->isReadonly())
 					->setFinal($final);
 				$this->addHooksToProperty($param, $item);
 			} else {
@@ -587,7 +600,9 @@ final class Extractor
 	private function getNodeContents(Node ...$nodes): string
 	{
 		$start = $this->getNodeStartPos($nodes[0]);
-		return substr($this->code, $start, end($nodes)->getEndFilePos() - $start + 1);
+		$last = end($nodes);
+		assert($last !== false);
+		return substr($this->code, $start, $last->getEndFilePos() - $start + 1);
 	}
 
 

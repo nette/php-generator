@@ -28,7 +28,7 @@ class Printer
 	public bool $omitEmptyNamespaces = true;
 	public bool $declareOnOpenTag = false;
 	protected ?PhpNamespace $namespace = null;
-	protected ?Dumper $dumper;
+	protected Dumper $dumper;
 	private bool $resolveTypes = true;
 
 
@@ -145,7 +145,7 @@ class Printer
 		$this->namespace = $this->resolveTypes ? $namespace : null;
 		$class->validate();
 		$resolver = $this->namespace
-			? $namespace->simplifyType(...)
+			? $this->namespace->simplifyType(...)
 			: fn($s) => $s;
 
 		$traits = [];

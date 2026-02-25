@@ -1,121 +1,115 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Match expression does not handle remaining value\: true$#'
+			message: '#^Parameter \#1 \$class of method Nette\\PhpGenerator\\Printer\:\:printClass\(\) expects Nette\\PhpGenerator\\ClassType\|Nette\\PhpGenerator\\EnumType\|Nette\\PhpGenerator\\InterfaceType\|Nette\\PhpGenerator\\TraitType, \$this\(Nette\\PhpGenerator\\ClassLike\) given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/PhpGenerator/ClassLike.php
 
 		-
-			message: '#^Method Nette\\PhpGenerator\\ClassType\:\:addTrait\(\) has parameter \$deprecatedParam with no value type specified in iterable type array\.$#'
+			message: '#^Method Nette\\PhpGenerator\\Closure\:\:from\(\) should return Nette\\PhpGenerator\\Closure but returns Nette\\PhpGenerator\\Closure\|Nette\\PhpGenerator\\GlobalFunction\.$#'
+			identifier: return.type
 			count: 1
-			path: src/PhpGenerator/ClassType.php
+			path: src/PhpGenerator/Closure.php
 
 		-
-			message: '#^Method Nette\\PhpGenerator\\EnumType\:\:addTrait\(\) has parameter \$deprecatedParam with no value type specified in iterable type array\.$#'
+			message: '#^Call to an undefined method object\:\:__unserialize\(\)\.$#'
+			identifier: method.notFound
 			count: 1
-			path: src/PhpGenerator/EnumType.php
-
-		-
-			message: '#^Access to an undefined property PhpParser\\Node\:\:\$attrGroups\.$#'
-			count: 1
-			path: src/PhpGenerator/Extractor.php
-
-		-
-			message: '#^Access to an undefined property PhpParser\\Node\\Expr\:\:\$value\.$#'
-			count: 1
-			path: src/PhpGenerator/Extractor.php
+			path: src/PhpGenerator/Dumper.php
 
 		-
 			message: '#^Call to an undefined method Nette\\PhpGenerator\\ClassLike\:\:addConstant\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/PhpGenerator/Extractor.php
 
 		-
 			message: '#^Call to an undefined method Nette\\PhpGenerator\\ClassLike\:\:addMethod\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/PhpGenerator/Extractor.php
 
 		-
 			message: '#^Call to an undefined method Nette\\PhpGenerator\\ClassLike\:\:addProperty\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/PhpGenerator/Extractor.php
 
 		-
 			message: '#^Call to an undefined method Nette\\PhpGenerator\\ClassLike\:\:addTrait\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/PhpGenerator/Extractor.php
 
 		-
-			message: '#^Method Nette\\PhpGenerator\\Extractor\:\:addCommentAndAttributes\(\) has parameter \$element with no type specified\.$#'
+			message: '#^Call to an undefined method Nette\\PhpGenerator\\ClassLike\|Nette\\PhpGenerator\\Constant\|Nette\\PhpGenerator\\EnumCase\|Nette\\PhpGenerator\\GlobalFunction\|Nette\\PhpGenerator\\Method\|Nette\\PhpGenerator\\Parameter\|Nette\\PhpGenerator\\Property\|Nette\\PhpGenerator\\PropertyHook\|Nette\\PhpGenerator\\TraitUse\:\:addAttribute\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/PhpGenerator/Extractor.php
 
 		-
-			message: '#^Property class@anonymous/PhpGenerator/Extractor\.php\:176\:\:\$callback has no type specified\.$#'
+			message: '#^Parameter \#1 \$class of method Nette\\PhpGenerator\\Extractor\:\:addEnumCaseToClass\(\) expects Nette\\PhpGenerator\\EnumType, Nette\\PhpGenerator\\ClassLike given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/PhpGenerator/Extractor.php
 
 		-
 			message: '#^Variable \$trait might not be defined\.$#'
-			count: 2
+			identifier: variable.undefined
+			count: 1
 			path: src/PhpGenerator/Extractor.php
 
 		-
-			message: '#^Call to an undefined method ReflectionClass\<object\>\:\:hasCase\(\)\.$#'
-			count: 1
-			path: src/PhpGenerator/Factory.php
-
-		-
-			message: '#^Elseif branch is unreachable because previous condition is always true\.$#'
-			count: 1
-			path: src/PhpGenerator/Factory.php
-
-		-
-			message: '#^Method Nette\\PhpGenerator\\Factory\:\:getAttributes\(\) has parameter \$from with no type specified\.$#'
-			count: 1
-			path: src/PhpGenerator/Factory.php
-
-		-
-			message: '#^Method Nette\\PhpGenerator\\Factory\:\:getAttributes\(\) return type has no value type specified in iterable type array\.$#'
-			count: 1
-			path: src/PhpGenerator/Factory.php
-
-		-
-			message: '#^Method Nette\\PhpGenerator\\Factory\:\:getExtractor\(\) has parameter \$from with no type specified\.$#'
-			count: 1
-			path: src/PhpGenerator/Factory.php
-
-		-
-			message: '#^Method Nette\\PhpGenerator\\Factory\:\:getVisibility\(\) has parameter \$from with no type specified\.$#'
-			count: 1
-			path: src/PhpGenerator/Factory.php
-
-		-
-			message: '#^Parameter \#1 \$name of method Nette\\PhpGenerator\\ClassType\:\:setExtends\(\) expects string\|null, array\<int, string\> given\.$#'
-			count: 1
-			path: src/PhpGenerator/Factory.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
+			message: '#^Parameter &\$from by\-ref type of method Nette\\PhpGenerator\\Factory\:\:createClassObject\(\) expects ReflectionClass\<object\>, ReflectionEnum\<UnitEnum\> given\.$#'
+			identifier: parameterByRef.type
 			count: 1
 			path: src/PhpGenerator/Factory.php
 
 		-
 			message: '#^Variable \$bodies on left side of \?\?\= always exists and is not nullable\.$#'
+			identifier: nullCoalesce.variable
 			count: 1
 			path: src/PhpGenerator/Factory.php
 
 		-
-			message: '#^Method Nette\\PhpGenerator\\Helpers\:\:formatArgs\(\) has parameter \$args with no value type specified in iterable type array\.$#'
+			message: '#^Variable \$cache on left side of \?\?\= always exists and is not nullable\.$#'
+			identifier: nullCoalesce.variable
+			count: 1
+			path: src/PhpGenerator/Factory.php
+
+		-
+			message: '#^Method Nette\\PhpGenerator\\GlobalFunction\:\:from\(\) should return Nette\\PhpGenerator\\GlobalFunction but returns Nette\\PhpGenerator\\Closure\|Nette\\PhpGenerator\\GlobalFunction\.$#'
+			identifier: return.type
+			count: 1
+			path: src/PhpGenerator/GlobalFunction.php
+
+		-
+			message: '#^Parameter \#1 \$callable of static method Nette\\Utils\\Callback\:\:toReflection\(\) expects callable\(\)\: mixed, \(Closure\(\)\: mixed\)\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PhpGenerator/GlobalFunction.php
+
+		-
+			message: '#^Parameter \#1 \$from of method Nette\\PhpGenerator\\Factory\:\:fromFunctionReflection\(\) expects ReflectionFunction, ReflectionFunction\|ReflectionMethod given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PhpGenerator/GlobalFunction.php
+
+		-
+			message: '#^Method Nette\\PhpGenerator\\Helpers\:\:unindent\(\) should return string but returns string\|null\.$#'
+			identifier: return.type
 			count: 1
 			path: src/PhpGenerator/Helpers.php
 
 		-
-			message: '#^Method Nette\\PhpGenerator\\Method\:\:from\(\) has parameter \$method with no value type specified in iterable type array\.$#'
+			message: '#^Parameter \#1 \$callable of static method Nette\\Utils\\Callback\:\:toReflection\(\) expects callable\(\)\: mixed, array\{object\|string, string\}\|\(Closure\(\)\: mixed\)\|string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/PhpGenerator/Method.php
 
 		-
-			message: '#^Method Nette\\PhpGenerator\\TraitType\:\:addTrait\(\) has parameter \$deprecatedParam with no value type specified in iterable type array\.$#'
+			message: '#^Parameter \#1 \$from of method Nette\\PhpGenerator\\Factory\:\:fromMethodReflection\(\) expects ReflectionMethod, ReflectionFunction\|ReflectionMethod given\.$#'
+			identifier: argument.type
 			count: 1
-			path: src/PhpGenerator/TraitType.php
+			path: src/PhpGenerator/Method.php

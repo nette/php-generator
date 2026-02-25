@@ -146,6 +146,7 @@ final class Dumper
 			return '(object) ' . $this->dumpArray($var, $parents, $level, $column + 10);
 
 		} elseif ($class === \DateTime::class || $class === \DateTimeImmutable::class) {
+			assert($var instanceof \DateTimeInterface);
 			return $this->format(
 				"new \\$class(?, new \\DateTimeZone(?))",
 				$var->format('Y-m-d H:i:s.u'),

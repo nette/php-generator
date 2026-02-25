@@ -1,8 +1,28 @@
-includes:
-	- phpstan-baseline.neon
-
 parameters:
-	level: 6
+	level: 8
 
 	paths:
 		- src
+
+	ignoreErrors:
+		# addMember() uses dynamic property assignment through match expression — type-safe by design
+		-
+			identifier: assign.propertyType
+			paths:
+				- src/PhpGenerator/ClassType.php
+				- src/PhpGenerator/TraitType.php
+				- src/PhpGenerator/InterfaceType.php
+				- src/PhpGenerator/EnumType.php
+
+		# Exhaustive match arms — last branch is always true by definition
+		-
+			identifier: instanceof.alwaysTrue
+			paths:
+				- src/PhpGenerator/ClassType.php
+				- src/PhpGenerator/TraitType.php
+				- src/PhpGenerator/InterfaceType.php
+				- src/PhpGenerator/EnumType.php
+				- src/PhpGenerator/Printer.php
+
+includes:
+	- phpstan-baseline.neon

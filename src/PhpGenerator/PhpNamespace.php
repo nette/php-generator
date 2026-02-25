@@ -341,7 +341,9 @@ final class PhpNamespace
 	{
 		$res = [];
 		foreach ($this->classes as $class) {
-			$res[$class->getName()] = $class;
+			$name = $class->getName();
+			assert($name !== null);
+			$res[$name] = $class;
 		}
 
 		return $res;
