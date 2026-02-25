@@ -82,7 +82,7 @@ final class Factory
 		}
 
 		$class->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
-		$class->setAttributes($this->getAttributes($from));
+		$class->setAttributes($this->formatAttributes($from->getAttributes()));
 		if ($from->getParentClass()) {
 			$class->setExtends($from->getParentClass()->name);
 			$class->setImplements(array_values(array_diff($class->getImplements(), $from->getParentClass()->getInterfaceNames())));
@@ -188,7 +188,7 @@ final class Factory
 		$method->setReturnReference($from->returnsReference());
 		$method->setVariadic($from->isVariadic());
 		$method->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
-		$method->setAttributes($this->getAttributes($from));
+		$method->setAttributes($this->formatAttributes($from->getAttributes()));
 		$method->setReturnType((string) $from->getReturnType());
 
 		return $method;
@@ -205,7 +205,7 @@ final class Factory
 			$function->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		}
 
-		$function->setAttributes($this->getAttributes($from));
+		$function->setAttributes($this->formatAttributes($from->getAttributes()));
 		$function->setReturnType((string) $from->getReturnType());
 
 		if ($withBody) {
@@ -259,7 +259,7 @@ final class Factory
 			}
 		}
 
-		$param->setAttributes($this->getAttributes($from));
+		$param->setAttributes($this->formatAttributes($from->getAttributes()));
 		return $param;
 	}
 
@@ -271,7 +271,7 @@ final class Factory
 		$const->setVisibility($this->getVisibility($from));
 		$const->setFinal($from->isFinal());
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
-		$const->setAttributes($this->getAttributes($from));
+		$const->setAttributes($this->formatAttributes($from->getAttributes()));
 		return $const;
 	}
 
@@ -281,7 +281,7 @@ final class Factory
 		$const = new EnumCase($from->name);
 		$const->setValue($from->getValue()->value ?? null);
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
-		$const->setAttributes($this->getAttributes($from));
+		$const->setAttributes($this->formatAttributes($from->getAttributes()));
 		return $const;
 	}
 
@@ -297,7 +297,7 @@ final class Factory
 		$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
 		$prop->setReadOnly($from->isReadOnly());
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
-		$prop->setAttributes($this->getAttributes($from));
+		$prop->setAttributes($this->formatAttributes($from->getAttributes()));
 
 		if (PHP_VERSION_ID >= 80400) {
 			$this->addHooks($from, $prop);
@@ -341,7 +341,7 @@ final class Factory
 				->setFinal($hook->isFinal())
 				->setReturnReference($hook->returnsReference())
 				->setComment(Helpers::unformatDocComment((string) $hook->getDocComment()))
-				->setAttributes($this->getAttributes($hook));
+				->setAttributes($this->formatAttributes($hook->getAttributes()));
 		}
 	}
 
@@ -367,18 +367,19 @@ final class Factory
 
 
 	/** @return Attribute[] */
-	private function getAttributes($from): array
+	private function formatAttributes(array $attrs): array
 	{
-		return array_map(function ($attr) {
+		$res = [];
+		foreach ($attrs as $attr) {
 			$args = $attr->getArguments();
 			foreach ($args as &$arg) {
 				if (is_object($arg)) {
 					$arg = $this->fromObject($arg);
 				}
 			}
-
-			return new Attribute($attr->getName(), $args);
-		}, $from->getAttributes());
+			$res[] = new Attribute($attr->getName(), $args);
+		}
+		return $res;
 	}
 
 
