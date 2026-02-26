@@ -26,6 +26,7 @@ class Printer
 	public bool $bracesOnNextLine = true;
 	public bool $singleParameterOnOneLine = false;
 	public bool $omitEmptyNamespaces = true;
+	public bool $declareOnOpenTag = false;
 	protected ?PhpNamespace $namespace = null;
 	protected ?Dumper $dumper;
 	private bool $resolveTypes = true;
@@ -286,10 +287,12 @@ class Printer
 			}
 		}
 
-		return "<?php\n"
+		$strictTypes = $file->hasStrictTypes();
+		return '<?php' . ($strictTypes && $this->declareOnOpenTag ? ' declare(strict_types=1);' : '')
+			. "\n"
 			. ($file->getComment() ? "\n" . $this->printDocComment($file) : '')
 			. "\n"
-			. ($file->hasStrictTypes() ? "declare(strict_types=1);\n\n" : '')
+			. ($strictTypes && !$this->declareOnOpenTag ? "declare(strict_types=1);\n\n" : '')
 			. implode("\n\n", $namespaces);
 	}
 
