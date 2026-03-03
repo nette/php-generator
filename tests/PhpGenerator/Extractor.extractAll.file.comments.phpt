@@ -35,6 +35,19 @@ $file = (new Extractor(<<<'XX'
 
 	/** doc comment */
 
+	declare(strict_types=1);
+
+	namespace Abc;
+	XX))->extractAll();
+
+Assert::same('doc comment', $file->getComment());
+
+
+$file = (new Extractor(<<<'XX'
+	<?php
+
+	/** doc comment */
+
 	namespace Abc;
 	XX))->extractAll();
 

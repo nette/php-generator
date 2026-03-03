@@ -243,18 +243,29 @@ final class Extractor
 	{
 		$phpFile = new PhpFile;
 
+		$comments = [];
+		$firstStmt = $this->statements[0] ?? null;
+		if ($firstStmt instanceof Node\Stmt\Declare_) {
+			$comments = $firstStmt->getComments();
+			if (!$firstStmt->getDocComment()) {
+				$comments = [];
+				$firstStmt = $this->statements[1] ?? null;
+			}
+		}
+
 		if (
-			($firstStmt = $this->statements[0] ?? null)
-			&& ($firstStmt = $firstStmt instanceof Node\Stmt\Declare_ ? $this->statements[1] ?? null : $firstStmt)
+			!$comments
+			&& $firstStmt
 			&& !$firstStmt instanceof Node\Stmt\ClassLike
 			&& !$firstStmt instanceof Node\Stmt\Function_
 		) {
 			$comments = $firstStmt->getComments();
-			foreach ($comments as $i => $comment) {
-				if ($comment instanceof PhpParser\Comment\Doc) {
-					$phpFile->setComment(Helpers::unformatDocComment($comment->getReformattedText()));
-					break;
-				}
+		}
+
+		foreach ($comments as $comment) {
+			if ($comment instanceof PhpParser\Comment\Doc) {
+				$phpFile->setComment(Helpers::unformatDocComment($comment->getReformattedText()));
+				break;
 			}
 		}
 
