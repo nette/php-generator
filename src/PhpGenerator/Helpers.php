@@ -138,6 +138,10 @@ final class Helpers
 	}
 
 
+	/**
+	 * Validates a type declaration. Strips the leading '?' and sets $nullable=true for nullable shorthand.
+	 * Returns null for empty/null types.
+	 */
 	public static function validateType(?string $type, bool &$nullable = false): ?string
 	{
 		if ($type === '' || $type === null) {

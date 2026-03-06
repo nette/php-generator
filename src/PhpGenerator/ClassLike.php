@@ -12,7 +12,7 @@ use function array_map, func_num_args, is_object, str_contains, strtolower;
 
 
 /**
- * Base definition of class, interface, trait or enum type.
+ * Base for class, interface, trait, and enum definitions.
  */
 abstract class ClassLike
 {
@@ -35,7 +35,11 @@ abstract class ClassLike
 	private ?string $name;
 
 
-	/** @param class-string|object  $class */
+	/**
+	 * Creates an instance from a class reflection.
+	 * @param  class-string|object  $class
+	 * @param  bool  $withBodies  load method bodies (requires nikic/php-parser)
+	 */
 	public static function from(string|object $class, bool $withBodies = false): static
 	{
 		$instance = (new Factory)
@@ -50,6 +54,9 @@ abstract class ClassLike
 	}
 
 
+	/**
+	 * Creates an instance by parsing PHP source code containing a class definition.
+	 */
 	public static function fromCode(string $code): static
 	{
 		$instance = (new Factory)
@@ -112,6 +119,9 @@ abstract class ClassLike
 	}
 
 
+	/**
+	 * Returns the fully qualified name including namespace, or just the short name if no namespace is set.
+	 */
 	public function getFullName(): ?string
 	{
 		return $this->name && ($namespace = $this->namespace?->getName())

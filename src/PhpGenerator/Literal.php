@@ -9,12 +9,13 @@ namespace Nette\PhpGenerator;
 
 
 /**
- * PHP literal value.
+ * Raw PHP expression written to output as-is without escaping.
+ * Supports Dumper-style placeholders when created with arguments.
  */
 class Literal
 {
 	/**
-	 * Creates a literal representing the creation of an object using the new operator.
+	 * Creates a literal representing a `new ClassName(...)` expression with named arguments.
 	 * @param  mixed[]  $args
 	 */
 	public static function new(string $class, array $args = []): self

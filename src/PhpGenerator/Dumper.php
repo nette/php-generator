@@ -26,7 +26,8 @@ final class Dumper
 
 
 	/**
-	 * Returns a PHP representation of a variable.
+	 * Converts a value to its PHP code representation.
+	 * @param  int  $column  current column for array wrapping decisions
 	 */
 	public function dump(mixed $var, int $column = 0): string
 	{
@@ -214,7 +215,9 @@ final class Dumper
 
 
 	/**
-	 * Generates PHP statement. Supports placeholders: ?  \?  $?  ->?  ::?  ...?  ...?:  ?*
+	 * Formats a PHP expression using placeholders.
+	 * Supported placeholders: ? (value), \? (literal ?), $? (variable), ->? (property access),
+	 * ::? (static access), ...? (spread array), ...?: (named spread), ?* (alias for ...?)
 	 */
 	public function format(string $statement, mixed ...$args): string
 	{
