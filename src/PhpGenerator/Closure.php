@@ -20,7 +20,10 @@ final class Closure
 	private array $uses = [];
 
 
-	/** @param \Closure(): mixed  $closure */
+	/**
+	 * Creates an instance from a closure reflection.
+	 * @param  \Closure(): mixed  $closure
+	 */
 	public static function from(\Closure $closure): self
 	{
 		return (new Factory)->fromFunctionReflection(new \ReflectionFunction($closure));
@@ -52,6 +55,9 @@ final class Closure
 	}
 
 
+	/**
+	 * Adds a variable binding to the closure's use list.
+	 */
 	public function addUse(string $name): Parameter
 	{
 		return $this->uses[] = new Parameter($name);

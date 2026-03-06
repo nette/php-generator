@@ -29,7 +29,10 @@ trait FunctionLike
 	private bool $returnNullable = false;
 
 
-	/** @param  ?mixed[]  $args */
+	/**
+	 * Sets the function body. Optionally accepts Dumper-style placeholders resolved against $args.
+	 * @param  ?mixed[]  $args
+	 */
 	public function setBody(
 		#[Language('PHP')]
 		string $code,
@@ -49,7 +52,10 @@ trait FunctionLike
 	}
 
 
-	/** @param  ?mixed[]  $args */
+	/**
+	 * Appends a line to the function body. Optionally accepts Dumper-style placeholders resolved against $args.
+	 * @param  ?mixed[]  $args
+	 */
 	public function addBody(
 		#[Language('PHP')]
 		string $code,

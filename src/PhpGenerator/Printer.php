@@ -287,7 +287,10 @@ class Printer
 	}
 
 
-	/** @param  PhpNamespace::Name*  $of */
+	/**
+	 * Generates use statements for the given namespace.
+	 * @param  PhpNamespace::Name*  $of
+	 */
 	protected function printUses(PhpNamespace $namespace, string $of = PhpNamespace::NameNormal): string
 	{
 		$prefix = [
@@ -496,6 +499,9 @@ class Printer
 	}
 
 
+	/**
+	 * Enables or disables automatic simplification of fully qualified type names using namespace use statements.
+	 */
 	public function setTypeResolving(bool $state = true): static
 	{
 		$this->resolveTypes = $state;
