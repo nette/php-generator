@@ -13,7 +13,7 @@ jobs:
 
         name: PHP ${{ matrix.php }} tests
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
@@ -32,7 +32,7 @@ jobs:
         name: Lowest Dependencies
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: 8.1
@@ -47,7 +47,7 @@ jobs:
         runs-on: ubuntu-latest
         continue-on-error: true
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: 8.1
