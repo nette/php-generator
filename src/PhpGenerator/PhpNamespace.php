@@ -63,6 +63,15 @@ final class PhpNamespace
 
 
 	/**
+	 * Returns true if the namespace contains no classes, functions or use statements.
+	 */
+	public function isEmpty(): bool
+	{
+		return !$this->classes && !$this->functions && !array_filter($this->aliases);
+	}
+
+
+	/**
 	 * @internal
 	 */
 	public function setBracketedSyntax(bool $state = true): static

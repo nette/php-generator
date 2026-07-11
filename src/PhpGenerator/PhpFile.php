@@ -39,7 +39,8 @@ final class PhpFile
 	public function add(ClassType|InterfaceType|TraitType|EnumType|GlobalFunction|PhpNamespace $item): static
 	{
 		if ($item instanceof PhpNamespace) {
-			if (isset($this->namespaces[$name = $item->getName()])) {
+			$name = $item->getName();
+			if (isset($this->namespaces[$name]) && $this->namespaces[$name] !== $item) {
 				throw new Nette\InvalidStateException("Namespace '$name' already exists in the file.");
 			}
 			$this->namespaces[$name] = $item;
@@ -118,12 +119,19 @@ final class PhpFile
 
 	/**
 	 * Adds a namespace to the file, or returns the existing one if it already exists.
+	 * A PhpNamespace instance may only replace an existing namespace that has no content yet.
+	 * @throws Nette\InvalidStateException if a non-empty namespace with the same name already exists
 	 */
 	public function addNamespace(string|PhpNamespace $namespace): PhpNamespace
 	{
 		if ($namespace instanceof PhpNamespace) {
 			trigger_error('Passing PhpNamespace object to ' . __METHOD__ . '() is deprecated, use add() instead.', E_USER_DEPRECATED);
-			$res = $this->namespaces[$namespace->getName()] = $namespace;
+			$name = $namespace->getName();
+			$current = $this->namespaces[$name] ?? null;
+			if ($current && $current !== $namespace && !$current->isEmpty()) {
+				throw new Nette\InvalidStateException("Namespace '$name' already exists in the file.");
+			}
+			$res = $this->namespaces[$name] = $namespace;
 		} else {
 			$res = $this->namespaces[$namespace] ??= new PhpNamespace($namespace);
 		}
