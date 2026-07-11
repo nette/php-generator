@@ -1,0 +1,20 @@
+<?php declare(strict_types=1);
+
+namespace Abc;
+
+class Class14
+{
+	public const int FOO = 10;
+
+	final protected const string|int BAR = 'bar';
+
+	public const ?bool NULLABLE = null;
+
+	const UNTYPED = true;
+}
+
+
+interface Interface14
+{
+	public const string NAME = 'nette';
+}

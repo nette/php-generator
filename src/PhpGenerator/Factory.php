@@ -297,6 +297,9 @@ final class Factory
 		$const->setValue($from->getValue());
 		$const->setVisibility($this->getVisibility($from));
 		$const->setFinal($from->isFinal());
+		if (PHP_VERSION_ID >= 80300 && ($type = $from->getType())) {
+			$const->setType((string) $type);
+		}
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$const->setAttributes($this->formatAttributes($from->getAttributes()));
 		return $const;
