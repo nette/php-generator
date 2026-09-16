@@ -13,6 +13,12 @@ The object model is a self-explanatory builder, but three areas are trap-rich an
 expensive to reconstruct: **type/nullability handling, the name/namespace model,
 and the reflection<->source round-trip.** Read `docs/internals.md` before touching them.
 
+`docs/upgrading.md` records, per released version, every change visible to
+users of the package (renames, removals, deprecations, signatures, behavior,
+configuration), each with its commit hash; internal changes are not in it. It
+is the place to look up the history of a public symbol. Do not write to it; it
+is extended at release time from the git history.
+
 ## Project Overview
 
 Nette PHP Generator programmatically generates PHP code (classes, functions,
