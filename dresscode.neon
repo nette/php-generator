@@ -1,0 +1,34 @@
+use:
+	- nette
+	- modernizations
+
+typeAnalysis: phpstan
+
+paths:
+	- src
+	- tests
+
+excludePaths:
+	- tests/**/fixtures*
+
+fileExtensions:
+	- php
+	- phpt
+
+imports: {grouping: {class: grouped}}
+
+overrides:
+	-
+		paths: [src]
+		nameResolution: certain
+		use:
+			- compilerOptimizations
+			- deprecations
+
+	- # the names say what kind of class the test inherits from
+		paths: [tests/ClassLike/ClassManipulator.implement.phpt, tests/ClassLike/ClassManipulator.implement.84.phpt]
+		naming: {abstractClassAffix: keep, interfaceAffix: keep}
+
+	- # the test dumps an object that serializes through __sleep() and __wakeup()
+		paths: [tests/Dumper/dump.phpt]
+		upgrading: {php: {sleepAndWakeup: keep}}

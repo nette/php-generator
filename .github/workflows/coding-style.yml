@@ -3,29 +3,29 @@ name: Coding Style
 on: [push, pull_request]
 
 jobs:
+    dresscode:
+        name: DressCode
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 8.4
+                  coverage: none
+
+            - run: composer create-project dresscode/dresscode temp/dresscode ^1.1 --no-progress
+            - run: php temp/dresscode/bin/dresscode check
+
+
     nette_cc:
         name: Nette Code Checker
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.3
+                  php-version: 8.5
                   coverage: none
 
             - run: composer create-project nette/code-checker temp/code-checker ^3 --no-progress
             - run: php temp/code-checker/code-checker --strict-types --no-progress --ignore "tests/*/fixtures"
-
-
-    nette_cs:
-        name: Nette Coding Standard
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-            - uses: shivammathur/setup-php@v2
-              with:
-                  php-version: 8.3
-                  coverage: none
-
-            - run: composer create-project nette/coding-standard temp/coding-standard ^3 --no-progress
-            - run: php temp/coding-standard/ecs check

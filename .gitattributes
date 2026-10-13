@@ -1,9 +1,10 @@
 .gitattributes  export-ignore
 .github/        export-ignore
 .gitignore      export-ignore
-ncs.*           export-ignore
+dresscode.neon  export-ignore
 phpstan*.neon   export-ignore
 tests/          export-ignore
 
+*               text=auto
 *.php*          diff=php
 *.sh            text eol=lf
