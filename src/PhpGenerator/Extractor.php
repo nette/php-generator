@@ -13,7 +13,7 @@ use PhpParser\Modifiers;
 use PhpParser\Node;
 use PhpParser\NodeFinder;
 use PhpParser\ParserFactory;
-use function addcslashes, array_map, assert, class_exists, end, in_array, is_array, is_string, rtrim, str_contains, str_repeat, str_replace, str_starts_with, strlen, substr, substr_replace, usort;
+use function is_array, is_string, strlen;
 
 
 /**
@@ -164,7 +164,7 @@ final class Extractor
 
 			} elseif (
 				$node instanceof Node\Scalar\String_
-				&& in_array($node->getAttribute('kind'), [Node\Scalar\String_::KIND_SINGLE_QUOTED, Node\Scalar\String_::KIND_DOUBLE_QUOTED], strict: true)
+				&& in_array($node->getAttribute('kind'), [Node\Scalar\String_::KIND_SINGLE_QUOTED, Node\Scalar\String_::KIND_DOUBLE_QUOTED], true)
 				&& str_contains($node->getAttribute('rawValue'), "\n")
 			) { // multi-line strings -> single line
 				$replacements[] = [
@@ -175,7 +175,7 @@ final class Extractor
 
 			} elseif (
 				$node instanceof Node\Scalar\String_
-				&& in_array($node->getAttribute('kind'), [Node\Scalar\String_::KIND_NOWDOC, Node\Scalar\String_::KIND_HEREDOC], strict: true)
+				&& in_array($node->getAttribute('kind'), [Node\Scalar\String_::KIND_NOWDOC, Node\Scalar\String_::KIND_HEREDOC], true)
 				&& Helpers::unindent($node->getAttribute('docIndentation'), $level) === $node->getAttribute('docIndentation')
 			) { // fix indentation of NOWDOW/HEREDOC
 				$replacements[] = [

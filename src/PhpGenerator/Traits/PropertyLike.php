@@ -11,7 +11,7 @@ use Nette\PhpGenerator\PropertyAccessMode;
 use Nette\PhpGenerator\PropertyHook;
 use Nette\PhpGenerator\PropertyHookType;
 use Nette\PhpGenerator\Visibility;
-use function array_filter, in_array, is_string;
+use function is_string;
 
 
 /**
@@ -63,7 +63,7 @@ trait PropertyLike
 	public function isPublic(PropertyAccessMode|string $mode = PropertyAccessMode::Get): bool
 	{
 		$mode = is_string($mode) ? PropertyAccessMode::from($mode) : $mode;
-		return in_array($this->visibility[$mode->value], [Visibility::Public, null], strict: true);
+		return in_array($this->visibility[$mode->value], [Visibility::Public, null], true);
 	}
 
 

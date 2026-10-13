@@ -8,8 +8,7 @@
 namespace Nette\PhpGenerator;
 
 use Nette;
-use function addcslashes, array_keys, array_shift, count, dechex, get_mangled_object_vars, implode, in_array, is_array, is_int, is_object, is_resource, is_string, ltrim, method_exists, ord, preg_match, preg_replace, preg_replace_callback, preg_split, range, serialize, str_contains, str_pad, str_repeat, str_replace, strlen, strrpos, strtoupper, substr, trim, unserialize, var_export;
-use const PREG_SPLIT_DELIM_CAPTURE, STR_PAD_LEFT;
+use function count, get_mangled_object_vars, is_array, is_int, is_object, is_resource, is_string, strlen;
 
 
 /**
@@ -106,7 +105,7 @@ final class Dumper
 		if (empty($var)) {
 			return '[]';
 
-		} elseif ($level > $this->maxDepth || in_array($var, $parents, strict: true)) {
+		} elseif ($level > $this->maxDepth || in_array($var, $parents, true)) {
 			throw new Nette\InvalidStateException('Nesting level too deep or recursive dependency.');
 		}
 
@@ -132,7 +131,7 @@ final class Dumper
 	/** @param  array<mixed[]|object>  $parents */
 	private function dumpObject(object $var, array $parents, int $level, int $column): string
 	{
-		if ($level > $this->maxDepth || in_array($var, $parents, strict: true)) {
+		if ($level > $this->maxDepth || in_array($var, $parents, true)) {
 			throw new Nette\InvalidStateException('Nesting level too deep or recursive dependency.');
 		} elseif ((new \ReflectionObject($var))->isAnonymous()) {
 			throw new Nette\InvalidStateException('Cannot dump an instance of an anonymous class.');

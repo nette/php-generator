@@ -8,7 +8,6 @@
 namespace Nette\PhpGenerator;
 
 use Nette;
-use function implode, preg_match, preg_replace, str_contains;
 
 
 /**

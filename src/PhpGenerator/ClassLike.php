@@ -8,7 +8,7 @@
 namespace Nette\PhpGenerator;
 
 use Nette;
-use function array_map, func_num_args, is_object, str_contains, strtolower;
+use function func_num_args, is_object;
 
 
 /**

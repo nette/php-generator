@@ -8,7 +8,7 @@
 namespace Nette\PhpGenerator;
 
 use Nette;
-use function array_diff, array_map, func_num_args, strtolower;
+use function func_num_args;
 
 
 /**

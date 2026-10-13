@@ -9,7 +9,7 @@ namespace Nette\PhpGenerator;
 
 use Nette;
 use Nette\Utils\Reflection;
-use function array_diff, array_filter, array_key_exists, array_map, count, explode, file_get_contents, implode, is_object, is_subclass_of, method_exists, reset;
+use function array_key_exists, count, is_object;
 use const PHP_VERSION_ID;
 
 
@@ -246,7 +246,7 @@ final class Factory
 	{
 		if ($from->isPromoted()) {
 			$property = $from->getDeclaringClass()?->getProperty($from->name);
-			\assert($property instanceof \ReflectionProperty);
+			assert($property instanceof \ReflectionProperty);
 			$param = (new PromotedParameter($from->name))
 				->setVisibility($this->getVisibility($property))
 				->setReadOnly($property->isReadOnly())
