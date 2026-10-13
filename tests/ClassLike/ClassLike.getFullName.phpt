@@ -4,8 +4,7 @@
  * Test: ClassLike::getFullName()
  */
 
-use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\PhpNamespace;
+use Nette\PhpGenerator\{ClassType, PhpNamespace};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

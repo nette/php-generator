@@ -4,8 +4,7 @@
  * Test: Nette\PhpGenerator\Dumper::dump()
  */
 
-use Nette\PhpGenerator\Dumper;
-use Nette\PhpGenerator\Literal;
+use Nette\PhpGenerator\{Dumper, Literal};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

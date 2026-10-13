@@ -1,8 +1,6 @@
 <?php declare(strict_types=1);
 
-use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\InterfaceType;
-use Nette\PhpGenerator\TraitType;
+use Nette\PhpGenerator\{ClassType, InterfaceType, TraitType};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

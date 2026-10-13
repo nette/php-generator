@@ -9,8 +9,7 @@ namespace Nette\PhpGenerator\Traits;
 
 use JetBrains\PhpStorm\Language;
 use Nette;
-use Nette\PhpGenerator\Dumper;
-use Nette\PhpGenerator\Parameter;
+use Nette\PhpGenerator\{Dumper, Parameter};
 use Nette\Utils\Type;
 use function func_num_args;
 

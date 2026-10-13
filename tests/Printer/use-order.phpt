@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 
-use Nette\PhpGenerator\PhpNamespace;
-use Nette\PhpGenerator\Printer;
+use Nette\PhpGenerator\{PhpNamespace, Printer};
 use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 

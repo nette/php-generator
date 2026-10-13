@@ -1,9 +1,6 @@
 <?php declare(strict_types=1);
 
-use Nette\PhpGenerator\PromotedParameter;
-use Nette\PhpGenerator\PropertyAccessMode;
-use Nette\PhpGenerator\PropertyHookType;
-use Nette\PhpGenerator\Visibility;
+use Nette\PhpGenerator\{PromotedParameter, PropertyAccessMode, PropertyHookType, Visibility};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

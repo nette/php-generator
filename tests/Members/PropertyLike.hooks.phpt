@@ -4,9 +4,7 @@
  * Test: PHP 8.4 property hooks for classes
  */
 
-use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\InterfaceType;
-use Nette\PhpGenerator\PropertyHookType;
+use Nette\PhpGenerator\{ClassType, InterfaceType, PropertyHookType};
 
 require __DIR__ . '/../bootstrap.php';
 

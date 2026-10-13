@@ -1,8 +1,6 @@
 <?php declare(strict_types=1);
 
-use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\GlobalFunction;
-use Nette\PhpGenerator\PhpNamespace;
+use Nette\PhpGenerator\{ClassType, GlobalFunction, PhpNamespace};
 use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 

@@ -1,8 +1,6 @@
 <?php declare(strict_types=1);
 
-use Nette\PhpGenerator\Extractor;
-use Nette\PhpGenerator\PhpNamespace;
-use Nette\PhpGenerator\Printer;
+use Nette\PhpGenerator\{Extractor, PhpNamespace, Printer};
 require __DIR__ . '/../bootstrap.php';
 
 

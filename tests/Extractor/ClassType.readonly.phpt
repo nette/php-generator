@@ -4,8 +4,7 @@
  * @phpVersion 8.2
  */
 
-use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\Extractor;
+use Nette\PhpGenerator\{ClassType, Extractor};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

@@ -1,8 +1,6 @@
 <?php declare(strict_types=1);
 
-use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\Literal;
-use Nette\PhpGenerator\Printer;
+use Nette\PhpGenerator\{ClassType, Literal, Printer};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

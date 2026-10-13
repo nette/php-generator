@@ -4,21 +4,7 @@
  * PHPStan type tests.
  */
 
-use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\Closure;
-use Nette\PhpGenerator\Constant;
-use Nette\PhpGenerator\EnumCase;
-use Nette\PhpGenerator\EnumType;
-use Nette\PhpGenerator\GlobalFunction;
-use Nette\PhpGenerator\InterfaceType;
-use Nette\PhpGenerator\Method;
-use Nette\PhpGenerator\Parameter;
-use Nette\PhpGenerator\PhpFile;
-use Nette\PhpGenerator\PhpNamespace;
-use Nette\PhpGenerator\Property;
-use Nette\PhpGenerator\PropertyHook;
-use Nette\PhpGenerator\TraitType;
-use Nette\PhpGenerator\TraitUse;
+use Nette\PhpGenerator\{ClassType, Closure, Constant, EnumCase, EnumType, GlobalFunction, InterfaceType, Method, Parameter, PhpFile, PhpNamespace, Property, PropertyHook, TraitType, TraitUse};
 use Nette\Utils\Type;
 use function PHPStan\Testing\assertType;
 

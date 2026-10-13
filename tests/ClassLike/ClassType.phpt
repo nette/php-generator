@@ -4,9 +4,7 @@
  * Test: Nette\PhpGenerator for classes.
  */
 
-use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\Literal;
-use Nette\PhpGenerator\Type;
+use Nette\PhpGenerator\{ClassType, Literal, Type};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

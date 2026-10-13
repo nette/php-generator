@@ -5,8 +5,7 @@
  */
 
 
-use Nette\PhpGenerator\Method;
-use Nette\PhpGenerator\Type;
+use Nette\PhpGenerator\{Method, Type};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

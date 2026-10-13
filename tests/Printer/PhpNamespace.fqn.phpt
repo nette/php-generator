@@ -4,9 +4,7 @@
  * Test: empty namespaces.
  */
 
-use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\PhpNamespace;
-use Nette\PhpGenerator\Printer;
+use Nette\PhpGenerator\{ClassType, PhpNamespace, Printer};
 require __DIR__ . '/../bootstrap.php';
 
 

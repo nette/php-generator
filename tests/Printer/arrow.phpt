@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 
-use Nette\PhpGenerator\Closure;
-use Nette\PhpGenerator\Printer;
+use Nette\PhpGenerator\{Closure, Printer};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

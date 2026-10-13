@@ -4,10 +4,7 @@
  * Test: PhpFile::add() method.
  */
 
-use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\GlobalFunction;
-use Nette\PhpGenerator\PhpFile;
-use Nette\PhpGenerator\PhpNamespace;
+use Nette\PhpGenerator\{ClassType, GlobalFunction, PhpFile, PhpNamespace};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

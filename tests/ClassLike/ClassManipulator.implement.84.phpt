@@ -4,8 +4,7 @@
  * @phpVersion 8.4
  */
 
-use Nette\PhpGenerator\ClassManipulator;
-use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\{ClassManipulator, ClassType};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

@@ -7,10 +7,7 @@
 
 namespace Nette\PhpGenerator\Traits;
 
-use Nette\PhpGenerator\PropertyAccessMode;
-use Nette\PhpGenerator\PropertyHook;
-use Nette\PhpGenerator\PropertyHookType;
-use Nette\PhpGenerator\Visibility;
+use Nette\PhpGenerator\{PropertyAccessMode, PropertyHook, PropertyHookType, Visibility};
 use function is_string;
 
 

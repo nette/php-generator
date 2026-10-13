@@ -4,8 +4,7 @@
  * @phpVersion 8.4
  */
 
-use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\InterfaceType;
+use Nette\PhpGenerator\{ClassType, InterfaceType};
 
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/../fixtures/classes.84.php';

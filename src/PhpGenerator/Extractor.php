@@ -9,10 +9,7 @@ namespace Nette\PhpGenerator;
 
 use Nette;
 use PhpParser;
-use PhpParser\Modifiers;
-use PhpParser\Node;
-use PhpParser\NodeFinder;
-use PhpParser\ParserFactory;
+use PhpParser\{Modifiers, Node, NodeFinder, ParserFactory};
 use function is_array, is_string, strlen;
 
 

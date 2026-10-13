@@ -4,11 +4,7 @@
  * Test: ClassLike with FQN in constructor
  */
 
-use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\EnumType;
-use Nette\PhpGenerator\InterfaceType;
-use Nette\PhpGenerator\PhpNamespace;
-use Nette\PhpGenerator\TraitType;
+use Nette\PhpGenerator\{ClassType, EnumType, InterfaceType, PhpNamespace, TraitType};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

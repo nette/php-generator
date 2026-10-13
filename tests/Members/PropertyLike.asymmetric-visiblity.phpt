@@ -4,8 +4,7 @@
  * Test: PropertyLike asymmetric visibility
  */
 
-use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\PropertyAccessMode;
+use Nette\PhpGenerator\{ClassType, PropertyAccessMode};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

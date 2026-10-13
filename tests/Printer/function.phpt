@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 
-use Nette\PhpGenerator\GlobalFunction;
-use Nette\PhpGenerator\Printer;
+use Nette\PhpGenerator\{GlobalFunction, Printer};
 use Tester\Assert;
 require __DIR__ . '/../bootstrap.php';
 
