@@ -5,6 +5,7 @@
  */
 
 use Nette\PhpGenerator\{ClassType, PhpNamespace, Printer};
+
 require __DIR__ . '/../bootstrap.php';
 
 
@@ -25,10 +26,10 @@ $method = $class->addMethod('two')
 	->setReturnType('\Two');
 
 $method->addParameter('one')
-		->setType('One');
+	->setType('One');
 
 $method->addParameter('two')
-		->setType('\Two');
+	->setType('\Two');
 
 sameFile(__DIR__ . '/expected/PhpNamespace.fqn1.expect', (string) $class);
 
@@ -53,10 +54,10 @@ $method = $class->addMethod('two')
 	->setReturnType('\Two');
 
 $method->addParameter('one')
-		->setType('One');
+	->setType('One');
 
 $method->addParameter('two')
-		->setType('\Two');
+	->setType('\Two');
 
 sameFile(__DIR__ . '/expected/PhpNamespace.fqn2.expect', (string) $class);
 

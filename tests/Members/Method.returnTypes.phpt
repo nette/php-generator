@@ -15,20 +15,19 @@ namespace {
 	use Nette\PhpGenerator\Method;
 	use Tester\Assert;
 
-
 	require __DIR__ . '/../bootstrap.php';
 
 	// test from
 
 	interface A
 	{
-		public function testClass(): A\Foo;
+		function testClass(): A\Foo;
 
-		public function testScalar(): string;
+		function testScalar(): string;
 	}
 
 	$method = Method::from([A::class, 'testClass']);
-	Assert::same('A\Foo', $method->getReturnType());
+	Assert::same(A\Foo::class, $method->getReturnType());
 
 	$method = Method::from([A::class, 'testScalar']);
 	Assert::same('string', $method->getReturnType());

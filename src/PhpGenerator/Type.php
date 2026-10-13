@@ -93,17 +93,13 @@ class Type
 
 		$nnType = preg_replace('#^\?|^null\||\|null(?=\||$)#i', '', $type);
 		$always = (bool) preg_match('#^(null|mixed)$#i', $nnType);
-		if ($nullable) {
-			return match (true) {
+		return $nullable
+			? match (true) {
 				$always, $type !== $nnType => $type,
 				str_contains($type, '|') => $type . '|null',
 				default => '?' . $type,
-			};
-		} else {
-			return $always
-				? throw new Nette\InvalidArgumentException("Type $type cannot be not nullable.")
-				: $nnType;
-		}
+			}
+			: ($always ? throw new Nette\InvalidArgumentException("Type $type cannot be not nullable.") : $nnType);
 	}
 
 

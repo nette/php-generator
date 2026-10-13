@@ -8,7 +8,7 @@ require __DIR__ . '/../bootstrap.php';
 
 interface ParentInterface
 {
-	public function interfaceMethod();
+	function interfaceMethod();
 }
 
 interface TestInterface extends ParentInterface

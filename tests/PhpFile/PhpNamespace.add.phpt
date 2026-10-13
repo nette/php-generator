@@ -2,6 +2,7 @@
 
 use Nette\PhpGenerator\{ClassType, GlobalFunction, PhpNamespace};
 use Tester\Assert;
+
 require __DIR__ . '/../bootstrap.php';
 
 

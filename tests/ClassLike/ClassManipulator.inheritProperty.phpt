@@ -49,5 +49,5 @@ testException('inheritProperty throws exception when property already exists', f
 	$class->setExtends(Foo::class);
 	$manipulator = new ClassManipulator($class);
 	$manipulator->inheritProperty('bar');
-	$manipulator->inheritProperty('bar', returnIfExists: false);
+	$manipulator->inheritProperty('bar');
 }, Nette\InvalidStateException::class, "Cannot inherit property 'bar', because it already exists.");

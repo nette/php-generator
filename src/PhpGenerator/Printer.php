@@ -259,15 +259,12 @@ class Printer
 		$body = ($uses ? $uses . "\n" : '')
 			. implode("\n", $items);
 
-		if ($namespace->hasBracketedSyntax()) {
-			return 'namespace' . ($name ? " $name" : '') . "\n{\n"
+		return $namespace->hasBracketedSyntax()
+			? 'namespace' . ($name ? " $name" : '') . "\n{\n"
 				. $this->indent($body)
-				. "}\n";
-
-		} else {
-			return ($name ? "namespace $name;\n\n" : '')
+				. "}\n"
+			: ($name ? "namespace $name;\n\n" : '')
 				. $body;
-		}
 	}
 
 
@@ -403,7 +400,7 @@ class Printer
 
 	private function printPropertyVisibility(Property|PromotedParameter $param): string
 	{
-		$get = $param->getVisibility(PropertyAccessMode::Get);
+		$get = $param->getVisibility();
 		$set = $param->getVisibility(PropertyAccessMode::Set);
 		return $set
 			? ($get ? "$get $set(set)" : "$set(set)")
@@ -428,7 +425,7 @@ class Printer
 
 
 	/** @param  PhpFile|ClassLike|GlobalFunction|Method|Property|Constant|Parameter|EnumCase|TraitUse|PropertyHook  $commentable */
-	protected function printDocComment(/*Traits\CommentAware*/ $commentable): string
+	protected function printDocComment(/* Traits\CommentAware */ $commentable): string
 	{
 		$multiLine = $commentable instanceof GlobalFunction
 			|| $commentable instanceof Method

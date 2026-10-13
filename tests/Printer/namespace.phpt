@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 use Nette\PhpGenerator\{PhpNamespace, Printer};
+
 require __DIR__ . '/../bootstrap.php';
 
 
@@ -13,7 +14,7 @@ $namespace->addUse('Foo\D');
 $namespace->addUse('Foo\D', 'E');
 
 $class = $namespace->addClass('A')
-	->setFinal(true)
+	->setFinal()
 	->setExtends('ParentClass')
 	->addImplement('IExample')
 	->addImplement('Foo\IOne')
@@ -23,7 +24,7 @@ $class->addTrait('Foo\ObjectTrait');
 
 $class->addMethod('first')
 	->addComment('@return resource')
-	->setFinal(true)
+	->setFinal()
 	->setReturnType('stdClass')
 	->setBody('return $this->?;', ['handle'])
 	->addParameter('var')

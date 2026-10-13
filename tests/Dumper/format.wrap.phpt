@@ -35,7 +35,11 @@ same(
 			3,
 		])
 		XX,
-	$dumper->format('looooooooooooooooooooooooooooooooooooooooo(?) + ooooooooooooooooooooooooooooooooooooooooooooooong(?)', [1, 2, 3], [1, 2, 3]),
+	$dumper->format(
+		'looooooooooooooooooooooooooooooooooooooooo(?) + ooooooooooooooooooooooooooooooooooooooooooooooong(?)',
+		[1, 2, 3],
+		[1, 2, 3],
+	),
 );
 
 
@@ -63,5 +67,9 @@ same(
 			3,
 		)
 		XX,
-	$dumper->format('looooooooooooooooooooooooooooooooooooooooo(...?) + ooooooooooooooooooooooooooooooooooooooooooooooong(...?)', [1, 2, 3], [1, 2, 3]),
+	$dumper->format(
+		'looooooooooooooooooooooooooooooooooooooooo(...?) + ooooooooooooooooooooooooooooooooooooooooooooooong(...?)',
+		[1, 2, 3],
+		[1, 2, 3],
+	),
 );

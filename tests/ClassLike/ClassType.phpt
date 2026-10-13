@@ -22,7 +22,7 @@ test('comprehensive class construction with properties, methods, constants, and 
 	Assert::same([], $class->getTraits());
 
 	$class
-		->setAbstract(true)
+		->setAbstract()
 		->setExtends('ParentClass')
 		->addImplement('IExample')
 		->addImplement('IOne')
@@ -74,7 +74,7 @@ test('comprehensive class construction with properties, methods, constants, and 
 		->setValue(null);
 
 	$p = $class->addProperty('sections', ['first' => true])
-		->setStatic(true);
+		->setStatic();
 
 	Assert::same($p, $class->getProperty('sections'));
 	Assert::true($class->hasProperty('sections'));
@@ -132,12 +132,12 @@ test('comprehensive class construction with properties, methods, constants, and 
 		->addComment('comment');
 
 	$method->addParameter('res', null)
-			->setReference()
-			->setType(Type::union(Type::Array, 'null'));
+		->setReference()
+		->setType(Type::union(Type::Array, 'null'));
 
 	$method->addParameter('bar', null)
-			->setNullable()
-			->setType('stdClass|string');
+		->setNullable()
+		->setType('stdClass|string');
 
 	$class->addTrait('foo');
 	$class->removeTrait('foo');

@@ -3,7 +3,7 @@
 // The Nette Tester command-line runner can be
 // invoked through the command: ../vendor/bin/tester .
 
-if (@!include __DIR__ . '/../vendor/autoload.php') {
+if (@!include __DIR__ . '/../vendor/autoload.php') { // @ dependencies may not be installed
 	echo 'Install Nette Tester using `composer install`';
 	exit(1);
 }

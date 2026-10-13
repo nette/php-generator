@@ -6,6 +6,7 @@
 
 use Nette\PhpGenerator\PhpFile;
 use Tester\Assert;
+
 require __DIR__ . '/../bootstrap.php';
 
 

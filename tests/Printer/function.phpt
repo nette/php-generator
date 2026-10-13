@@ -2,6 +2,7 @@
 
 use Nette\PhpGenerator\{GlobalFunction, Printer};
 use Tester\Assert;
+
 require __DIR__ . '/../bootstrap.php';
 
 
@@ -29,7 +30,7 @@ test('printFunction with parameter attribute', function () {
 	$printer = new Printer;
 	$function = new GlobalFunction('multi');
 	$function->addParameter('foo')
-			->addAttribute('Foo');
+		->addAttribute('Foo');
 
 	Assert::match(<<<'XX'
 		function multi(

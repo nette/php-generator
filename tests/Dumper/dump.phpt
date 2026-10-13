@@ -130,19 +130,18 @@ Assert::exception(function () {
 // closures
 Assert::same(
 	'strlen(...)',
-	$dumper->dump(Closure::fromCallable('strlen')),
+	$dumper->dump(strlen(...)),
 );
 
 Assert::same(
 	'Nette\PhpGenerator\ClassLike::from(...)',
-	$dumper->dump(Closure::fromCallable([Nette\PhpGenerator\ClassLike::class, 'from'])),
+	$dumper->dump(Nette\PhpGenerator\ClassLike::from(...)),
 );
 
 Assert::exception(function () {
 	$dumper = new Dumper;
 	$dumper->dump(function () {});
 }, Nette\InvalidStateException::class, 'Cannot dump object of type Closure.');
-
 
 
 // __serialize
@@ -163,7 +162,6 @@ class TestSer
 $dumper = new Dumper;
 Assert::same("\\Nette\\PhpGenerator\\Dumper::createObject(\\TestSer::class, [\n\t0 => 'a',\n\t1 => 'b',\n])", $dumper->dump(new TestSer));
 Assert::equal(new TestSer, eval('return ' . $dumper->dump(new TestSer) . ';'));
-
 
 
 // datetime

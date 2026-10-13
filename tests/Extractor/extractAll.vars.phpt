@@ -2,6 +2,7 @@
 
 use Nette\PhpGenerator\{Attribute, Extractor, Literal};
 use Tester\Assert;
+
 require __DIR__ . '/../bootstrap.php';
 
 

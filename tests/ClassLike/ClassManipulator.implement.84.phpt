@@ -13,7 +13,8 @@ require __DIR__ . '/../bootstrap.php';
 interface ParentInterface
 {
 	public array $interfaceProperty { get; }
-	public function interfaceMethod();
+
+	function interfaceMethod();
 }
 
 interface TestInterface extends ParentInterface
@@ -24,7 +25,11 @@ abstract class ParentAbstract
 {
 	abstract public array $abstractProperty { get; }
 	public array $concreteProperty;
+
+
 	abstract public function abstractMethod();
+
+
 	public function concreteMethod()
 	{
 	}

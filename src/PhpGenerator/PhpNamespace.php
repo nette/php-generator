@@ -36,8 +36,6 @@ final class PhpNamespace
 	#[\Deprecated('use PhpNamespace::NameConstant')]
 	public const NAME_CONSTANT = self::NameConstant;
 
-	private string $name;
-
 	private bool $bracketedSyntax = false;
 
 	/** @var array<string, array<string, string>> */
@@ -54,13 +52,12 @@ final class PhpNamespace
 	private array $functions = [];
 
 
-	public function __construct(string $name)
-	{
+	public function __construct(
+		private readonly string $name,
+	) {
 		if ($name !== '' && !Helpers::isNamespaceIdentifier($name)) {
 			throw new Nette\InvalidArgumentException("Value '$name' is not valid name.");
 		}
-
-		$this->name = $name;
 	}
 
 

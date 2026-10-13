@@ -51,5 +51,5 @@ testException('inheritMethod throws exception when method already exists', funct
 	$class->setExtends(Foo::class);
 	$manipulator = new ClassManipulator($class);
 	$manipulator->inheritMethod('bar');
-	$manipulator->inheritMethod('bar', returnIfExists: false);
+	$manipulator->inheritMethod('bar');
 }, Nette\InvalidStateException::class, "Cannot inherit method 'bar', because it already exists.");

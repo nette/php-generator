@@ -2,6 +2,7 @@
 
 use Nette\PhpGenerator\InterfaceType;
 use Tester\Assert;
+
 require __DIR__ . '/../bootstrap.php';
 
 

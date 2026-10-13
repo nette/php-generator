@@ -67,7 +67,7 @@ test('property hooks on promoted parameter', function () {
 	Assert::same($getHook, $param->getHook(PropertyHookType::Get));
 
 	$setHook = $param->addHook(PropertyHookType::Set);
-	$setHook->setBody('$this->foo = strtolower($value);', short: false);
+	$setHook->setBody('$this->foo = strtolower($value);');
 	Assert::true($param->hasHook('set'));
 
 	$hooks = $param->getHooks();

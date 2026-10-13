@@ -8,7 +8,7 @@
 namespace Nette\PhpGenerator;
 
 use Nette;
-use function count, get_mangled_object_vars, is_array, is_int, is_object, is_resource, is_string, strlen;
+use function count, is_array, is_int, is_object, is_resource, is_string, strlen;
 
 
 /**
@@ -74,8 +74,8 @@ final class Dumper
 		$escaped = preg_replace_callback(
 			$utf8 ? '#[\p{C}\\\]#u' : '#[\x00-\x1F\x7F-\xFF\\\]#',
 			fn($m) => $special[$m[0]] ?? (strlen($m[0]) === 1
-					? '\x' . str_pad(strtoupper(dechex(ord($m[0]))), 2, '0', STR_PAD_LEFT)
-					: '\u{' . strtoupper(ltrim(dechex(self::utf8Ord($m[0])), '0')) . '}'),
+				? '\x' . str_pad(strtoupper(dechex(ord($m[0]))), 2, '0', STR_PAD_LEFT)
+				: '\u{' . strtoupper(ltrim(dechex(self::utf8Ord($m[0])), '0')) . '}'),
 			$s,
 		);
 		return $s === str_replace('\\\\', '\\', $escaped)

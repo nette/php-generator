@@ -4,7 +4,10 @@
  * PHPStan type tests.
  */
 
-use Nette\PhpGenerator\{ClassType, Closure, Constant, EnumCase, EnumType, GlobalFunction, InterfaceType, Method, Parameter, PhpFile, PhpNamespace, Property, PropertyHook, TraitType, TraitUse};
+use Nette\PhpGenerator\{
+	ClassType, Closure, Constant, EnumCase, EnumType, GlobalFunction, InterfaceType,
+	Method, Parameter, PhpFile, PhpNamespace, Property, PropertyHook, TraitType, TraitUse,
+};
 use Nette\Utils\Type;
 use function PHPStan\Testing\assertType;
 
@@ -12,24 +15,21 @@ use function PHPStan\Testing\assertType;
 function testParameterGetType(Parameter $param): void
 {
 	assertType('string|null', $param->getType());
-	assertType('string|null', $param->getType(false));
-	assertType(Type::class . '|null', $param->getType(true));
+	assertType(Type::class . '|null', $param->getType(asObject: true));
 }
 
 
 function testPropertyGetType(Property $prop): void
 {
 	assertType('string|null', $prop->getType());
-	assertType('string|null', $prop->getType(false));
-	assertType(Type::class . '|null', $prop->getType(true));
+	assertType(Type::class . '|null', $prop->getType(asObject: true));
 }
 
 
 function testMethodGetReturnType(Method $method): void
 {
 	assertType('string|null', $method->getReturnType());
-	assertType('string|null', $method->getReturnType(false));
-	assertType(Type::class . '|null', $method->getReturnType(true));
+	assertType(Type::class . '|null', $method->getReturnType(asObject: true));
 }
 
 
@@ -81,14 +81,20 @@ function testClassTypeCollections(ClassType $class): void
 function testPhpFileCollections(PhpFile $file): void
 {
 	assertType('array<string, ' . PhpNamespace::class . '>', $file->getNamespaces());
-	assertType('array<string, ' . ClassType::class . '|' . EnumType::class . '|' . InterfaceType::class . '|' . TraitType::class . '>', $file->getClasses());
+	assertType(
+		'array<string, ' . ClassType::class . '|' . EnumType::class . '|' . InterfaceType::class . '|' . TraitType::class . '>',
+		$file->getClasses(),
+	);
 	assertType('array<string, ' . GlobalFunction::class . '>', $file->getFunctions());
 }
 
 
 function testPhpNamespaceCollections(PhpNamespace $ns): void
 {
-	assertType('array<string, ' . ClassType::class . '|' . EnumType::class . '|' . InterfaceType::class . '|' . TraitType::class . '>', $ns->getClasses());
+	assertType(
+		'array<string, ' . ClassType::class . '|' . EnumType::class . '|' . InterfaceType::class . '|' . TraitType::class . '>',
+		$ns->getClasses(),
+	);
 	assertType('array<string, ' . GlobalFunction::class . '>', $ns->getFunctions());
 	assertType('array<string, string>', $ns->getUses());
 }

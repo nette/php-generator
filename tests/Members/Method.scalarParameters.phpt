@@ -4,7 +4,6 @@
  * Test: Nette\PhpGenerator - PHP7 scalar type hints
  */
 
-
 use Nette\PhpGenerator\{Method, Type};
 use Tester\Assert;
 

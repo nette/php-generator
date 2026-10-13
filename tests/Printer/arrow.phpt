@@ -9,7 +9,7 @@ require __DIR__ . '/../bootstrap.php';
 test('printArrowFunction with return reference and parameters', function () {
 	$function = new Closure;
 	$function
-		->setReturnReference(true)
+		->setReturnReference()
 		->setBody('$a + $b');
 
 	$function->addParameter('a');
@@ -32,6 +32,6 @@ test('printArrowFunction with return type', function () {
 testException('printArrowFunction throws exception for by-reference use', function () {
 	$function = new Closure;
 	$function->addUse('vars')
-		->setReference(true);
+		->setReference();
 	(new Printer)->printArrowFunction($function);
 }, Nette\InvalidArgumentException::class, 'Arrow function cannot bind variables by-reference.');

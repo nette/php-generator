@@ -133,7 +133,8 @@ final class Factory
 
 			if (
 				$declaringClass->name === $from->name
-				&& (!$from instanceof \ReflectionEnum || !method_exists($from->isBacked() ? \BackedEnum::class : \UnitEnum::class, $method->name))
+				&& (!$from instanceof \ReflectionEnum
+					|| !method_exists($from->isBacked() ? \BackedEnum::class : \UnitEnum::class, $method->name))
 			) {
 				$methods[] = $m = $this->fromMethodReflection($method);
 				if ($withBodies && ($file = $declaringClass->getFileName())) {
@@ -266,6 +267,7 @@ final class Factory
 				}
 
 				$param->setDefaultValue(new Literal(implode('::', $parts)));
+
 			} elseif (is_object($from->getDefaultValue())) {
 				$param->setDefaultValue($this->fromObject($from->getDefaultValue()));
 			} else {

@@ -23,7 +23,10 @@ $class->addConstant('FORCE_ARRAY', new Literal('Nette\Utils\Json::FORCE_ARRAY'))
 	->setPrivate()
 	->addComment('Commented');
 
-$class->addConstant('MULTILINE_LONG', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5, 'ffffffff' => 6]);
+$class->addConstant(
+	'MULTILINE_LONG',
+	['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5, 'ffffffff' => 6],
+);
 $class->addConstant('SHORT', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5]);
 
 $class->addProperty('handle')
@@ -33,14 +36,20 @@ $class->addProperty('handle')
 $class->addProperty('order')
 	->setValue(new Literal('RecursiveIteratorIterator::SELF_FIRST'));
 
-$class->addProperty('multilineLong', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5, 'ffffffff' => 6]);
+$class->addProperty(
+	'multilineLong',
+	['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5, 'ffffffff' => 6],
+);
 $class->addProperty('short', ['aaaaaaaa' => 1, 'bbbbbbbb' => 2, 'cccccccc' => 3, 'dddddddd' => 4, 'eeeeeeee' => 5, 'ffffffff' => 6]);
 
 $class->addMethod('first')
 	->addComment('@return resource')
 	->setFinal()
 	->setReturnType('stdClass')
-	->setBody("func(); \r\nreturn ?;", [['aaaaaaaaaaaa' => 1, 'bbbbbbbbbbb' => 2, 'cccccccccccccc' => 3, 'dddddddddddd' => 4, 'eeeeeeeeeeee' => 5, 'ffffffff' => 6]])
+	->setBody(
+		"func(); \r\nreturn ?;",
+		[['aaaaaaaaaaaa' => 1, 'bbbbbbbbbbb' => 2, 'cccccccccccccc' => 3, 'dddddddddddd' => 4, 'eeeeeeeeeeee' => 5, 'ffffffff' => 6]],
+	)
 	->addParameter('var')
 		->setType('stdClass');
 

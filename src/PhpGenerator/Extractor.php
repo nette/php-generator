@@ -29,7 +29,7 @@ final class Extractor
 	public function __construct(string $code)
 	{
 		if (!class_exists(ParserFactory::class)) {
-			throw new Nette\NotSupportedException("PHP-Parser is required to load method bodies, install package 'nikic/php-parser' 4.7 or newer.");
+			throw new Nette\NotSupportedException("PHP-Parser is required to load method bodies, install package 'nikic/php-parser' 5.0 or newer.");
 		}
 
 		$this->printer = new PhpParser\PrettyPrinter\Standard;
@@ -61,7 +61,9 @@ final class Extractor
 		$nodeFinder = new NodeFinder;
 		$classNode = $nodeFinder->findFirst(
 			$this->statements,
-			fn(Node $node) => $node instanceof Node\Stmt\ClassLike && $node->namespacedName !== null && $node->namespacedName->toString() === $className,
+			fn(Node $node) => $node instanceof Node\Stmt\ClassLike
+				&& $node->namespacedName !== null
+				&& $node->namespacedName->toString() === $className,
 		);
 		if (!$classNode) {
 			return [];
@@ -88,7 +90,9 @@ final class Extractor
 		$nodeFinder = new NodeFinder;
 		$classNode = $nodeFinder->findFirst(
 			$this->statements,
-			fn(Node $node) => $node instanceof Node\Stmt\ClassLike && $node->namespacedName !== null && $node->namespacedName->toString() === $className,
+			fn(Node $node) => $node instanceof Node\Stmt\ClassLike
+				&& $node->namespacedName !== null
+				&& $node->namespacedName->toString() === $className,
 		);
 		if (!$classNode) {
 			return [];
@@ -115,7 +119,9 @@ final class Extractor
 	{
 		$functionNode = (new NodeFinder)->findFirst(
 			$this->statements,
-			fn(Node $node) => $node instanceof Node\Stmt\Function_ && $node->namespacedName !== null && $node->namespacedName->toString() === $name,
+			fn(Node $node) => $node instanceof Node\Stmt\Function_
+				&& $node->namespacedName !== null
+				&& $node->namespacedName->toString() === $name,
 		);
 		assert($functionNode instanceof Node\Stmt\Function_);
 
@@ -161,7 +167,11 @@ final class Extractor
 
 			} elseif (
 				$node instanceof Node\Scalar\String_
-				&& in_array($node->getAttribute('kind'), [Node\Scalar\String_::KIND_SINGLE_QUOTED, Node\Scalar\String_::KIND_DOUBLE_QUOTED], true)
+				&& in_array(
+					$node->getAttribute('kind'),
+					[Node\Scalar\String_::KIND_SINGLE_QUOTED, Node\Scalar\String_::KIND_DOUBLE_QUOTED],
+					true,
+				)
 				&& str_contains($node->getAttribute('rawValue'), "\n")
 			) { // multi-line strings -> single line
 				$replacements[] = [
@@ -182,11 +192,11 @@ final class Extractor
 				];
 
 			} elseif (
-				$node instanceof Node\Scalar\Encapsed
+				$node instanceof Node\Scalar\InterpolatedString
 				&& $node->getAttribute('kind') === Node\Scalar\String_::KIND_DOUBLE_QUOTED
 			) { // multi-line strings -> single line
 				foreach ($node->parts as $part) {
-					if ($part instanceof Node\Scalar\EncapsedStringPart) {
+					if ($part instanceof Node\InterpolatedStringPart) {
 						$replacements[] = [
 							$part->getStartFilePos() - $start,
 							$part->getEndFilePos() - $start,
@@ -195,7 +205,7 @@ final class Extractor
 					}
 				}
 			} elseif (
-				$node instanceof Node\Scalar\Encapsed && $node->getAttribute('kind') === Node\Scalar\String_::KIND_HEREDOC
+				$node instanceof Node\Scalar\InterpolatedString && $node->getAttribute('kind') === Node\Scalar\String_::KIND_HEREDOC
 				&& Helpers::unindent($node->getAttribute('docIndentation'), $level) === $node->getAttribute('docIndentation')
 			) { // fix indentation of HEREDOC
 				$replacements[] = [
@@ -209,7 +219,7 @@ final class Extractor
 					$indent,
 				];
 				foreach ($node->parts as $part) {
-					if ($part instanceof Node\Scalar\EncapsedStringPart) {
+					if ($part instanceof Node\InterpolatedStringPart) {
 						$replacements[] = [
 							$part->getStartFilePos() - $start,
 							$part->getEndFilePos() - $start,
@@ -247,7 +257,7 @@ final class Extractor
 			&& !$firstStmt instanceof Node\Stmt\Function_
 		) {
 			$comments = $firstStmt->getComments();
-			foreach ($comments as $i => $comment) {
+			foreach ($comments as $comment) {
 				if ($comment instanceof PhpParser\Comment\Doc) {
 					$phpFile->setComment(Helpers::unformatDocComment($comment->getReformattedText()));
 					break;
@@ -259,7 +269,7 @@ final class Extractor
 		foreach ($this->statements as $node) {
 			if ($node instanceof Node\Stmt\Declare_
 				&& $node->declares[0]->key->name === 'strict_types'
-				&& $node->declares[0]->value instanceof Node\Scalar\LNumber
+				&& $node->declares[0]->value instanceof Node\Scalar\Int_
 			) {
 				$phpFile->setStrictTypes((bool) $node->declares[0]->value->value);
 
@@ -435,7 +445,7 @@ final class Extractor
 	{
 		$value = match (true) {
 			$node->expr === null => null,
-			$node->expr instanceof Node\Scalar\LNumber, $node->expr instanceof Node\Scalar\String_ => $node->expr->value,
+			$node->expr instanceof Node\Scalar\Int_, $node->expr instanceof Node\Scalar\String_ => $node->expr->value,
 			default => $this->toValue($node->expr),
 		};
 		$case = $class->addCase($node->name->toString(), $value);
@@ -531,8 +541,8 @@ final class Extractor
 				'false' => false,
 				default => new Literal($this->getReformattedContents([$node], 0)),
 			};
-		} elseif ($node instanceof Node\Scalar\LNumber
-			|| $node instanceof Node\Scalar\DNumber
+		} elseif ($node instanceof Node\Scalar\Int_
+			|| $node instanceof Node\Scalar\Float_
 			|| $node instanceof Node\Scalar\String_
 		) {
 			return $node->value;
