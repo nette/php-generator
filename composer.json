@@ -1,17 +1,13 @@
 {
 	"name": "nette/php-generator",
-	"description": "🐘 Nette PHP Generator: generates neat PHP code for you. Supports new PHP 8.5 features.",
-	"keywords": ["nette", "php", "code", "scaffolding"],
-	"homepage": "https://nette.org",
+	"description": "🐘 Nette PHP Generator: generates PHP code from objects. Classes, enums, functions and whole files, with namespaces resolved for you, and always up to date with the latest PHP.",
+	"keywords": ["nette", "code generator", "code generation", "codegen", "scaffolding"],
+	"homepage": "https://doc.nette.org/php-generator",
 	"license": ["BSD-3-Clause", "GPL-2.0-only", "GPL-3.0-only"],
 	"authors": [
 		{
 			"name": "David Grudl",
 			"homepage": "https://davidgrudl.com"
-		},
-		{
-			"name": "Nette Community",
-			"homepage": "https://nette.org/contributors"
 		}
 	],
 	"require": {
