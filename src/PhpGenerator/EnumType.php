@@ -121,6 +121,37 @@ final class EnumType extends ClassLike
 	}
 
 
+	/** @throws Nette\InvalidStateException */
+	public function validate(): void
+	{
+		$name = $this->getName();
+		$type = $this->type === null ? null : strtolower($this->type); // type names are case-insensitive
+		if ($type !== null && !in_array($type, [Type::Int, Type::String], true)) {
+			throw new Nette\InvalidStateException("Enum '$name': backing type must be int or string, '$this->type' given.");
+		}
+
+		$backed = $type !== null || Nette\Utils\Arrays::some($this->cases, fn(EnumCase $case) => $case->getValue() !== null);
+		foreach ($this->cases as $case) {
+			$value = $case->getValue();
+			if ($value === null) {
+				if ($backed) {
+					throw new Nette\InvalidStateException("Case '{$case->getName()}' of backed enum '$name' must have a value.");
+				}
+			} elseif (!$value instanceof Literal) {
+				$valueType = get_debug_type($value);
+				$type ??= $valueType;
+				if ($valueType !== $type) {
+					throw new Nette\InvalidStateException("Case '{$case->getName()}' of enum '$name': value type $valueType does not match backing type $type.");
+				}
+			}
+		}
+
+		if ($backed && $type === null) {
+			throw new Nette\InvalidStateException("Enum '$name': backing type cannot be inferred from case values, set it explicitly using setType().");
+		}
+	}
+
+
 	/**
 	 * Adds a member to the enum.
 	 * @throws Nette\InvalidStateException if the member already exists and $overwrite is false
