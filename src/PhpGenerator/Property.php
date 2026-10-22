@@ -117,6 +117,12 @@ final class Property
 		if ($this->readOnly && !$this->type) {
 			throw new Nette\InvalidStateException("Property \$$this->name: Read-only properties are only supported on typed property.");
 
+		} elseif ($this->readOnly && $this->static) {
+			throw new Nette\InvalidStateException("Property \$$this->name cannot be static and readonly at the same time.");
+
+		} elseif ($this->readOnly && $this->isInitialized()) {
+			throw new Nette\InvalidStateException("Property \$$this->name: Read-only property cannot have a default value.");
+
 		} elseif ($this->abstract && $this->final) {
 			throw new Nette\InvalidStateException("Property \$$this->name cannot be abstract and final at the same time.");
 
