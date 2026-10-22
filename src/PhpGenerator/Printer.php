@@ -362,6 +362,7 @@ class Printer
 
 	private function printConstant(Constant $const): string
 	{
+		$const->validate();
 		$def = ($const->isFinal() ? 'final ' : '')
 			. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
 			. 'const '

@@ -7,6 +7,8 @@
 
 namespace Nette\PhpGenerator;
 
+use Nette;
+
 
 /**
  * Definition of a class constant.
@@ -60,5 +62,14 @@ final class Constant
 	public function getType(): ?string
 	{
 		return $this->type;
+	}
+
+
+	/** @throws Nette\InvalidStateException */
+	public function validate(): void
+	{
+		if ($this->final && $this->isPrivate()) {
+			throw new Nette\InvalidStateException("Constant $this->name cannot be final and private at the same time.");
+		}
 	}
 }
