@@ -5,6 +5,7 @@
  */
 
 use Nette\PhpGenerator\{ClassType, InterfaceType, PropertyHookType};
+use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
 
@@ -129,4 +130,27 @@ test('property hooks on interface properties', function () {
 		}
 
 		XX, (string) $interface);
+});
+
+
+test('setHooks() validates hook types and preserves their order', function () {
+	$prop = new Nette\PhpGenerator\Property('foo');
+	$hook = (new Nette\PhpGenerator\PropertyHook)->setBody('return 1;');
+
+	$prop->setHooks(['get' => $hook]);
+	Assert::same($hook, $prop->getHook('get'));
+	Assert::null($prop->getHook('set'));
+
+	// replaces previously set hooks
+	$prop->setHooks(['set' => $hook]);
+	Assert::null($prop->getHook('get'));
+
+	// caller order of hooks is preserved
+	$prop->setHooks(['get' => $hook, 'set' => $hook]);
+	Assert::same(['get', 'set'], array_keys($prop->getHooks()));
+
+	Assert::exception(
+		fn() => $prop->setHooks([$hook]),
+		ValueError::class,
+	);
 });

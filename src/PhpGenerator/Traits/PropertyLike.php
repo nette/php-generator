@@ -127,12 +127,17 @@ trait PropertyLike
 
 	/**
 	 * Replaces all hooks.
-	 * @param  array<string, PropertyHook>  $hooks
+	 * @param  array<string, PropertyHook>  $hooks  indexed by hook type ('set'|'get')
 	 */
 	public function setHooks(array $hooks): static
 	{
 		(function (PropertyHook ...$hooks) {})(...$hooks);
-		$this->hooks = $hooks;
+		$this->hooks = [];
+		foreach ($hooks as $type => $hook) { // preserves caller order of hooks
+			$this->hooks[PropertyHookType::from((string) $type)->value] = $hook;
+		}
+
+		$this->hooks += ['set' => null, 'get' => null];
 		return $this;
 	}
 
