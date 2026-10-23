@@ -478,6 +478,7 @@ class Printer
 
 		$simple = true;
 		foreach ($hooks as $type => $hook) {
+			$hook->validate();
 			$simple = $simple && ($hook->isAbstract() || $isInterface);
 			$hooks[$type] = $this->printDocComment($hook)
 				. $this->printAttributes($hook->getAttributes())

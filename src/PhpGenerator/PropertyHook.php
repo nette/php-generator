@@ -3,6 +3,7 @@
 namespace Nette\PhpGenerator;
 
 use JetBrains\PhpStorm\Language;
+use Nette;
 
 
 /**
@@ -130,5 +131,14 @@ final class PropertyHook
 	public function getReturnReference(): bool
 	{
 		return $this->returnReference;
+	}
+
+
+	/** @throws Nette\InvalidStateException */
+	public function validate(): void
+	{
+		if ($this->abstract && $this->final) {
+			throw new Nette\InvalidStateException('Property hook cannot be both abstract and final.');
+		}
 	}
 }

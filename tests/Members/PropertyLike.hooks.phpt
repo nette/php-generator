@@ -154,3 +154,14 @@ test('setHooks() validates hook types and preserves their order', function () {
 		ValueError::class,
 	);
 });
+
+
+testException('hook cannot be both abstract and final', function () {
+	$class = new ClassType('Demo');
+	$class->addProperty('foo')
+		->setType('int')
+		->addHook('get')
+		->setAbstract()
+		->setFinal();
+	(string) $class;
+}, Nette\InvalidStateException::class, 'Property hook cannot be both abstract and final.');
