@@ -28,7 +28,7 @@ final class Extractor
 
 	public function __construct(string $code)
 	{
-		if (!class_exists(ParserFactory::class)) {
+		if (!class_exists(PhpParser\PhpVersion::class)) { // exists since php-parser 5.0
 			throw new Nette\NotSupportedException("PHP-Parser is required to load method bodies, install package 'nikic/php-parser' 5.0 or newer.");
 		}
 
