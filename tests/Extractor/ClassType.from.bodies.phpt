@@ -29,6 +29,33 @@ $res = ClassType::from(Abc\Class7::class, withBodies: true);
 Assert::matchFile(__DIR__ . '/expected/ClassType.from.bodies.expect', (string) $res);
 
 
+class NestedAnonymousClass
+{
+	public function make()
+	{
+		return new class {
+			public function make()
+			{
+				return 2;
+			}
+		};
+	}
+}
+
+$res = ClassType::from(NestedAnonymousClass::class, withBodies: true);
+same(
+	<<<'XX'
+		return new class {
+			public function make()
+			{
+				return 2;
+			}
+		};
+		XX,
+	$res->getMethod('make')->getBody(),
+);
+
+
 if (PHP_VERSION_ID >= 80400) {
 	require __DIR__ . '/../fixtures/classes.84.php';
 	$res = [];

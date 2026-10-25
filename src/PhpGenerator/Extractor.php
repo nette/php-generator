@@ -69,8 +69,9 @@ final class Extractor
 			return [];
 		}
 
+		assert($classNode instanceof Node\Stmt\ClassLike);
 		$res = [];
-		foreach ($nodeFinder->findInstanceOf($classNode, Node\Stmt\ClassMethod::class) as $methodNode) {
+		foreach ($classNode->getMethods() as $methodNode) { // avoids methods of nested anonymous classes
 			if ($methodNode->stmts) {
 				$res[$methodNode->name->toString()] = $this->getReformattedContents($methodNode->stmts, 2);
 			}
@@ -98,8 +99,9 @@ final class Extractor
 			return [];
 		}
 
+		assert($classNode instanceof Node\Stmt\ClassLike);
 		$res = [];
-		foreach ($nodeFinder->findInstanceOf($classNode, Node\Stmt\Property::class) as $propertyNode) {
+		foreach ($classNode->getProperties() as $propertyNode) { // avoids properties of nested anonymous classes
 			foreach ($propertyNode->props as $propNode) {
 				$propName = $propNode->name->toString();
 				foreach ($propertyNode->hooks as $hookNode) {
