@@ -255,9 +255,13 @@ final class Extractor
 	{
 		$phpFile = new PhpFile;
 
+		$firstStmt = $this->statements[0] ?? null;
+		if ($firstStmt instanceof Node\Stmt\Declare_ && !$firstStmt->getDocComment()) {
+			$firstStmt = $this->statements[1] ?? null;
+		}
+
 		if (
-			($firstStmt = $this->statements[0] ?? null)
-			&& ($firstStmt = $firstStmt instanceof Node\Stmt\Declare_ ? $this->statements[1] ?? null : $firstStmt)
+			$firstStmt
 			&& !$firstStmt instanceof Node\Stmt\ClassLike
 			&& !$firstStmt instanceof Node\Stmt\Function_
 		) {
