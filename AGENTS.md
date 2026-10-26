@@ -59,8 +59,9 @@ composer phpstan
   `setType('?int')` is `true`. **The truth converges only in `Printer::printType`** -
   don't try to normalize nullability earlier.
 - **The type API is duplicated across five classes, not shared** - `Constant` stores
-  the type string verbatim with no `$asObject`/flag, `EnumType` skips validation
-  entirely. Account for these deliberate differences before "unifying" them.
+  the type string verbatim with no `$asObject`/flag, `EnumType::setType()` skips
+  validation (the backing type is checked only by `validate()` at print time).
+  Account for these deliberate differences before "unifying" them.
 - **`getName()` returns the SHORT name and `getFullName()` the FQN** - the opposite
   of `ReflectionClass::getName()`. `PhpNamespace` is the resolution engine
   (`resolveName`/`simplifyName`/`simplifyType`), with separate alias tables per

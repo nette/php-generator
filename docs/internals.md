@@ -51,7 +51,8 @@ nullability earlier.
 | `EnumType` | **no validation** (it is the enum *backing* type, int/string) | no | n/a |
 
 So `Constant`'s nullability lives purely in its string and prints with
-`nullable: false`; `EnumType` bypasses type validation entirely. An agent
+`nullable: false`; `EnumType::setType()` stores anything, and the backing type
+is checked only by `EnumType::validate()` at print time. An agent
 "unifying" type handling must account for these deliberate per-class differences.
 
 ## Name model: `getName()` is short, `getFullName()` is the FQN
@@ -132,9 +133,11 @@ Two things stay **bound to their original context** and are the round-trip traps
 ## Validation is deferred to print time
 
 Invariants (`abstract`+`final`, readonly without a type, abstract property
-without an abstract hook, initialized property in an interface, …) live in
-`validate()` methods (`ClassType`, `InterfaceType`, `Property`, `Method`,
-`PromotedParameter`) and are invoked by the **Printer**, not by setters. The
+without an abstract hook, initialized property in an interface, enum case
+values not matching the backing type, …) live in `validate()` methods
+(`ClassType`, `InterfaceType`, `EnumType`, `Property`, `PropertyHook`,
+`Method`, `Constant`, `PromotedParameter`) and are invoked by the **Printer**,
+not by setters. The
 model deliberately tolerates invalid intermediate states so objects can be
 assembled in any order — `Factory` relies on this. **A new invariant belongs in
 `validate()`, never in a setter.** The Printer also fills gaps at print time:

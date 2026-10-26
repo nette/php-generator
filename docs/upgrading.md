@@ -1,5 +1,9 @@
 # Upgrading nette/php-generator
 
+## 4.2.4
+
+- **Renamed** `Nette\PhpGenerator\PropertyHookType` → `Nette\PhpGenerator\PropertyAccessMode`; previously a separate enum with the same cases, now its cases are identical to those of `Nette\PhpGenerator\PropertyAccessMode`; the old name still works as an alias (4c3c00d5)
+
 ## 4.2.2
 
 - **Signature** `Nette\PhpGenerator\Printer::$dumper`: typed `Nette\PhpGenerator\Dumper` instead of `?Nette\PhpGenerator\Dumper`; affects subclasses assigning `null` to it (a2181b09)
