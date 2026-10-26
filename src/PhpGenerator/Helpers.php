@@ -138,11 +138,19 @@ final class Helpers
 	}
 
 
+	#[\Deprecated('use Nette\Utils\Type::fromString()')]
+	public static function validateType(?string $type, bool &$nullable = false): ?string
+	{
+		return self::normalizeType($type, $nullable);
+	}
+
+
 	/**
 	 * Validates a type declaration. Strips the leading '?' and sets $nullable=true for nullable shorthand.
 	 * Returns null for empty/null types.
+	 * @internal
 	 */
-	public static function validateType(?string $type, bool &$nullable = false): ?string
+	public static function normalizeType(?string $type, bool &$nullable = false): ?string
 	{
 		if ($type === '' || $type === null) {
 			return null;

@@ -139,7 +139,7 @@ trait FunctionLike
 
 	public function setReturnType(?string $type): static
 	{
-		$this->returnType = Nette\PhpGenerator\Helpers::validateType($type, $this->returnNullable);
+		$this->returnType = Nette\PhpGenerator\Helpers::normalizeType($type, $this->returnNullable);
 		return $this;
 	}
 
@@ -168,6 +168,10 @@ trait FunctionLike
 
 	public function setReturnNullable(bool $state = true): static
 	{
+		if ($this->returnType === null) {
+			trigger_error('Calling setReturnNullable() before setReturnType() is deprecated, set the type first.', E_USER_DEPRECATED);
+		}
+
 		$this->returnNullable = $state;
 		return $this;
 	}

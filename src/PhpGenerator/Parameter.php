@@ -41,7 +41,7 @@ class Parameter
 
 	public function setType(?string $type): static
 	{
-		$this->type = Helpers::validateType($type, $this->nullable);
+		$this->type = Helpers::normalizeType($type, $this->nullable);
 		return $this;
 	}
 
@@ -57,6 +57,10 @@ class Parameter
 
 	public function setNullable(bool $state = true): static
 	{
+		if ($this->type === null) {
+			trigger_error('Calling setNullable() before setType() is deprecated, set the type first.', E_USER_DEPRECATED);
+		}
+
 		$this->nullable = $state;
 		return $this;
 	}

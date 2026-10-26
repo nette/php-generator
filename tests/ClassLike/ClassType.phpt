@@ -136,8 +136,8 @@ test('comprehensive class construction with properties, methods, constants, and 
 		->setType(Type::union(Type::Array, 'null'));
 
 	$method->addParameter('bar', null)
-		->setNullable()
-		->setType('stdClass|string');
+		->setType('stdClass|string')
+		->setNullable();
 
 	$class->addTrait('foo');
 	$class->removeTrait('foo');

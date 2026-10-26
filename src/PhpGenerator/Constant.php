@@ -53,7 +53,7 @@ final class Constant
 
 	public function setType(?string $type): static
 	{
-		Helpers::validateType($type);
+		Helpers::normalizeType($type);
 		$this->type = $type;
 		return $this;
 	}
