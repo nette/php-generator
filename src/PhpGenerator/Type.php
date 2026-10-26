@@ -40,21 +40,7 @@ class Type
 	 */
 	public static function nullable(string $type, bool $nullable = true): string
 	{
-		if (str_contains($type, '&')) {
-			return $nullable
-				? throw new Nette\InvalidArgumentException('Intersection types cannot be nullable.')
-				: $type;
-		}
-
-		$nnType = preg_replace('#^\?|^null\||\|null(?=\||$)#i', '', $type);
-		$always = (bool) preg_match('#^(null|mixed)$#i', $nnType);
-		return $nullable
-			? match (true) {
-				$always, $type !== $nnType => $type,
-				str_contains($type, '|') => $type . '|null',
-				default => '?' . $type,
-			}
-			: ($always ? throw new Nette\InvalidArgumentException("Type $type cannot be not nullable.") : $nnType);
+		return (string) Helpers::nullableType(Nette\Utils\Type::fromString($type), $nullable);
 	}
 
 
