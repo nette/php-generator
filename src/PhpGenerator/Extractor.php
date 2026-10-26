@@ -55,21 +55,36 @@ final class Extractor
 	}
 
 
+	private function findClassNode(string $className): ?Node\Stmt\ClassLike
+	{
+		$node = (new NodeFinder)->findFirst(
+			$this->statements,
+			fn(Node $node) => $node instanceof Node\Stmt\ClassLike && $node->namespacedName?->toString() === $className,
+		);
+		assert($node === null || $node instanceof Node\Stmt\ClassLike);
+		return $node;
+	}
+
+
+	private function findFunctionNode(string $name): ?Node\Stmt\Function_
+	{
+		$node = (new NodeFinder)->findFirst(
+			$this->statements,
+			fn(Node $node) => $node instanceof Node\Stmt\Function_ && $node->namespacedName?->toString() === $name,
+		);
+		assert($node === null || $node instanceof Node\Stmt\Function_);
+		return $node;
+	}
+
+
 	/** @return array<string, string> */
 	public function extractMethodBodies(string $className): array
 	{
-		$nodeFinder = new NodeFinder;
-		$classNode = $nodeFinder->findFirst(
-			$this->statements,
-			fn(Node $node) => $node instanceof Node\Stmt\ClassLike
-				&& $node->namespacedName !== null
-				&& $node->namespacedName->toString() === $className,
-		);
+		$classNode = $this->findClassNode($className);
 		if (!$classNode) {
 			return [];
 		}
 
-		assert($classNode instanceof Node\Stmt\ClassLike);
 		$res = [];
 		foreach ($classNode->getMethods() as $methodNode) { // avoids methods of nested anonymous classes
 			if ($methodNode->stmts) {
@@ -88,18 +103,11 @@ final class Extractor
 			return [];
 		}
 
-		$nodeFinder = new NodeFinder;
-		$classNode = $nodeFinder->findFirst(
-			$this->statements,
-			fn(Node $node) => $node instanceof Node\Stmt\ClassLike
-				&& $node->namespacedName !== null
-				&& $node->namespacedName->toString() === $className,
-		);
+		$classNode = $this->findClassNode($className);
 		if (!$classNode) {
 			return [];
 		}
 
-		assert($classNode instanceof Node\Stmt\ClassLike);
 		$res = [];
 		foreach ($classNode->getProperties() as $propertyNode) { // avoids properties of nested anonymous classes
 			foreach ($propertyNode->props as $propNode) {
@@ -119,13 +127,8 @@ final class Extractor
 
 	public function extractFunctionBody(string $name): string
 	{
-		$functionNode = (new NodeFinder)->findFirst(
-			$this->statements,
-			fn(Node $node) => $node instanceof Node\Stmt\Function_
-				&& $node->namespacedName !== null
-				&& $node->namespacedName->toString() === $name,
-		);
-		assert($functionNode instanceof Node\Stmt\Function_);
+		$functionNode = $this->findFunctionNode($name);
+		assert($functionNode !== null);
 
 		return $this->getReformattedContents($functionNode->stmts, 1);
 	}
