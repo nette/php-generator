@@ -321,10 +321,10 @@ final class Factory
 		$defaults = $from->getDeclaringClass()->getDefaultProperties();
 		$prop = new Property($from->name);
 		$prop->setValue($defaults[$prop->getName()] ?? null);
+		$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
 		$prop->setStatic($from->isStatic());
 		$prop->setVisibility($this->getVisibility($from));
 		$prop->setType((string) $from->getType());
-		$prop->setInitialized($from->hasType() && array_key_exists($prop->getName(), $defaults));
 		$prop->setReadOnly($from->isReadOnly());
 		$prop->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));
 		$prop->setAttributes($this->formatAttributes($from->getAttributes()));

@@ -14,22 +14,25 @@ use function PHPStan\Testing\assertType;
 
 function testParameterGetType(Parameter $param): void
 {
-	assertType('string|null', $param->getType());
-	assertType(Type::class . '|null', $param->getType(asObject: true));
+	assertType(Type::class . '|null', $param->getType());
 }
 
 
 function testPropertyGetType(Property $prop): void
 {
-	assertType('string|null', $prop->getType());
-	assertType(Type::class . '|null', $prop->getType(asObject: true));
+	assertType(Type::class . '|null', $prop->getType());
 }
 
 
 function testMethodGetReturnType(Method $method): void
 {
-	assertType('string|null', $method->getReturnType());
-	assertType(Type::class . '|null', $method->getReturnType(asObject: true));
+	assertType(Type::class . '|null', $method->getReturnType());
+}
+
+
+function testConstantGetType(Constant $const): void
+{
+	assertType(Type::class . '|null', $const->getType());
 }
 
 

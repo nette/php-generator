@@ -8,7 +8,7 @@
 namespace Nette\PhpGenerator;
 
 use Nette;
-use function is_string;
+use function count, is_string;
 
 
 /**
@@ -138,19 +138,43 @@ final class Helpers
 	}
 
 
-	#[\Deprecated('use Nette\Utils\Type::fromString()')]
-	public static function validateType(?string $type, bool &$nullable = false): ?string
+	/** @internal */
+	public static function createType(Nette\Utils\Type|string|null $type): ?Nette\Utils\Type
 	{
-		return self::normalizeType($type, $nullable);
+		return match (true) {
+			$type === null, $type === '' => null,
+			is_string($type) => Nette\Utils\Type::fromString($type),
+			default => $type,
+		};
+	}
+
+
+	/**
+	 * Adds or removes null from a type. Null cannot be removed from 'null' or 'mixed', they stay as they are.
+	 * @internal
+	 */
+	public static function nullableType(Nette\Utils\Type $type, bool $nullable = true): Nette\Utils\Type
+	{
+		if ($nullable) {
+			return $type->with('null');
+		} elseif (!$type->isUnion()) {
+			return $type;
+		}
+
+		$types = array_filter($type->getTypes(), fn($t) => strcasecmp((string) $t, 'null') !== 0);
+		return Nette\Utils\Type::fromString(implode('|', array_map(
+			fn($t) => $t->isIntersection() && count($types) > 1 ? "($t)" : (string) $t,
+			$types,
+		)));
 	}
 
 
 	/**
 	 * Validates a type declaration. Strips the leading '?' and sets $nullable=true for nullable shorthand.
 	 * Returns null for empty/null types.
-	 * @internal
 	 */
-	public static function normalizeType(?string $type, bool &$nullable = false): ?string
+	#[\Deprecated('use Nette\Utils\Type::fromString()')]
+	public static function validateType(?string $type, bool &$nullable = false): ?string
 	{
 		if ($type === '' || $type === null) {
 			return null;

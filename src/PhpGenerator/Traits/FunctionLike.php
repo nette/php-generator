@@ -24,9 +24,8 @@ trait FunctionLike
 	/** @var array<string, Parameter> */
 	private array $parameters = [];
 	private bool $variadic = false;
-	private ?string $returnType = null;
+	private ?Type $returnType = null;
 	private bool $returnReference = false;
-	private bool $returnNullable = false;
 
 
 	/**
@@ -137,19 +136,16 @@ trait FunctionLike
 	}
 
 
-	public function setReturnType(?string $type): static
+	public function setReturnType(Type|string|null $type): static
 	{
-		$this->returnType = Nette\PhpGenerator\Helpers::normalizeType($type, $this->returnNullable);
+		$this->returnType = Nette\PhpGenerator\Helpers::createType($type);
 		return $this;
 	}
 
 
-	/** @return ($asObject is true ? ?Type : ?string) */
-	public function getReturnType(bool $asObject = false): Type|string|null
+	public function getReturnType(): ?Type
 	{
-		return $asObject && $this->returnType
-			? Type::fromString($this->returnType)
-			: $this->returnType;
+		return $this->returnType;
 	}
 
 
@@ -168,17 +164,16 @@ trait FunctionLike
 
 	public function setReturnNullable(bool $state = true): static
 	{
-		if ($this->returnType === null) {
-			trigger_error('Calling setReturnNullable() before setReturnType() is deprecated, set the type first.', E_USER_DEPRECATED);
+		if (!$this->returnType) {
+			throw new Nette\InvalidStateException('Call setReturnType() before setReturnNullable().');
 		}
-
-		$this->returnNullable = $state;
+		$this->returnType = Nette\PhpGenerator\Helpers::nullableType($this->returnType, $state);
 		return $this;
 	}
 
 
 	public function isReturnNullable(): bool
 	{
-		return $this->returnNullable;
+		return $this->returnType?->allows('null') ?? false;
 	}
 }

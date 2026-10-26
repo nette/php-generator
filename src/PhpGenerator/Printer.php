@@ -8,7 +8,7 @@
 namespace Nette\PhpGenerator;
 
 use Nette;
-use Nette\Utils\Strings;
+use Nette\Utils\{Strings, Type};
 use function count, is_scalar, strlen;
 
 
@@ -345,7 +345,7 @@ class Printer
 						. ($param->isReadOnly() && $param->getType() ? ' readonly' : '')
 						. ' '
 					: '')
-				. ltrim($this->printType($param->getType(), $param->isNullable()) . ' ')
+				. ltrim($this->printType($param->getType()) . ' ')
 				. ($param->isReference() ? '&' : '')
 				. ($variadic ? '...' : '')
 				. '$' . $param->getName()
@@ -368,7 +368,7 @@ class Printer
 		$def = ($const->isFinal() ? 'final ' : '')
 			. ($const->getVisibility() ? $const->getVisibility() . ' ' : '')
 			. 'const '
-			. ltrim($this->printType($const->getType(), nullable: false) . ' ')
+			. ltrim($this->printType($const->getType()) . ' ')
 			. $const->getName() . ' = ';
 
 		return $this->printDocComment($const)
@@ -388,7 +388,7 @@ class Printer
 			. ($property->isStatic() ? ' static' : '')
 			. (!$readOnlyClass && $property->isReadOnly() && $type ? ' readonly' : '')
 			. ' '
-			. ltrim($this->printType($type, $property->isNullable()) . ' ')
+			. ltrim($this->printType($type) . ' ')
 			. '$' . $property->getName();
 
 		$defaultValue = $property->getValue() === null && !$property->isInitialized()
@@ -414,19 +414,15 @@ class Printer
 	}
 
 
-	protected function printType(?string $type, bool $nullable): string
+	protected function printType(?Type $type): string
 	{
 		if ($type === null) {
 			return '';
 		}
 
-		if ($this->namespace) {
-			$type = $this->namespace->simplifyType($type);
-		}
-
-		return $nullable
-			? Type::nullable($type)
-			: $type;
+		return $this->namespace
+			? $this->namespace->simplifyType((string) $type)
+			: (string) $type;
 	}
 
 
@@ -443,7 +439,7 @@ class Printer
 
 	protected function printReturnType(Closure|GlobalFunction|Method $function): string
 	{
-		return ($tmp = $this->printType($function->getReturnType(), $function->isReturnNullable()))
+		return ($tmp = $this->printType($function->getReturnType()))
 			? $this->returnTypeColon . $tmp
 			: '';
 	}
@@ -462,7 +458,7 @@ class Printer
 		foreach ($attrs as $attr) {
 			$args = $this->dumper->format('...?:', $attr->getArguments());
 			$args = Helpers::simplifyTaggedNames($args, $this->namespace);
-			$items[] = $this->printType($attr->getName(), nullable: false) . ($args === '' ? '' : "($args)");
+			$items[] = ($this->namespace?->simplifyName($attr->getName()) ?? $attr->getName()) . ($args === '' ? '' : "($args)");
 			$inline = $inline && !str_contains($args, "\n");
 		}
 

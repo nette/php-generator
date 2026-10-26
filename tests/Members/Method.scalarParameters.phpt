@@ -18,16 +18,16 @@ interface Foo
 }
 
 $method = Method::from([Foo::class, 'scalars']);
-Assert::same('string', $method->getParameters()['a']->getType());
+Assert::same('string', (string) $method->getParameters()['a']->getType());
 
 $method = Method::from([Foo::class, 'scalars']);
-Assert::same('bool', $method->getParameters()['b']->getType());
+Assert::same('bool', (string) $method->getParameters()['b']->getType());
 
 $method = Method::from([Foo::class, 'scalars']);
-Assert::same('int', $method->getParameters()['c']->getType());
+Assert::same('int', (string) $method->getParameters()['c']->getType());
 
 $method = Method::from([Foo::class, 'scalars']);
-Assert::same('float', $method->getParameters()['d']->getType());
+Assert::same('float', (string) $method->getParameters()['d']->getType());
 
 
 // generating methods with scalar type hints

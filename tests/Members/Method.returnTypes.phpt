@@ -27,10 +27,10 @@ namespace {
 	}
 
 	$method = Method::from([A::class, 'testClass']);
-	Assert::same(A\Foo::class, $method->getReturnType());
+	Assert::same(A\Foo::class, (string) $method->getReturnType());
 
 	$method = Method::from([A::class, 'testScalar']);
-	Assert::same('string', $method->getReturnType());
+	Assert::same('string', (string) $method->getReturnType());
 
 	// generating methods with return type declarations
 

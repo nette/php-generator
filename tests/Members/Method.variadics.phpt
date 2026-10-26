@@ -25,7 +25,7 @@ test('Method::from detects variadic methods', function () {
 	$method = Method::from([Variadics::class, 'bar']);
 	Assert::true($method->isVariadic());
 	Assert::true($method->getParameters()['bar']->isReference());
-	Assert::same('array', $method->getParameters()['bar']->getType());
+	Assert::same('array', (string) $method->getParameters()['bar']->getType());
 });
 
 

@@ -8,6 +8,7 @@
 namespace Nette\PhpGenerator;
 
 use Nette;
+use Nette\Utils\Type;
 
 
 /**
@@ -22,7 +23,7 @@ final class Constant
 
 	private mixed $value;
 	private bool $final = false;
-	private ?string $type = null;
+	private ?Type $type = null;
 
 
 	public function setValue(mixed $val): static
@@ -51,15 +52,14 @@ final class Constant
 	}
 
 
-	public function setType(?string $type): static
+	public function setType(Type|string|null $type): static
 	{
-		Helpers::normalizeType($type);
-		$this->type = $type;
+		$this->type = Helpers::createType($type);
 		return $this;
 	}
 
 
-	public function getType(): ?string
+	public function getType(): ?Type
 	{
 		return $this->type;
 	}

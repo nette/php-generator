@@ -52,14 +52,14 @@ composer phpstan
 
 ## Working in this repo
 
-- **Nullability is stored in up to three disagreeing places** - inside the type
-  string (a leading `?` is stripped to a flag, but `|null` stays literal), a
-  separate `$nullable` flag, and implicitly from a `null` default (params/properties
-  only, not return types). So `setType('int|null')->isNullable()` is `false` while
-  `setType('?int')` is `true`. **The truth converges only in `Printer::printType`** -
-  don't try to normalize nullability earlier.
-- **The type API is duplicated across five classes, not shared** - `Constant` stores
-  the type string verbatim with no `$asObject`/flag, `EnumType::setType()` skips
+- **The type is a `Nette\Utils\Type` object and nullability lives inside it** -
+  `setNullable()` (which throws without a type), a `null` default and a `null`
+  initial value are folded into the type by the setters (`applyNullable()`),
+  one-way. `getType()` returns the object, the declaration string is `(string)`.
+  Printing normalizes the spelling (`int|null` prints as `?int`). In `Factory`,
+  call `setType()` only after `setInitialized()`, or a transient null folds in.
+- **The type API is duplicated across five classes, not shared** - `Constant` has
+  no nullable API, `EnumType::setType()` stores a plain string and skips
   validation (the backing type is checked only by `validate()` at print time).
   Account for these deliberate differences before "unifying" them.
 - **`getName()` returns the SHORT name and `getFullName()` the FQN** - the opposite

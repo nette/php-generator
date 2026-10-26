@@ -23,8 +23,7 @@ final class Property
 
 	private mixed $value = null;
 	private bool $static = false;
-	private ?string $type = null;
-	private bool $nullable = false;
+	private ?Type $type = null;
 	private bool $initialized = false;
 	private bool $abstract = false;
 
@@ -33,6 +32,7 @@ final class Property
 	{
 		$this->value = $val;
 		$this->initialized = true;
+		$this->applyNullable();
 		return $this;
 	}
 
@@ -56,42 +56,50 @@ final class Property
 	}
 
 
-	public function setType(?string $type): static
+	public function setType(Type|string|null $type): static
 	{
-		$this->type = Helpers::normalizeType($type, $this->nullable);
+		$this->type = Helpers::createType($type);
+		$this->applyNullable();
 		return $this;
 	}
 
 
-	/** @return ($asObject is true ? ?Type : ?string) */
-	public function getType(bool $asObject = false): Type|string|null
+	public function getType(): ?Type
 	{
-		return $asObject && $this->type
-			? Type::fromString($this->type)
-			: $this->type;
+		return $this->type;
 	}
 
 
 	public function setNullable(bool $state = true): static
 	{
-		if ($this->type === null) {
-			trigger_error('Calling setNullable() before setType() is deprecated, set the type first.', E_USER_DEPRECATED);
+		if (!$this->type) {
+			throw new Nette\InvalidStateException('Call setType() before setNullable().');
 		}
-
-		$this->nullable = $state;
+		$this->type = Helpers::nullableType($this->type, $state);
+		$this->applyNullable();
 		return $this;
 	}
 
 
 	public function isNullable(): bool
 	{
-		return $this->nullable || ($this->initialized && $this->value === null);
+		return $this->type?->allows('null') ?? ($this->initialized && $this->value === null);
+	}
+
+
+	/** Moves a null initial value into the type. */
+	private function applyNullable(): void
+	{
+		if ($this->type && $this->initialized && $this->value === null) {
+			$this->type = $this->type->with('null');
+		}
 	}
 
 
 	public function setInitialized(bool $state = true): static
 	{
 		$this->initialized = $state;
+		$this->applyNullable();
 		return $this;
 	}
 

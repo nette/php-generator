@@ -8,52 +8,54 @@ places — **type handling, the name/namespace model, and the reflection↔sourc
 round-trip** — plus two cross-cutting contracts: tagged names and print-time
 validation. One file.
 
-## Type handling: three representations of nullability, and the Printer is where truth converges
+## Type handling: the type object is the single truth, nullability lives inside it
 
-A member's nullability is stored in up to **three** places at once, and they do
-**not** agree:
+A member's type is stored as a `Nette\Utils\Type` object (`Parameter`,
+`Property`, `Constant`, function return) and nullability is part of it:
+`setType('?int')` and `setType('int|null')` produce the same type. The other
+sources of nullability are **folded into the type** by `applyNullable()` at
+the end of every setter:
 
-1. **Inside the type string** — but only partially. `Helpers::validateType`
-   strips a **leading `?`** and moves it to the flag (below); it does **not** touch
-   `|null`. So `setType('?int')` stores `'int'` + flag, while `setType('int|null')`
-   stores the literal `'int|null'` + **no** flag.
-2. **A separate `$nullable` bool flag** (`setNullable`, or set by `validateType`
-   from the `?`).
-3. **Implicitly from a `null` default** — `Parameter::isNullable()` and
-   `Property::isNullable()` return true when the default/initial value is `null`,
-   even with no `?` and no flag. **Return types have no such inference** (flag
-   only).
+- **`setNullable()`** adds `|null` to the type (`false` removes it) and
+  **throws without a type**, `setNullable(false)` as well: there is nothing to
+  attach the null to, so `setType()` goes first.
+- **A `null` default** (`Parameter::setDefaultValue(null)`) or a `null` initial
+  value (`Property::setValue(null)`, `setInitialized()`) adds null to the type as
+  well, in either order of the calls. Folding is one-way: a later
+  `setDefaultValue(5)` does **not** take the null back, and `setNullable(false)`
+  over a null default is immediately undone by the fold. Return types have no
+  default and no inference.
+- **`isNullable()` reads the type** (`allows('null')`), so it is `true` for
+  `mixed` and `null` too. Without a type it falls back to a `null` default
+  (`Parameter`) or a `null` initial value (`Property`).
 
-The consequences are real traps:
+**`getType()` returns the object**; the declaration string is `(string) $type`
+and `Helpers::nullableType($type, false)` strips the null part (`?int` → `int`,
+`(A&B)|null` → `A&B`; `null` and `mixed` stay).
 
-- **`setType('int|null')->isNullable()` is `false`; `setType('?int')->isNullable()`
-  is `true`.** Same meaning, different answer, because `isNullable` reads the flag,
-  not the string.
-- **`getType(asObject: true)` builds `Nette\Utils\Type::fromString($this->type)`
-  from the string alone** — the flag is not passed. So `?`/flag-based nullability
-  is **lost** in the object form, while `|null` written into the string survives.
+The Printer prints `(string) $type` simplified against the namespace, so the
+printed spelling is the one `Nette\Utils\Type` produces: `?T` for a simple
+nullable type, `A|B|null` for a union, `(A&B)|null` for DNF. **Input spelling is
+not preserved**: `fromCode()` followed by printing turns `int|null` into `?int`.
 
-Nothing reconciles these until printing. **`Printer::printType($type, $nullable)`
-is the single convergence point**: it simplifies the type against the namespace,
-then `Type::nullable()` decides the final shape — `?` for a bare type, `|null`
-appended for a union, an error for an intersection. This is the "it lies
-elsewhere, the truth is only in the Printer" fact — do not try to normalize
-nullability earlier.
+**Order trap in loaders:** `Factory::fromPropertyReflection()` calls
+`setValue(null)` for a property without a default and then `setInitialized(false)`.
+`setType()` must come **after** `setInitialized()`, otherwise the transient
+"initialized with null" state folds a null into the type.
 
-## The type API is fragmented across five classes
+## The type API is duplicated across five classes
 
 `setType`/`getType` are **duplicated, not shared via a trait**, and differ:
 
-| Class | `setType` validates? | `getType($asObject)`? | nullable flag? |
+| Class | `setType` validates? | `getType()` returns | nullable API? |
 |---|---|---|---|
-| `Parameter`, `Property`, function **return** | yes | yes | yes |
-| `Constant` | validates but stores the string **verbatim** (keeps `?`) | **no `$asObject`** | **none** |
-| `EnumType` | **no validation** (it is the enum *backing* type, int/string) | no | n/a |
+| `Parameter`, `Property`, function **return** | yes (`Nette\Utils\Type::fromString`) | `?Nette\Utils\Type` | `setNullable`/`isNullable` |
+| `Constant` | yes | `?Nette\Utils\Type` | **none** |
+| `EnumType` | **no validation** (it is the enum *backing* type, int/string) | `?string` | n/a |
 
-So `Constant`'s nullability lives purely in its string and prints with
-`nullable: false`; `EnumType::setType()` stores anything, and the backing type
-is checked only by `EnumType::validate()` at print time. An agent
-"unifying" type handling must account for these deliberate per-class differences.
+`EnumType::setType()` stores anything, and the backing type is checked only by
+`EnumType::validate()` at print time. An agent "unifying" type handling must
+account for these deliberate per-class differences.
 
 ## Name model: `getName()` is short, `getFullName()` is the FQN
 
@@ -140,7 +142,9 @@ values not matching the backing type, …) live in `validate()` methods
 not by setters. The
 model deliberately tolerates invalid intermediate states so objects can be
 assembled in any order — `Factory` relies on this. **A new invariant belongs in
-`validate()`, never in a setter.** The Printer also fills gaps at print time:
+`validate()`, never in a setter.** The one exception is `setNullable()`
+throwing without a type: that is an invariant of the API, not of the
+generated code. The Printer also fills gaps at print time:
 an enum with no `setType()` gets its backing type inferred from the first
 case's scalar value.
 
@@ -148,9 +152,9 @@ case's scalar value.
 
 | Concern | Where |
 |---|---|
-| Nullability normalization | `Helpers::validateType`, `Type::nullable` |
+| Type parsing, adding/removing null | `Helpers::createType`, `Helpers::nullableType` (`Type::nullable` for strings) |
 | Per-class type API | `Parameter`/`Property`/`Constant`/`EnumType`, `Traits/FunctionLike` |
-| Type truth convergence | `Printer::printType` |
+| Where nullability folds into the type | `applyNullable()` in `Parameter`/`Property`, `FunctionLike::setReturnNullable` |
 | Short vs full name | `ClassLike::getName`/`getFullName`, `Factory::createClassObject` |
 | Name resolution / simplification | `PhpNamespace::resolveName`/`simplifyName`/`simplifyType` |
 | Tagged names in opaque strings | `Helpers::tagName`/`simplifyTaggedNames` |
