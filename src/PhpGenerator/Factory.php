@@ -64,7 +64,7 @@ final class Factory
 			$class = new ClassType($from->getShortName());
 			$class->setFinal($from->isFinal() && $class->isClass());
 			$class->setAbstract($from->isAbstract() && $class->isClass());
-			$class->setReadOnly(PHP_VERSION_ID >= 80200 && $from->isReadOnly());
+			$class->setReadOnly($from->isReadOnly());
 		}
 
 		(new PhpNamespace($from->getNamespaceName()))->add($class);
@@ -297,7 +297,7 @@ final class Factory
 		$const->setValue($from->getValue());
 		$const->setVisibility($this->getVisibility($from));
 		$const->setFinal($from->isFinal());
-		if (PHP_VERSION_ID >= 80300 && ($type = $from->getType())) {
+		if ($type = $from->getType()) {
 			$const->setType((string) $type);
 		}
 		$const->setComment(Helpers::unformatDocComment((string) $from->getDocComment()));

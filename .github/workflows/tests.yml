@@ -7,7 +7,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php: ['8.1', '8.2', '8.3', '8.4', '8.5', '8.6']
+                php: ['8.3', '8.4', '8.5', '8.6']
 
             fail-fast: false
 
@@ -35,7 +35,7 @@ jobs:
             - uses: actions/checkout@v7
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.1
+                  php-version: 8.3
                   coverage: none
 
             - run: composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable
@@ -49,7 +49,7 @@ jobs:
             - uses: actions/checkout@v7
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: 8.1
+                  php-version: 8.6
                   coverage: pcov
 
             - run: composer install --no-progress --prefer-dist
