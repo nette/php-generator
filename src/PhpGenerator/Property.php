@@ -37,7 +37,7 @@ final class Property
 	}
 
 
-	public function &getValue(): mixed
+	public function getValue(): mixed
 	{
 		return $this->value;
 	}

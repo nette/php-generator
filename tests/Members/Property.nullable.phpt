@@ -29,6 +29,9 @@ Assert::same('?int', (string) $prop->getType());
 $prop = (new Property('a'))->setType('int')->setInitialized();
 Assert::same('?int', (string) $prop->getType());
 
+$prop = (new Property('a'))->setType('int')->setValue(1)->setValue(null);
+Assert::same('?int', (string) $prop->getType());
+
 // an uninitialized property is not nullable
 $prop = (new Property('a'))->setValue(null)->setInitialized(false)->setType('int');
 Assert::same('int', (string) $prop->getType());
