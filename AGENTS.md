@@ -26,7 +26,7 @@ namespaces, whole files) with support for modern features (property hooks, enums
 attributes, asymmetric visibility), plus loading existing code back into the object
 model.
 
-- **PHP Version**: 8.1 - 8.6 (v4.3)
+- **PHP Version**: 8.1 - 8.6 (v5.0)
 - **Package**: `nette/php-generator`
 
 ## Essential Commands
