@@ -167,26 +167,4 @@ final class Helpers
 			$types,
 		)));
 	}
-
-
-	/**
-	 * Validates a type declaration. Strips the leading '?' and sets $nullable=true for nullable shorthand.
-	 * Returns null for empty/null types.
-	 */
-	#[\Deprecated('use Nette\Utils\Type::fromString()')]
-	public static function validateType(?string $type, bool &$nullable = false): ?string
-	{
-		if ($type === '' || $type === null) {
-			return null;
-		} elseif (!Nette\Utils\Validators::isTypeDeclaration($type)) {
-			throw new Nette\InvalidArgumentException("Value '$type' is not valid type.");
-		}
-
-		if ($type[0] === '?') {
-			$nullable = true;
-			return substr($type, 1);
-		}
-
-		return $type;
-	}
 }

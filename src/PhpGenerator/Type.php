@@ -34,54 +34,6 @@ class Type
 		Parent = 'parent',
 		Static = 'static';
 
-	#[\Deprecated('use Type::String')]
-	public const STRING = self::String;
-
-	#[\Deprecated('use Type::Int')]
-	public const INT = self::Int;
-
-	#[\Deprecated('use Type::Float')]
-	public const FLOAT = self::Float;
-
-	#[\Deprecated('use Type::Bool')]
-	public const BOOL = self::Bool;
-
-	#[\Deprecated('use Type::Array')]
-	public const ARRAY = self::Array;
-
-	#[\Deprecated('use Type::Object')]
-	public const OBJECT = self::Object;
-
-	#[\Deprecated('use Type::Callable')]
-	public const CALLABLE = self::Callable;
-
-	#[\Deprecated('use Type::Iterable')]
-	public const ITERABLE = self::Iterable;
-
-	#[\Deprecated('use Type::Void')]
-	public const VOID = self::Void;
-
-	#[\Deprecated('use Type::Never')]
-	public const NEVER = self::Never;
-
-	#[\Deprecated('use Type::Mixed')]
-	public const MIXED = self::Mixed;
-
-	#[\Deprecated('use Type::False')]
-	public const FALSE = self::False;
-
-	#[\Deprecated('use Type::Null')]
-	public const NULL = self::Null;
-
-	#[\Deprecated('use Type::Self')]
-	public const SELF = self::Self;
-
-	#[\Deprecated('use Type::Parent')]
-	public const PARENT = self::Parent;
-
-	#[\Deprecated('use Type::Static')]
-	public const STATIC = self::Static;
-
 
 	/**
 	 * Adds or removes the nullable modifier from a type. For union types, appends or removes |null.
