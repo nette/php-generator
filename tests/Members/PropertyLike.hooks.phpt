@@ -4,7 +4,7 @@
  * Test: PHP 8.4 property hooks for classes
  */
 
-use Nette\PhpGenerator\{ClassType, InterfaceType, PropertyHookType};
+use Nette\PhpGenerator\{ClassType, InterfaceType, PropertyAccessMode};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
@@ -17,7 +17,7 @@ test('property hooks with get and set on regular class properties', function () 
 		->setType('string')
 		->setValue('x')
 		->setPublic()
-		->addHook(PropertyHookType::Set)
+		->addHook(PropertyAccessMode::Set)
 			->setBody('$value . ?', ['x'], short: true)
 			->addComment('comment')
 			->addAttribute('Example')

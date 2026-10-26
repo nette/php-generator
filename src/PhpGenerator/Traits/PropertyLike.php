@@ -7,7 +7,7 @@
 
 namespace Nette\PhpGenerator\Traits;
 
-use Nette\PhpGenerator\{PropertyAccessMode, PropertyHook, PropertyHookType, Visibility};
+use Nette\PhpGenerator\{PropertyAccessMode, PropertyHook, Visibility};
 use function is_string;
 
 
@@ -134,7 +134,7 @@ trait PropertyLike
 		(function (PropertyHook ...$hooks) {})(...$hooks);
 		$this->hooks = [];
 		foreach ($hooks as $type => $hook) { // preserves caller order of hooks
-			$this->hooks[PropertyHookType::from((string) $type)->value] = $hook;
+			$this->hooks[PropertyAccessMode::from((string) $type)->value] = $hook;
 		}
 
 		$this->hooks += ['set' => null, 'get' => null];
@@ -151,28 +151,28 @@ trait PropertyLike
 
 	/**
 	 * Adds a get or set hook. When $shortBody is provided, it is used as an arrow-function-style body.
-	 * @param  PropertyHookType|'set'|'get'  $type
+	 * @param  PropertyAccessMode|'set'|'get'  $type
 	 */
-	public function addHook(PropertyHookType|string $type, string $shortBody = ''): PropertyHook
+	public function addHook(PropertyAccessMode|string $type, string $shortBody = ''): PropertyHook
 	{
-		$type = is_string($type) ? PropertyHookType::from($type) : $type;
+		$type = is_string($type) ? PropertyAccessMode::from($type) : $type;
 		return $this->hooks[$type->value] = (new PropertyHook)
 			->setBody($shortBody, short: true);
 	}
 
 
-	/** @param  PropertyHookType|'set'|'get'  $type */
-	public function getHook(PropertyHookType|string $type): ?PropertyHook
+	/** @param  PropertyAccessMode|'set'|'get'  $type */
+	public function getHook(PropertyAccessMode|string $type): ?PropertyHook
 	{
-		$type = is_string($type) ? PropertyHookType::from($type) : $type;
+		$type = is_string($type) ? PropertyAccessMode::from($type) : $type;
 		return $this->hooks[$type->value] ?? null;
 	}
 
 
-	/** @param  PropertyHookType|'set'|'get'  $type */
-	public function hasHook(PropertyHookType|string $type): bool
+	/** @param  PropertyAccessMode|'set'|'get'  $type */
+	public function hasHook(PropertyAccessMode|string $type): bool
 	{
-		$type = is_string($type) ? PropertyHookType::from($type) : $type;
+		$type = is_string($type) ? PropertyAccessMode::from($type) : $type;
 		return isset($this->hooks[$type->value]);
 	}
 }

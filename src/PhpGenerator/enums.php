@@ -27,13 +27,3 @@ enum PropertyAccessMode: string
 	case Set = 'set';
 	case Get = 'get';
 }
-
-
-/**
- * Property hook type.
- */
-enum PropertyHookType: string
-{
-	case Set = 'set';
-	case Get = 'get';
-}

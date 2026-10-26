@@ -4,6 +4,9 @@ parameters:
 	paths:
 		- src
 
+	excludePaths:
+		- src/compatibility.php
+
 	ignoreErrors:
 		-   # Exhaustive match arms — last branch is always true by definition
 			identifier: instanceof.alwaysTrue

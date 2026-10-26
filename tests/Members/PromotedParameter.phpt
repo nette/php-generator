@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-use Nette\PhpGenerator\{PromotedParameter, PropertyAccessMode, PropertyHookType, Visibility};
+use Nette\PhpGenerator\{PromotedParameter, PropertyAccessMode, Visibility};
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
@@ -60,13 +60,13 @@ test('property hooks on promoted parameter', function () {
 	$param = new PromotedParameter('foo');
 
 	Assert::false($param->hasHook('get'));
-	Assert::false($param->hasHook(PropertyHookType::Set));
+	Assert::false($param->hasHook(PropertyAccessMode::Set));
 
 	$getHook = $param->addHook('get', 'strtoupper($this->foo)');
 	Assert::true($param->hasHook('get'));
-	Assert::same($getHook, $param->getHook(PropertyHookType::Get));
+	Assert::same($getHook, $param->getHook(PropertyAccessMode::Get));
 
-	$setHook = $param->addHook(PropertyHookType::Set);
+	$setHook = $param->addHook(PropertyAccessMode::Set);
 	$setHook->setBody('$this->foo = strtolower($value);');
 	Assert::true($param->hasHook('set'));
 
