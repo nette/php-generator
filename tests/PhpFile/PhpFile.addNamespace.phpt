@@ -9,8 +9,7 @@ $namespace = new PhpNamespace('Foo');
 $namespace->addClass('Bar');
 
 $phpFile = new PhpFile;
-$phpFile->addNamespace('Foo');
-@$phpFile->addNamespace($namespace); // @ deprecated call tested on purpose; overwrites the empty namespace
+$phpFile->add($namespace);
 
 
 same(
@@ -27,15 +26,12 @@ same(
 	(string) $phpFile,
 );
 
-// re-adding the same instance is fine
-Assert::same($namespace, @$phpFile->addNamespace($namespace)); // @ deprecated call tested on purpose
+// addNamespace() returns the existing namespace
+Assert::same($namespace, $phpFile->addNamespace('Foo'));
 
-// a non-empty namespace cannot be silently replaced
-Assert::exception(
-	fn() => @$phpFile->addNamespace(new PhpNamespace('Foo')), // @ deprecated call tested on purpose
-	Nette\InvalidStateException::class,
-	"Namespace 'Foo' already exists in the file.",
-);
+// re-adding the same instance is fine
+$phpFile->add($namespace);
+Assert::same($namespace, $phpFile->getNamespaces()['Foo']);
 
 Assert::exception(
 	fn() => $phpFile->add(new PhpNamespace('Foo')),
@@ -43,7 +39,7 @@ Assert::exception(
 	"Namespace 'Foo' already exists in the file.",
 );
 
-// unlike addNamespace(), add() refuses to replace even an empty namespace
+// add() refuses to replace even an empty namespace
 $phpFile2 = new PhpFile;
 $phpFile2->addNamespace('Bar');
 Assert::exception(

@@ -54,11 +54,6 @@ trait TraitsAware
 			throw new Nette\InvalidStateException("Cannot add trait '$name', because it already exists.");
 		}
 		$this->traits[$name] = $trait = new TraitUse($name);
-		if (func_num_args() > 1 && is_array(func_get_arg(1))) { // back compatibility
-			trigger_error('Passing second argument to ' . __METHOD__ . '() is deprecated, use addResolution() instead.');
-			array_map($trait->addResolution(...), func_get_arg(1));
-		}
-
 		return $trait;
 	}
 

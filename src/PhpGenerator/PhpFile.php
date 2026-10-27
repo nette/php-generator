@@ -119,22 +119,10 @@ final class PhpFile
 
 	/**
 	 * Adds a namespace to the file, or returns the existing one if it already exists.
-	 * A PhpNamespace instance may only replace an existing namespace that has no content yet.
-	 * @throws Nette\InvalidStateException if a non-empty namespace with the same name already exists
 	 */
-	public function addNamespace(string|PhpNamespace $namespace): PhpNamespace
+	public function addNamespace(string $namespace): PhpNamespace
 	{
-		if ($namespace instanceof PhpNamespace) {
-			trigger_error('Passing PhpNamespace object to ' . __METHOD__ . '() is deprecated, use add() instead.', E_USER_DEPRECATED);
-			$name = $namespace->getName();
-			$current = $this->namespaces[$name] ?? null;
-			if ($current && $current !== $namespace && !$current->isEmpty()) {
-				throw new Nette\InvalidStateException("Namespace '$name' already exists in the file.");
-			}
-			$res = $this->namespaces[$name] = $namespace;
-		} else {
-			$res = $this->namespaces[$namespace] ??= new PhpNamespace($namespace);
-		}
+		$res = $this->namespaces[$namespace] ??= new PhpNamespace($namespace);
 		$this->refreshBracketedSyntax();
 		return $res;
 	}
@@ -143,16 +131,9 @@ final class PhpFile
 	/**
 	 * Removes a namespace from the file.
 	 */
-	public function removeNamespace(string|PhpNamespace $namespace): static
+	public function removeNamespace(string $namespace): static
 	{
-		if ($namespace instanceof PhpNamespace) {
-			trigger_error('Passing PhpNamespace object to ' . __METHOD__ . '() is deprecated, use string name instead.', E_USER_DEPRECATED);
-			$name = $namespace->getName();
-		} else {
-			$name = $namespace;
-		}
-
-		unset($this->namespaces[$name]);
+		unset($this->namespaces[$namespace]);
 		return $this;
 	}
 
