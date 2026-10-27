@@ -153,18 +153,14 @@ final class ClassType extends ClassLike
 	}
 
 
-	/**
-	 * @deprecated use ClassManipulator::inheritProperty()
-	 */
+	#[\Deprecated('Use ClassManipulator::inheritProperty()')]
 	public function inheritProperty(string $name, bool $returnIfExists = false): Property
 	{
 		return (new ClassManipulator($this))->inheritProperty($name, $returnIfExists);
 	}
 
 
-	/**
-	 * @deprecated use ClassManipulator::inheritMethod()
-	 */
+	#[\Deprecated('Use ClassManipulator::inheritMethod()')]
 	public function inheritMethod(string $name, bool $returnIfExists = false): Method
 	{
 		return (new ClassManipulator($this))->inheritMethod($name, $returnIfExists);
